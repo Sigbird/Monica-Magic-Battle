@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
+
 
 public class SplashAnim : MonoBehaviour {
 
@@ -14,6 +16,6 @@ public class SplashAnim : MonoBehaviour {
 	}
 
 	public void SplashEnd(){
-		Application.LoadLevel ("Main");
+		SceneManager.LoadScene ("Main");
 	}
 }

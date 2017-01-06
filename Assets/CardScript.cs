@@ -12,7 +12,7 @@ public class CardScript : MonoBehaviour {
 	public string efeito;
 	public string personagem;
 
-	public string name;
+	public string cardname;
 	public string descrition;
 	public string cost;
 	public string damage;

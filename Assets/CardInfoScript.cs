@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class CardInfoScript : MonoBehaviour {
 
-	public Text name;
+	public Text cardname;
 	public Text descrition;
 	public Text cost;
 	public Text damage;
@@ -29,7 +29,7 @@ public class CardInfoScript : MonoBehaviour {
 
 	public void SendCard(GameObject o){
 		lastCard = o;
-		name.text = o.GetComponent<CardScript> ().name;
+		cardname.text = o.GetComponent<CardScript> ().cardname;
 		descrition.text = o.GetComponent<CardScript> ().descrition;
 		cost.text = o.GetComponent<CardScript> ().cost;
 		damage.text = o.GetComponent<CardScript> ().damage;

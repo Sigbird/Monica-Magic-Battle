@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{F5D3A4DD-D6F8-960F-4CA9-9C0B73D3AD5E}</ProjectGuid>
+	<ProjectGuid>{A208813E-69D8-E42C-E752-9339F0158C9F}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -46,6 +46,12 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\CardInfoScript.cs" />
+     <Compile Include="Assets\CardScript.cs" />
+     <Compile Include="Assets\FilterAnimation.cs" />
+     <Compile Include="Assets\FilterScript.cs" />
+     <Compile Include="Assets\LanguageSelector.cs" />
+     <Compile Include="Assets\SearchingMatchScript.cs" />
      <Compile Include="Assets\SplashAnim.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.7.1/Standalone/UnityEngine.UI.dll</HintPath>

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SearchingMatchScript : MonoBehaviour {
 
@@ -32,7 +33,7 @@ public class SearchingMatchScript : MonoBehaviour {
 	}
 
 	public void CallToBattle(){
-		Application.LoadLevel ("Game");
+		SceneManager.LoadScene ("Game");
 	}
 
 }
