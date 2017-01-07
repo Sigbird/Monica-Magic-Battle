@@ -5,3 +5,7 @@
 /magic_rush.sln
 /Builds
 /Assets/MMagicRush/Sprites/Ingame/terrain/desktop.ini.meta
+/obj/Debug/Assembly-CSharp.csproj.FileListAbsolute.txt
+/obj/Debug/Assembly-CSharp.csprojResolveAssemblyReference.cache
+/obj/Debug/Assembly-CSharp.dll
+/obj/Debug/Assembly-CSharp.pdb
