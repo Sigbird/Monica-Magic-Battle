@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using YupiPlay;
 
 
 public class SplashAnim : MonoBehaviour {
