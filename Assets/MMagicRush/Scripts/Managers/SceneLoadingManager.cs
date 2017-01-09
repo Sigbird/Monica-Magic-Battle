@@ -23,8 +23,8 @@ namespace YupiPlay {
 		private static SceneLoadingManager instance;
 
 		void Awake() {
-			DontDestroyOnLoad(this);
 			instance = this;
+			DontDestroyOnLoad(this);
 		}
 
 		// Use this for initialization
