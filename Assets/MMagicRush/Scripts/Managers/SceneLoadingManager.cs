@@ -12,12 +12,6 @@ namespace YupiPlay {
 		public delegate void LoadingProgress(float progress);
 		public static event LoadingProgress OnLoadingProgress;
 
-		public static SceneLoadingManager Instance {
-			get { 
-				return instance;
-			}
-		}
-
 		private static string sceneToLoad;
 
 		private static SceneLoadingManager instance;
@@ -37,7 +31,11 @@ namespace YupiPlay {
 
 		}
 
-		public void LoadScene(string scene) {
+		public static void LoadScene(string scene) {
+			instance.loadScene(scene);
+		}
+
+		private void loadScene(string scene) {
 			if (OnActivateLoading != null) {
 				OnActivateLoading();
 			}
@@ -45,11 +43,15 @@ namespace YupiPlay {
 			sceneToLoad = scene;	
 		}
 
-		public void CallLoadSceneAsync() {		
+		public static void CallLoadSceneAsync() {
+			instance.callLoadSceneAsync();
+		}
+
+		private void callLoadSceneAsync() {		
 			StartCoroutine(LoadSceneAsync(sceneToLoad));
 		}
 
-		IEnumerator LoadSceneAsync(string scene) {		
+		private IEnumerator LoadSceneAsync(string scene) {		
 			AsyncOperation ao = SceneManager.LoadSceneAsync(scene);
 			ao.allowSceneActivation = false;
 

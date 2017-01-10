@@ -56,7 +56,7 @@ namespace YupiPlay {
 		public void ToIdle() {				
 			LoadingReady = true;
 			GetComponent<Animator>().SetTrigger("ToIdle");
-			SceneLoadingManager.Instance.CallLoadSceneAsync();
+			SceneLoadingManager.CallLoadSceneAsync();
 		}
 
 		public void ResetLoading() {

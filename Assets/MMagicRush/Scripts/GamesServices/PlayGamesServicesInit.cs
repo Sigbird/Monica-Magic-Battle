@@ -19,7 +19,9 @@ namespace YupiPlay.MMagicRush {
 				.WithInvitationDelegate(OnInvitationReceived)
 				.Build();
 
-
+			PlayGamesPlatform.InitializeInstance(config);
+			PlayGamesPlatform.DebugLogEnabled = true;
+			PlayGamesPlatform.Activate();
 		}
 
 		// Use this for initialization
