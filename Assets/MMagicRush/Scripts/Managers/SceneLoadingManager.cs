@@ -61,10 +61,8 @@ namespace YupiPlay {
 					OnLoadingProgress(ao.progress / 0.9f);
 				}
 
-				if (ao.progress >= 0.9f) {
-					if (LoadingCanvasManager.LoadingReady)
-						ao.allowSceneActivation = true;	
-
+				if (ao.progress >= 0.9f) {					
+					ao.allowSceneActivation = true;	
 				}
 
 				yield return null;

@@ -5,32 +5,16 @@ using UnityEngine.UI;
 
 namespace YupiPlay {
 
-	public class LoadingCanvasManager : MonoBehaviour {
-		public GameObject LoadingContainer;
-		public Text Percentage;
-		public Image ProgressBar;
+	public class LoadingCanvasManager : CanvasAbstract {		
 
 		//	private float timeAmount = 5;
 		//	private float time = 0;
-		//
-		private static GameObject instance = null;
-
-		public static bool LoadingReady = false;
-
-		void Awake() {
-			if (instance == null) {
-				instance = this.gameObject;
-				DontDestroyOnLoad(this.gameObject);
-			} else {
-				Destroy(this.gameObject);
-			}
-		}
 
 		// Use this for initialization
-		void Start () {
-			ResetLoading();
-			//GetComponent<Animator>().SetTrigger("ActivateLoading");
-		}
+//		void Start () {
+//			ResetLoading();
+//			GetComponent<Animator>().SetTrigger("ActivateLoading");
+//		}
 
 		// Update is called once per frame
 		void Update () {
@@ -48,24 +32,13 @@ namespace YupiPlay {
 			//				GetComponent<Animator>().SetTrigger("ActivateLoading");
 			//				return;
 			//			}
-			//		}
-
-
+			//		}                  
 		}		
 
-		public void ToIdle() {				
-			LoadingReady = true;
+		public void ToIdle() {							
 			GetComponent<Animator>().SetTrigger("ToIdle");
 			SceneLoadingManager.CallLoadSceneAsync();
-		}
-
-		public void ResetLoading() {
-			LoadingReady = false;
-			Percentage.text = "0%";
-			ProgressBar.fillAmount = 0;
-			//time = 0;
-		}
-
+		}        
 
 		private void OnActivateLoadingEvent() {	
 			ResetLoading()	;
@@ -92,7 +65,6 @@ namespace YupiPlay {
 			SceneLoadingManager.OnLoadingProgress -= OnLoadingProgressEvent;
 		}
 	}
-
 }
 
 
