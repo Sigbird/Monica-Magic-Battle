@@ -13,10 +13,17 @@ namespace YupiPlay {
 		//	private float timeAmount = 5;
 		//	private float time = 0;
 		//
+		private static GameObject instance = null;
+
 		public static bool LoadingReady = false;
 
 		void Awake() {
-			DontDestroyOnLoad(this);
+			if (instance == null) {
+				instance = this.gameObject;
+				DontDestroyOnLoad(this.gameObject);
+			} else {
+				Destroy(this.gameObject);
+			}
 		}
 
 		// Use this for initialization
@@ -49,7 +56,7 @@ namespace YupiPlay {
 		public void ToIdle() {				
 			LoadingReady = true;
 			GetComponent<Animator>().SetTrigger("ToIdle");
-			SceneLoadingManager.Instance.CallLoadSceneAsync();
+			SceneLoadingManager.CallLoadSceneAsync();
 		}
 
 		public void ResetLoading() {
