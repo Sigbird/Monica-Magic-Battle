@@ -18,5 +18,7 @@ public class MultiplayerMenu : MonoBehaviour {
 		#if UNITY_ANDROID
 		GoogleMultiplayer.QuickGame();
 		#endif
+		#if UNITY_IOS
+		#endif
 	}
 }
