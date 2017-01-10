@@ -11,6 +11,8 @@ public class SoldierControler : MonoBehaviour {
 		IDLE,
 		DEFAULT,
 		ATACKING,
+		RETREAT,
+		SEEKING,
 	}
 
 	public TipoSoldado Tipo;
@@ -47,6 +49,8 @@ public class SoldierControler : MonoBehaviour {
 	public GameObject light;
 
 	public GameObject platform;
+
+	public GameObject heroBase;
 
 	public bool inCombat;
 
@@ -95,6 +99,7 @@ public class SoldierControler : MonoBehaviour {
 			this.speed = 2;
 			this.healtbarSoldier.SetActive (true);
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			this.state = STATE.SEEKING;
 			break;
 		case(TipoSoldado.Lanceiro):
 			this.vidaMax = 4;
@@ -225,35 +230,41 @@ public class SoldierControler : MonoBehaviour {
 				Destroy (this.gameObject);
 			}
 
-			if (Input.touchCount > 0) {
-				// The screen has been touched so store the touch
-				Touch touch = Input.GetTouch (0);
-				if (touch.phase == TouchPhase.Began) {
-					touchStartPosition = Camera.main.ScreenToWorldPoint (new Vector3 (touch.position.x, touch.position.y, 10));
-
-					if (state == STATE.IDLE) {
-						state = STATE.DEFAULT;
-					}
-				}
-
-				if (touch.phase == TouchPhase.Stationary) {
-					count = count++;
-					if (count >= 1) {
-						Debug.Log ("Stop");
-						this.state = STATE.IDLE;
-						count = 0;
-					}
-			
-				}
-
-				//colocar um this.state != move se necessario
-				if (touch.phase == TouchPhase.Ended && this.state != STATE.IDLE && Vector3.Distance (transform.position, touchStartPosition) < 0.5) {
-					// If the finger is on the screen, move the object smoothly to the touch position
-					touchEndPosition = Camera.main.ScreenToWorldPoint (new Vector3 (touch.position.x, touch.position.y, 10));                
-					this.state = STATE.MOVE;
-				}
-			}
+			//
+			//ENTRADA DE TOUCH
+			//
+//			if (Input.touchCount > 0) {
+//				// The screen has been touched so store the touch
+//				Touch touch = Input.GetTouch (0);
+//				if (touch.phase == TouchPhase.Began) {
+//					touchStartPosition = Camera.main.ScreenToWorldPoint (new Vector3 (touch.position.x, touch.position.y, 10));
+//
+//					if (state == STATE.IDLE) {
+//						state = STATE.DEFAULT;
+//					}
+//				}
+//
+//				if (touch.phase == TouchPhase.Stationary) {
+//					count = count++;
+//					if (count >= 1) {
+//						Debug.Log ("Stop");
+//						this.state = STATE.IDLE;
+//						count = 0;
+//					}
+//			
+//				}
+//
+//				//colocar um this.state != move se necessario
+//				if (touch.phase == TouchPhase.Ended && this.state != STATE.IDLE && Vector3.Distance (transform.position, touchStartPosition) < 0.5) {
+//					// If the finger is on the screen, move the object smoothly to the touch position
+//					touchEndPosition = Camera.main.ScreenToWorldPoint (new Vector3 (touch.position.x, touch.position.y, 10));                
+//					this.state = STATE.MOVE;
+//				}
+//			}
 				
+			//
+			//ESTADOS DO PERSONAGEM
+			//
 			if (this.state == STATE.MOVE) {
 				if (Vector3.Distance (transform.position, touchEndPosition) > 1) {
 					transform.position = Vector3.MoveTowards (transform.position, touchEndPosition, Time.deltaTime * speed);
@@ -263,14 +274,33 @@ public class SoldierControler : MonoBehaviour {
 
 			}
 
-			if (this.state == STATE.IDLE) {
+			if (this.state == STATE.RETREAT) {
 				//targetPosition = this.transform.position;
-				transform.position = Vector3.MoveTowards (transform.position, this.transform.position, Time.deltaTime * speed);
+				if (Vector3.Distance (transform.position, heroBase.transform.position) > range - 0.5f) {
+					transform.position = Vector3.MoveTowards (transform.position, heroBase.transform.position, Time.deltaTime * speed);
+				} else {
+					this.state = STATE.SEEKING;
+				}
+			}
+
+//			if (this.state == STATE.RETREAT) {
+//				//targetPosition = this.transform.position;
+//				transform.position = Vector3.MoveTowards (heroBase.transform.position, heroBase.transform.position, Time.deltaTime * speed);
+//				if(Vector3.Distance (arrowSlot.transform.position, heroBase.transform.position) > 0.1f){
+//					this.state = STATE.SEEKING;
+//				}
+//			}
+
+			if (this.state == STATE.SEEKING) {
+				targetEnemy = SeekEnemyTarget ();
+				if (targetEnemy != null) {
+					this.state = STATE.DEFAULT;
+				}
 			}
 
 			if (this.state == STATE.DEFAULT) {
-				if (SeekEnemyTarget () != null) {
-					targetEnemy = SeekEnemyTarget ();
+				
+					//DESLOCAMENTO ATE INIMIGO
 					if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range - 0.5f) {
 						transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
 					} else if (inCombat == false) {
@@ -279,6 +309,7 @@ public class SoldierControler : MonoBehaviour {
 						StartCoroutine (Atackenemy (targetEnemy));
 					} 
 
+					//ANIMACAODE TIRO DE PROJETEIS
 					if (inCombat == true && arrowSlot != null && this.Tipo == TipoSoldado.Lanceiro && targetEnemy != null) {
 						if (Vector3.Distance (arrowSlot.transform.position, targetEnemy.transform.position) > 0.1f && targetEnemy != null) {
 							arrowSlot.transform.position = Vector3.MoveTowards (arrowSlot.transform.position, targetEnemy.transform.position, Time.deltaTime * 5);
@@ -293,13 +324,11 @@ public class SoldierControler : MonoBehaviour {
 						}
 					}
 
+					//FIM DO COMBATE
 					if (targetEnemy.GetComponent<SoldierControler> ().vida <= 0 || targetEnemy == null) {
 						inCombat = false;
 					}
-
-					if (this.tag == "enemysoldier2" && Vector3.Distance (transform.position, targetEnemy.transform.position) < 4) {
-						//FadeIn ();
-					}
+						
 				} else {
 					
 				}
@@ -307,9 +336,23 @@ public class SoldierControler : MonoBehaviour {
 			}
 
 
-		}
+
+		Debug.Log (this.state);
 	}
 
+
+	public void ChangeState(){
+	
+		if (this.state == STATE.RETREAT) {
+			this.state = STATE.SEEKING;
+		}
+
+		if (this.state == STATE.DEFAULT) {
+			this.targetEnemy = null;
+			this.state = STATE.RETREAT;
+		}
+
+	}
 
 	public GameObject SeekEnemyTarget (){
 

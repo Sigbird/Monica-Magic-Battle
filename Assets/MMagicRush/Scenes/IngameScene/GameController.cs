@@ -24,7 +24,7 @@ public class GameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Time.timeScale = 1;
-		StartCoroutine (EnemyUI ());
+		//StartCoroutine (EnemyAI ());
 	}
 	
 	// Update is called once per frame
@@ -123,7 +123,7 @@ public class GameController : MonoBehaviour {
 
 	}
 
-	IEnumerator EnemyUI(){
+	IEnumerator EnemyAI(){
 		switch(Random.Range(0,4)){
 		case 1:
 			Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Guerreiro;
@@ -148,7 +148,7 @@ public class GameController : MonoBehaviour {
 
 		yield return new WaitForSeconds (Random.Range(3,7));
 
-		StartCoroutine (EnemyUI ());
+		StartCoroutine (EnemyAI ());
 	}
 
 	public void CallScene(string scene){
