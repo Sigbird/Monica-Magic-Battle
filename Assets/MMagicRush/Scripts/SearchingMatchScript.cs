@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using YupiPlay;
 
 public class SearchingMatchScript : MonoBehaviour {
 
@@ -21,7 +23,7 @@ public class SearchingMatchScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 
 	IEnumerator Finding() {
@@ -33,7 +35,8 @@ public class SearchingMatchScript : MonoBehaviour {
 	}
 
 	public void CallToBattle(){
-		SceneManager.LoadScene ("Game");
+		//SceneManager.LoadScene ("Jogo");
+		SceneLoadingManager.LoadScene ("Jogo");
 	}
 
 }
