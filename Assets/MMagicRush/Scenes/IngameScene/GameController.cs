@@ -71,7 +71,7 @@ public class GameController : MonoBehaviour {
 		case "Guerreiro":
 			if (Diamonds >= WarriorCost) {
 				Diamonds = Diamonds - WarriorCost;
-				Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Guerreiro;
+				//Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Guerreiro;
 				WarriorCost = WarriorCost + 10;
 				Soldado.GetComponent<SoldierControler> ().team = team;
 				if (team == 1) {
@@ -84,7 +84,7 @@ public class GameController : MonoBehaviour {
 		case "Mago":
 			if (Diamonds >= MageCost) {
 				Diamonds = Diamonds - MageCost;
-				Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Mago;
+				//Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Mago;
 				MageCost = MageCost + 10;
 				Soldado.GetComponent<SoldierControler> ().team = team;
 				if (team == 1) {
@@ -97,7 +97,7 @@ public class GameController : MonoBehaviour {
 		case "Lanceiro":
 			if (Diamonds >= LanceiroCost) {
 				Diamonds = Diamonds - LanceiroCost;
-				Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Lanceiro;
+				//Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Lanceiro;
 				LanceiroCost = LanceiroCost + 10;
 				Soldado.GetComponent<SoldierControler> ().team = team;
 				if (team == 1) {
@@ -108,7 +108,7 @@ public class GameController : MonoBehaviour {
 			}
 			break;
 		case "General":
-			Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.General;
+			//Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.General;
 			Soldado.GetComponent<SoldierControler> ().team = team;
 			if (team == 1) {
 				Instantiate (Soldado, GameObject.Find("SpawPoint1").transform.position, Quaternion.identity);
@@ -126,18 +126,18 @@ public class GameController : MonoBehaviour {
 	IEnumerator EnemyAI(){
 		switch(Random.Range(0,4)){
 		case 1:
-			Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Guerreiro;
+			//Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Guerreiro;
 			Soldado.GetComponent<SoldierControler> ().team = 2;
 			Instantiate (Soldado, GameObject.Find ("SpawPoint2").transform.position, Quaternion.identity);
 		
 			break;
 		case 2:
-			Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Lanceiro;
+			//Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Lanceiro;
 			Soldado.GetComponent<SoldierControler> ().team = 2;
 			Instantiate (Soldado, GameObject.Find ("SpawPoint2").transform.position, Quaternion.identity);
 			break;
 		case 3:
-			Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Mago;
+			//Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Mago;
 			Soldado.GetComponent<SoldierControler> ().team = 2;
 			Instantiate (Soldado, GameObject.Find ("SpawPoint2").transform.position, Quaternion.identity);
 			break;

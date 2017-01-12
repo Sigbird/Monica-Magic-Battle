@@ -37,6 +37,8 @@ public class SearchingMatchScript : MonoBehaviour {
 	public void CallToBattle(){
 		//SceneManager.LoadScene ("Jogo");
 		SceneLoadingManager.LoadScene ("Jogo");
+
+
 	}
 
 }

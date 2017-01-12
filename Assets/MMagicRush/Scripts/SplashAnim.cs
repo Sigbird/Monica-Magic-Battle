@@ -17,6 +17,6 @@ public class SplashAnim : MonoBehaviour {
 	}
 
 	public void SplashEnd(){
-		SceneLoadingManager.LoadScene("Main");
+		SceneManager.LoadScene ("Main");
 	}
 }
