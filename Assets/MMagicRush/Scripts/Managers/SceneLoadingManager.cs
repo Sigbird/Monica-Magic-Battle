@@ -14,11 +14,17 @@ namespace YupiPlay {
 
 		private static string sceneToLoad;
 
+		private static GameObject staticGameObject;
 		private static SceneLoadingManager instance;
 
 		void Awake() {
-			instance = this;
-			DontDestroyOnLoad(this);
+			if (staticGameObject == null) {
+				staticGameObject = this.gameObject;
+				instance = staticGameObject.GetComponent<SceneLoadingManager>();
+				DontDestroyOnLoad(this.gameObject);
+			} else {
+				Destroy(this.gameObject);
+			}				
 		}
 
 		// Use this for initialization
