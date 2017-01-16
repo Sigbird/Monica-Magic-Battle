@@ -29,7 +29,7 @@ public class SoldierControler : MonoBehaviour {
 
 	//PREFABS
 
-	[HideInInspector]
+	//[HideInInspector]
 	public GameObject targetEnemy;
 
 	public GameObject healtbarGeneral;
@@ -395,7 +395,13 @@ public class SoldierControler : MonoBehaviour {
 						//inCombat = true;
 						//StartCoroutine (Atackenemy (targetEnemy));
 						if (danoCD > 40) {
-							targetEnemy.GetComponent<SoldierControler> ().vida -= dano;
+							if (targetEnemy.GetComponent<SoldierControler> () != null) {
+								targetEnemy.GetComponent<SoldierControler> ().vida -= dano;
+							} else {
+								targetEnemy.GetComponent<ChargesScript> ().charges--;
+								StartCoroutine (Respawning ());
+							}
+
 							danoCD = 0;
 						} else {
 							danoCD++;
