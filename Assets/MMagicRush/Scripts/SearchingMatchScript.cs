@@ -7,6 +7,7 @@ using YupiPlay;
 
 public class SearchingMatchScript : MonoBehaviour {
 
+	public bool noLoading;
 
 	public Image AdvImage;
 
@@ -35,8 +36,11 @@ public class SearchingMatchScript : MonoBehaviour {
 	}
 
 	public void CallToBattle(){
-		//SceneManager.LoadScene ("Jogo");
-		SceneLoadingManager.LoadScene ("Jogo");
+		if (noLoading) {
+			SceneManager.LoadScene ("Jogo");
+		} else {
+			SceneLoadingManager.LoadScene ("Jogo");
+		}
 
 
 	}

@@ -37,10 +37,10 @@ public class CardInfoScript : MonoBehaviour {
 		image.sprite = o.GetComponent<CardScript> ().image;
 		character.sprite = o.GetComponent<CardScript> ().peson;
 
-		if (o.GetComponent<CardScript> ().isactivebutton) {
+		if (o.GetComponent<CardScript> ().isactivebutton && enableButton != null) {
 			enableButton.SetActive (true);
 			disableButton.SetActive(false);
-		} else {
+		} else if(enableButton != null) {
 			enableButton.SetActive (false);
 			disableButton.SetActive(true);
 		}

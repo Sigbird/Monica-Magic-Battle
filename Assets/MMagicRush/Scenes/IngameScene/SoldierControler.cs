@@ -5,6 +5,9 @@ public class SoldierControler : MonoBehaviour {
 
 	//public enum TipoSoldado {Guerreiro, Mago, Lanceiro, General};
 
+
+	public string HeroName;
+
 	private enum STATE
 	{
 		MOVE,
@@ -42,11 +45,15 @@ public class SoldierControler : MonoBehaviour {
 
 	public Sprite warrior;
 
-	public Sprite archer;
+	public Sprite Archer;
 
-	public Sprite mage;
+	public Sprite Knight;
 
-	public Sprite general;
+	public Sprite Viking;
+
+	public Sprite Witch;
+
+	public Sprite Brothers;
 
 	public GameObject light;
 
@@ -105,9 +112,29 @@ public class SoldierControler : MonoBehaviour {
 		this.dano = 1;
 		this.speed = 1;
 		this.healtbarSoldier.SetActive (true);
-		this.GetComponent<SpriteRenderer> ().sprite = warrior;
+		//this.GetComponent<SpriteRenderer> ().sprite = warrior;
 		this.state = STATE.SEEKING;
 		StartCoroutine (HealingAndXp ());
+
+		switch (HeroName) {
+		case("Archer"):
+			this.GetComponent<SpriteRenderer> ().sprite = Archer;
+			break;
+		case("Knight"):
+			this.GetComponent<SpriteRenderer> ().sprite = Knight;
+			break;
+		case("Viking"):
+			this.GetComponent<SpriteRenderer> ().sprite = Viking;
+			break;
+		case("Witch"):
+			this.GetComponent<SpriteRenderer> ().sprite = Witch;
+			break;
+		case("Brothers"):
+			this.GetComponent<SpriteRenderer> ().sprite = Brothers;
+			break;
+		default:
+			break;
+		}
 
 		//CONFIGURAÇÃO DE TIPO
 //		switch (Tipo) {
@@ -371,6 +398,7 @@ public class SoldierControler : MonoBehaviour {
 					transform.position = Vector3.MoveTowards (transform.position, heroBase.transform.position, Time.deltaTime * speed);
 				} else {
 					this.state = STATE.SEEKING;
+					this.vida += 2;
 				}
 			} else {
 				this.speed = 1;
@@ -575,6 +603,8 @@ public class SoldierControler : MonoBehaviour {
 	}
 
 	
-
+	public void SmalHealing(){
+		this.vida += 1;
+	}
 
 }
