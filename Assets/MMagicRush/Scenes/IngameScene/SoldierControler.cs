@@ -32,13 +32,7 @@ public class SoldierControler : MonoBehaviour {
 	//[HideInInspector]
 	public GameObject targetEnemy;
 
-	public GameObject healtbarGeneral;
-
 	public GameObject healtbarSoldier;
-
-	public GameObject healtbarLanceiro;
-
-	public GameObject healtbarMago;
 
 	public Sprite warrior;
 
@@ -98,9 +92,10 @@ public class SoldierControler : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+		UpdateLife ();
+		this.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
 
-
-		this.vida = 10;
+		//this.vida = 10;
 		this.range = 1;
 		this.dano = 1;
 		this.speed = 1;
@@ -199,7 +194,7 @@ public class SoldierControler : MonoBehaviour {
 
 		//ATUALIZAÇÃO DE BARRAS DE VIDA
 //		this.healtbarGeneral.GetComponent<HealtBar> ().Life = this.vida;
-		this.healtbarSoldier.GetComponent<HealtBar> ().Life = this.vida;
+
 //		this.healtbarLanceiro.GetComponent<HealtBar> ().Life = this.vida;
 //		this.healtbarMago.GetComponent<HealtBar> ().Life = this.vida;
 
@@ -370,6 +365,8 @@ public class SoldierControler : MonoBehaviour {
 				if (Vector3.Distance (transform.position, heroBase.transform.position) > range - 0.5f) {
 					transform.position = Vector3.MoveTowards (transform.position, heroBase.transform.position, Time.deltaTime * speed);
 				} else {
+				this.vida += 2;
+					UpdateLife ();
 					this.state = STATE.SEEKING;
 				}
 			} else {
@@ -397,6 +394,7 @@ public class SoldierControler : MonoBehaviour {
 						if (danoCD > 40) {
 							if (targetEnemy.GetComponent<SoldierControler> () != null) {
 								targetEnemy.GetComponent<SoldierControler> ().vida -= dano;
+								UpdateLife ();
 							} else {
 								targetEnemy.GetComponent<ChargesScript> ().charges--;
 								StartCoroutine (Respawning ());
@@ -447,12 +445,19 @@ public class SoldierControler : MonoBehaviour {
 
 	}
 
+	public void UpdateLife(){
+		this.healtbarSoldier.GetComponent<HealtBar> ().Life = this.vida;
+		this.healtbarSoldier.GetComponent<HealtBar> ().MaxLife = this.vidaMax;
+		this.healtbarSoldier.GetComponent<HealtBar> ().UpdateHealtbars();
+	}
+
 	IEnumerator HealingAndXp(){
 		if (healing || GainXP) {
 			if (healing) {
 				yield return new WaitForSeconds (3f);
 				if (vida < 10) {
 					this.vida += 1;
+					UpdateLife ();
 				}
 				StartCoroutine (HealingAndXp ());
 			}
@@ -506,47 +511,7 @@ public class SoldierControler : MonoBehaviour {
 		}
 		return Emin;
 	}
-
-//	public void FadeOut(){
-//		float duration = 2f;
-//		Color colorStart = this.GetComponent<SpriteRenderer>().color;
-//		Color colorEnd = new Color(colorStart.r, colorStart.g, colorStart.b, 0.0f);
-//		platform.SetActive (false);
-//		for (float t = 0.0f; t < duration; t += Time.deltaTime) {
-//			this.GetComponent<SpriteRenderer>().color = Color.Lerp (colorStart, colorEnd, t/duration);
-//		}
-//	}
-//
-//	public void FadeIn(){
-//		float duration = 2f;
-//		Color colorStart = this.GetComponent<SpriteRenderer>().color;
-//		Color colorEnd = new Color(colorStart.r, colorStart.g, colorStart.b, 255);
-//
-//		switch (Tipo) {
-//		case(TipoSoldado.General):
-//			this.healtbarGeneral.SetActive (true);
-//			break;
-//		case(TipoSoldado.Guerreiro):
-//			platform.SetActive (true);
-//			this.healtbarSoldier.SetActive (true);
-//
-//			break;
-//		case(TipoSoldado.Lanceiro):
-//			platform.SetActive (true);
-//			this.healtbarLanceiro.SetActive (true);
-//			break;
-//		case(TipoSoldado.Mago):
-//			platform.SetActive (true);
-//			this.healtbarMago.SetActive (true);
-//			break;
-//		default:
-//			break;
-//
-//		}
-//		for (float t = 0.0f; t < duration; t += Time.deltaTime) {
-//			this.GetComponent<SpriteRenderer>().color = Color.Lerp (colorStart, colorEnd, t/duration);
-//		}
-//	}
+		
 
 
 //	public void TrowArrow(){
