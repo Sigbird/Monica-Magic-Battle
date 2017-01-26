@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class HealtBar : MonoBehaviour {
-	
+
+	public bool energy;
+
 	public SpriteRenderer[] healtBars;
 	public List<GameObject> HBars = new List<GameObject>();
 	public GameObject HPoint;
@@ -54,10 +56,18 @@ public class HealtBar : MonoBehaviour {
 
 		int x = 0;
 		foreach (GameObject target in HBars){
-			if (x < Life) {
-				target.GetComponent<SpriteRenderer> ().color = Color.green;
+			if (energy) {
+				if (x < Life) {
+					target.GetComponent<SpriteRenderer> ().color = Color.yellow;
+				} else {
+					target.GetComponent<SpriteRenderer> ().color = Color.gray;
+				}
 			} else {
-				target.GetComponent<SpriteRenderer> ().color = Color.red;
+				if (x < Life) {
+					target.GetComponent<SpriteRenderer> ().color = Color.green;
+				} else {
+					target.GetComponent<SpriteRenderer> ().color = Color.red;
+				}
 			}
 			x++;
 		}
