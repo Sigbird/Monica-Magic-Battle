@@ -16,11 +16,11 @@ public class HealtBar : MonoBehaviour {
 
 
 	void Start () {
-		for (int i = 0; i < MaxLife; i++) {
-			GameObject H = (GameObject)Instantiate (HPoint, this.transform.position, Quaternion.identity);
-			H.transform.parent = this.gameObject.transform;
-			HBars.Add (H);
-		}
+//		for (int i = 0; i < MaxLife; i++) {
+//			GameObject H = (GameObject)Instantiate (HPoint, this.transform.position, Quaternion.identity);
+//			H.transform.parent = this.gameObject.transform;
+//			HBars.Add (H);
+//		}
 	}
 	
 	// Update is called once per frame

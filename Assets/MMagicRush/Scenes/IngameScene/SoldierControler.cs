@@ -60,9 +60,23 @@ public class SoldierControler : MonoBehaviour {
 
 	//STATUS
 
+	public int xp;
+
+	public int level;
+
 	public int vidaMax;
 
 	public int vida;
+
+	public int damage;
+
+	public float damageSpeed;
+
+	public float range;
+
+	private float danoCD = 0;
+
+	public float speed;
 
 	public int energyMax;
 
@@ -72,17 +86,10 @@ public class SoldierControler : MonoBehaviour {
 
 	private float energyCounter;
 
-	public int xp;
+	//SKILLS
 
-	public float range;
-
-	public int damage;
-
-	public float damageSpeed;
-
-	private float danoCD = 0;
-
-	public float speed;
+	public SkillsScript skill1;
+	public SkillsScript skill2;
 
 	//PROJECTILES
 
@@ -110,6 +117,8 @@ public class SoldierControler : MonoBehaviour {
 		UpdateEnergy ();
 		this.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
 		this.energybarSoldier.GetComponent<HealtBar> ().energy = true;
+
+		skill1.Enable ();
 
 		//this.vida = 10;
 		//this.range = 1;
@@ -162,30 +171,17 @@ public class SoldierControler : MonoBehaviour {
 //
 //		}
 
-//		this.vida = vidaMax;
-//		this.speed = speed - 1.5f;
 
 
 		// CONFIGURAÇÃO DE EQUIPE
 		if (this.team == 1) {
 			this.tag = "enemysoldier1";
-			//this.GetComponent<SpriteRenderer> ().color = Color.blue;
 		} else {
-//			this.light.SetActive (false);
-//			platform.SetActive (false);
 			this.tag = "enemysoldier2";
 			platform.GetComponent<SpriteRenderer> ().color = Color.red;
-			//this.GetComponent<SpriteRenderer> ().color = Color.red;
-//			this.GetComponent<SpriteRenderer> ().color = new Color(this.GetComponent<SpriteRenderer> ().color.r, this.GetComponent<SpriteRenderer> ().color.g, this.GetComponent<SpriteRenderer> ().color.b, 0.0f);
-//			this.healtbarGeneral.SetActive (false);
-//			this.healtbarLanceiro.SetActive (false);
-//			this.healtbarMago.SetActive (false);
-//			this.healtbarSoldier.SetActive (false);
+
 		}
-
-
-
-
+			
 		//DESLOCAMENTO INICIAL
 		if (Random.value < 0.5f) {
 			desloc = 1f;
@@ -209,7 +205,7 @@ public class SoldierControler : MonoBehaviour {
 //			deslocTimer++;
 //		}
 
-
+		//Evento de Respawning
 		if (this.vida <= 0) {
 			this.gameObject.GetComponent<SpriteRenderer> ().enabled = false;
 			StartCoroutine (Respawning ());
@@ -244,6 +240,36 @@ public class SoldierControler : MonoBehaviour {
 			} else {
 				this.GainXP = false;
 			}
+		}
+
+		//
+		//FLAGS PARA HABILIDADES
+		//
+		if(skill1.skillActivated){
+			switch (skill1.skillID) {
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+			default:
+				break;
+			}
+			skill1.skillActivated = false;
+		}
+		if (skill2.skillActivated) {
+			switch (skill2.skillID) {
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+			default:
+				break;
+			}
+			skill2.skillActivated = false;
 		}
 
 			
@@ -415,7 +441,7 @@ public class SoldierControler : MonoBehaviour {
 		this.vida = 10;
 		this.xp = 0;
 		this.state = STATE.IDLE;
-		yield return new WaitForSeconds (0.7f);
+		yield return new WaitForSeconds (4f);
 		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		this.state = STATE.RETREAT;
 	}
@@ -449,7 +475,6 @@ public class SoldierControler : MonoBehaviour {
 	}
 		
 
-
 //	public void TrowArrow(){
 //		GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity);
 //		if (Vector3.Distance (arrow.transform.position, targetEnemy.transform.position) > 0.1f) {
@@ -458,24 +483,6 @@ public class SoldierControler : MonoBehaviour {
 //			Destroy (arrow);
 //		}
 //	}
-
-	IEnumerator Atackenemy(GameObject enemy){
-//		if (this.Tipo == TipoSoldado.Lanceiro || this.Tipo == TipoSoldado.General) {
-//			arrowSlot = (GameObject)Instantiate (arrowModel, this.transform.position, Quaternion.identity);
-//		}
-		yield return new WaitForSeconds (0.7f);
-		if (enemy != null) {
-			enemy.GetComponent<SoldierControler> ().vida = enemy.GetComponent<SoldierControler> ().vida - 1;
-		}
-		//yield return new WaitForSeconds (1f);
-//		if (targetEnemy != null && Vector3.Distance (transform.position, targetEnemy.transform.position) <= range-0.5f) {
-//			StartCoroutine (Atackenemy (targetEnemy));
-//		}else {
-//			this.state = STATE.DEFAULT;
-//		}
-	}
-
-	
 
 
 }
