@@ -10,16 +10,7 @@ namespace YupiPlay {
         public Text Percentage;
         public Image ProgressBar;
 
-        protected static GameObject instance = null;
-
-        protected void Awake() {
-            if (instance == null) {
-                instance = this.gameObject;
-                DontDestroyOnLoad(this.gameObject);
-            } else {
-                Destroy(this.gameObject);
-            }
-        }
+        protected static GameObject instance = null;		     
 
         protected void Start () {
             ResetLoading();

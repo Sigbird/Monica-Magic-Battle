@@ -35,7 +35,7 @@ namespace YupiPlay {
 		// Update is called once per frame
 		void Update () {
 
-		}
+		}			
 
 		public static void LoadScene(string scene) {
 			instance.loadScene(scene);

@@ -7,6 +7,17 @@ namespace YupiPlay {
     public class WaitingCanvas : CanvasAbstract {
         public Text StatusTitle;
         public GameObject LoadingProgression;
+
+		private WaitingCanvas instance;
+
+		protected void Awake() {
+			if (instance == null) {
+				instance = this;
+				DontDestroyOnLoad(this.gameObject);
+			} else {
+				Destroy(this.gameObject);
+			}
+		}
         
         protected void ResetLoading() {
             base.ResetLoading();

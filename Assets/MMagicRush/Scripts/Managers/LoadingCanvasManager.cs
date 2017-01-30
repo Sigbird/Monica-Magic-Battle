@@ -7,14 +7,16 @@ namespace YupiPlay {
 
 	public class LoadingCanvasManager : CanvasAbstract {		
 
-		//	private float timeAmount = 5;
-		//	private float time = 0;
+		private static LoadingCanvasManager instance;
 
-		// Use this for initialization
-//		void Start () {
-//			ResetLoading();
-//			GetComponent<Animator>().SetTrigger("ActivateLoading");
-//		}
+		protected void Awake() {
+			if (instance == null) {
+				instance = this;
+				DontDestroyOnLoad(this.gameObject);
+			} else {
+				Destroy(this.gameObject);
+			}
+		}
 
 		// Update is called once per frame
 		void Update () {

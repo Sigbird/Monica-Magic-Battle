@@ -6,7 +6,7 @@ using GooglePlayGames;
 using GooglePlayGames.BasicApi.Multiplayer;
 
 namespace YupiPlay {
-        public class GoogleMultiplayer : RealTimeMultiplayerListener {
+	public class GoogleMultiplayer :  MonoBehaviour, RealTimeMultiplayerListener {
 
         const int MinOpponents = 1, MaxOpponents = 1;
         const int GameVariant = 0;
@@ -23,7 +23,7 @@ namespace YupiPlay {
             }
         }
 
-        private static Statuses status;
+        private static Statuses status = Statuses.CANCREATEGAME;
 
         public delegate void RoomConnection();
         public static event RoomConnection OnRoomConnectedSuccess;
@@ -44,21 +44,23 @@ namespace YupiPlay {
         public delegate void MessageReceived(bool isReliable, string senderId, byte[] data);
         public static event MessageReceived OnMessageReceived;
 
-        public static void QuickGame() {
-            if (status == Statuses.CANCREATEGAME) {         
+        public static void QuickGame() {			
+            
                 status = Statuses.WAITING;
+				NetworkStateManager.Instance.Reset();
                 instance = new GoogleMultiplayer();
                 PlayGamesPlatform.Instance.RealTime.CreateQuickGame(MinOpponents, MaxOpponents, GameVariant, instance);
 
                 if (OnWaitingForGame != null) {
                     OnWaitingForGame();
                 }
-            }
+            
         }
 
         public static void InviteToGame() {
             if (status == Statuses.CANCREATEGAME) {         
                 status = Statuses.WAITING;
+				NetworkStateManager.Instance.Reset();
                 instance = new GoogleMultiplayer();
                 PlayGamesPlatform.Instance.RealTime.CreateWithInvitationScreen(MinOpponents, MaxOpponents, GameVariant, instance);
 
@@ -71,6 +73,7 @@ namespace YupiPlay {
         public static void AcceptFromInbox() {
             if (status == Statuses.CANCREATEGAME) {         
                 status = Statuses.WAITING;
+				NetworkStateManager.Instance.Reset();
                 instance = new GoogleMultiplayer();
                 PlayGamesPlatform.Instance.RealTime.AcceptFromInbox(instance);
 
@@ -84,6 +87,7 @@ namespace YupiPlay {
         public static void AcceptInvitation(string invitationId) {
             if (status == Statuses.CANCREATEGAME) {
                 status = Statuses.WAITING;
+				NetworkStateManager.Instance.Reset();
                 instance = new GoogleMultiplayer();
                 PlayGamesPlatform.Instance.RealTime.AcceptInvitation(invitationId, instance);
 
