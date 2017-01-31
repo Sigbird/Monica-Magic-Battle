@@ -111,6 +111,7 @@ namespace YupiPlay {
                     OnRoomConnectedSuccess();
                 }
             } else {
+				status = Statuses.CANCREATEGAME;
                 if (OnRoomConnectedFailure != null) {
                     OnRoomConnectedFailure();
                 }

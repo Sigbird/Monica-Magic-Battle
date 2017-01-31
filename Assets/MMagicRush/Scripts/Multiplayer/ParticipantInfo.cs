@@ -7,28 +7,20 @@ namespace YupiPlay
 	public class ParticipantInfo
 	{		
 		public int Rating;
-		public string Avatar;
 
 		#if UNITY_ANDROID
 		public Participant mParticipant;
 
-		public ParticipantInfo(Participant participant, int rating, string avatar)
+		public ParticipantInfo(Participant participant, int rating)
 		{
 			mParticipant = participant;
 			Rating = rating;
-			Avatar = avatar;
 		}
 		#endif
 
-		public void SetData(int rating, string avatar) {
+		public void SetData(int rating) {			
 			Rating = rating;
-			Avatar = avatar;
-		}
-
-		//rating;avatar
-		public string ToNetworkString() {
-			return Rating + ";" + Avatar;
-		}
+		}			
 	}
 }
 

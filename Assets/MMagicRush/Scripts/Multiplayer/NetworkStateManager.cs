@@ -40,6 +40,9 @@ namespace YupiPlay {
 		private static NetworkStateManager instance;
 		private static GameObject myInstance = null;
 
+		public delegate void NetworkPrint(string message);
+		public static event NetworkPrint OnNetPrint;
+
 		void Awake() {
 			if (myInstance == null) {
 				myInstance = this.gameObject;
@@ -60,20 +63,15 @@ namespace YupiPlay {
 			state = States.CONNECTING;
 		}
 
-		private void OnConnectedSuccess() {
-			state = States.CONNECTED;
-
-			#if UNITY_ANDROID
-			Participant player = getPlayer();
-			Participant opponent = getOpponent(player);
-			Match = new MatchInfo(player, opponent);
-			#endif
+		private void OnConnectedSuccess() {			
 			State = States.DATAEXCHANGE;
+			Match = new MatchInfo(getPlayer());
 			SendPlayerInfo();
 		}
 
 		private void OnConnectedFailure() {
 			state = States.ERRORCONNECTED;
+
 		}
 
 		private void OnLeftGame() {
@@ -93,49 +91,54 @@ namespace YupiPlay {
 		}
 
 		private void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {
+			DebugScr("received data size " + data.Length);
 			if (isReliable) {
 				if (data[0] == (byte)'P') {
 					ReadOpponentInfo(data);
-				}
-				if (data[0] == (byte)'R') {
-					ReceivedOpponentReady();
 				}
 			}		
 		}			
 
 		// Use this for initialization
-		void Start () {
-
+		void Start () {			
 		}
 
 		// Update is called once per frame
 		void Update () {
-
 		}
 
-		private void SendPlayerInfo() {
-			ParticipantInfo player = Match.Player;
-			string playerInfo = player.ToNetworkString();
+		private void SendPlayerInfo() {			
+			string playerInfo = Match.Player.Rating.ToString();
 			byte[] playerInfoBytes = Encoding.UTF8.GetBytes(playerInfo);
-			int byteCount = playerInfoBytes.Length + 1;
+			DebugScr("player bytes " + playerInfoBytes.Length);
 			byte packetType = (byte)'P';
-			byte[] packet = new byte[byteCount];
+			byte[] packet = new byte[playerInfoBytes.Length + 1];
 			packet[0] = packetType;
-			Array.Copy(playerInfoBytes, 0, packet, 1, playerInfoBytes.Length);
 
+			try {
+				Array.Copy(playerInfoBytes, 0, packet, 1, playerInfoBytes.Length);	
+			} catch (Exception e) {
+				DebugScr(e.Message);
+			}
+
+			DebugScr("sending my info " + packet.Length);
 			#if UNITY_ANDROID
 			PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, packet);
 			#endif
 		}
 
 		private void ReadOpponentInfo(byte[] data) {
+			DebugScr("reading opponent info " + data.Length );
 			byte[] playerInfo = new byte[data.Length - 1];
 			Array.Copy(data, 1, playerInfo, 0, data.Length -1);
 			string infoString = Encoding.UTF8.GetString(playerInfo);
-			string[] parsed = infoString.Split((char) ';');
+			DebugScr(infoString);
+			int rating = Convert.ToInt32(infoString);
+			DebugScr("pre SetData: " + rating);
 
-			Match.Opponent.SetData(Convert.ToInt32(parsed[0]), parsed[1]);
-			SendMyReady();
+			Match.SetOpponent(getOpponent(Match.Player.mParticipant, rating));
+			//Can load battleground now with the basic opponent info
+			LoadGame();
 		}
 
 		private void SendMyReady() {
@@ -145,12 +148,13 @@ namespace YupiPlay {
 		}
 
 		public delegate void ShowOpponentInfo(ParticipantInfo opponent);
-		public static event ShowOpponentInfo OnOpponentReady;
+		public static event ShowOpponentInfo OnOpponentInfo;
 
-		private void ReceivedOpponentReady() {
-			State = States.LOADING;
-			if (OnOpponentReady != null) {
-				OnOpponentReady(Match.Opponent);
+		private void LoadGame() {
+			state = States.LOADING;
+
+			if (OnOpponentInfo != null) {
+				OnOpponentInfo(Match.Opponent);
 			}
 		}
 
@@ -160,16 +164,17 @@ namespace YupiPlay {
 		}
 
 		#if UNITY_ANDROID
-		private Participant getPlayer() {
-			return PlayGamesPlatform.Instance.RealTime.GetSelf();
+		private ParticipantInfo getPlayer() {
+			Participant player = PlayGamesPlatform.Instance.RealTime.GetSelf();
+			return new ParticipantInfo(player, PlayerPrefs.GetInt("PlayerRating", 500));
 		}
 
-		private Participant getOpponent(Participant Player) {
+		private ParticipantInfo getOpponent(Participant Player, int opponentRating) {
 			List<Participant> participants = PlayGamesPlatform.Instance.RealTime.GetConnectedParticipants();
 
 			foreach (Participant part in participants) {
-				if (part.ParticipantId != Player.ParticipantId) {					
-					return part;
+				if (part.ParticipantId != Player.ParticipantId) {		
+					return new ParticipantInfo(part, opponentRating);
 				}
 			}
 
@@ -187,7 +192,9 @@ namespace YupiPlay {
 			GoogleMultiplayer.OnParticipantLeftGame += OnParticipantLeft;
 			GoogleMultiplayer.OnPeersConnectedGame += OnPeersConnected;
 			GoogleMultiplayer.OnPeersDisconnectedGame += OnPeersDisconnected;
+			GoogleMultiplayer.OnMessageReceived += OnRealTimeMessageReceived;
 			#endif
+
 		}
 
 		void OnDisable() {
@@ -200,7 +207,14 @@ namespace YupiPlay {
 			GoogleMultiplayer.OnParticipantLeftGame -= OnParticipantLeft;
 			GoogleMultiplayer.OnPeersConnectedGame -= OnPeersConnected;
 			GoogleMultiplayer.OnPeersDisconnectedGame -= OnPeersDisconnected;
+			GoogleMultiplayer.OnMessageReceived -= OnRealTimeMessageReceived;
 			#endif
+		}
+
+		public static void DebugScr(string message) {
+			if (OnNetPrint != null) {
+				OnNetPrint(message);
+			}
 		}
 	}
 }

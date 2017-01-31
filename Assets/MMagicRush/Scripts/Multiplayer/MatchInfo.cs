@@ -7,19 +7,18 @@ using UnityEngine;
 namespace YupiPlay
 {
 	public class MatchInfo
-	{
-		#if UNITY_ANDROID
+	{		
 		public ParticipantInfo Player;
 		public ParticipantInfo Opponent;
 		
-		public MatchInfo (Participant player, Participant opponent)
-		{
-			int playerRating = PlayerPrefs.GetInt("PlayerRating", 500);
-			string playerAvatar = PlayerPrefs.GetString("PlayerAvatar", "DefaultAvatar");
-
-			Player = new ParticipantInfo(player, playerRating, playerAvatar);
+		public MatchInfo (ParticipantInfo player)
+		{						
+			Player = player;
 		}
-		#endif
+
+		public void SetOpponent(ParticipantInfo opponent) {
+			Opponent = opponent;
+		}
 	}
 }
 

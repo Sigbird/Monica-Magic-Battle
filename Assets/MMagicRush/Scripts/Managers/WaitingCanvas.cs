@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+#if UNITY_ANDROID
+using GooglePlayGames.BasicApi.Multiplayer;
+#endif
+
 namespace YupiPlay {
     public class WaitingCanvas : CanvasAbstract {
         public Text StatusTitle;
@@ -46,8 +50,7 @@ namespace YupiPlay {
         }
 
         public void OnRoomConnectedSuccess() {
-            Container.SetActive(false);
-            // Load Game
+            Container.SetActive(false);            
         }
 
         public void OnRoomConnectedFailure() {
@@ -60,12 +63,20 @@ namespace YupiPlay {
             Container.SetActive(false);
         }
 
+		#if UNITY_ANDROID
+		public void OnParticipantLeft(Participant participant) {
+			StatusTitle.text = "Participant left";
+			StartCoroutine(CloseAfterError());
+		}
+		#endif
+
         void OnEnable() {
             #if UNITY_ANDROID
             GoogleMultiplayer.OnWaitingForGame += ShowWaitingScreen;
             GoogleMultiplayer.OnGameSetupProgress += OnSetupProgress;
             GoogleMultiplayer.OnRoomConnectedSuccess += OnRoomConnectedSuccess;
             GoogleMultiplayer.OnRoomConnectedFailure += OnRoomConnectedFailure;
+			GoogleMultiplayer.OnParticipantLeftGame += OnParticipantLeft;
             #endif
         }
 

@@ -22,18 +22,23 @@ namespace YupiPlay {
 		}
 
 		private void ShowOpponentInfo(ParticipantInfo opponent) {
+			NetworkStateManager.DebugScr("printing opponent info");
 			DisplayName.text = opponent.mParticipant.DisplayName;
 			ParticipantId.text = opponent.mParticipant.ParticipantId;
 			Rating.text = opponent.Rating.ToString();
-			Avatar.text = opponent.Avatar;
+			if (opponent.mParticipant.Player == null) {
+				NetworkStateManager.DebugScr("anonymous opponent");
+				return;
+			}
+			Avatar.text = opponent.mParticipant.Player.AvatarURL;
 		}
 
 		void OnEnable() {
-			NetworkStateManager.OnOpponentReady += ShowOpponentInfo;
+			NetworkStateManager.OnOpponentInfo += ShowOpponentInfo;
 		}
 
 		void OnDisable() {
-			NetworkStateManager.OnOpponentReady -= ShowOpponentInfo;
+			NetworkStateManager.OnOpponentInfo -= ShowOpponentInfo;
 		}
 	}	
 }
