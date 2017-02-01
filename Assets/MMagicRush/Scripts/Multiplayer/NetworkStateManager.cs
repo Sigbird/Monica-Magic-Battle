@@ -108,12 +108,14 @@ namespace YupiPlay {
 			state = States.PARTICIPANTCONNECTED;
 
 			if (PeersConnectedEvent != null) PeersConnectedEvent(participantIds);
+            DebugScr("Peer Connected");
 		}
 
 		public void PeersDisconnected(string[] participantIds) {
 			state = States.PARTICIPANTDISCONNECTED;
 
 			if (PeersDisconnectedEvent != null) PeersDisconnectedEvent(participantIds);
+            DebugScr("Peer disconnected");
 		}
 
 		public void RealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {

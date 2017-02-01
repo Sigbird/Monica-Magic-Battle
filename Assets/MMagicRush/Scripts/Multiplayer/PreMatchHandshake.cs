@@ -6,9 +6,9 @@ namespace YupiPlay
 {
 	public class PreMatchHandshake : NetworkTypedIO
 	{		
-		new private const byte packetType = MessageTypes.PreMatchHandshake;
+		new const byte packetType = MessageTypes.PreMatchHandshake;
 
-		public static void SendPlayerInfo(MatchInfo match) {			
+		public static void SendPlayerInfo(MatchInfo match) {        
 			string playerInfo = match.Player.Rating.ToString();
 			byte[] playerInfoBytes = Encoding.UTF8.GetBytes(playerInfo);
 			NetworkStateManager.DebugScr("player bytes " + playerInfoBytes.Length);

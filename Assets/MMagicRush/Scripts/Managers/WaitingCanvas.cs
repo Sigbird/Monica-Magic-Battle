@@ -50,7 +50,7 @@ namespace YupiPlay {
         }
 
         public void OnRoomConnectedFailure() {
-            StatusTitle.text = "Error";
+            StatusTitle.text = "Room Connection Error";
             StartCoroutine(CloseAfterError());
         }
 
@@ -59,19 +59,29 @@ namespace YupiPlay {
             Container.SetActive(false);
         }
 
-		#if UNITY_ANDROID
+		
 		public void OnParticipantLeft(ParticipantInfo participant) {
 			StatusTitle.text = "Participant left";
 			StartCoroutine(CloseAfterError());
 		}
-		#endif
+
+        public void OnPeerDisconnected(string[] participantIds) {
+            StatusTitle.text = "Participant disconnected";
+            StartCoroutine(CloseAfterError());
+        }
+
+        public void OnLeftRoom() {
+            Container.SetActive(false);
+        }
 
         void OnEnable() {            
             NetworkStateManager.MatchmakingStartedEvent += ShowWaitingScreen;
             NetworkStateManager.SetupProgressEvent += OnSetupProgress;
             NetworkStateManager.RoomConnectedSuccessEvent += OnRoomConnectedSuccess;
             NetworkStateManager.RoomConnectedFailureEvent += OnRoomConnectedFailure;
-			NetworkStateManager.ParticipantLeftRoomEvent += OnParticipantLeft;            
+			NetworkStateManager.ParticipantLeftRoomEvent += OnParticipantLeft;    
+            NetworkStateManager.PeersDisconnectedEvent += OnPeerDisconnected;
+            NetworkStateManager.LeftRoomEvent += OnLeftRoom;
         }
 
         void OnDisable() {            
@@ -80,6 +90,8 @@ namespace YupiPlay {
 			NetworkStateManager.RoomConnectedSuccessEvent -= OnRoomConnectedSuccess;
 			NetworkStateManager.RoomConnectedFailureEvent -= OnRoomConnectedFailure;
 			NetworkStateManager.ParticipantLeftRoomEvent -= OnParticipantLeft;            
+            NetworkStateManager.PeersDisconnectedEvent -= OnPeerDisconnected;    
+            NetworkStateManager.LeftRoomEvent -= OnLeftRoom;
         }
     }
 

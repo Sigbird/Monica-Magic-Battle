@@ -19,6 +19,7 @@ namespace YupiPlay {
         protected void ResetLoading() {            
             Percentage.text = "0%";
             ProgressBar.fillAmount = 0;
+            Container.SetActive(false);
         }
 
     }
