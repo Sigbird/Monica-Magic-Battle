@@ -8,7 +8,7 @@ namespace YupiPlay {
         public Text StatusTitle;
         public GameObject LoadingProgression;
 
-		private WaitingCanvas instance;
+		new private WaitingCanvas instance;
 
 		protected void Awake() {
 			if (instance == null) {
@@ -19,7 +19,7 @@ namespace YupiPlay {
 			}
 		}
         
-        protected void ResetLoading() {
+        new protected void ResetLoading() {
             base.ResetLoading();
             LoadingProgression.SetActive(false);
         }

@@ -46,6 +46,10 @@ namespace YupiPlay {
 			NetworkStateManager.Instance.MatchmakingStarted();             
         }
 
+		public static void Quit() {
+			PlayGamesPlatform.Instance.RealTime.LeaveRoom();
+		}
+
         public void OnRoomSetupProgress(float progress) {
 			netSM.SetupProgress(progress);
         }

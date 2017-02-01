@@ -4,11 +4,6 @@ using UnityEngine;
 using System.Text;
 using System;
 
-#if UNITY_ANDROID
-using GooglePlayGames;
-using GooglePlayGames.BasicApi.Multiplayer;
-#endif
-
 namespace YupiPlay {
 	public class NetworkStateManager {
 		public enum States {
@@ -59,9 +54,6 @@ namespace YupiPlay {
 		public static event PeerConnection PeersConnectedEvent;
 		public static event PeerConnection PeersDisconnectedEvent;
 
-//		public delegate void MessageReceived(bool isReliable, string senderId, byte[] data);
-//		public static event MessageReceived MessageReceivedEvent;
-
 		public delegate void NetworkPrint(string message);
 		public static event NetworkPrint OnNetPrint;
 		public delegate void ShowOpponentInfo(ParticipantInfo opponent);
@@ -90,7 +82,7 @@ namespace YupiPlay {
 
 			if (RoomConnectedSuccessEvent != null) RoomConnectedSuccessEvent();
 
-			SendPlayerInfo();
+			PreMatchHandshake.SendPlayerInfo(Match);
 		}
 
 		public void RoomConnectedFailure() {
@@ -103,6 +95,7 @@ namespace YupiPlay {
 			state = States.PLAYERLEFT;
 
 			if (LeftRoomEvent != null) LeftRoomEvent();
+			DebugScr("Session finished");
 		}
 
 		public void ParticipantLeft(ParticipantInfo participant)  {
@@ -125,59 +118,17 @@ namespace YupiPlay {
 
 		public void RealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {
 			DebugScr("received data size " + data.Length);
-			if (isReliable) {
-				if (data[0] == (byte)'P') {
-					ReadOpponentInfo(data);
-				}
-			}		
-		}						
 
-		private void SendPlayerInfo() {			
-			string playerInfo = Match.Player.Rating.ToString();
-			byte[] playerInfoBytes = Encoding.UTF8.GetBytes(playerInfo);
-			DebugScr("player bytes " + playerInfoBytes.Length);
-			byte packetType = (byte)'P';
-			byte[] packet = new byte[playerInfoBytes.Length + 1];
-			packet[0] = packetType;
-
-			try {
-				Array.Copy(playerInfoBytes, 0, packet, 1, playerInfoBytes.Length);	
-			} catch (Exception e) {
-				DebugScr(e.Message);
-			}
-
-			DebugScr("sending my info " + packet.Length);
-			#if UNITY_ANDROID
-			PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, packet);
-			#endif
-		}
-
-		private void ReadOpponentInfo(byte[] data) {
-			DebugScr("reading opponent info " + data.Length );
-			byte[] playerInfo = new byte[data.Length - 1];
-			Array.Copy(data, 1, playerInfo, 0, data.Length -1);
-			string infoString = Encoding.UTF8.GetString(playerInfo);
-			DebugScr(infoString);
-			int rating = Convert.ToInt32(infoString);
-			DebugScr("pre SetData: " + rating);
-
-			Match.Opponent.SetRating(rating);
-			//Can load battleground now with the basic opponent info
-			LoadGame();
-		}
-
-		private void SendMyReady() {
-			byte[] data = new byte[1];
-			data[0] = (byte)'R';
-			PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, data);
-		}			
-
-		private void LoadGame() {
+			NetworkTypedMessageBroker.OnRealTimeMessageReceived(isReliable, senderId, data);
+		}									
+			
+		public void LoadGame() {
 			state = States.LOADING;
 
 			if (OnOpponentInfo != null) {
 				OnOpponentInfo(Match.Opponent);
 			}
+			//PlayGamesPlatform.Instance.RealTime.LeaveRoom();
 		}
 
 		public void Reset() {

@@ -34,4 +34,10 @@ public class MultiplayerMenu : MonoBehaviour {
         GoogleMultiplayer.AcceptFromInbox();
         #endif
     }
+
+	public void Quit() {
+		#if UNITY_ANDROID
+		GoogleMultiplayer.Quit();
+		#endif
+	}
 }

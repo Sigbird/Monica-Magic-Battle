@@ -7,7 +7,7 @@ namespace YupiPlay {
 
 	public class LoadingCanvasManager : CanvasAbstract {		
 
-		private static LoadingCanvasManager instance;
+		new private static LoadingCanvasManager instance;
 
 		protected void Awake() {
 			if (instance == null) {
