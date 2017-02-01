@@ -1,19 +1,18 @@
-﻿#if UNITY_ANDROID
-using GooglePlayGames;
-using GooglePlayGames.BasicApi.Multiplayer;
-using UnityEngine;
-#endif
-
-namespace YupiPlay
+﻿namespace YupiPlay
 {
 	public class MatchInfo
 	{		
 		public ParticipantInfo Player;
 		public ParticipantInfo Opponent;
-		
-		public MatchInfo (ParticipantInfo player)
+
+		public MatchInfo() {
+			
+		}
+
+		public MatchInfo (ParticipantInfo player, ParticipantInfo opponent)
 		{						
 			Player = player;
+			Opponent = opponent;
 		}
 
 		public void SetOpponent(ParticipantInfo opponent) {

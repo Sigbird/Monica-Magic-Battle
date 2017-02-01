@@ -1,24 +1,20 @@
-﻿#if UNITY_ANDROID
-using GooglePlayGames.BasicApi.Multiplayer;
-#endif
-
-namespace YupiPlay
+﻿namespace YupiPlay
 {
 	public class ParticipantInfo
 	{		
 		public int Rating;
+		public string DisplayName;
 
-		#if UNITY_ANDROID
-		public Participant mParticipant;
-
-		public ParticipantInfo(Participant participant, int rating)
-		{
-			mParticipant = participant;
+		public ParticipantInfo(string displayName, int rating) {
+			DisplayName = displayName;
 			Rating = rating;
 		}
-		#endif
 
-		public void SetData(int rating) {			
+		public ParticipantInfo(string displayName) {
+			DisplayName = displayName;
+		}
+
+		public void SetRating(int rating) {			
 			Rating = rating;
 		}			
 	}

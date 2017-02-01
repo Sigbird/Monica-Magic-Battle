@@ -1,152 +1,83 @@
 ﻿#if UNITY_ANDROID
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi.Multiplayer;
 
 namespace YupiPlay {
-	public class GoogleMultiplayer :  MonoBehaviour, RealTimeMultiplayerListener {
+	public class GoogleMultiplayer :  RealTimeMultiplayerListener {
+        
+		const int MinOpponents = 1, MaxOpponents = 1;
+        const int GameVariant = 0;		
 
-        const int MinOpponents = 1, MaxOpponents = 1;
-        const int GameVariant = 0;
+		private NetworkStateManager netSM;		                             
+		       
+		GoogleMultiplayer(NetworkStateManager networkStateManager) {
+			netSM = networkStateManager;
+		}			
 
-        private static GoogleMultiplayer instance = null;
+        public static void QuickGame() {			                        
+			NetworkStateManager.Instance.Reset();
+            GoogleMultiplayer listener = new GoogleMultiplayer(NetworkStateManager.Instance);
+            PlayGamesPlatform.Instance.RealTime.CreateQuickGame(MinOpponents, MaxOpponents, GameVariant, listener);
 
-        public enum Statuses {
-            CANCREATEGAME, ROOMCONNECTED, WAITING
+			NetworkStateManager.Instance.MatchmakingStarted();
         }
 
-        public static Statuses Status {
-            get {
-                return status;
-            }
+        public static void InviteToGame() {                        
+			NetworkStateManager.Instance.Reset();
+			GoogleMultiplayer listener = new GoogleMultiplayer(NetworkStateManager.Instance);
+            PlayGamesPlatform.Instance.RealTime.CreateWithInvitationScreen(MinOpponents, MaxOpponents, GameVariant, listener);
+
+			NetworkStateManager.Instance.MatchmakingStarted();          
         }
 
-        private static Statuses status = Statuses.CANCREATEGAME;
+        public static void AcceptFromInbox() {                                
+			NetworkStateManager.Instance.Reset();
+			GoogleMultiplayer listener = new GoogleMultiplayer(NetworkStateManager.Instance);
+            PlayGamesPlatform.Instance.RealTime.AcceptFromInbox(listener);
 
-        public delegate void RoomConnection();
-        public static event RoomConnection OnRoomConnectedSuccess;
-        public static event RoomConnection OnRoomConnectedFailure;
-        public static event RoomConnection OnLeftGame;
-        public static event RoomConnection OnWaitingForGame;
-
-        public delegate void RoomSetupProgress(float progress);
-        public static event RoomSetupProgress OnGameSetupProgress;
-
-        public delegate void ParticipantLeft(Participant paticipant);
-        public static event ParticipantLeft OnParticipantLeftGame;
-
-        public delegate void PeerConnection(string[] participantIds);
-        public static event PeerConnection OnPeersConnectedGame;
-        public static event PeerConnection OnPeersDisconnectedGame;
-
-        public delegate void MessageReceived(bool isReliable, string senderId, byte[] data);
-        public static event MessageReceived OnMessageReceived;
-
-        public static void QuickGame() {			
-            
-                status = Statuses.WAITING;
-				NetworkStateManager.Instance.Reset();
-                instance = new GoogleMultiplayer();
-                PlayGamesPlatform.Instance.RealTime.CreateQuickGame(MinOpponents, MaxOpponents, GameVariant, instance);
-
-                if (OnWaitingForGame != null) {
-                    OnWaitingForGame();
-                }
-            
+			NetworkStateManager.Instance.MatchmakingStarted();              
         }
 
-        public static void InviteToGame() {
-            if (status == Statuses.CANCREATEGAME) {         
-                status = Statuses.WAITING;
-				NetworkStateManager.Instance.Reset();
-                instance = new GoogleMultiplayer();
-                PlayGamesPlatform.Instance.RealTime.CreateWithInvitationScreen(MinOpponents, MaxOpponents, GameVariant, instance);
+        public static void AcceptInvitation(string invitationId) {                            
+			NetworkStateManager.Instance.Reset();
+			GoogleMultiplayer listener = new GoogleMultiplayer(NetworkStateManager.Instance);
+            PlayGamesPlatform.Instance.RealTime.AcceptInvitation(invitationId, listener);
 
-                if (OnWaitingForGame != null) {
-                    OnWaitingForGame();
-                }
-            }
-        }
-
-        public static void AcceptFromInbox() {
-            if (status == Statuses.CANCREATEGAME) {         
-                status = Statuses.WAITING;
-				NetworkStateManager.Instance.Reset();
-                instance = new GoogleMultiplayer();
-                PlayGamesPlatform.Instance.RealTime.AcceptFromInbox(instance);
-
-                if (OnWaitingForGame != null) {
-                    OnWaitingForGame();
-                }   
-            }
-
-        }
-
-        public static void AcceptInvitation(string invitationId) {
-            if (status == Statuses.CANCREATEGAME) {
-                status = Statuses.WAITING;
-				NetworkStateManager.Instance.Reset();
-                instance = new GoogleMultiplayer();
-                PlayGamesPlatform.Instance.RealTime.AcceptInvitation(invitationId, instance);
-
-                if (OnWaitingForGame != null) {
-                    OnWaitingForGame();
-                }   
-            }
-
+			NetworkStateManager.Instance.MatchmakingStarted();             
         }
 
         public void OnRoomSetupProgress(float progress) {
-            if (OnGameSetupProgress != null) {
-                OnGameSetupProgress(progress);
-            }
+			netSM.SetupProgress(progress);
         }
 
         public void OnRoomConnected(bool success) {
-            if (success) {
-                status = Statuses.ROOMCONNECTED;
-                if (OnRoomConnectedSuccess != null) {
-                    OnRoomConnectedSuccess();
-                }
-            } else {
-				status = Statuses.CANCREATEGAME;
-                if (OnRoomConnectedFailure != null) {
-                    OnRoomConnectedFailure();
-                }
+            if (success) {    
+				netSM.SetMatch(GoogleMultiplayerHelper.GetPlayer(), GoogleMultiplayerHelper.GetOpponent());
+				netSM.RoomConnectedSuccess();
+            } else {				
+				netSM.RoomConnectedFailure();
             }
         }
 
-        public void OnLeftRoom() {
-            status = Statuses.CANCREATEGAME;
-            if (OnLeftGame != null) {
-                OnLeftGame();
-            }
+        public void OnLeftRoom() {            
+			netSM.LeftRoom();
         }
 
         public void OnParticipantLeft(Participant participant) {
-            if (OnParticipantLeftGame != null) {
-                OnParticipantLeftGame(participant);
-            }
+			ParticipantInfo part = new ParticipantInfo(participant.DisplayName);
+			netSM.ParticipantLeft(part);
         }
 
         public void OnPeersConnected(string[] participantIds) {
-            if (OnPeersConnectedGame != null) {
-                OnPeersConnectedGame(participantIds);
-            }
+			netSM.PeersConnected(participantIds);
         }
 
         public void OnPeersDisconnected(string[] participantIds) {
-            if (OnPeersDisconnectedGame != null) {
-                OnPeersDisconnectedGame(participantIds);
-            }
+			netSM.PeersConnected(participantIds);
         }
 
         public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {
-            if (OnMessageReceived != null) {
-                OnMessageReceived(isReliable, senderId, data);
-            }
+			netSM.RealTimeMessageReceived(isReliable, senderId, data);
         }
     }
 }

@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-#if UNITY_ANDROID
-using GooglePlayGames.BasicApi.Multiplayer;
-#endif
-
 namespace YupiPlay {
     public class WaitingCanvas : CanvasAbstract {
         public Text StatusTitle;
@@ -64,29 +60,26 @@ namespace YupiPlay {
         }
 
 		#if UNITY_ANDROID
-		public void OnParticipantLeft(Participant participant) {
+		public void OnParticipantLeft(ParticipantInfo participant) {
 			StatusTitle.text = "Participant left";
 			StartCoroutine(CloseAfterError());
 		}
 		#endif
 
-        void OnEnable() {
-            #if UNITY_ANDROID
-            GoogleMultiplayer.OnWaitingForGame += ShowWaitingScreen;
-            GoogleMultiplayer.OnGameSetupProgress += OnSetupProgress;
-            GoogleMultiplayer.OnRoomConnectedSuccess += OnRoomConnectedSuccess;
-            GoogleMultiplayer.OnRoomConnectedFailure += OnRoomConnectedFailure;
-			GoogleMultiplayer.OnParticipantLeftGame += OnParticipantLeft;
-            #endif
+        void OnEnable() {            
+            NetworkStateManager.MatchmakingStartedEvent += ShowWaitingScreen;
+            NetworkStateManager.SetupProgressEvent += OnSetupProgress;
+            NetworkStateManager.RoomConnectedSuccessEvent += OnRoomConnectedSuccess;
+            NetworkStateManager.RoomConnectedFailureEvent += OnRoomConnectedFailure;
+			NetworkStateManager.ParticipantLeftRoomEvent += OnParticipantLeft;            
         }
 
-        void OnDisable() {
-            #if UNITY_ANDROID
-            GoogleMultiplayer.OnWaitingForGame -= ShowWaitingScreen;
-            GoogleMultiplayer.OnGameSetupProgress -= OnSetupProgress;
-            GoogleMultiplayer.OnRoomConnectedSuccess -= OnRoomConnectedSuccess;
-            GoogleMultiplayer.OnRoomConnectedFailure -= OnRoomConnectedFailure;
-            #endif
+        void OnDisable() {            
+            NetworkStateManager.MatchmakingStartedEvent -= ShowWaitingScreen;
+			NetworkStateManager.SetupProgressEvent -= OnSetupProgress;
+			NetworkStateManager.RoomConnectedSuccessEvent -= OnRoomConnectedSuccess;
+			NetworkStateManager.RoomConnectedFailureEvent -= OnRoomConnectedFailure;
+			NetworkStateManager.ParticipantLeftRoomEvent -= OnParticipantLeft;            
         }
     }
 

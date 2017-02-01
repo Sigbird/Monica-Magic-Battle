@@ -23,14 +23,9 @@ namespace YupiPlay {
 
 		private void ShowOpponentInfo(ParticipantInfo opponent) {
 			NetworkStateManager.DebugScr("printing opponent info");
-			DisplayName.text = opponent.mParticipant.DisplayName;
-			ParticipantId.text = opponent.mParticipant.ParticipantId;
+			DisplayName.text = opponent.DisplayName;
+
 			Rating.text = opponent.Rating.ToString();
-			if (opponent.mParticipant.Player == null) {
-				NetworkStateManager.DebugScr("anonymous opponent");
-				return;
-			}
-			Avatar.text = opponent.mParticipant.Player.AvatarURL;
 		}
 
 		void OnEnable() {
