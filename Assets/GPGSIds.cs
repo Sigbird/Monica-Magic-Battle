@@ -24,7 +24,11 @@
 
 public static class GPGSIds
 {
+        public const string achievement_achievement_draft_4 = "CgkI4e_Ei7AREAIQBQ"; // <GPGSID>
+        public const string achievement_achievement_draft_2 = "CgkI4e_Ei7AREAIQAw"; // <GPGSID>
+        public const string achievement_achievement_draft_1 = "CgkI4e_Ei7AREAIQAg"; // <GPGSID>
         public const string achievement_test_achievement = "CgkI4e_Ei7AREAIQAQ"; // <GPGSID>
+        public const string achievement_achievement_draft_3 = "CgkI4e_Ei7AREAIQBA"; // <GPGSID>
 
 }
 

@@ -7,8 +7,19 @@ namespace YupiPlay {
     public class WaitingCanvas : CanvasAbstract {
         public Text StatusTitle;
         public GameObject LoadingProgression;
+
+		new private WaitingCanvas instance;
+
+		protected void Awake() {
+			if (instance == null) {
+				instance = this;
+				DontDestroyOnLoad(this.gameObject);
+			} else {
+				Destroy(this.gameObject);
+			}
+		}
         
-        protected void ResetLoading() {
+        new protected void ResetLoading() {
             base.ResetLoading();
             LoadingProgression.SetActive(false);
         }
@@ -35,12 +46,11 @@ namespace YupiPlay {
         }
 
         public void OnRoomConnectedSuccess() {
-            Container.SetActive(false);
-            // Load Game
+            Container.SetActive(false);            
         }
 
         public void OnRoomConnectedFailure() {
-            StatusTitle.text = "Error";
+            StatusTitle.text = "Room Connection Error";
             StartCoroutine(CloseAfterError());
         }
 
@@ -49,22 +59,39 @@ namespace YupiPlay {
             Container.SetActive(false);
         }
 
-        void OnEnable() {
-            #if UNITY_ANDROID
-            GoogleMultiplayer.OnWaitingForGame += ShowWaitingScreen;
-            GoogleMultiplayer.OnGameSetupProgress += OnSetupProgress;
-            GoogleMultiplayer.OnRoomConnectedSuccess += OnRoomConnectedSuccess;
-            GoogleMultiplayer.OnRoomConnectedFailure += OnRoomConnectedFailure;
-            #endif
+		
+		public void OnParticipantLeft(ParticipantInfo participant) {
+			StatusTitle.text = "Participant left";
+			StartCoroutine(CloseAfterError());
+		}
+
+        public void OnPeerDisconnected(string[] participantIds) {
+            StatusTitle.text = "Participant disconnected";
+            StartCoroutine(CloseAfterError());
         }
 
-        void OnDisable() {
-            #if UNITY_ANDROID
-            GoogleMultiplayer.OnWaitingForGame -= ShowWaitingScreen;
-            GoogleMultiplayer.OnGameSetupProgress -= OnSetupProgress;
-            GoogleMultiplayer.OnRoomConnectedSuccess -= OnRoomConnectedSuccess;
-            GoogleMultiplayer.OnRoomConnectedFailure -= OnRoomConnectedFailure;
-            #endif
+        public void OnLeftRoom() {
+            Container.SetActive(false);
+        }
+
+        void OnEnable() {            
+            NetworkStateManager.MatchmakingStartedEvent += ShowWaitingScreen;
+            NetworkStateManager.SetupProgressEvent += OnSetupProgress;
+            NetworkStateManager.RoomConnectedSuccessEvent += OnRoomConnectedSuccess;
+            NetworkStateManager.RoomConnectedFailureEvent += OnRoomConnectedFailure;
+			NetworkStateManager.ParticipantLeftRoomEvent += OnParticipantLeft;    
+            NetworkStateManager.PeersDisconnectedEvent += OnPeerDisconnected;
+            NetworkStateManager.LeftRoomEvent += OnLeftRoom;
+        }
+
+        void OnDisable() {            
+            NetworkStateManager.MatchmakingStartedEvent -= ShowWaitingScreen;
+			NetworkStateManager.SetupProgressEvent -= OnSetupProgress;
+			NetworkStateManager.RoomConnectedSuccessEvent -= OnRoomConnectedSuccess;
+			NetworkStateManager.RoomConnectedFailureEvent -= OnRoomConnectedFailure;
+			NetworkStateManager.ParticipantLeftRoomEvent -= OnParticipantLeft;            
+            NetworkStateManager.PeersDisconnectedEvent -= OnPeerDisconnected;    
+            NetworkStateManager.LeftRoomEvent -= OnLeftRoom;
         }
     }
 
