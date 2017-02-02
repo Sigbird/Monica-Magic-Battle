@@ -5,7 +5,7 @@ using YupiPlay;
 
 
 public class SplashAnim : MonoBehaviour {
-
+	public bool noLoading;
 	// Use this for initialization
 	void Start () {
 	
@@ -17,6 +17,10 @@ public class SplashAnim : MonoBehaviour {
 	}
 
 	public void SplashEnd(){
-		SceneLoadingManager.LoadScene ("Main");
+		if (noLoading) {
+			SceneManager.LoadScene ("Main");
+		} else {
+			SceneLoadingManager.LoadScene ("Main");
+		}
 	}
 }

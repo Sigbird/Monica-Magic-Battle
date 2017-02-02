@@ -7,13 +7,19 @@ using YupiPlay;
 
 public class SearchingMatchScript : MonoBehaviour {
 
+	public bool noLoading;
 
 	public Image AdvImage;
 
 	public Sprite Image;
 
+	public int SelectedCharacterID;
+
+	public int[] selectedCardsIDs;
+
 	void OnEnable() {
 		StartCoroutine ("Finding");
+
 	}
 
 	// Use this for initialization
@@ -34,11 +40,18 @@ public class SearchingMatchScript : MonoBehaviour {
 		CallToBattle ();
 	}
 
+	public void SetCharacterID(int x){
+		this.SelectedCharacterID = x;
+	}
+
 	public void CallToBattle(){
-		//SceneManager.LoadScene ("Jogo");
-		SceneLoadingManager.LoadScene ("Jogo");
-
-
+		PlayerPrefs.SetInt ("SelectedCharacter", SelectedCharacterID);
+		PlayerPrefsX.SetIntArray ("Cards", selectedCardsIDs);
+		if (noLoading) {
+			SceneManager.LoadScene ("Jogo");
+		} else {
+			SceneLoadingManager.LoadScene ("Jogo");
+		}
 	}
 
 }

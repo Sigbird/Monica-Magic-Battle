@@ -10,14 +10,14 @@ public class ChargesScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		this.charges = 3;
+		this.charges = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		scoreText.text = this.charges.ToString ();
 
-		if (this.charges == 0) {
+		if (this.charges == 5) {
 			Time.timeScale = 0;
 			GameObject.Find ("Vitória").SetActive (true);
 		}
