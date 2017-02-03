@@ -15,7 +15,12 @@ public class CardSlotScript : MonoBehaviour {
 
 	public GameObject Spark;
 
+	public Text costText;
+
 	private GameObject Movable;
+
+	public bool released;
+
 
 	private bool projectileCreated;
 	// Use this for initialization
@@ -33,7 +38,7 @@ public class CardSlotScript : MonoBehaviour {
 	}
 
 	void OnMouseDrag() {
-
+		this.released = false;
 		if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 			if (projectileCreated == false) {
 				projectileCreated = true;
@@ -47,7 +52,9 @@ public class CardSlotScript : MonoBehaviour {
 	}
 
 	void OnMouseUp(){
-		Destroy (Movable.gameObject);
+//		if (Movable != null)
+//		Destroy (Movable.gameObject);
+		this.released = true;
 		projectileCreated = false;
 	}
 
@@ -99,33 +106,44 @@ public class CardSlotScript : MonoBehaviour {
 			GetComponent<Image> ().sprite = cardsImages [0];
 			break;
 		}
+		costText.text = cardCost.ToString ();
 	}
 
 
 
-		public void ActivateCardEffect(){
+		public void ActivateCardEffect(GameObject target){
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			Destroy (Movable.gameObject);
 			switch (cardID) {
 			case 1:
+			target.GetComponent<SoldierControler> ().ReceiveEffect ("damage");
 				break;
 			case 2:
+			target.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
 				break;
 			case 3:
+			target.GetComponent<SoldierControler> ().ReceiveEffect ("shield");
 				break;
 			case 4:
+			target.GetComponent<SoldierControler> ().ReceiveEffect ("speed");
 				break;
 			case 5:
+			target.GetComponent<SoldierControler> ().ReceiveEffect ("slows");
 				break;
 			case 6:
+			target.GetComponent<SoldierControler> ().ReceiveEffect ("damage");
 				break;
 			case 7:
+			target.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
 				break;
 			case 8:
+			target.GetComponent<SoldierControler> ().ReceiveEffect ("shield");
 				break;
 			case 9:
+			target.GetComponent<SoldierControler> ().ReceiveEffect ("speed");
 				break;
 			case 10:
+			target.GetComponent<SoldierControler> ().ReceiveEffect ("slows");
 				break;
 			default:
 				break;

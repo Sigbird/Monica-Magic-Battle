@@ -31,9 +31,9 @@ public class GameController : MonoBehaviour {
 	void Update () {
 
 		GameObject.Find ("Diamonds").GetComponent<Text> ().text = Diamonds.ToString();
-		GameObject.Find ("Cost1").GetComponent<Text> ().text = WarriorCost.ToString();
-		GameObject.Find ("Cost2").GetComponent<Text> ().text = LanceiroCost.ToString();
-		GameObject.Find ("Cost3").GetComponent<Text> ().text = MageCost.ToString();
+//		GameObject.Find ("Cost1").GetComponent<Text> ().text = WarriorCost.ToString();
+//		GameObject.Find ("Cost2").GetComponent<Text> ().text = LanceiroCost.ToString();
+//		GameObject.Find ("Cost3").GetComponent<Text> ().text = MageCost.ToString();
 //		GameObject.Find ("Mine1Text").GetComponent<Text> ().text = Mine1Value.ToString();
 	//	GameObject.Find ("Mine2Text").GetComponent<Text> ().text = Mine1Value.ToString();
 		if (Mine1Assist <= 10) {

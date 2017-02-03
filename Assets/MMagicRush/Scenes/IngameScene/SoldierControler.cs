@@ -95,6 +95,9 @@ public class SoldierControler : MonoBehaviour {
 
 	private float energyCounter;
 
+	public string effects;
+	public float effectsDuration;
+
 	//SKILLS
 
 	public SkillsScript skill1;
@@ -134,7 +137,8 @@ public class SoldierControler : MonoBehaviour {
 		this.energybarSoldier.GetComponent<HealtBar> ().energy = true;
 
 		anim = GetComponent<Animator> ();
-	
+
+		this.effects = "default";
 		this.speed = speed / 15;
 		this.maxSpeed = this.speed;
 		this.level = 1;
@@ -369,7 +373,17 @@ public class SoldierControler : MonoBehaviour {
 			}
 		}
 
-			
+		//
+		//COOLDOWN DE EFEITOS
+		//
+		if(effects != "default"){
+			effectsDuration += Time.deltaTime;
+			if (effectsDuration > 3) {
+				Removeeffect ();
+				effects = "default";
+			}
+		}
+
 				
 			//
 			//ESTADOS DO PERSONAGEM
@@ -517,6 +531,40 @@ public class SoldierControler : MonoBehaviour {
 			}
 		}
 
+	}
+
+	public void ReceiveEffect(string effect){
+		effects = effect;
+		if (effect == "slow") {
+			this.speed = speed / 2;
+		}
+		if (effect == "speed") {
+			this.speed = speed * 2;
+		}
+		if (effect == "shield") {
+			this.vida++;
+			UpdateLife ();
+		}
+		if (effect == "damage") {
+			this.vida--;
+			UpdateLife ();
+		}
+		if (effect == "healing") {
+			this.vida++;
+			UpdateLife ();
+		}
+	}
+
+	public void Removeeffect(){
+		if (effects == "slow") {
+			this.speed = maxSpeed;
+		}
+		if (effects == "speed") {
+			this.speed = maxSpeed;
+		}
+		if (effects == "shield") {
+			this.vida--;
+		}
 	}
 
 	IEnumerator HealingAndXp(){

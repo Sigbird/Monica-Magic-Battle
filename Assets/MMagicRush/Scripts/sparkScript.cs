@@ -14,20 +14,26 @@ public class sparkScript : MonoBehaviour {
 		
 	}
 
-	void OnTriggerEnter2D(Collider2D other) {
-		if (other.tag == "Trash") {
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds += CardSlot.cardCost;
-			CardSlot.UpdateCard ();
-			Destroy (this.gameObject);
+	void OnTriggerStay2D(Collider2D other) {
+		if (CardSlot.released) {
+			if (other.tag == "Trash") {
+				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds += (int)CardSlot.cardCost/2;
+				CardSlot.UpdateCard ();
+				Destroy (this.gameObject);
+			}
+			if (other.tag == "enemysoldier1") {
+				CardSlot.ActivateCardEffect (other.gameObject);
+				CardSlot.UpdateCard ();
+				Destroy (this.gameObject);
+			}
+			if (other.tag == "enemysoldier2") {
+				CardSlot.ActivateCardEffect (other.gameObject);
+				CardSlot.UpdateCard ();
+				Destroy (this.gameObject);
+			} 
+			if (other.tag == "Stage") {
+				Destroy (this.gameObject);
+			}
 		}
-		if (other.tag == "enemysoldier1") {
-			CardSlot.ActivateCardEffect ();
-			CardSlot.UpdateCard ();
-		}
-		if (other.tag == "enemysoldier2") {
-			CardSlot.ActivateCardEffect ();
-			CardSlot.UpdateCard ();
-		}
-
 	}
 }
