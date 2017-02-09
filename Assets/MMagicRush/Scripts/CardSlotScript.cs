@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class CardSlotScript : MonoBehaviour {
+
+	//CARD INFO
 	public int cardID;
 
 	public Sprite[] cardsImages;
@@ -13,13 +15,23 @@ public class CardSlotScript : MonoBehaviour {
 
 	public int cardCost;
 
-	public GameObject Spark;
-
 	public Text costText;
+
+
+	//SPARKOBJECT
+	public GameObject Spark;
 
 	private GameObject Movable;
 
 	public bool released;
+
+	public GameObject HoveringObject;
+
+
+	//PREFABS
+	public GameObject tower;
+
+	public GameObject troop;
 
 
 	private bool projectileCreated;
@@ -37,6 +49,7 @@ public class CardSlotScript : MonoBehaviour {
 		
 	}
 
+	//INICIO DO ARRASTO
 	void OnMouseDrag() {
 		this.released = false;
 		if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
@@ -51,14 +64,28 @@ public class CardSlotScript : MonoBehaviour {
 		}
 	}
 
+	//FIM DO ARRASTO
 	void OnMouseUp(){
-//		if (Movable != null)
-//		Destroy (Movable.gameObject);
-		this.released = true;
-		projectileCreated = false;
+		if (HoveringObject != null) {
+			if (HoveringObject.tag == "Trash") {
+				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds += (int)cardCost / 2;
+				Destroy (Movable.gameObject);
+			}
+			if (HoveringObject.tag == "enemysoldier1") {
+				ActivateCardEffect (HoveringObject);
+			}
+			if (HoveringObject.tag == "enemysoldier2") {
+				ActivateCardEffect (HoveringObject);
+			} 
+			if (HoveringObject.tag == "Stage") {
+				ActivateCardEffect (HoveringObject);
+			}
+		
+			projectileCreated = false;
+		}
 	}
 
-
+	//PUXA CARTA NOVA PARA O SLOT
 	public void UpdateCard(){
 		cardID = Random.Range (1, 11);
 		switch (cardID) {
@@ -110,44 +137,81 @@ public class CardSlotScript : MonoBehaviour {
 	}
 
 
-
+		//ATIVA EFEITO DA CARTA SOBRE O ALVO DO OBJETO MOVABLE
 		public void ActivateCardEffect(GameObject target){
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			Destroy (Movable.gameObject);
 			switch (cardID) {
 			case 1:
-			target.GetComponent<SoldierControler> ().ReceiveEffect ("damage");
+			if (target.GetComponent<SoldierControler>() != null) {
+				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+				target.GetComponent<SoldierControler> ().ReceiveEffect ("damage");
+				UpdateCard ();
+			}
 				break;
 			case 2:
-			target.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
+			if (target.GetComponent<SoldierControler>() != null) {
+				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+				target.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
+				UpdateCard ();
+			}
 				break;
 			case 3:
-			target.GetComponent<SoldierControler> ().ReceiveEffect ("shield");
+			if (target.GetComponent<SoldierControler>() != null) {
+				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+				target.GetComponent<SoldierControler> ().ReceiveEffect ("shield");
+				UpdateCard ();
+			}
 				break;
 			case 4:
-			target.GetComponent<SoldierControler> ().ReceiveEffect ("speed");
+			//TOWER
+			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			Instantiate(tower,Movable.transform.position, Quaternion.identity);
+			UpdateCard ();
 				break;
 			case 5:
-			target.GetComponent<SoldierControler> ().ReceiveEffect ("slows");
+			if (target.GetComponent<SoldierControler>() != null) {
+				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+				target.GetComponent<SoldierControler> ().ReceiveEffect ("slows");
+				UpdateCard ();
+			}
 				break;
 			case 6:
-			target.GetComponent<SoldierControler> ().ReceiveEffect ("damage");
+			if (target.GetComponent<SoldierControler>() != null) {
+				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+				target.GetComponent<SoldierControler> ().ReceiveEffect ("damage");
+				UpdateCard ();
+			}
 				break;
 			case 7:
-			target.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
+			if (target.GetComponent<SoldierControler>() != null) {
+				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+				target.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
+				UpdateCard ();
+			}
 				break;
 			case 8:
-			target.GetComponent<SoldierControler> ().ReceiveEffect ("shield");
+			if (target.GetComponent<SoldierControler>() != null) {
+				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+				target.GetComponent<SoldierControler> ().ReceiveEffect ("shield");
+				UpdateCard ();
+			}
 				break;
 			case 9:
-			target.GetComponent<SoldierControler> ().ReceiveEffect ("speed");
+			//TOWER
+			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			Instantiate(tower,Movable.transform.position, Quaternion.identity);
+			UpdateCard ();
 				break;
 			case 10:
-			target.GetComponent<SoldierControler> ().ReceiveEffect ("slows");
+			if (target.GetComponent<SoldierControler>() != null) {
+				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+				target.GetComponent<SoldierControler> ().ReceiveEffect ("slows");
+				UpdateCard ();
+			}
 				break;
 			default:
-				break;
+			Debug.Log ("out of range");
+			break;
 			}
-
+		Destroy (Movable.gameObject);
 	}
 }
