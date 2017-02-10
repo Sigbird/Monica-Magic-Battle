@@ -75,23 +75,23 @@ namespace YupiPlay {
         }
 
         void OnEnable() {            
-            NetworkStateManager.MatchmakingStartedEvent += ShowWaitingScreen;
-            NetworkStateManager.SetupProgressEvent += OnSetupProgress;
-            NetworkStateManager.RoomConnectedSuccessEvent += OnRoomConnectedSuccess;
-            NetworkStateManager.RoomConnectedFailureEvent += OnRoomConnectedFailure;
-			NetworkStateManager.ParticipantLeftRoomEvent += OnParticipantLeft;    
-            NetworkStateManager.PeersDisconnectedEvent += OnPeerDisconnected;
-            NetworkStateManager.LeftRoomEvent += OnLeftRoom;
+            NetworkSessionManager.MatchmakingStartedEvent += ShowWaitingScreen;
+            NetworkSessionManager.SetupProgressEvent += OnSetupProgress;
+            NetworkSessionManager.RoomConnectedSuccessEvent += OnRoomConnectedSuccess;
+            NetworkSessionManager.RoomConnectedFailureEvent += OnRoomConnectedFailure;
+			NetworkSessionManager.ParticipantLeftRoomEvent += OnParticipantLeft;    
+            NetworkSessionManager.PeersDisconnectedEvent += OnPeerDisconnected;
+            NetworkSessionManager.LeftRoomEvent += OnLeftRoom;
         }
 
         void OnDisable() {            
-            NetworkStateManager.MatchmakingStartedEvent -= ShowWaitingScreen;
-			NetworkStateManager.SetupProgressEvent -= OnSetupProgress;
-			NetworkStateManager.RoomConnectedSuccessEvent -= OnRoomConnectedSuccess;
-			NetworkStateManager.RoomConnectedFailureEvent -= OnRoomConnectedFailure;
-			NetworkStateManager.ParticipantLeftRoomEvent -= OnParticipantLeft;            
-            NetworkStateManager.PeersDisconnectedEvent -= OnPeerDisconnected;    
-            NetworkStateManager.LeftRoomEvent -= OnLeftRoom;
+            NetworkSessionManager.MatchmakingStartedEvent -= ShowWaitingScreen;
+			NetworkSessionManager.SetupProgressEvent -= OnSetupProgress;
+			NetworkSessionManager.RoomConnectedSuccessEvent -= OnRoomConnectedSuccess;
+			NetworkSessionManager.RoomConnectedFailureEvent -= OnRoomConnectedFailure;
+			NetworkSessionManager.ParticipantLeftRoomEvent -= OnParticipantLeft;            
+            NetworkSessionManager.PeersDisconnectedEvent -= OnPeerDisconnected;    
+            NetworkSessionManager.LeftRoomEvent -= OnLeftRoom;
         }
     }
 

@@ -11,28 +11,28 @@ namespace YupiPlay
 		public static void SendPlayerInfo(MatchInfo match) {        
 			string playerInfo = match.Player.Rating.ToString();
 			byte[] playerInfoBytes = Encoding.UTF8.GetBytes(playerInfo);
-			NetworkStateManager.DebugScr("player bytes " + playerInfoBytes.Length);
+			NetworkSessionManager.DebugScr("player bytes " + playerInfoBytes.Length);
 			byte[] packet = new byte[playerInfoBytes.Length + 1];
 			packet[0] = packetType;
 
 			try {
 				Array.Copy(playerInfoBytes, 0, packet, 1, playerInfoBytes.Length);	
 			} catch (Exception e) {
-				NetworkStateManager.DebugScr(e.Message);
+				NetworkSessionManager.DebugScr(e.Message);
 			}
 
-			NetworkStateManager.DebugScr("sending my info " + packet.Length);
+			NetworkSessionManager.DebugScr("sending my info " + packet.Length);
 			StaticSendMessageToAll(true, packet);
 		}
 
 		public static void ReadOpponentInfo(byte[] data, MatchInfo match) {
-			NetworkStateManager.DebugScr("reading opponent info " + data.Length );
+			NetworkSessionManager.DebugScr("reading opponent info " + data.Length );
 			byte[] playerInfo = new byte[data.Length - 1];
 			Array.Copy(data, 1, playerInfo, 0, data.Length -1);
 			string infoString = Encoding.UTF8.GetString(playerInfo);
-			NetworkStateManager.DebugScr(infoString);
+			NetworkSessionManager.DebugScr(infoString);
 			int rating = Convert.ToInt32(infoString);
-			NetworkStateManager.DebugScr("pre SetData: " + rating);
+			NetworkSessionManager.DebugScr("pre SetData: " + rating);
 
 			match.Opponent.SetRating(rating);
 		}

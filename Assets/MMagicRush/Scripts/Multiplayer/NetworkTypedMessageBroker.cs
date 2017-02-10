@@ -12,8 +12,8 @@ namespace YupiPlay
 
 		public static void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {						
 			if (data[0] == MessageTypes.PreMatchHandshake) {
-				PreMatchHandshake.ReadOpponentInfo(data, NetworkStateManager.Instance.Match);
-				NetworkStateManager.Instance.LoadGame();
+				PreMatchHandshake.ReadOpponentInfo(data, NetworkSessionManager.Instance.Match);
+				NetworkSessionManager.Instance.LoadGame();
 			}
 		}			
 	}

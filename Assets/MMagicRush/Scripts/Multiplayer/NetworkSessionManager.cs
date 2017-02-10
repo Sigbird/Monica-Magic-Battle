@@ -5,7 +5,7 @@ using System.Text;
 using System;
 
 namespace YupiPlay {
-	public class NetworkStateManager {
+	public class NetworkSessionManager {
 		public enum States {
 			IDLE, MATCHMAKING, CONNECTING, CONNECTED, ERRORCONNECTED, DATAEXCHANGE, LOADING, WAITINGSTART,
 			INGAME, GAMEEND, PARTICIPANTLEFT, PLAYERLEFT, PARTICIPANTDISCONNECTED, PARTICIPANTCONNECTED, LOSTCONNECTION
@@ -22,10 +22,10 @@ namespace YupiPlay {
 
 		private States state = States.IDLE;
 
-		public static NetworkStateManager Instance {
+		public static NetworkSessionManager Instance {
 			get {
 				if (instance == null) {
-					instance = new NetworkStateManager();
+					instance = new NetworkSessionManager();
 				}
 				return instance;
 			}
@@ -35,7 +35,7 @@ namespace YupiPlay {
 				}
 			}
 		}
-		private static NetworkStateManager instance = null;
+		private static NetworkSessionManager instance = null;
 
 		//events
 		public delegate void RoomConnection();
@@ -61,7 +61,7 @@ namespace YupiPlay {
 						
 		public MatchInfo Match;
 
-		private NetworkStateManager() {
+		private NetworkSessionManager() {
 
 		}
 
