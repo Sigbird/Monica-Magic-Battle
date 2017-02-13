@@ -280,6 +280,9 @@ public class SoldierControler : MonoBehaviour {
 		if (this.vida <= 0) {
 			StartCoroutine (Respawning ());
 		}
+		if (this.vida > this.vidaMax) {
+			this.vida = this.vidaMax;
+		}
 
 		//	
 		//FLAGS PARA HEALING
@@ -538,20 +541,41 @@ public class SoldierControler : MonoBehaviour {
 		if (effect == "slow") {
 			this.speed = speed / 2;
 		}
+		if (effect == "extraSlow") {
+			this.speed = speed / 4;
+		}
 		if (effect == "speed") {
 			this.speed = speed * 2;
-		}
-		if (effect == "shield") {
-			this.vida++;
-			UpdateLife ();
 		}
 		if (effect == "damage") {
 			this.vida--;
 			UpdateLife ();
 		}
+		if (effect == "extraDamage") {
+			this.vida -= 2;
+			UpdateLife ();
+		}
 		if (effect == "healing") {
 			this.vida++;
 			UpdateLife ();
+		}
+		if (effect == "extraGealing") {
+			this.vida+=5;
+			UpdateLife ();
+		}
+		if (effect == "shield") {
+			this.vida++;
+			UpdateLife ();
+		}
+		if (effect == "warShout") {
+			this.damage++;
+			this.damageSpeed++;
+			this.speed = speed * 2;
+		}
+		if (effect == "sleep") {
+			this.damage--;
+			this.damageSpeed--;
+			this.speed = 0;
 		}
 	}
 
@@ -564,6 +588,16 @@ public class SoldierControler : MonoBehaviour {
 		}
 		if (effects == "shield") {
 			this.vida--;
+		}
+		if (effects == "warShout") {
+			this.damage--;
+			this.damageSpeed--;
+			this.speed = maxSpeed;
+		}
+		if (effects == "sleep") {
+			this.damage++;
+			this.damageSpeed++;
+			this.speed = maxSpeed;
 		}
 	}
 

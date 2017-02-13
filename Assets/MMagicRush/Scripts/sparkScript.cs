@@ -19,4 +19,8 @@ public class sparkScript : MonoBehaviour {
 		CardSlot.HoveringObject = other.gameObject;
 
 	}
+
+	public void DestroyItself(){
+		Destroy (this.gameObject);
+	}
 }
