@@ -22,18 +22,18 @@ namespace YupiPlay {
 		}
 
 		private void ShowOpponentInfo(ParticipantInfo opponent) {
-			NetworkStateManager.DebugScr("printing opponent info");
+			NetworkSessionManager.DebugScr("printing opponent info");
 			DisplayName.text = opponent.DisplayName;
             ParticipantId.text = opponent.ParticipantId;
 			Rating.text = opponent.Rating.ToString();
 		}
 
 		void OnEnable() {
-			NetworkStateManager.OnOpponentInfo += ShowOpponentInfo;
+			NetworkSessionManager.OnOpponentInfo += ShowOpponentInfo;
 		}
 
 		void OnDisable() {
-			NetworkStateManager.OnOpponentInfo -= ShowOpponentInfo;
+			NetworkSessionManager.OnOpponentInfo -= ShowOpponentInfo;
 		}
 	}	
 }
