@@ -88,7 +88,7 @@ public class CardSlotScript : MonoBehaviour {
 
 	//PUXA CARTA NOVA PARA O SLOT
 	public void UpdateCard(){
-		cardID = Random.Range (1, 13);
+		cardID = Random.Range (13, 21);
 		switch (cardID) {
 		case 1://ESTALO MAGICO
 			cardCost = 2;
@@ -130,13 +130,49 @@ public class CardSlotScript : MonoBehaviour {
 			cardCost = 50;
 			GetComponent<Image> ().sprite = cardsImages [9];
 			break;
-		case 11://TROPAS
-			cardCost = 50;
+		case 11://TORRE
+			cardCost = 100;
 			GetComponent<Image> ().sprite = cardsImages [10];
 			break;
-		case 12://TORRE
-			cardCost = 100;
+		case 12://TROPA: BIDU
+			cardCost = 1;
 			GetComponent<Image> ().sprite = cardsImages [11];
+			break;
+		case 13://TROPA: ASTRONAUTA
+			cardCost = 3;
+			GetComponent<Image> ().sprite = cardsImages [12];
+			break;
+		case 14://TROPA: ANJINHO
+			cardCost = 1;
+			GetComponent<Image> ().sprite = cardsImages [13];
+			break;
+		case 15://TROPA: JOTALHAO
+			cardCost = 50;
+			GetComponent<Image> ().sprite = cardsImages [14];
+			break;
+		case 16://TROPA: PITECO
+			cardCost = 15;
+			GetComponent<Image> ().sprite = cardsImages [15];
+			break;
+		case 17://TROPA: PENADINHO
+			cardCost = 50;
+			GetComponent<Image> ().sprite = cardsImages [16];
+			break;
+		case 18://TROPA: LOUCO
+			cardCost = 100;
+			GetComponent<Image> ().sprite = cardsImages [17];
+			break;
+		case 19://TROPA: SANSAO
+			cardCost = 40;
+			GetComponent<Image> ().sprite = cardsImages [18];
+			break;
+		case 20://TROPA: MINGAU
+			cardCost = 110;
+			GetComponent<Image> ().sprite = cardsImages [19];
+			break;
+		case 21://TROPA: ALFREDO
+			cardCost = 150;
+			GetComponent<Image> ().sprite = cardsImages [20];
 			break;
 		default:
 			Debug.Log ("out of range");
@@ -148,6 +184,7 @@ public class CardSlotScript : MonoBehaviour {
 
 		//ATIVA EFEITO DA CARTA SOBRE O ALVO DO OBJETO MOVABLE
 		public void ActivateCardEffect(GameObject target){
+		GameObject t;
 			switch (cardID) {
 			case 1:// ESTALO MAGICO
 			if (target.GetComponent<SoldierControler>() != null) {
@@ -227,14 +264,79 @@ public class CardSlotScript : MonoBehaviour {
 				UpdateCard ();
 			}
 				break;
-			case 11:// TROPAS
+			case 11:// TORRE
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			Instantiate(tower,Movable.transform.position, Quaternion.identity);
 			UpdateCard ();
 			break;
-			case 12:// TORRE
+			case 12:// TROPA: BIDU
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			Instantiate(tower,Movable.transform.position, Quaternion.identity);
+			t = troop;
+			t.GetComponent<SoldierControler> ().troopId = 1;
+			Instantiate(t,GameObject.Find("SpawPoint1").transform.position, Quaternion.identity);
+			UpdateCard ();
+			break;
+			case 13:// TROPA: ASTRONAUTA
+			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			t = troop;
+			t.GetComponent<SoldierControler> ().troopId = 2;
+			Instantiate(t,GameObject.Find("SpawPoint1").transform.position, Quaternion.identity);
+			UpdateCard ();
+			break;
+			case 14:// TROPA: ANJINHO
+			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			t = troop;
+			t.GetComponent<SoldierControler> ().troopId = 3;
+			Instantiate(t,GameObject.Find("SpawPoint1").transform.position, Quaternion.identity);
+			UpdateCard ();
+			break;
+			case 15:// TROPA: JOTALHÃO
+			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			t = troop;
+			t.GetComponent<SoldierControler> ().troopId = 4;
+			Instantiate(t,GameObject.Find("SpawPoint1").transform.position, Quaternion.identity);
+			UpdateCard ();
+			break;
+			case 16:// TROPA: PITECO
+			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			t = troop;
+			t.GetComponent<SoldierControler> ().troopId = 5;
+			Instantiate(t,GameObject.Find("SpawPoint1").transform.position, Quaternion.identity);
+			UpdateCard ();
+			break;
+			case 17:// TROPA: PENADINHO
+			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			t = troop;
+			t.GetComponent<SoldierControler> ().troopId =6;
+			Instantiate(t,GameObject.Find("SpawPoint1").transform.position, Quaternion.identity);
+			UpdateCard ();
+			break;
+			case 18:// TROPA: LOUCO
+			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			t = troop;
+			t.GetComponent<SoldierControler> ().troopId = 7;
+			Instantiate(t,GameObject.Find("SpawPoint1").transform.position, Quaternion.identity);
+			UpdateCard ();
+			break;
+			case 19:// TROPA: SANSAO
+			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			t = troop;
+			t.GetComponent<SoldierControler> ().troopId = 8;
+			Instantiate(t,GameObject.Find("SpawPoint1").transform.position, Quaternion.identity);
+			UpdateCard ();
+			break;
+			case 20:// TROPA: MINGAU
+			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			t = troop;
+			t.GetComponent<SoldierControler> ().troopId = 9;
+			Instantiate(t,GameObject.Find("SpawPoint1").transform.position, Quaternion.identity);
+			UpdateCard ();
+			break;
+			case 21:// TROPA: ALFREDO
+			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			t = troop;
+			t.GetComponent<SoldierControler> ().troopId = 10;
+			Instantiate(t,GameObject.Find("SpawPoint1").transform.position, Quaternion.identity);
 			UpdateCard ();
 			break;
 			default:
