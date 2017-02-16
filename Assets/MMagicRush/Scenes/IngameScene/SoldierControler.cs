@@ -18,6 +18,10 @@ public class SoldierControler : MonoBehaviour {
 
 	//public TipoSoldado Tipo;
 
+	public bool heroUnity;
+
+	public int troopId;
+
 	public STATE state = STATE.DEFAULT;
 
 	public int team;
@@ -72,6 +76,8 @@ public class SoldierControler : MonoBehaviour {
 	public int vidaMax;
 
 	public int vida;
+
+	public int campodeVisao;
 
 	public int damage;
 
@@ -129,6 +135,13 @@ public class SoldierControler : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+		if (heroUnity) {// CONFIGURAÇÃO DE HEROIS
+			SetupHero();
+		} else {//CONFIGURAÇÃO DE TROPAS
+			SetupTroop(troopId);
+		}
+			
+		//CONFIGURAÇÃO EM COMUM 
 		UpdateLife ();
 		this.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
 
@@ -144,81 +157,8 @@ public class SoldierControler : MonoBehaviour {
 		this.level = 1;
 		this.healtbarSoldier.SetActive (true);
 		this.state = STATE.SEEKING;
+		if(heroUnity)
 		StartCoroutine (HealingAndXp ());
-
-		//CONFIGURAÇÃO DE TIPO
-		if (this.team == 1) {
-			int id =	PlayerPrefs.GetInt ("SelectedCharacter");
-			switch (id) {
-			case(1):
-				this.vidaMax = 3;
-				this.vida = 3;
-				this.damage = 1;
-				this.damageSpeed = 2;
-				this.range = 1;
-				this.speed = 8;
-				this.energyMax = 4;
-				this.energy = 4;
-				this.GetComponent<SpriteRenderer> ().sprite = warrior;
-				Debug.Log ("Monica");
-				break;
-			case(2):
-				this.vidaMax = 3;
-				this.vida = 3;
-				this.damage = 1;
-				this.damageSpeed = 2;
-				this.range = 1;
-				this.speed = 8;
-				this.energyMax = 4;
-				this.energy = 4;
-				this.GetComponent<SpriteRenderer> ().sprite = warrior;
-				Debug.Log ("Cebolinha");
-				break;
-			case(3):
-				this.vidaMax = 3;
-				this.vida = 3;
-				this.damage = 1;
-				this.damageSpeed = 2;
-				this.range = 1;
-				this.speed = 8;
-				this.energyMax = 4;
-				this.energy = 4;
-				this.GetComponent<SpriteRenderer> ().sprite = warrior;
-				Debug.Log ("Magali");
-				break;
-			case(4):
-				this.vidaMax = 3;
-				this.vida = 3;
-				this.damage = 1;
-				this.damageSpeed = 2;
-				this.range = 1;
-				this.speed = 8;
-				this.energyMax = 4;
-				this.energy = 4;
-				this.GetComponent<SpriteRenderer> ().sprite = warrior;
-				break;
-			default:
-				this.GetComponent<SpriteRenderer> ().sprite = warrior;
-				break;
-
-			}
-
-		} else {
-			//CARREGAR PERSONAGEM DO ADVERSÁRIO
-			this.GetComponent<SpriteRenderer>().flipX = true;
-			this.GetComponent<SpriteRenderer> ().sprite = warrior;
-		}
-
-
-
-		// CONFIGURAÇÃO DE EQUIPE
-		if (this.team == 1) {
-			this.tag = "enemysoldier1";
-		} else {
-			this.tag = "enemysoldier2";
-			platform.GetComponent<SpriteRenderer> ().color = Color.red;
-
-		}
 			
 		//DESLOCAMENTO INICIAL
 		if (Random.value < 0.5f) {
@@ -277,8 +217,10 @@ public class SoldierControler : MonoBehaviour {
 //		}
 
 		//Evento de Respawning
-		if (this.vida <= 0) {
+		if (this.vida <= 0 && heroUnity) {
 			StartCoroutine (Respawning ());
+		} else if(this.vida <= 0) {
+			Destroy (this.gameObject);
 		}
 		if (this.vida > this.vidaMax) {
 			this.vida = this.vidaMax;
@@ -391,7 +333,7 @@ public class SoldierControler : MonoBehaviour {
 			//
 			//ESTADOS DO PERSONAGEM
 			//
-			if (this.state == STATE.MOVE) {
+			if (this.state == STATE.MOVE) { // MOVENDO EM DIREÇÃO
 				if (Vector3.Distance (transform.position, touchEndPosition) > 1) {
 					transform.position = Vector3.MoveTowards (transform.position, touchEndPosition, Time.deltaTime * speed);
 				} else {
@@ -400,11 +342,11 @@ public class SoldierControler : MonoBehaviour {
 
 			}
 
-			if (this.state == STATE.IDLE) {
+			if (this.state == STATE.IDLE) { // PARADO
 				transform.position = Vector3.MoveTowards (transform.position, transform.position, Time.deltaTime * speed);
 			}
 
-			if (this.state == STATE.RETREAT) {
+			if (this.state == STATE.RETREAT) { // VOLTANDO PARA BASE
 				//this.speed = 1.5f;
 				if (Vector3.Distance (transform.position, heroBase.transform.position) > range - 0.5f) {
 					GetComponent<SpriteRenderer> ().flipX = true;
@@ -424,14 +366,14 @@ public class SoldierControler : MonoBehaviour {
 				//this.speed = 1;
 			}
 					
-			if (this.state == STATE.SEEKING) {
+			if (this.state == STATE.SEEKING) { // BUSCANDO ALVO
 				targetEnemy = SeekEnemyTarget ();
 				if (targetEnemy != null) {
 					this.state = STATE.DEFAULT;
 				}
 			}
 
-			if (this.state == STATE.DEFAULT) {
+			if (this.state == STATE.DEFAULT) { // PERSEGUINDO E ATACANDO ALVO ENCONTRADO
 				
 					//DESLOCAMENTO ATE INIMIGO
 					if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
@@ -447,7 +389,11 @@ public class SoldierControler : MonoBehaviour {
 								UpdateLife ();
 							} else {//ALVO BASE
 								targetEnemy.GetComponent<ChargesScript> ().charges++;
-								StartCoroutine (Respawning ());
+								if (heroUnity) {
+									StartCoroutine (Respawning ());
+								} else {
+									Destroy (this.gameObject);
+								}
 							}
 							danoCD = 0;
 						} else {
@@ -477,6 +423,210 @@ public class SoldierControler : MonoBehaviour {
 //	
 			}
 			
+	}
+
+	public void SetupHero(){
+		//CONFIGURAÇÃO DE TIPO DE HEROI
+		int id;
+		if (PlayerPrefs.GetInt ("SelectedCharacter") != null) {
+			id =	PlayerPrefs.GetInt ("SelectedCharacter");
+		} else {
+			id = 1;
+		}
+			
+			switch (id) {
+			case(1): 
+				this.vidaMax = 3;
+				this.vida = 3;
+				this.damage = 1;
+				this.damageSpeed = 2;
+				this.range = 1;
+				this.speed = 8;
+				this.energyMax = 4;
+				this.energy = 4;
+				this.GetComponent<SpriteRenderer> ().sprite = warrior;
+				Debug.Log ("Monica");
+				break;
+			case(2):
+				this.vidaMax = 3;
+				this.vida = 3;
+				this.damage = 1;
+				this.damageSpeed = 2;
+				this.range = 1;
+				this.speed = 8;
+				this.energyMax = 4;
+				this.energy = 4;
+				this.GetComponent<SpriteRenderer> ().sprite = warrior;
+				Debug.Log ("Cebolinha");
+				break;
+			case(3):
+				this.vidaMax = 3;
+				this.vida = 3;
+				this.damage = 1;
+				this.damageSpeed = 2;
+				this.range = 1;
+				this.speed = 8;
+				this.energyMax = 4;
+				this.energy = 4;
+				this.GetComponent<SpriteRenderer> ().sprite = warrior;
+				Debug.Log ("Magali");
+				break;
+			case(4):
+				this.vidaMax = 3;
+				this.vida = 3;
+				this.damage = 1;
+				this.damageSpeed = 2;
+				this.range = 1;
+				this.speed = 8;
+				this.energyMax = 4;
+				this.energy = 4;
+				this.GetComponent<SpriteRenderer> ().sprite = warrior;
+				break;
+			default:
+				this.GetComponent<SpriteRenderer> ().sprite = warrior;
+				break;
+
+			}
+
+		// CONFIGURAÇÃO DE EQUIPE
+		if (this.team == 1) {
+			this.tag = "enemysoldier1";
+		} else {
+			this.tag = "enemysoldier2";
+			this.GetComponent<SpriteRenderer>().flipX = true;
+			platform.GetComponent<SpriteRenderer> ().color = Color.red;
+
+		}
+	}
+
+	public void SetupTroop(int id){
+
+		switch (id) {
+		case(1): // BIDU
+			this.vidaMax = 2;
+			this.vida = 2;
+			this.damage = 1;
+			this.damageSpeed = 3;
+			this.range = 1;
+			this.speed = 4;
+			this.energyMax = 1;
+			this.energy = 200;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			break;
+		case(2): // ASTRONAUTA
+			this.vidaMax = 2;
+			this.vida = 2;
+			this.damage = 1;
+			this.damageSpeed = 3;
+			this.range = 4;
+			this.speed = 5;
+			this.energyMax = 1;
+			this.energy = 200;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			break;
+		case(3): //ANJINHO
+			this.vidaMax = 2;
+			this.vida = 2;
+			this.damage = 1;
+			this.damageSpeed = 3;
+			this.range = 3;
+			this.speed = 4;
+			this.energyMax = 1;
+			this.energy = 200;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			break;
+		case(4): //JOTALHÃO
+			this.vidaMax = 2;
+			this.vida = 2;
+			this.damage = 1;
+			this.damageSpeed = 3;
+			this.range = 1;
+			this.speed = 2;
+			this.energyMax = 1;
+			this.energy = 200;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			break;
+		case(5): //PITECO
+			this.vidaMax = 2;
+			this.vida = 2;
+			this.damage = 1;
+			this.damageSpeed = 3;
+			this.range = 1;
+			this.speed = 4;
+			this.energyMax = 1;
+			this.energy = 200;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			break;
+		case(6): //PENADINHO
+			this.vidaMax = 2;
+			this.vida = 2;
+			this.damage = 1;
+			this.damageSpeed = 3;
+			this.range = 5;
+			this.speed = 4;
+			this.energyMax = 1;
+			this.energy = 200;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			break;
+		case(7): //MAURICIO
+			this.vidaMax = 10;
+			this.vida = 10;
+			this.damage = 5;
+			this.damageSpeed = 3;
+			this.range = 1;
+			this.speed = 3;
+			this.energyMax = 1;
+			this.energy = 200;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			break;
+		case(8): //SANSAO
+			this.vidaMax = 6;
+			this.vida = 6;
+			this.damage = 3;
+			this.damageSpeed = 3;
+			this.range = 1;
+			this.speed = 4;
+			this.energyMax = 1;
+			this.energy = 200;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			break;
+		case(9): //MINGAU
+			this.vidaMax = 6;
+			this.vida = 6;
+			this.damage = 5;
+			this.damageSpeed = 3;
+			this.range = 6;
+			this.speed = 4;
+			this.energyMax = 1;
+			this.energy = 200;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			break;
+		case(10): //ALFREDO
+			this.vidaMax = 12;
+			this.vida = 12;
+			this.damage = 20;
+			this.damageSpeed = 3;
+			this.range = 8;
+			this.speed = 5;
+			this.energyMax = 1;
+			this.energy = 200;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			break;
+		default:
+			Debug.LogWarning ("TroopOutofRange");
+			break;
+
+		}
+
+		// CONFIGURAÇÃO DE EQUIPE
+		if (this.team == 1) {
+			this.tag = "enemysoldier1";
+		} else {
+			this.tag = "enemysoldier2";
+			this.GetComponent<SpriteRenderer>().flipX = true;
+			platform.GetComponent<SpriteRenderer> ().color = Color.red;
+
+		}
 	}
 
 
@@ -634,7 +784,8 @@ public class SoldierControler : MonoBehaviour {
 		this.vida = this.vidaMax;
 		UpdateLife ();
 		this.energy = this.energyMax;
-		this.state = STATE.IDLE;
+		//this.state = STATE.IDLE;
+		this.speed = 0;
 		this.skill1.Disable ();
 		this.skill2.Disable ();
 		yield return new WaitForSeconds (4f);
@@ -642,7 +793,8 @@ public class SoldierControler : MonoBehaviour {
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
 		this.healtbarSoldier.SetActive (true);
 		this.energybarSoldier.SetActive (true);
-		this.state = STATE.RETREAT;
+		//this.state = STATE.RETREAT;
+		this.speed = this.maxSpeed;
 	}
 
 	public GameObject SeekEnemyTarget (){
