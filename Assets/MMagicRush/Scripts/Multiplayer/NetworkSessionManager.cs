@@ -61,6 +61,8 @@ namespace YupiPlay {
 						
 		public MatchInfo Match;
 
+        private PreMatchHandshake preMatchHandshake;
+
 		private NetworkSessionManager() {
 
 		}
@@ -82,7 +84,8 @@ namespace YupiPlay {
 
 			if (RoomConnectedSuccessEvent != null) RoomConnectedSuccessEvent();
 
-			PreMatchHandshake.SendPlayerInfo(Match);
+            preMatchHandshake = new PreMatchHandshake();
+            preMatchHandshake.SendPlayerInfo(Match);		
 		}
 
 		public void RoomConnectedFailure() {
@@ -100,7 +103,7 @@ namespace YupiPlay {
 
 		public void ParticipantLeft(ParticipantInfo participant)  {
 			state = States.PARTICIPANTLEFT;
-
+            
 			if (ParticipantLeftRoomEvent != null) ParticipantLeftRoomEvent(participant);
 		}
 

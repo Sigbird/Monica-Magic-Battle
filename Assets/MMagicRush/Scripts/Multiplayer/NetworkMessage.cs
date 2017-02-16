@@ -1,4 +1,7 @@
 ﻿using System;
+using MiniJSON;
+using System.Collections.Generic;
+using System.Text;
 
 namespace YupiPlay
 {
@@ -37,8 +40,18 @@ namespace YupiPlay
             Array.Copy(data, 18, Data, 0, data.Length - 18);
         }
 
+        public NetworkMessage(string jsonString)
+        {
+            var dict = Json.Deserialize(jsonString) as Dictionary<string, object>;
+           
+            MessageClass = ((string) dict["C"]).ToCharArray()[0];
+            MessageType = ((string)dict["T"]).ToCharArray()[0];
+            MessageId = new Guid((string) dict["I"]);
+            Data =  Encoding.UTF8.GetBytes((string)dict["D"]);
+        }
+
 		public byte[] ToBytes() {
-			byte[] messageId = MessageId.ToByteArray();
+			byte[] messageId = MessageId.ToByteArray();            
 			byte messageClass = (byte) MessageClass;
 			byte type = (byte) MessageType;
 
@@ -51,6 +64,17 @@ namespace YupiPlay
 
 			return bytes;
 		}
+
+        public string ToJsonString()
+        {
+            var dict = new Dictionary<string, object>();
+            dict["C"] = MessageClass;
+            dict["T"] = MessageType;
+            dict["I"] = MessageId.ToString();
+            dict["D"] = Encoding.UTF8.GetString(Data);
+
+            return Json.Serialize(dict);            
+        }
 	}
 }
 

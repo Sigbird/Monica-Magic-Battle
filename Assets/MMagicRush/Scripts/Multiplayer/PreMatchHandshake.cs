@@ -8,7 +8,7 @@ namespace YupiPlay
 	{		
 		new const byte packetType = MessageTypes.PreMatchHandshake;
 
-		public static void SendPlayerInfo(MatchInfo match) {        
+		public void SendPlayerInfo(MatchInfo match) {        
 			string playerInfo = match.Player.Rating.ToString();
 			byte[] playerInfoBytes = Encoding.UTF8.GetBytes(playerInfo);
 			NetworkSessionManager.DebugScr("player bytes " + playerInfoBytes.Length);
@@ -22,7 +22,7 @@ namespace YupiPlay
 			}
 
 			NetworkSessionManager.DebugScr("sending my info " + packet.Length);
-			StaticSendMessageToAll(true, packet);
+			SendMessageToAll(true, packet);
 		}
 
 		public static void ReadOpponentInfo(byte[] data, MatchInfo match) {

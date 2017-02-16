@@ -3,12 +3,13 @@ using UnityEditor;
 using NUnit.Framework;
 using YupiPlay;
 using System.Text;
+using SevenZip.Compression.LZMA;
 
 [TestFixture]
 public class NetworkMessageTest : AssertionHelper {
     char messageClass = 'P';
     char messageType = 'S';
-    string testMessage = "mensagem de teste";    
+    string testMessage = "500,DefaultAvatar";    
 
     NetworkMessage message;
     NetworkMessage receivedMessage;
@@ -59,5 +60,43 @@ public class NetworkMessageTest : AssertionHelper {
         int receivedLength = receivedMessage.Data.Length;
 
         Expect(receivedLength, EqualTo(sentLength));
+    }
+
+    [Test, Ignore]
+    public void JsonCompressionTest()
+    {
+        string jsonString = message.ToJsonString();
+        byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonString);
+        Debug.Log(jsonString);
+        Debug.Log("uncompressed length: " + jsonBytes.Length);
+
+        byte[] jsonBytesCompressed = SevenZipHelper.Compress(jsonBytes);
+        Debug.Log("compressed length: " + jsonBytesCompressed.Length);
+
+        Expect(jsonBytesCompressed.Length, LessThan(jsonBytes.Length));
+    }
+
+    [Test, Ignore]
+    public void BytesCompressionTest()
+    {
+        byte[] messageBytes = message.ToBytes();
+        Debug.Log("uncompressed length: " + messageBytes.Length);
+
+        byte[] compressedMessageBytes = SevenZipHelper.Compress(messageBytes);
+        Debug.Log("compressed length: " + compressedMessageBytes.Length);
+
+        Expect(compressedMessageBytes.Length, LessThan(messageBytes.Length));
+    }
+
+    [Test]
+    public void JsonFormatTest()
+    {
+        string jsonString = message.ToJsonString();
+        var newMessage = new NetworkMessage(jsonString);
+
+        Expect(newMessage.MessageClass, EqualTo(messageClass));
+        Expect(newMessage.MessageType, EqualTo(messageType));
+        Expect(newMessage.MessageId.ToString(), EqualTo(message.MessageId.ToString()));
+        Expect(Encoding.UTF8.GetString(newMessage.Data), EqualTo(Encoding.UTF8.GetString(message.Data)));
     }
 }

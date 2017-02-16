@@ -2,20 +2,21 @@
 {
 	public class ParticipantInfo
 	{		
-		public int Rating;
+		public short Rating;
 		public string DisplayName;
         public string ParticipantId;
 
         public ParticipantInfo(string participantId, string displayName, int rating) {
             ParticipantId = participantId;
             DisplayName = displayName;
-            Rating = rating;
+
+            SetRating(rating);
         }
 
 		public ParticipantInfo(string displayName, int rating) {
 			DisplayName = displayName;
-			Rating = rating;
-		}
+            SetRating(rating);
+        }
 
         public ParticipantInfo(string participantId, string displayName) {
             ParticipantId = participantId;
@@ -26,8 +27,9 @@
 			DisplayName = displayName;
 		}
 
-		public void SetRating(int rating) {			
-			Rating = rating;
+		public void SetRating(int rating) {
+            rating = rating > Matchmaking.RATINGLIMIT ? Matchmaking.RATINGLIMIT : rating;
+			Rating = (short) rating;
 		}			
 	}
 }
