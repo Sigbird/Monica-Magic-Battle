@@ -88,7 +88,7 @@ public class CardSlotScript : MonoBehaviour {
 
 	//PUXA CARTA NOVA PARA O SLOT
 	public void UpdateCard(){
-		cardID = Random.Range (13, 21);
+		cardID = Random.Range (1, 21);
 		switch (cardID) {
 		case 1://ESTALO MAGICO
 			cardCost = 2;

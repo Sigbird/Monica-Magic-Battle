@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour {
 	public string tipo{ get; set; }
 	public GameObject Soldado;
 	public int Diamonds;
+	public Sprite[] cointSprites;
 	[HideInInspector]
 	public int WarriorCost = 10;
 	[HideInInspector]
@@ -36,22 +37,60 @@ public class GameController : MonoBehaviour {
 //		GameObject.Find ("Cost3").GetComponent<Text> ().text = MageCost.ToString();
 //		GameObject.Find ("Mine1Text").GetComponent<Text> ().text = Mine1Value.ToString();
 	//	GameObject.Find ("Mine2Text").GetComponent<Text> ().text = Mine1Value.ToString();
-		if (Mine1Assist <= 10) {
-			Mine1Assist = Mine1Assist + Time.deltaTime * 5;
+		Mine1Assist += Time.deltaTime;
+		if (Mine1Assist >= 2) {
+			Mine1Assist = 0;
 			Mine1Value = (int)Mine1Assist;
-			GameObject.Find ("Mine1Cristal").GetComponent<Image> ().enabled = false;
-		} else {
-			GameObject.Find ("Mine1Cristal").GetComponent<Image> ().enabled = true;
+			if(Mine1Value<3)
+			Mine1Value += 1;
+		}
+		Mine2Assist += Time.deltaTime;
+		if (Mine2Assist >= 2) {
+			Mine2Assist = 0;
+			Mine2Value = (int)Mine1Assist;
+			if(Mine2Value<3)
+				Mine2Value += 1;
 		}
 
-		if (Mine2Assist <= 10) {
-			Mine2Assist = Mine2Assist + Time.deltaTime * 10;
-			Mine2Value = (int)Mine2Assist;
-			GameObject.Find ("Mine2Cristal").GetComponent<Image> ().enabled = false;
-		} else {
-			GameObject.Find ("Mine2Cristal").GetComponent<Image> ().enabled = true;
-		}
+//		if (Mine2Assist <= 3) {
+//			Mine2Assist += 1;
+//			Mine2Value = (int)Mine2Assist;
+//			GameObject.Find ("Mine2Cristal").GetComponent<Image> ().enabled = false;
+//		} else {
+//			GameObject.Find ("Mine2Cristal").GetComponent<Image> ().enabled = true;
+//		}
 	
+		switch (Mine1Value) {
+		case 0:
+			GameObject.Find ("Mine1Cristal").GetComponent<Image> ().sprite = cointSprites [0];
+			break;
+		case 1:
+			GameObject.Find ("Mine1Cristal").GetComponent<Image> ().sprite = cointSprites [1];
+			break;
+		case 2:
+			GameObject.Find ("Mine1Cristal").GetComponent<Image> ().sprite = cointSprites [2];
+			break;
+		case 3:
+			GameObject.Find ("Mine1Cristal").GetComponent<Image> ().sprite = cointSprites [3];
+			break;
+		}
+
+		switch (Mine2Value) {
+		case 0:
+			GameObject.Find ("Mine2Cristal").GetComponent<Image> ().sprite = cointSprites [0];
+			break;
+		case 1:
+			GameObject.Find ("Mine2Cristal").GetComponent<Image> ().sprite = cointSprites [1];
+			break;
+		case 2:
+			GameObject.Find ("Mine2Cristal").GetComponent<Image> ().sprite = cointSprites [2];
+			break;
+		case 3:
+			GameObject.Find ("Mine2Cristal").GetComponent<Image> ().sprite = cointSprites [3];
+			break;
+		}
+
+
 	}
 
 	public void MiningGems(int x){
