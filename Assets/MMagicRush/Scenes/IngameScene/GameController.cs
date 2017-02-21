@@ -40,14 +40,14 @@ public class GameController : MonoBehaviour {
 		Mine1Assist += Time.deltaTime;
 		if (Mine1Assist >= 2) {
 			Mine1Assist = 0;
-			Mine1Value = (int)Mine1Assist;
+			//Mine1Value = (int)Mine1Assist;
 			if(Mine1Value<3)
 			Mine1Value += 1;
 		}
 		Mine2Assist += Time.deltaTime;
 		if (Mine2Assist >= 2) {
 			Mine2Assist = 0;
-			Mine2Value = (int)Mine1Assist;
+			//Mine2Value = (int)Mine1Assist;
 			if(Mine2Value<3)
 				Mine2Value += 1;
 		}
@@ -97,10 +97,10 @@ public class GameController : MonoBehaviour {
 	
 		if (x == 1 && GameObject.Find ("Mine1Cristal").GetComponent<Image> ().enabled == true ) {
 			Diamonds = Mine1Value + Diamonds;
-			Mine1Assist = 0;
+			Mine1Value = 0;
 		}else if (x == 2 && GameObject.Find ("Mine2Cristal").GetComponent<Image> ().enabled == true) {
 			Diamonds = Mine2Value + Diamonds;
-			Mine2Assist = 0;
+			Mine2Value = 0;
 		}
 
 	}

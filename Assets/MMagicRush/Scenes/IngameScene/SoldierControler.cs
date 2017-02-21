@@ -210,13 +210,14 @@ public class SoldierControler : MonoBehaviour {
 
 
 		//DESLOCAMENTO INICIAL
-//		if (deslocTimer < Random.Range(30,50)) {
-//			transform.Translate (Vector2.left * Time.deltaTime * desloc);
-//			deslocTimer++;
-//		}
+		if (deslocTimer < Random.Range(30,50)) {
+			transform.Translate (Vector2.left * Time.deltaTime * desloc);
+			deslocTimer++;
+		}
 
 		//Evento de Respawning
 		if (this.vida <= 0 && heroUnity) {
+			this.speed = 0;
 			StartCoroutine (Respawning ());
 		} else if(this.vida <= 0) {
 			Destroy (this.gameObject);
@@ -486,7 +487,17 @@ public class SoldierControler : MonoBehaviour {
 				this.GetComponent<SpriteRenderer> ().sprite = warrior;
 				break;
 			default:
+				this.vidaMax = 3;
+				this.vida = 3;
+				this.reach = 3;
+				this.damage = 1;
+				this.damageSpeed = 2;
+				this.range = 1;
+				this.speed = 8;
+				this.energyMax = 4;
+				this.energy = 4;
 				this.GetComponent<SpriteRenderer> ().sprite = warrior;
+				Debug.Log ("Monica");
 				break;
 
 			}
@@ -794,21 +805,22 @@ public class SoldierControler : MonoBehaviour {
 		this.healtbarSoldier.SetActive (false);
 		this.energybarSoldier.SetActive (false);
 		transform.position = heroBase.transform.position;
-		this.xp = 0;
 		this.vida = this.vidaMax;
 		UpdateLife ();
 		this.energy = this.energyMax;
 		//this.state = STATE.IDLE;
 		this.damage = 0;
 		this.targetEnemy = this.gameObject;
-		this.skill1.Disable ();
-		this.skill2.Disable ();
+		this.seeking = false;
+		//this.skill1.Disable ();
+		//this.skill2.Disable ();
 		yield return new WaitForSeconds (4f);
 		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
 		this.healtbarSoldier.SetActive (true);
 		this.energybarSoldier.SetActive (true);
 		this.damage = 1;
+		this.seeking = true;
 		this.targetEnemy = SeekEnemyTarget();
 	}
 
