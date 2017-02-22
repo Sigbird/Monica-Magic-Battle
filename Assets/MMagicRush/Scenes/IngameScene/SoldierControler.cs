@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SoldierControler : MonoBehaviour {
 
@@ -60,6 +61,8 @@ public class SoldierControler : MonoBehaviour {
 	public bool seeking;
 
 	public float cdSeek;
+
+	public float respawningTimer;
 
 	//STATUS
 
@@ -148,8 +151,9 @@ public class SoldierControler : MonoBehaviour {
 		if (GetComponent<Animator> () != null) {
 			anim = GetComponent<Animator> ();
 		}
+		respawningTimer = 0.5f;
+		StartCoroutine (Respawning ());
 
-		this.seeking = true;
 		this.effects = "default";
 		this.speed = speed / 15;
 		this.maxSpeed = this.speed;
@@ -210,10 +214,10 @@ public class SoldierControler : MonoBehaviour {
 
 
 		//DESLOCAMENTO INICIAL
-		if (deslocTimer < Random.Range(30,50)) {
-			transform.Translate (Vector2.left * Time.deltaTime * desloc);
-			deslocTimer++;
-		}
+//		if (deslocTimer < 30) {
+//			transform.Translate (Vector2.left * Time.deltaTime * desloc);
+//			deslocTimer++;
+//		}
 
 		//Evento de Respawning
 		if (this.vida <= 0 && heroUnity) {
@@ -371,7 +375,7 @@ public class SoldierControler : MonoBehaviour {
 
 			if (targetEnemy == null) {//CONFIRMA SE ALVO VIVE
 				targetEnemy = SeekEnemyTarget ();
-			} else {
+			} else if(seeking) {
 				
 				//DESLOCAMENTO ATE INIMIGO
 				if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
@@ -387,9 +391,10 @@ public class SoldierControler : MonoBehaviour {
 							targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 							UpdateLife ();
 						} else {//ALVO BASE
-							targetEnemy.GetComponent<ChargesScript> ().charges++;
 							if (heroUnity) {
-								StartCoroutine (Respawning ());
+								heroBase.GetComponent<ChargesScript> ().charges++;
+								GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
+								//StartCoroutine (Respawning ());
 							} else {
 								Destroy (this.gameObject);
 							}
@@ -804,24 +809,24 @@ public class SoldierControler : MonoBehaviour {
 		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
 		this.healtbarSoldier.SetActive (false);
 		this.energybarSoldier.SetActive (false);
+		this.skill1.gameObject.SetActive (false);
+		this.skill2.gameObject.SetActive (false);
 		transform.position = heroBase.transform.position;
 		this.vida = this.vidaMax;
 		UpdateLife ();
 		this.energy = this.energyMax;
-		//this.state = STATE.IDLE;
-		this.damage = 0;
-		this.targetEnemy = this.gameObject;
 		this.seeking = false;
-		//this.skill1.Disable ();
-		//this.skill2.Disable ();
-		yield return new WaitForSeconds (4f);
+		yield return new WaitForSeconds (respawningTimer);
 		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
 		this.healtbarSoldier.SetActive (true);
 		this.energybarSoldier.SetActive (true);
+		this.skill1.gameObject.SetActive (false);
+		this.skill2.gameObject.SetActive (false);
 		this.damage = 1;
 		this.seeking = true;
 		this.targetEnemy = SeekEnemyTarget();
+		respawningTimer = 4;
 	}
 
 	public GameObject SeekEnemyTarget (){

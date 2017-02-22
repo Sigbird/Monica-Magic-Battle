@@ -4,7 +4,15 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
-	
+
+
+	public int playerCharges;
+	public int enemyCharges;
+	public int round ;
+	public int roundCounter;
+
+
+
 	public string tipo{ get; set; }
 	public GameObject Soldado;
 	public int Diamonds;
@@ -23,14 +31,23 @@ public class GameController : MonoBehaviour {
 	public int Mine2Value = 0;
 	private float Mine2Assist;
 	// Use this for initialization
-	void Start () {
-		Time.timeScale = 1;
+	void Awake() {
+		
+		enemyCharges = PlayerPrefs.GetInt ("enemyCharges");
+		Debug.Log ("Enemy " + enemyCharges);
+		playerCharges = PlayerPrefs.GetInt ("playerCharges");
+		Debug.Log ("Player " + playerCharges);
+		round = PlayerPrefs.GetInt ("round");
+		Debug.Log ("Round " + round);
+		if (enemyCharges == 0 && playerCharges == 0) {
+			this.round = 1;
+		}
+
 		//StartCoroutine (EnemyAI ());
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
 		GameObject.Find ("Diamonds").GetComponent<Text> ().text = Diamonds.ToString();
 //		GameObject.Find ("Cost1").GetComponent<Text> ().text = WarriorCost.ToString();
 //		GameObject.Find ("Cost2").GetComponent<Text> ().text = LanceiroCost.ToString();
@@ -162,32 +179,19 @@ public class GameController : MonoBehaviour {
 
 	}
 
-	IEnumerator EnemyAI(){
-		switch(Random.Range(0,4)){
-		case 1:
-			//Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Guerreiro;
-			Soldado.GetComponent<SoldierControler> ().team = 2;
-			Instantiate (Soldado, GameObject.Find ("SpawPoint2").transform.position, Quaternion.identity);
+	public void NextRound(){
+		PlayerPrefs.SetInt ("enemyCharges",enemyCharges);
+		PlayerPrefs.SetInt ("playerCharges",playerCharges);
+		PlayerPrefs.SetInt ("round",round+1);
+		StartCoroutine (newRound());
+	}
+
+	IEnumerator newRound(){
 		
-			break;
-		case 2:
-			//Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Lanceiro;
-			Soldado.GetComponent<SoldierControler> ().team = 2;
-			Instantiate (Soldado, GameObject.Find ("SpawPoint2").transform.position, Quaternion.identity);
-			break;
-		case 3:
-			//Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Mago;
-			Soldado.GetComponent<SoldierControler> ().team = 2;
-			Instantiate (Soldado, GameObject.Find ("SpawPoint2").transform.position, Quaternion.identity);
-			break;
-		default:
-			//
-			break;
-		}
 
-		yield return new WaitForSeconds (Random.Range(3,7));
+		yield return new WaitForSeconds (1);
 
-		StartCoroutine (EnemyAI ());
+		SceneManager.LoadScene ("Jogo");
 	}
 
 	public void CallScene(string scene){
