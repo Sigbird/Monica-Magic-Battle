@@ -10,6 +10,8 @@ public class TowerController : MonoBehaviour {
 
 	public GameObject healtbarSoldier;
 
+	public AudioManager audioManager;
+
 	public int vidaMax;
 	public int vida;
 	public int reach;
@@ -29,14 +31,27 @@ public class TowerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
+		audioManager.PlayAudio ("tower");
 		SetupTower (towerID);
 
 		UpdateLife ();
 		this.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
+
+
 	}
 
 	// Update is called once per frame
 	void Update () {
+
+		//EVENTO DE MORTE
+		if (this.vida <= 0) {
+			audioManager.PlayAudio ("tower");
+			Destroy (this.gameObject);
+		}
+		if (this.vida > this.vidaMax) {
+			this.vida = this.vidaMax;
+		}
 		
 		if (seeking && cdSeek >= 1) {
 			this.targetEnemy = SeekEnemyTarget ();
@@ -56,15 +71,17 @@ public class TowerController : MonoBehaviour {
 
 				} else if (targetEnemy != null) { //ATACA ALVO
 					//anim.SetTrigger ("Attack");
-					if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
+					if (danoCD < damageSpeed) { //TEMPO ENTRE ATAQUES
 						if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO HEROI
 							targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
-							UpdateLife ();
+							targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
+							audioManager.PlayAudio ("shot");
 						} 
-						danoCD = 0;
+						danoCD = 4;
 					} else {
-						danoCD += Time.deltaTime;
+						danoCD -= Time.deltaTime;
 					}
+
 				} 
 			}
 
@@ -88,7 +105,7 @@ public class TowerController : MonoBehaviour {
 			this.reach = 5;
 			this.damage = 1;
 			this.damageSpeed = 3;
-			this.range = 4;
+			this.range = 2; //4
 			this.GetComponent<SpriteRenderer> ().sprite = torresSprites [1];
 			break;
 		case(3): //DESENTUPIDOR
@@ -124,7 +141,7 @@ public class TowerController : MonoBehaviour {
 			this.reach = 5;
 			this.damage = 1;
 			this.damageSpeed = 3;
-			this.range = 5;
+			this.range = 2;//5
 			this.GetComponent<SpriteRenderer> ().sprite = torresSprites [5];
 			break;
 		case(7): //SONO
@@ -151,7 +168,7 @@ public class TowerController : MonoBehaviour {
 			this.reach = 8;
 			this.damage = 5;
 			this.damageSpeed = 3;
-			this.range = 6;
+			this.range = 2;//6
 			this.GetComponent<SpriteRenderer> ().sprite = torresSprites [8];
 			break;
 		default:
@@ -179,7 +196,7 @@ public class TowerController : MonoBehaviour {
 
 		GameObject Emin = null;
 		float minDis = Mathf.Infinity;
-		if (this.tag == "enemysoldier1") {
+		if (this.tag == "enemytower1") {
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);

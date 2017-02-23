@@ -50,6 +50,8 @@ public class SoldierControler : MonoBehaviour {
 
 	public Animator anim;
 
+	public AudioManager audioManager;
+
 	//FLAGS
 
 	public bool inCombat;
@@ -133,7 +135,7 @@ public class SoldierControler : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		
 		if (heroUnity) {// CONFIGURAÇÃO DE HEROIS
 			SetupHero();
 		} else {//CONFIGURAÇÃO DE TROPAS
@@ -162,7 +164,10 @@ public class SoldierControler : MonoBehaviour {
 		this.state = STATE.DEFAULT;
 		if(heroUnity)
 		StartCoroutine (HealingAndXp ());
-			
+
+		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
+		audioManager.PlayAudio ("spawn");
+
 		//DESLOCAMENTO INICIAL
 		if (Random.value < 0.5f) {
 			desloc = 1f;
@@ -219,11 +224,13 @@ public class SoldierControler : MonoBehaviour {
 //			deslocTimer++;
 //		}
 
-		//Evento de Respawning
+		//EVENTO DE MORTE
 		if (this.vida <= 0 && heroUnity) {
 			this.speed = 0;
 			StartCoroutine (Respawning ());
+			audioManager.PlayAudio ("death");
 		} else if(this.vida <= 0) {
+			audioManager.PlayAudio ("death");
 			Destroy (this.gameObject);
 		}
 		if (this.vida > this.vidaMax) {
@@ -386,10 +393,13 @@ public class SoldierControler : MonoBehaviour {
 
 				} else if(targetEnemy != null) { //ATACA ALVO
 					anim.SetTrigger ("Attack");
-					if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
+					if (danoCD < damageSpeed) { //TEMPO ENTRE ATAQUES
 						if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO HEROI
 							targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
-							UpdateLife ();
+							targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
+						}else if (targetEnemy.GetComponent<TowerController> () != null) {//ALVO TORRE
+							targetEnemy.GetComponent<TowerController> ().vida -= damage;
+							targetEnemy.GetComponent<TowerController> ().UpdateLife();
 						} else {//ALVO BASE
 							if (heroUnity) {
 								heroBase.GetComponent<ChargesScript> ().charges++;
@@ -399,9 +409,14 @@ public class SoldierControler : MonoBehaviour {
 								Destroy (this.gameObject);
 							}
 						}
-						danoCD = 0;
+						danoCD = 4;
+						if (this.range > 1) {
+							audioManager.PlayAudio ("shot");
+						} else {
+							audioManager.PlayAudio ("atack");
+						}
 					} else {
-						danoCD += Time.deltaTime;
+						danoCD -= Time.deltaTime;
 					}
 				} 
 			}
@@ -811,15 +826,18 @@ public class SoldierControler : MonoBehaviour {
 		this.energybarSoldier.SetActive (false);
 		this.skill1.gameObject.SetActive (false);
 		this.skill2.gameObject.SetActive (false);
+		if(heroUnity)
 		transform.position = heroBase.transform.position;
 		this.vida = this.vidaMax;
 		UpdateLife ();
+		if(heroUnity)
 		this.energy = this.energyMax;
 		this.seeking = false;
 		yield return new WaitForSeconds (respawningTimer);
 		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
 		this.healtbarSoldier.SetActive (true);
+		if (heroUnity)
 		this.energybarSoldier.SetActive (true);
 		this.skill1.gameObject.SetActive (false);
 		this.skill2.gameObject.SetActive (false);
@@ -834,6 +852,17 @@ public class SoldierControler : MonoBehaviour {
 		GameObject Emin = null;
 		float minDis = Mathf.Infinity;
 		if (this.tag == "enemysoldier1") {
+			if (GameObject.FindGameObjectsWithTag ("enemytower2") != null) {
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower2")) {
+					float dist = Vector3.Distance (transform.position, obj.transform.position);
+					if (dist <= reach) {
+						if (dist < minDis) {
+							Emin = obj;
+							minDis = dist;
+						}
+					}
+				}
+			}
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
@@ -849,6 +878,17 @@ public class SoldierControler : MonoBehaviour {
 				return GameObject.Find ("HeroBaseEnemy");
 			}
 		} else if (this.tag == "enemysoldier2") {
+			if (GameObject.FindGameObjectsWithTag ("enemytower1") != null) {
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower1")) {
+					float dist = Vector3.Distance (transform.position, obj.transform.position);
+					if (dist <= reach) {
+						if (dist < minDis) {
+							Emin = obj;
+							minDis = dist;
+						}
+					}
+				}
+			}
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);

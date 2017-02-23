@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour {
 	public int round ;
 	public int roundCounter;
 
-
+	public GameObject[] endGamePanel;
 
 	public string tipo{ get; set; }
 	public GameObject Soldado;
@@ -180,18 +180,40 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void NextRound(){
-		PlayerPrefs.SetInt ("enemyCharges",enemyCharges);
-		PlayerPrefs.SetInt ("playerCharges",playerCharges);
+		if (enemyCharges >= 2 || playerCharges >= 2) {
+			PlayerPrefs.SetInt ("round",1);
+			PlayerPrefs.SetInt ("playerCharges",0);
+			PlayerPrefs.SetInt ("enemyCharges",0);
+			StartCoroutine (newRound());
+		}
 		PlayerPrefs.SetInt ("round",round+1);
 		StartCoroutine (newRound());
 	}
 
 	IEnumerator newRound(){
-		
-
-		yield return new WaitForSeconds (1);
-
+		yield return new WaitForSeconds (2);
 		SceneManager.LoadScene ("Jogo");
+	}
+
+	IEnumerator endGame(){
+		Time.timeScale = 0;
+		yield return new WaitForSeconds (1);
+		if (playerCharges >= 2) {
+			this.GetComponent<AudioManager> ().PlayAudio ("victory");
+			endGamePanel [0].SetActive (true);
+		} else {
+			this.GetComponent<AudioManager> ().PlayAudio ("defeat");
+			endGamePanel [1].SetActive (true);
+		}
+		yield return new WaitForSeconds (2);
+		Time.timeScale = 1;
+
+	}
+
+	void OnApplicationQuit() {
+		PlayerPrefs.SetInt ("round",1);
+		PlayerPrefs.SetInt ("playerCharges",0);
+		PlayerPrefs.SetInt ("enemyCharges",0);
 	}
 
 	public void CallScene(string scene){
