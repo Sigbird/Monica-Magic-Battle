@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class CardScript : MonoBehaviour {
 
+	public int CardID;
+
 	public bool isactivebutton = false;
 	public Image activebutton;
 	public Sprite activeTrue;
@@ -31,6 +33,9 @@ public class CardScript : MonoBehaviour {
 	
 
 	}
+
+
+
 
 	public void SetActiveButton(){
 		activebutton.sprite = activeTrue;
