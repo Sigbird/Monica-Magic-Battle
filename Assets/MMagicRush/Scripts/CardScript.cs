@@ -22,9 +22,11 @@ public class CardScript : MonoBehaviour {
 	public Sprite image;
 	public Sprite peson;
 
+	public GameObject cardInfo;
+
 	// Use this for initialization
 	void Start () {
-	
+		this.GetComponent<Image> ().sprite = image;
 	}
 	
 	// Update is called once per frame
@@ -34,6 +36,10 @@ public class CardScript : MonoBehaviour {
 
 	}
 
+	public void OpenCardInfo(){
+		cardInfo.SetActive (true);
+		cardInfo.GetComponent<CardInfoScript> ().SendCard (this.gameObject);
+	}
 
 
 

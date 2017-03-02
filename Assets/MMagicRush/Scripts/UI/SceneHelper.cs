@@ -13,7 +13,7 @@ public class SceneHelper : MonoBehaviour {
 		Camera.main.gameObject.GetComponent<AudioSource> ().clip = bgMusic;
 		Camera.main.gameObject.GetComponent<AudioSource> ().Play ();
 		for (int i = 0; i < 10; i++) {
-			ArrayUtility.Add<int>(ref temp,Random.Range(1,5));
+			ArrayUtility.Add<int>(ref temp,Random.Range(1,29));
 		}
 		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", temp);
 	}
