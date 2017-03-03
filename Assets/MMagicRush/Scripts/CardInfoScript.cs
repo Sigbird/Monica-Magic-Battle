@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class CardInfoScript : MonoBehaviour {
 
@@ -48,13 +49,25 @@ public class CardInfoScript : MonoBehaviour {
 
 	}
 
+	public void BuyCard(){
+		int[] temp = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+		ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
+		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", temp);
+		this.gameObject.SetActive (false);
+	}
+
 	public void ActiveCard(){
 		lastCard.GetComponent<CardScript> ().SetActiveButton ();
-	
+		int[] temp = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+		ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", temp);
 	}
 
 	public void DeactiveCard(){
 		lastCard.GetComponent<CardScript> ().SetDesativeButton ();
+		int[] temp = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+		ArrayUtility.Remove<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", temp);
 	}
 
 }

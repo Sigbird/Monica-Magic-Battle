@@ -5,11 +5,14 @@ using System.Collections.Generic;
 
 public class FilterScript : MonoBehaviour {
 
+	public bool CardShop;
+
 	public List<Transform> childrens;
 
 	public GameObject CardInfo;
 	public GameObject CardPrefab;
 	private GameObject g;
+	private int[] x;
 
 	public Sprite[] Efects;
 	public Sprite[] Images;
@@ -60,8 +63,29 @@ public class FilterScript : MonoBehaviour {
 		}
 	}
 
+	public void AddNewCard(){
+		
+	}
+
+	public void EnableCard(){
+	
+	}
+
 	public void UpdatePlayerCardList(){
-		int[] x = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+		
+		if (CardShop) {
+			int[] cs = new int[30];
+			for (int i = 1; i <= 29; i++) {
+				cs [i] = i;
+			}
+			x = cs;
+		} else {
+			int[] a = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+			x = a;
+		}
+
+
+
 //		foreach (GameObject card in CardPrefabs) {
 //			if( ArrayUtility.Contains(x,card.GetComponent<CardScript>().CardID) ){
 //			GameObject g = Instantiate (card, this.transform.position, Quaternion.identity);
@@ -70,10 +94,12 @@ public class FilterScript : MonoBehaviour {
 //				childrens.Add (g.transform);
 //			}
 //		}
+
 		foreach (int cardID in x){
 			switch (cardID) {
 			case 1:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 1;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Estalo Magico";
@@ -89,6 +115,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 2:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 2;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Explosão Magica";
@@ -104,6 +131,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 3:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 3;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Nevasca";
@@ -119,6 +147,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 4:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 4;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Terremoto";
@@ -134,6 +163,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 5:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 5;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Hora da Soneca";
@@ -149,6 +179,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 6:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 6;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Remédio";
@@ -164,6 +195,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 7:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 7;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Canja de Galinha";
@@ -179,6 +211,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 8:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 8;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Escudo";
@@ -194,6 +227,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 9:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 9;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Grito de Guerra";
@@ -209,6 +243,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 10:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 10;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Sem Munição";
@@ -227,6 +262,7 @@ public class FilterScript : MonoBehaviour {
 
 			case 11:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 11;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Monica";
 				g.GetComponent<CardScript> ().cardname = "Bidu";
@@ -242,6 +278,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 12:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 12;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Astronauta";
@@ -257,6 +294,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 13:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 13;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Anjinho";
@@ -272,6 +310,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 14:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 14;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Jotalhão";
@@ -287,6 +326,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 15:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 15;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Piteco";
@@ -302,6 +342,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 16:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 16;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Penadinho";
@@ -317,6 +358,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 17:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 17;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Cebolinha";
 				g.GetComponent<CardScript> ().cardname = "Louco";
@@ -332,6 +374,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 18:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 18;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Monica";
 				g.GetComponent<CardScript> ().cardname = "Sansão";
@@ -347,6 +390,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 19:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 19;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Magali";
 				g.GetComponent<CardScript> ().cardname = "Mingau";
@@ -362,6 +406,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 20:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 20;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Alfredo";
@@ -380,6 +425,7 @@ public class FilterScript : MonoBehaviour {
 
 			case 21:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 21;
 				g.GetComponent<CardScript> ().efeito = "Construcao";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Torre de Papel";
@@ -395,6 +441,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 22:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 22;
 				g.GetComponent<CardScript> ().efeito = "Construcao";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Torre de Agua";
@@ -410,6 +457,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 23:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 23;
 				g.GetComponent<CardScript> ().efeito = "Construcao";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Torre de Desentupidor";
@@ -425,6 +473,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 24:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 24;
 				g.GetComponent<CardScript> ().efeito = "Construcao";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Torre de Neve";
@@ -440,6 +489,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 25:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 25;
 				g.GetComponent<CardScript> ().efeito = "Construcao";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Torre da Cura";
@@ -455,6 +505,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 26:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 26;
 				g.GetComponent<CardScript> ().efeito = "Construcao";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Torre do Tesouro";
@@ -470,6 +521,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 27:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 27;
 				g.GetComponent<CardScript> ().efeito = "Construcao";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Torre do Sono";
@@ -485,6 +537,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 28:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 28;
 				g.GetComponent<CardScript> ().efeito = "Construcao";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Torre AntiTorre";
@@ -500,6 +553,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 29:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 29;
 				g.GetComponent<CardScript> ().efeito = "Construcao";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Torre Protetora";
@@ -518,15 +572,14 @@ public class FilterScript : MonoBehaviour {
 		}
 	}
 
-//	public void UpdateChildrens(){
-//		Transform[] filter = this.gameObject.GetComponentsInChildren<Transform> ();
-//		foreach (Transform f in filter)
-//		{
-//			if(f.name == "Card"){
-//			f.transform.gameObject.SetActive(true);
-//			childrens.Add(f);
-//			}  
-//		}
-//	}
+	public void ClearChildrens(){
+		Transform[] filter = this.gameObject.GetComponentsInChildren<Transform> ();
+		foreach (Transform f in filter)
+		{
+			if(f.name == "Card(Clone)"){
+				Destroy (f.gameObject);
+			}  
+		}
+	}
 
 }
