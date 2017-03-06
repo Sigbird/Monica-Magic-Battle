@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour {
 	public int roundCounter;
 
 	public GameObject[] endGamePanel;
+	[HideInInspector]
+	public int[] empty;
 
 	public string tipo{ get; set; }
 	public GameObject Soldado;
@@ -214,6 +216,9 @@ public class GameController : MonoBehaviour {
 		PlayerPrefs.SetInt ("round",1);
 		PlayerPrefs.SetInt ("playerCharges",0);
 		PlayerPrefs.SetInt ("enemyCharges",0);
+
+		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
 	}
 
 	public void CallScene(string scene){
@@ -225,6 +230,5 @@ public class GameController : MonoBehaviour {
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 	}
-
 
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityEditor;
 
 public class CardInfoScript : MonoBehaviour {
 
@@ -50,24 +50,86 @@ public class CardInfoScript : MonoBehaviour {
 	}
 
 	public void BuyCard(){
-		int[] temp = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
-		ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
-		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", temp);
+		int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+
+		int[] finalArray = new  int[original.Length + 1 ];
+
+		for(int i = 0; i < original.Length; i ++ ) {
+			finalArray[i] = original[i];
+		}
+
+		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
+
+
+		//ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
+		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
+		this.gameObject.SetActive (false);
+	}
+
+	public void RemoveCard(){
+
+		int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+
+		List<int> iList = new List<int>();
+
+
+
+		for(int i = 0; i < original.Length; i ++ ) {
+			iList.Add (original [i]);
+		}
+
+		iList.Remove (lastCard.GetComponent<CardScript> ().CardID);
+
+		int[] finalArray = new int[iList.Count];
+
+		int x = 0;
+		foreach (int i in iList) {
+			finalArray [x] = i;
+			x++;
+		}
+
+		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
+		Destroy (lastCard.gameObject);
 		this.gameObject.SetActive (false);
 	}
 
 	public void ActiveCard(){
 		lastCard.GetComponent<CardScript> ().SetActiveButton ();
-		int[] temp = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
-		ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
-		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", temp);
+		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+
+		int[] finalArray = new  int[original.Length + 1 ];
+
+		for(int i = 0; i < original.Length; i ++ ) {
+			finalArray[i] = original[i];
+		}
+
+		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
 	}
 
 	public void DeactiveCard(){
 		lastCard.GetComponent<CardScript> ().SetDesativeButton ();
-		int[] temp = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
-		ArrayUtility.Remove<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
-		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", temp);
+		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+
+		List<int> iList = new List<int>();
+
+		for(int i = 0; i < original.Length; i ++ ) {
+			iList.Add (original [i]);
+		}
+
+		iList.Remove (lastCard.GetComponent<CardScript> ().CardID);
+
+		int[] finalArray = new int[iList.Count];
+
+		int x = 0;
+		foreach (int i in iList) {
+			finalArray [x] = i;
+			x++;
+		}
+
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
 	}
+
+
 
 }

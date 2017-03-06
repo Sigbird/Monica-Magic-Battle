@@ -9,6 +9,11 @@ public class CardSlotScript : MonoBehaviour {
 	//CARD INFO
 	public int cardID;
 
+	public int[] cards;
+
+	[HideInInspector]
+	public int[] empty;
+
 	public Sprite[] cardsImages;
 
 	public int[] cardlistIngame; 
@@ -88,7 +93,13 @@ public class CardSlotScript : MonoBehaviour {
 
 	//PUXA CARTA NOVA PARA O SLOT
 	public void UpdateCard(){
-		cardID = Random.Range (1, 29);
+		cards = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+
+		if (cards.Length == 0) {
+			cardID = 1;
+		} else {
+			cardID = cards [Random.Range(0, cards.Length)];
+		}
 		switch (cardID) {
 		case 0://SEM CARTA
 			cardCost = 9999;
