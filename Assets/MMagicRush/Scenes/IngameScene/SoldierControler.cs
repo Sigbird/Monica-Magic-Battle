@@ -397,6 +397,8 @@ public class SoldierControler : MonoBehaviour {
 						if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO HEROI
 							targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 							targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
+							if(this.range>1)
+							TrowArrow ();
 						}else if (targetEnemy.GetComponent<TowerController> () != null) {//ALVO TORRE
 							targetEnemy.GetComponent<TowerController> ().vida -= damage;
 							targetEnemy.GetComponent<TowerController> ().UpdateLife();
@@ -406,7 +408,7 @@ public class SoldierControler : MonoBehaviour {
 								GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
 								//StartCoroutine (Respawning ());
 							} else {
-								Destroy (this.gameObject);
+								//Destroy (this.gameObject);
 							}
 						}
 						danoCD = 4;
@@ -908,14 +910,16 @@ public class SoldierControler : MonoBehaviour {
 	}
 		
 
-//	public void TrowArrow(){
-//		GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity);
-//		if (Vector3.Distance (arrow.transform.position, targetEnemy.transform.position) > 0.1f) {
-//			arrow.transform.position = Vector3.MoveTowards (arrow.transform.position, targetEnemy.transform.position, Time.deltaTime * 5);
-//		} else {
-//			Destroy (arrow);
-//		}
-//	}
+	public void TrowArrow(){
+		
+	GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity);
+		if (targetEnemy != null) {
+		arrow.GetComponent<ArrowScript> ().target = targetEnemy;
+	} else {
+		Destroy (arrow);
+	}
+
+	}
 
 
 }
