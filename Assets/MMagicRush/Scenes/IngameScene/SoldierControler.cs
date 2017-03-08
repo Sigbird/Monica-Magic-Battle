@@ -42,7 +42,7 @@ public class SoldierControler : MonoBehaviour {
 
 	public Sprite[] tropasSprites;
 
-	public GameObject light;
+	public GameObject FlashingEffects;
 
 	public GameObject platform;
 
@@ -397,6 +397,7 @@ public class SoldierControler : MonoBehaviour {
 						if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO HEROI
 							targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 							targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
+							targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage ();
 							if(this.range>1)
 							TrowArrow ();
 						}else if (targetEnemy.GetComponent<TowerController> () != null) {//ALVO TORRE
@@ -907,6 +908,14 @@ public class SoldierControler : MonoBehaviour {
 			}
 		}
 		return Emin;
+	}
+
+	public void ReceiveDamage(){
+	
+		if (this.team == 1 && heroUnity == true) {
+			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
+		}
+
 	}
 		
 

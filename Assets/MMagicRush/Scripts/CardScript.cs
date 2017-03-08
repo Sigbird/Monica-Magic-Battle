@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class CardScript : MonoBehaviour {
@@ -18,7 +19,7 @@ public class CardScript : MonoBehaviour {
 	public string descrition;
 	public string cost;
 	public string damage;
-	public Sprite efect;
+	public Image efect;
 	public Sprite image;
 	public Sprite peson;
 
@@ -28,6 +29,7 @@ public class CardScript : MonoBehaviour {
 	void Start () {
 		this.GetComponent<Image> ().sprite = image;
 	}
+		
 	
 	// Update is called once per frame
 	void Update () {
@@ -44,6 +46,7 @@ public class CardScript : MonoBehaviour {
 
 
 	public void SetActiveButton(){
+		if(activebutton != null)
 		activebutton.sprite = activeTrue;
 		isactivebutton = true;
 	}
@@ -51,6 +54,47 @@ public class CardScript : MonoBehaviour {
 	public void SetDesativeButton(){
 		activebutton.sprite = activeFalse;
 		isactivebutton = false;
+	}
+
+	public void ActiveCard(){
+		if(activebutton != null)
+			activebutton.sprite = activeTrue;
+		isactivebutton = true;
+
+		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+
+		int[] finalArray = new  int[original.Length + 1 ];
+
+		for(int i = 0; i < original.Length; i ++ ) {
+			finalArray[i] = original[i];
+		}
+
+		finalArray[finalArray.Length - 1] = CardID;
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
+	}
+
+	public void DeactiveCard(){
+		activebutton.sprite = activeFalse;
+		isactivebutton = false;
+		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+
+		List<int> iList = new List<int>();
+
+		for(int i = 0; i < original.Length; i ++ ) {
+			iList.Add (original [i]);
+		}
+
+		iList.Remove (CardID);
+
+		int[] finalArray = new int[iList.Count];
+
+		int x = 0;
+		foreach (int i in iList) {
+			finalArray [x] = i;
+			x++;
+		}
+
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
 	}
 
 

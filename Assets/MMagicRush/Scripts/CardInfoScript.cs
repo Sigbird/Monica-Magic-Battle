@@ -34,7 +34,7 @@ public class CardInfoScript : MonoBehaviour {
 		descrition.text = o.GetComponent<CardScript> ().descrition;
 		cost.text = o.GetComponent<CardScript> ().cost;
 		damage.text = o.GetComponent<CardScript> ().damage;
-		efect.sprite = o.GetComponent<CardScript> ().efect;
+		efect.sprite = o.GetComponent<CardScript> ().efect.sprite;
 		image.sprite = o.GetComponent<CardScript> ().image;
 		character.sprite = o.GetComponent<CardScript> ().peson;
 
@@ -70,27 +70,30 @@ public class CardInfoScript : MonoBehaviour {
 
 		int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
 
-		List<int> iList = new List<int>();
+		if (original.Length > 5) {
+
+			List<int> iList = new List<int> ();
 
 
+			for (int i = 0; i < original.Length; i++) {
+				iList.Add (original [i]);
+			}
 
-		for(int i = 0; i < original.Length; i ++ ) {
-			iList.Add (original [i]);
+			iList.Remove (lastCard.GetComponent<CardScript> ().CardID);
+
+			int[] finalArray = new int[iList.Count];
+
+			int x = 0;
+			foreach (int i in iList) {
+				finalArray [x] = i;
+				x++;
+			}
+
+			PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
+			DeactiveCard ();
+			Destroy (lastCard.gameObject);
+			this.gameObject.SetActive (false);
 		}
-
-		iList.Remove (lastCard.GetComponent<CardScript> ().CardID);
-
-		int[] finalArray = new int[iList.Count];
-
-		int x = 0;
-		foreach (int i in iList) {
-			finalArray [x] = i;
-			x++;
-		}
-
-		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
-		Destroy (lastCard.gameObject);
-		this.gameObject.SetActive (false);
 	}
 
 	public void ActiveCard(){

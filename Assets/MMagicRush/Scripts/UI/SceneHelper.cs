@@ -15,7 +15,11 @@ public class SceneHelper : MonoBehaviour {
 		for (int i = 0; i < 10; i++) {
 			temp[i] = Random.Range(1,29);
 		}
-		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", temp);
+		if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length <= 0) {
+			PlayerPrefsX.SetIntArray ("PlayerCardsIDs", temp);
+		} else {
+			temp = empty;
+		}
 	}
 	
 	// Update is called once per frame
@@ -26,8 +30,13 @@ public class SceneHelper : MonoBehaviour {
 		YupiPlay.SceneLoadingManager.LoadScene(scene);
 	}
 
+	public void Exit() {
+		Application.Quit ();
+	}
+
+
 	void OnApplicationQuit(){
-		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
-		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
+		//PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
+		//PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
 	}
 }

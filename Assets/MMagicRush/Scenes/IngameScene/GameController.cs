@@ -182,14 +182,15 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void NextRound(){
-		if (enemyCharges >= 2 || playerCharges >= 2) {
-			PlayerPrefs.SetInt ("round",1);
-			PlayerPrefs.SetInt ("playerCharges",0);
-			PlayerPrefs.SetInt ("enemyCharges",0);
-			StartCoroutine (newRound());
+		if (enemyCharges > 1 || playerCharges > 1) {
+			PlayerPrefs.SetInt ("round", 1);
+			PlayerPrefs.SetInt ("playerCharges", 0);
+			PlayerPrefs.SetInt ("enemyCharges", 0);
+			StartCoroutine (endGame());
+		} else {
+			PlayerPrefs.SetInt ("round", round + 1);
+			StartCoroutine (newRound ());
 		}
-		PlayerPrefs.SetInt ("round",round+1);
-		StartCoroutine (newRound());
 	}
 
 	IEnumerator newRound(){
@@ -198,18 +199,16 @@ public class GameController : MonoBehaviour {
 	}
 
 	IEnumerator endGame(){
-		Time.timeScale = 0;
+		
 		yield return new WaitForSeconds (1);
-		if (playerCharges >= 2) {
+		if (playerCharges > 2) {
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
 			endGamePanel [0].SetActive (true);
 		} else {
 			this.GetComponent<AudioManager> ().PlayAudio ("defeat");
 			endGamePanel [1].SetActive (true);
 		}
-		yield return new WaitForSeconds (2);
-		Time.timeScale = 1;
-
+		Time.timeScale = 0;
 	}
 
 	void OnApplicationQuit() {
@@ -217,11 +216,16 @@ public class GameController : MonoBehaviour {
 		PlayerPrefs.SetInt ("playerCharges",0);
 		PlayerPrefs.SetInt ("enemyCharges",0);
 
-		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
-		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
+		//PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
+		//PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
+	}
+
+	public void LoadScene(string scene){
+		SceneManager.LoadScene (scene);
 	}
 
 	public void CallScene(string scene){
+		Time.timeScale = 1;
 		if (scene == "quit") {
 			Application.Quit ();
 		}else if (scene == "start") {

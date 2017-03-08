@@ -8,6 +8,7 @@ public class AudioManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		source = this.GetComponent<AudioSource> ();
+		PlayAudio ("ingame");
 	}
 	
 	// Update is called once per frame
@@ -47,6 +48,12 @@ public class AudioManager : MonoBehaviour {
 		if (track == "menu") {
 			source.loop = true;
 			source.clip = audios [9];
+			source.Play ();
+		}
+		if (track == "ingame") {
+			source.loop = true;
+			source.clip = audios [10];
+			source.volume = 0.2f;
 			source.Play ();
 		}
 
