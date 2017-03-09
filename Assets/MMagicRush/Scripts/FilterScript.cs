@@ -12,19 +12,23 @@ public class FilterScript : MonoBehaviour {
 	public GameObject CardPrefab;
 	private GameObject g;
 	private int[] x;
-
+	private int[] cs;
 	public Sprite[] Efects;
 	public Sprite[] Images;
 	public Sprite[] Persons;
 
 	void OnEnable() {
 		//UpdateChildrens ();
-		UpdatePlayerCardList();
+	
 	}
 
 	// Use this for initialization
 	void Start () {
-	
+		cs = new int[30];
+		for (int i = 1; i <= 29; i++) {
+			cs [i] = i;
+		}
+		UpdatePlayerCardList();
 	}
 		
 	// Update is called once per frame
@@ -73,10 +77,6 @@ public class FilterScript : MonoBehaviour {
 	public void UpdatePlayerCardList(){
 		
 		if (CardShop) {
-			int[] cs = new int[30];
-			for (int i = 1; i <= 29; i++) {
-				cs [i] = i;
-			}
 			x = cs;
 		} else {
 			int[] a = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
@@ -626,11 +626,14 @@ public class FilterScript : MonoBehaviour {
 				childrens.Add (g.transform);
 				break;
 			}
-			foreach (int enab in enableds) {
-				if (enab == cardID) {
-					g.GetComponent<CardScript> ().ActiveCard ();
+			if (CardShop == false) {
+				foreach (int enab in enableds) {
+					if (enab == cardID) {
+						g.GetComponent<CardScript> ().ActiveCard ();
+					}
 				}
 			}
+
 			if (minimun <= 15 && CardShop == false) {
 				g.GetComponent<CardScript> ().ActiveCard ();
 				minimun++;

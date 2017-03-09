@@ -36,7 +36,7 @@ public class SceneHelper : MonoBehaviour {
 
 
 	void OnApplicationQuit(){
-		//PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
-		//PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
+		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
 	}
 }
