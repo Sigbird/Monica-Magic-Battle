@@ -6,29 +6,27 @@ public class FilterScript : MonoBehaviour {
 
 	public bool CardShop;
 
+
 	public List<Transform> childrens;
 
 	public GameObject CardInfo;
 	public GameObject CardPrefab;
 	private GameObject g;
-	private int[] x;
+	public int[] x;
 	private int[] cs;
+	private int[] empty;
 	public Sprite[] Efects;
 	public Sprite[] Images;
 	public Sprite[] Persons;
 
 	void OnEnable() {
-		//UpdateChildrens ();
+		EnableCards ();
 	
 	}
 
 	// Use this for initialization
 	void Start () {
-		cs = new int[30];
-		for (int i = 1; i <= 29; i++) {
-			cs [i] = i;
-		}
-		UpdatePlayerCardList();
+		
 	}
 		
 	// Update is called once per frame
@@ -70,11 +68,22 @@ public class FilterScript : MonoBehaviour {
 		
 	}
 
-	public void EnableCard(){
-	
+	public void EnableCards(){
+		int[] a = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+		if (x.Length == a.Length) {
+			
+		} else {
+			ResetCards ();
+			UpdatePlayerCardList ();
+		} 
+
 	}
 
 	public void UpdatePlayerCardList(){
+		cs = new int[30];
+		for (int i = 1; i <= 29; i++) {
+			cs [i] = i;
+		}
 		
 		if (CardShop) {
 			x = cs;
@@ -638,17 +647,32 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().ActiveCard ();
 				minimun++;
 			}
+
 		}
 	}
 
+	public void ResetCards(){
+				Transform[] filter = this.gameObject.GetComponentsInChildren<Transform> ();
+				foreach (Transform f in filter)
+				{
+					if(f.name == "Card(Clone)"){
+						Destroy (f.gameObject);
+						x = empty;
+						childrens.Clear ();
+					}  
+				}
+	}
+
 	public void ClearChildrens(){
-		Transform[] filter = this.gameObject.GetComponentsInChildren<Transform> ();
-		foreach (Transform f in filter)
-		{
-			if(f.name == "Card(Clone)"){
-				Destroy (f.gameObject);
-			}  
-		}
+//		Transform[] filter = this.gameObject.GetComponentsInChildren<Transform> ();
+//		foreach (Transform f in filter)
+//		{
+//			if(f.name == "Card(Clone)"){
+//				Destroy (f.gameObject);
+//				x = empty;
+//				childrens.Clear ();
+//			}  
+//		}
 	}
 
 }
