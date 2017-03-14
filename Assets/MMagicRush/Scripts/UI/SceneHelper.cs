@@ -15,11 +15,22 @@ public class SceneHelper : MonoBehaviour {
 		for (int i = 0; i < 10; i++) {
 			temp[i] = Random.Range(1,29);
 		}
+			
 		if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length <= 0) {
 			PlayerPrefsX.SetIntArray ("PlayerCardsIDs", temp);
+			if (temp.Length < 15) {
+				PlayerPrefsX.SetIntArray ("SelectedCardsIDs", temp);
+			}
+
 		} else {
+			if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length > 0 || PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length <= 15) {
+				PlayerPrefsX.SetIntArray ("SelectedCardsIDs", PlayerPrefsX.GetIntArray ("PlayerCardsIDs"));
+			}
 			temp = empty;
 		}
+
+
+
 	}
 	
 	// Update is called once per frame
@@ -36,7 +47,7 @@ public class SceneHelper : MonoBehaviour {
 
 
 	void OnApplicationQuit(){
-		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
-		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
+		//PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
+		//PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
 	}
 }

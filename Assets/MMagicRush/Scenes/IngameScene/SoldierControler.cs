@@ -842,8 +842,8 @@ public class SoldierControler : MonoBehaviour {
 		this.healtbarSoldier.SetActive (true);
 		if (heroUnity)
 		this.energybarSoldier.SetActive (true);
-		this.skill1.gameObject.SetActive (false);
-		this.skill2.gameObject.SetActive (false);
+		this.skill1.gameObject.SetActive (true);
+		this.skill2.gameObject.SetActive (true);
 		this.damage = 1;
 		this.seeking = true;
 		this.targetEnemy = SeekEnemyTarget();

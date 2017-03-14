@@ -643,10 +643,10 @@ public class FilterScript : MonoBehaviour {
 				}
 			}
 
-			if (minimun <= 15 && CardShop == false) {
-				g.GetComponent<CardScript> ().ActiveCard ();
-				minimun++;
-			}
+//			if (minimun <= 15 && CardShop == false) {
+//				g.GetComponent<CardScript> ().ActiveCard ();
+//				minimun++;
+//			}
 
 		}
 	}

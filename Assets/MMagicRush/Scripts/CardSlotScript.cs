@@ -86,9 +86,10 @@ public class CardSlotScript : MonoBehaviour {
 			if (HoveringObject.tag == "Stage") {
 				ActivateCardEffect (HoveringObject);
 			}
-		
+			
 			projectileCreated = false;
 		}
+		released = true;
 	}
 
 	//PUXA CARTA NOVA PARA O SLOT
@@ -464,6 +465,6 @@ public class CardSlotScript : MonoBehaviour {
 			Debug.Log ("out of range");
 			break;
 			}
-		Movable.GetComponent<sparkScript> ().DestroyItself ();
+		//Movable.GetComponent<sparkScript> ().DestroyItself ();
 	}
 }

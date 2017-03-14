@@ -74,27 +74,29 @@ public class CardScript : MonoBehaviour {
 	}
 
 	public void DeactiveCard(){
-		activebutton.sprite = activeFalse;
-		isactivebutton = false;
-		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+		if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length > 15) {// VERIFICA SE TEM PELO MENOS 15 CARTAS SELECIONADAS
+			activebutton.sprite = activeFalse;
+			isactivebutton = false;
+			int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
 
-		List<int> iList = new List<int>();
+			List<int> iList = new List<int> ();
 
-		for(int i = 0; i < original.Length; i ++ ) {
-			iList.Add (original [i]);
+			for (int i = 0; i < original.Length; i++) {
+				iList.Add (original [i]);
+			}
+
+			iList.Remove (CardID);
+
+			int[] finalArray = new int[iList.Count];
+
+			int x = 0;
+			foreach (int i in iList) {
+				finalArray [x] = i;
+				x++;
+			}
+
+			PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
 		}
-
-		iList.Remove (CardID);
-
-		int[] finalArray = new int[iList.Count];
-
-		int x = 0;
-		foreach (int i in iList) {
-			finalArray [x] = i;
-			x++;
-		}
-
-		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
 	}
 
 

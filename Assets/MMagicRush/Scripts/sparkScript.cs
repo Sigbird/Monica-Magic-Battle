@@ -10,8 +10,10 @@ public class sparkScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void Update (){
+		if (CardSlot.released) {
+			DestroyItself ();
+		}
 	}
 
 	void OnTriggerStay2D(Collider2D other) {
