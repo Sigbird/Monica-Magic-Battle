@@ -63,14 +63,35 @@ public class CardScript : MonoBehaviour {
 
 		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
 
-		int[] finalArray = new  int[original.Length + 1 ];
+		List<int> iList = new List<int>();
 
 		for(int i = 0; i < original.Length; i ++ ) {
-			finalArray[i] = original[i];
+			iList.Add (original [i]);
 		}
 
-		finalArray[finalArray.Length - 1] = CardID;
+		iList.Add (this.CardID);
+
+		int[] finalArray = new int[iList.Count];
+
+		int x = 0;
+		foreach (int i in iList) {
+			finalArray [x] = i;
+			x++;
+		}
+
+		//finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
 		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
+
+//		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+//
+//		int[] finalArray = new  int[original.Length + 1 ];
+//
+//		for(int i = 0; i < original.Length; i ++ ) {
+//			finalArray[i] = original[i];
+//		}
+//
+//		finalArray[finalArray.Length - 1] = CardID;
+//		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
 	}
 
 	public void DeactiveCard(){

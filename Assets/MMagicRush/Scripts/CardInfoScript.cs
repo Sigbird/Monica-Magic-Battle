@@ -37,6 +37,12 @@ public class CardInfoScript : MonoBehaviour {
 		efect.sprite = o.GetComponent<CardScript> ().efect.sprite;
 		image.sprite = o.GetComponent<CardScript> ().image;
 		character.sprite = o.GetComponent<CardScript> ().peson;
+		Debug.Log (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length);
+		if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15 && enableButton != null) {
+			enableButton.GetComponent<Button> ().interactable = false;
+		} else if(enableButton != null) {
+			enableButton.GetComponent<Button> ().interactable = true;
+		}
 
 		if(enableButton != null && disableButton != null)
 		if (o.GetComponent<CardScript> ().isactivebutton) {
@@ -47,22 +53,45 @@ public class CardInfoScript : MonoBehaviour {
 			disableButton.SetActive(true);
 		}
 
+
 	}
 
 	public void BuyCard(){
 		int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
 
-		int[] finalArray = new  int[original.Length + 1 ];
+		List<int> iList = new List<int>();
 
 		for(int i = 0; i < original.Length; i ++ ) {
-			finalArray[i] = original[i];
+			iList.Add (original [i]);
 		}
 
-		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
+		iList.Add (lastCard.GetComponent<CardScript> ().CardID);
+
+		int[] finalArray = new int[iList.Count];
+
+		int x = 0;
+		foreach (int i in iList) {
+			finalArray [x] = i;
+			x++;
+		}
+
+
+//		int[] finalArray = new  int[original.Length + 1 ];
+//
+//		for(int i = 0; i < original.Length; i ++ ) {
+//			finalArray[i] = original[i];
+//		}
+//
+//		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
 
 
 		//ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
 		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
+
+		if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15) {
+			ActiveCard ();
+		}
+
 		this.gameObject.SetActive (false);
 	}
 
@@ -100,13 +129,29 @@ public class CardInfoScript : MonoBehaviour {
 		lastCard.GetComponent<CardScript> ().SetActiveButton ();
 		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
 
-		int[] finalArray = new  int[original.Length + 1 ];
+		List<int> iList = new List<int>();
 
 		for(int i = 0; i < original.Length; i ++ ) {
-			finalArray[i] = original[i];
+			iList.Add (original [i]);
 		}
 
-		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
+		iList.Add (lastCard.GetComponent<CardScript> ().CardID);
+
+		int[] finalArray = new int[iList.Count];
+
+		int x = 0;
+		foreach (int i in iList) {
+			finalArray [x] = i;
+			x++;
+		}
+			
+//		int[] finalArray = new  int[original.Length + 1 ];
+//
+//		for(int i = 0; i < original.Length; i ++ ) {
+//			finalArray[i] = original[i];
+//		}
+
+//		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
 		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
 	}
 

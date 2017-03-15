@@ -638,7 +638,8 @@ public class FilterScript : MonoBehaviour {
 			if (CardShop == false) {
 				foreach (int enab in enableds) {
 					if (enab == cardID) {
-						g.GetComponent<CardScript> ().ActiveCard ();
+						g.GetComponent<CardScript> ().activebutton.sprite = g.GetComponent<CardScript> ().activeTrue;
+						g.GetComponent<CardScript> ().isactivebutton = true;
 					}
 				}
 			}

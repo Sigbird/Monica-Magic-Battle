@@ -12,16 +12,17 @@ public class SceneHelper : MonoBehaviour {
 		Camera.main.gameObject.GetComponent<AudioSource> ().loop = true;
 		Camera.main.gameObject.GetComponent<AudioSource> ().clip = bgMusic;
 		Camera.main.gameObject.GetComponent<AudioSource> ().Play ();
+
 		for (int i = 0; i < 10; i++) {
 			temp[i] = Random.Range(1,29);
 		}
-			
+
 		if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length <= 0) {
 			PlayerPrefsX.SetIntArray ("PlayerCardsIDs", temp);
 			if (temp.Length < 15) {
 				PlayerPrefsX.SetIntArray ("SelectedCardsIDs", temp);
 			}
-
+			Debug.Log (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length);
 		} else {
 			if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length > 0 || PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length <= 15) {
 				PlayerPrefsX.SetIntArray ("SelectedCardsIDs", PlayerPrefsX.GetIntArray ("PlayerCardsIDs"));
