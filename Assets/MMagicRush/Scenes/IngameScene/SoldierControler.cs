@@ -52,6 +52,8 @@ public class SoldierControler : MonoBehaviour {
 
 	public AudioManager audioManager;
 
+	public GameObject deathAngel;
+
 	//FLAGS
 
 	public bool inCombat;
@@ -227,6 +229,7 @@ public class SoldierControler : MonoBehaviour {
 		//EVENTO DE MORTE
 		if (this.vida <= 0 && heroUnity) {
 			this.speed = 0;
+			Instantiate (deathAngel, this.transform.position, Quaternion.identity).transform.parent = this.transform;
 			StartCoroutine (Respawning ());
 			audioManager.PlayAudio ("death");
 		} else if(this.vida <= 0) {
@@ -823,20 +826,23 @@ public class SoldierControler : MonoBehaviour {
 	}
 
 	IEnumerator Respawning(){
+		yield return new WaitForSeconds (0.01f);
 		this.gameObject.GetComponent<SpriteRenderer> ().enabled = false;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
 		this.healtbarSoldier.SetActive (false);
 		this.energybarSoldier.SetActive (false);
 		this.skill1.gameObject.SetActive (false);
 		this.skill2.gameObject.SetActive (false);
-		if(heroUnity)
-		transform.position = heroBase.transform.position;
+
+
 		this.vida = this.vidaMax;
 		UpdateLife ();
 		if(heroUnity)
 		this.energy = this.energyMax;
 		this.seeking = false;
 		yield return new WaitForSeconds (respawningTimer);
+		if(heroUnity)
+		transform.position = heroBase.transform.position;
 		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
 		this.healtbarSoldier.SetActive (true);
