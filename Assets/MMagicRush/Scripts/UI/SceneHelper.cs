@@ -29,8 +29,8 @@ public class SceneHelper : MonoBehaviour {
 			}
 			temp = empty;
 		}
-
-
+			
+		PlayerPrefs.SetString ("Tutorial", "True");
 
 	}
 	

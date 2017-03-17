@@ -383,9 +383,9 @@ public class SoldierControler : MonoBehaviour {
 
 			if (this.state == STATE.DEFAULT) { // PERSEGUINDO E ATACANDO ALVO ENCONTRADO
 
-			if (targetEnemy == null) {//CONFIRMA SE ALVO VIVE
+			if (targetEnemy == null ) {//CONFIRMA SE ALVO VIVE
 				targetEnemy = SeekEnemyTarget ();
-			} else if(seeking) {
+			} else if(seeking ) {
 				
 				//DESLOCAMENTO ATE INIMIGO
 				if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
@@ -833,14 +833,13 @@ public class SoldierControler : MonoBehaviour {
 		this.energybarSoldier.SetActive (false);
 		this.skill1.gameObject.SetActive (false);
 		this.skill2.gameObject.SetActive (false);
-
-
 		this.vida = this.vidaMax;
 		UpdateLife ();
 		if(heroUnity)
 		this.energy = this.energyMax;
 		this.seeking = false;
 		yield return new WaitForSeconds (respawningTimer);
+	
 		if(heroUnity)
 		transform.position = heroBase.transform.position;
 		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
@@ -876,7 +875,7 @@ public class SoldierControler : MonoBehaviour {
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
 					if (dist <= reach) {
-						if (dist < minDis) {
+						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
 							Emin = obj;
 							minDis = dist;
 						}
@@ -902,7 +901,7 @@ public class SoldierControler : MonoBehaviour {
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
 					if (dist <= reach) {
-						if (dist < minDis) {
+						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
 							Emin = obj;
 							minDis = dist;
 						}

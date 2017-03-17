@@ -22,6 +22,8 @@ public class CardSlotScript : MonoBehaviour {
 
 	public Text costText;
 
+	public CardInfoScript cardInfo;
+
 
 	//SPARKOBJECT
 	public GameObject Spark;
@@ -45,6 +47,11 @@ public class CardSlotScript : MonoBehaviour {
 		//Pegar lista de cartas via playerprefs
 //		cardlistIngame = PlayerPrefsX.GetIntArray ("CardsList");
 //		cardID = cardlistIngame [Random.Range (0, cardlistIngame.Length)];
+		if (PlayerPrefs.GetString ("Tutorial") == "True") {
+			this.GetComponent<Button> ().interactable = true;
+		} else {
+			this.GetComponent<Button> ().interactable = false;
+		}
 		projectileCreated = false;
 		UpdateCard ();
 	}
@@ -57,7 +64,7 @@ public class CardSlotScript : MonoBehaviour {
 	//INICIO DO ARRASTO
 	void OnMouseDrag() {
 		this.released = false;
-		if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+		if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds && PlayerPrefs.GetString("Tutorial") == "False") {
 			if (projectileCreated == false) {
 				projectileCreated = true;
 				Movable = (GameObject)Instantiate (Spark, new Vector2 (0, 0), Quaternion.identity);
@@ -466,5 +473,11 @@ public class CardSlotScript : MonoBehaviour {
 			break;
 			}
 		//Movable.GetComponent<sparkScript> ().DestroyItself ();
+	}
+
+	public void SendCard(){
+		Time.timeScale = 0;
+		cardInfo.DisplayCard (cardID);
+		cardInfo.lastCard = this.gameObject;
 	}
 }

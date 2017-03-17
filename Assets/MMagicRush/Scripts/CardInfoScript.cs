@@ -14,6 +14,10 @@ public class CardInfoScript : MonoBehaviour {
 	public Image character;
 	public GameObject lastCard;
 
+	public Sprite[] Efects;
+	public Sprite[] Images;
+	public Sprite[] Persons;
+
 	public GameObject enableButton;
 	public GameObject disableButton;
 
@@ -51,6 +55,281 @@ public class CardInfoScript : MonoBehaviour {
 		} else {
 			enableButton.SetActive (false);
 			disableButton.SetActive(true);
+		}
+
+
+	}
+
+	public void DisplayCard(int cardID){ // INGAME CARD INFO
+		
+		switch (cardID) {
+		case 1:
+			cardname.text = "Estalo Magico";
+			descrition.text = "Aplica um de dano em uma unidade ininimga";
+			cost.text = "2";
+			damage.text = "1";
+			efect.sprite = Efects [0];
+			image.sprite = Images [cardID];
+			character.sprite = Persons [0];
+			break;
+		case 2:
+			cardname.text = "Explosão Magica";
+			descrition.text = "Aplica dois de dano em todas unidades ininimgas";
+			cost.text = "10";
+			damage.text = "2";
+			efect.sprite = Efects[0];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 3:
+			cardname.text = "Nevasca";
+			descrition.text = "Aplica dois de dano em todas unidades ininimgas";
+			cost.text = "10";
+			damage.text = "2";
+			efect.sprite = Efects[0];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 4:
+			cardname.text = "Terremoto";
+			descrition.text = "Deixa Tropas Inimigas Lentas";
+			cost.text = "10";
+			damage.text = "2";
+			efect.sprite = Efects[0];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 5:
+			cardname.text = "Hora da Soneca";
+			descrition.text = "Para Tropas Inimigas";
+			cost.text = "10";
+			damage.text = "2";
+			efect.sprite = Efects[0];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 6:
+			cardname.text = "Remédio";
+			descrition.text = "Cura seu heroi";
+			cost.text = "10";
+			damage.text = "0";
+			efect.sprite = Efects[0];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 7:
+			cardname.text = "Canja de Galinha";
+			descrition.text = "Cura toda sua tropa";
+			cost.text = "10";
+			damage.text = "0";
+			efect.sprite = Efects[0];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 8:
+			cardname.text = "Escudo";
+			descrition.text = "Parotege suas Tropas";
+			cost.text = "10";
+			damage.text = "0";
+			efect.sprite = Efects[0];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 9:
+			cardname.text = "Grito de Guerra";
+			descrition.text = "Fortalece suas tropas";
+			cost.text = "10";
+			damage.text = "0";
+			efect.sprite = Efects[0];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 10:
+			cardname.text = "Sem Munição";
+			descrition.text = "Paralisa torres inimigas";
+			cost.text = "10";
+			damage.text = "0";
+			efect.sprite = Efects[0];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+
+			//TROPAS
+
+		case 11:
+			cardname.text = "Bidu";
+			descrition.text = "Chama a unidade Bidu para ajudar";
+			cost.text = "1";
+			damage.text = "1";
+			efect.sprite = Efects[1];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[1];
+			break;
+		case 12:
+			cardname.text = "Astronauta";
+			descrition.text = "Chama a unidade Astronauta para ajudar";
+			cost.text = "3";
+			damage.text = "1";
+			efect.sprite = Efects[1];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 13:
+			cardname.text = "Anjinho";
+			descrition.text = "Chama a unidade Anjinho para ajudar";
+			cost.text = "1";
+			damage.text = "1";
+			efect.sprite = Efects[1];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 14:
+			cardname.text = "Jotalhão";
+			descrition.text = "Chama a unidade jotalhão para ajudar";
+			cost.text = "50";
+			damage.text = "1";
+			efect.sprite = Efects[1];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 15:
+			cardname.text = "Piteco";
+			descrition.text = "Chama a unidade Piteco para ajudar";
+			cost.text = "15";
+			damage.text = "1";
+			efect.sprite = Efects[1];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 16:
+			cardname.text = "Penadinho";
+			descrition.text = "Chama a unidade Penadinho para ajudar";
+			cost.text = "50";
+			damage.text = "1";
+			efect.sprite = Efects[1];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 17:
+			cardname.text = "Louco";
+			descrition.text = "Chama a unidade Louco para ajudar";
+			cost.text = "100";
+			damage.text = "5";
+			efect.sprite = Efects[1];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[3];
+			break;
+		case 18:
+			cardname.text = "Sansão";
+			descrition.text = "Chama a unidade Sansão para ajudar";
+			cost.text = "40";
+			damage.text = "3";
+			efect.sprite = Efects[1];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[1];
+			break;
+		case 19:
+			cardname.text = "Mingau";
+			descrition.text = "Chama a unidade Mingau para ajudar";
+			cost.text = "110";
+			damage.text = "2";
+			efect.sprite = Efects[1];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[2];
+			break;
+		case 20:
+			cardname.text = "Alfredo";
+			descrition.text = "Chama a unidade Alfredo para ajudar";
+			cost.text = "150";
+			damage.text = "2";
+			efect.sprite = Efects[1];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+
+			//TORRES
+
+		case 21:
+			cardname.text = "Torre de Papel";
+			descrition.text = "Constroi a torre para ajudar no campo";
+			cost.text = "1";
+			damage.text = "1";
+			efect.sprite = Efects[2];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 22:
+			cardname.text = "Torre de Agua";
+			descrition.text = "Constroi a torre para ajudar no campo";
+			cost.text = "3";
+			damage.text ="1";
+			efect.sprite = Efects[2];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 23:
+			cardname.text = "Torre de Desentupidor";
+			descrition.text = "Constroi a torre para ajudar no campo";
+			cost.text = "1";
+			damage.text = "1";
+			efect.sprite = Efects[2];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 24:
+			cardname.text = "Torre de Neve";
+			descrition.text = "Constroi a torre para ajudar no campo";
+			cost.text = "50";
+			damage.text = "1";
+			efect.sprite = Efects[2];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 25:
+			cardname.text = "Torre da Cura";
+			descrition.text = "Constroi a torre para ajudar no campo";
+			cost.text = "15";
+			damage.text = "1";
+			efect.sprite = Efects[2];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 26:
+			cardname.text = "Torre do Tesouro";
+			descrition.text = "Constroi a torre para ajudar no campo";
+			cost.text ="50";
+			damage.text = "1";
+			efect.sprite = Efects[2];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 27:
+			cardname.text = "Torre do Sono";
+			descrition.text = "Constroi a torre para ajudar no campo";
+			cost.text ="100";
+			damage.text = "5";
+			efect.sprite = Efects[2];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];;
+			break;
+		case 28:
+			cardname.text = "Torre AntiTorre";
+			descrition.text = "Constroi a torre para ajudar no campo";
+			cost.text = "40";
+			damage.text = "3";
+			efect.sprite = Efects[2];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
+		case 29:
+			cardname.text = "Torre Protetora";
+			descrition.text = "Constroi a torre para ajudar no campo";
+			cost.text = "110";
+			damage.text = "5";
+			efect.sprite = Efects[2];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+			break;
 		}
 
 
@@ -178,6 +457,21 @@ public class CardInfoScript : MonoBehaviour {
 		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
 	}
 
+	public void CloseInfo(){
+		Time.timeScale = 1;
+		this.gameObject.SetActive (false);
+	}
 
+	public void RecicleCard(){
+		Time.timeScale = 1;
+		lastCard.GetComponent<CardSlotScript> ().UpdateCard ();
+		this.gameObject.SetActive (false);
+	}
+
+	public void ActivateEffect(){
+		Time.timeScale = 1;
+		lastCard.GetComponent<CardSlotScript> ().UpdateCard ();
+		this.gameObject.SetActive (false);
+	}
 
 }
