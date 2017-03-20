@@ -470,6 +470,7 @@ public class CardInfoScript : MonoBehaviour {
 
 	public void ActivateEffect(){
 		Time.timeScale = 1;
+		lastCard.GetComponent<CardSlotScript> ().ActivateCardEffect ();
 		lastCard.GetComponent<CardSlotScript> ().UpdateCard ();
 		this.gameObject.SetActive (false);
 	}

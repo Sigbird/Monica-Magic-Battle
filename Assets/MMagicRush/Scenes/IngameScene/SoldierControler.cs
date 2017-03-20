@@ -859,7 +859,20 @@ public class SoldierControler : MonoBehaviour {
 
 		GameObject Emin = null;
 		float minDis = Mathf.Infinity;
-		if (this.tag == "enemysoldier1") {
+		if (this.tag == "enemysoldier1") { //Procura de Jogador 1
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
+					float dist = Vector3.Distance (transform.position, obj.transform.position);
+					if (dist <= reach) {
+						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
+							if (obj.GetComponent<SoldierControler> ().heroUnity == false) {
+								Emin = obj;
+								minDis = dist;
+							}
+						}
+					}
+				}
+			} 
 			if (GameObject.FindGameObjectsWithTag ("enemytower2") != null) {
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower2")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
@@ -876,8 +889,10 @@ public class SoldierControler : MonoBehaviour {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
 					if (dist <= reach) {
 						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-							Emin = obj;
-							minDis = dist;
+							if (obj.GetComponent<SoldierControler> ().heroUnity == true) {
+								Emin = obj;
+								minDis = dist;
+							}
 						}
 					}
 				}
@@ -885,7 +900,20 @@ public class SoldierControler : MonoBehaviour {
 			if(Emin == null) {
 				return GameObject.Find ("HeroBaseEnemy");
 			}
-		} else if (this.tag == "enemysoldier2") {
+		} else if (this.tag == "enemysoldier2") { //Procura de Jogador 2
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
+					float dist = Vector3.Distance (transform.position, obj.transform.position);
+					if (dist <= reach) {
+						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
+							if (obj.GetComponent<SoldierControler> ().heroUnity == false) {
+								Emin = obj;
+								minDis = dist;
+							}
+						}
+					}
+				}
+			}
 			if (GameObject.FindGameObjectsWithTag ("enemytower1") != null) {
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower1")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
@@ -902,8 +930,10 @@ public class SoldierControler : MonoBehaviour {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
 					if (dist <= reach) {
 						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-							Emin = obj;
-							minDis = dist;
+							if (obj.GetComponent<SoldierControler> ().heroUnity == true) {
+								Emin = obj;
+								minDis = dist;
+							}
 						}
 					}
 				}

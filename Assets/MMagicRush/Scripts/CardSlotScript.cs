@@ -47,11 +47,11 @@ public class CardSlotScript : MonoBehaviour {
 		//Pegar lista de cartas via playerprefs
 //		cardlistIngame = PlayerPrefsX.GetIntArray ("CardsList");
 //		cardID = cardlistIngame [Random.Range (0, cardlistIngame.Length)];
-		if (PlayerPrefs.GetString ("Tutorial") == "True") {
-			this.GetComponent<Button> ().interactable = true;
-		} else {
-			this.GetComponent<Button> ().interactable = false;
-		}
+//		if (PlayerPrefs.GetString ("Tutorial") == "True") {
+//			this.GetComponent<Button> ().interactable = true;
+//		} else {
+//			this.GetComponent<Button> ().interactable = false;
+//		}
 		projectileCreated = false;
 		UpdateCard ();
 	}
@@ -64,7 +64,7 @@ public class CardSlotScript : MonoBehaviour {
 	//INICIO DO ARRASTO
 	void OnMouseDrag() {
 		this.released = false;
-		if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds && PlayerPrefs.GetString("Tutorial") == "False") {
+		if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 			if (projectileCreated == false) {
 				projectileCreated = true;
 				Movable = (GameObject)Instantiate (Spark, new Vector2 (0, 0), Quaternion.identity);
@@ -83,16 +83,22 @@ public class CardSlotScript : MonoBehaviour {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds += (int)cardCost / 2;
 				UpdateCard ();
 				Movable.GetComponent<sparkScript> ().DestroyItself ();
+			} else {
+				if (PlayerPrefs.GetString ("Tutorial") == "False") {
+					ActivateCardEffect ();
+				} else {
+					SendCard ();
+				}
 			}
-			if (HoveringObject.tag == "enemysoldier1") {
-				ActivateCardEffect (HoveringObject);
-			}
-			if (HoveringObject.tag == "enemysoldier2") {
-				ActivateCardEffect (HoveringObject);
-			} 
-			if (HoveringObject.tag == "Stage") {
-				ActivateCardEffect (HoveringObject);
-			}
+//			if (HoveringObject.tag == "enemysoldier1") {
+//				ActivateCardEffect (HoveringObject);
+//			}
+//			if (HoveringObject.tag == "enemysoldier2") {
+//				ActivateCardEffect (HoveringObject);
+//			} 
+//			if (HoveringObject.tag == "Stage") {
+//				ActivateCardEffect (HoveringObject);
+//			}
 			
 			projectileCreated = false;
 		}
@@ -245,85 +251,128 @@ public class CardSlotScript : MonoBehaviour {
 
 
 		//ATIVA EFEITO DA CARTA SOBRE O ALVO DO OBJETO MOVABLE
-		public void ActivateCardEffect(GameObject target){
+		public void ActivateCardEffect(){
 		GameObject t;
+
 			switch (cardID) {
 
 									//HABILIDADES
 
 			case 1:// ESTALO MAGICO
-			if (target.GetComponent<SoldierControler>() != null) {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-				if (target.GetComponent<SoldierControler> ().team == 2) {
-					target.GetComponent<SoldierControler> ().ReceiveEffect ("damage");
-				}
+//				if (target.GetComponent<SoldierControler> ().team == 2) {
+//					target.GetComponent<SoldierControler> ().ReceiveEffect ("damage"); // Usando implementação de arrastar
+//				}
+
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
+					if (obj.GetComponent<SoldierControler>() != null) 
+						obj.GetComponent<SoldierControler> ().ReceiveEffect ("damage");
+					}
+
 				UpdateCard ();
 			}
 				break;
 			case 2:// ESPLOSAO MAGICA
-			if (target.GetComponent<SoldierControler>() != null) {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-				if (target.GetComponent<SoldierControler> ().team == 2) {
-					target.GetComponent<SoldierControler> ().ReceiveEffect ("extraDamage");
-				}
+//				if (target.GetComponent<SoldierControler> ().team == 2) {
+//					target.GetComponent<SoldierControler> ().ReceiveEffect ("extraDamage");
+//				}
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
+						if (obj.GetComponent<SoldierControler>() != null) 
+						obj.GetComponent<SoldierControler> ().ReceiveEffect ("extraDamage");
+					}
 				UpdateCard ();
 			}
 				break;
 			case 3:// NEVASCA
-			if (target.GetComponent<SoldierControler>() != null) {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-				if (target.GetComponent<SoldierControler> ().team == 2) {
-					target.GetComponent<SoldierControler> ().ReceiveEffect ("slow");
-				}
+//				if (target.GetComponent<SoldierControler> ().team == 2) {
+//					target.GetComponent<SoldierControler> ().ReceiveEffect ("slow");
+//				}
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
+						if (obj.GetComponent<SoldierControler>() != null) 
+						obj.GetComponent<SoldierControler> ().ReceiveEffect ("slow");
+					}
 				UpdateCard ();
 			}
 				break;
 			case 4:// TERREMOTO 
-			if (target.GetComponent<SoldierControler>() != null) {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-				if (target.GetComponent<SoldierControler> ().team == 2) {
-					target.GetComponent<SoldierControler> ().ReceiveEffect ("extraSlow");
-				}
+//				if (target.GetComponent<SoldierControler> ().team == 2) {
+//					target.GetComponent<SoldierControler> ().ReceiveEffect ("extraSlow");
+//				}
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
+						if (obj.GetComponent<SoldierControler>() != null) 
+						obj.GetComponent<SoldierControler> ().ReceiveEffect ("extraSlow");
+					}
 				UpdateCard ();
 			}
 				break;
 			case 5:// HORA DA SONECA
-			if (target.GetComponent<SoldierControler>() != null) {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-				target.GetComponent<SoldierControler> ().ReceiveEffect ("sleep");
+//				target.GetComponent<SoldierControler> ().ReceiveEffect ("sleep");
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
+						if (obj.GetComponent<SoldierControler>() != null) 
+						obj.GetComponent<SoldierControler> ().ReceiveEffect ("sleep");
+					}
 				UpdateCard ();
 			}
 				break;
 			case 6:// REMEDIO
-			if (target.GetComponent<SoldierControler>() != null) {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-				target.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
+//				target.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
+						if (obj.GetComponent<SoldierControler> () != null) {
+							if (obj.GetComponent<SoldierControler> ().heroUnity == true)
+								obj.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
+						}
+					}
 				UpdateCard ();
 			}
 				break;
 			case 7:// CANJA DE GALINHA
-			if (target.GetComponent<SoldierControler>() != null) {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-				target.GetComponent<SoldierControler> ().ReceiveEffect ("extraHealing");
+//				target.GetComponent<SoldierControler> ().ReceiveEffect ("extraHealing");
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
+						if (obj.GetComponent<SoldierControler>() != null) 
+						obj.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
+					}
 				UpdateCard ();
 			}
 				break;
 			case 8:// ESCUDO
-			if (target.GetComponent<SoldierControler>() != null) {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-				target.GetComponent<SoldierControler> ().ReceiveEffect ("shield");
+//				target.GetComponent<SoldierControler> ().ReceiveEffect ("shield");
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
+						if (obj.GetComponent<SoldierControler> () != null) {
+							if (obj.GetComponent<SoldierControler> ().heroUnity == true)
+								obj.GetComponent<SoldierControler> ().ReceiveEffect ("extraHealing");
+						}
+					}
 				UpdateCard ();
 			}
 				break;
 			case 9:// GRITO DE GUERRA
-			if (target.GetComponent<SoldierControler>() != null) {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-				target.GetComponent<SoldierControler> ().ReceiveEffect ("warShout");
+//				target.GetComponent<SoldierControler> ().ReceiveEffect ("warShout");
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
+						if (obj.GetComponent<SoldierControler>() != null) 
+						obj.GetComponent<SoldierControler> ().ReceiveEffect ("warShout");
+					}
 				UpdateCard ();
 			}
 				break;
 			case 10:// FALTA MUNICAO
-			if (target.GetComponent<TroopController>() != null) {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 				//target.GetComponent<TroopController> ().ReceiveEffect ("lowAmmo");
 				UpdateCard ();
@@ -476,6 +525,7 @@ public class CardSlotScript : MonoBehaviour {
 	}
 
 	public void SendCard(){
+		cardInfo.gameObject.SetActive (true);
 		Time.timeScale = 0;
 		cardInfo.DisplayCard (cardID);
 		cardInfo.lastCard = this.gameObject;
