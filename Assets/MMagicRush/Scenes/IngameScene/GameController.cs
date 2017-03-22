@@ -5,10 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
-
+	[HideInInspector]
 	public int playerCharges;
+	[HideInInspector]
 	public int enemyCharges;
+	[HideInInspector]
 	public int round ;
+	[HideInInspector]
 	public int roundCounter;
 
 	public GameObject[] endGamePanel;
@@ -201,7 +204,8 @@ public class GameController : MonoBehaviour {
 	IEnumerator endGame(){
 		
 		yield return new WaitForSeconds (1);
-		if (playerCharges > 2) {
+		Debug.Log ("playercharges " + playerCharges);
+		if (playerCharges >= 2) {
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
 			endGamePanel [0].SetActive (true);
 		} else {
@@ -221,7 +225,20 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void LoadScene(string scene){
+		Time.timeScale = 1;
+		round = 1;
+		playerCharges = 0;
+		enemyCharges = 0;
+		PlayerPrefs.SetInt ("round",1);
+		PlayerPrefs.SetInt ("playerCharges",0);
+		PlayerPrefs.SetInt ("enemyCharges",0);
 		SceneManager.LoadScene (scene);
+	}
+
+	public void ClearGame(){
+//		PlayerPrefs.SetInt ("round",1);
+//		PlayerPrefs.SetInt ("playerCharges",0);
+//		PlayerPrefs.SetInt ("enemyCharges",0);
 	}
 
 	public void CallScene(string scene){

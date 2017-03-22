@@ -13,7 +13,7 @@ public class ChargesScript : MonoBehaviour {
 	void Start () {
 		gc = GameObject.Find ("GameController").GetComponent<GameController> ();
 
-		if (this.tag == "enemysoldier1" && gc.round>0) {
+		if (this.tag == "enemytower1" && gc.round>0) {
 			this.charges = gc.playerCharges;
 		} else if(gc.round>0){
 			this.charges = gc.enemyCharges;
@@ -28,7 +28,7 @@ public class ChargesScript : MonoBehaviour {
 	void Update () {
 		scoreText.text = this.charges.ToString ();
 
-		if (this.tag == "enemysoldier1") {
+		if (this.tag == "enemytower1") {
 			PlayerPrefs.SetInt ("playerCharges",charges);
 		} else {
 			PlayerPrefs.SetInt ("enemyCharges",charges);

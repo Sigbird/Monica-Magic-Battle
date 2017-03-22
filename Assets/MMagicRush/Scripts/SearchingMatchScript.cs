@@ -47,6 +47,9 @@ public class SearchingMatchScript : MonoBehaviour {
 	public void CallToBattle(){
 		PlayerPrefs.SetInt ("SelectedCharacter", SelectedCharacterID);
 		PlayerPrefsX.SetIntArray ("Cards", selectedCardsIDs);
+		PlayerPrefs.SetInt ("round",1);
+		PlayerPrefs.SetInt ("playerCharges",0);
+		PlayerPrefs.SetInt ("enemyCharges",0);
 		if (noLoading) {
 			SceneManager.LoadScene ("Jogo");
 		} else {
