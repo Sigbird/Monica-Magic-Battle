@@ -54,6 +54,8 @@ public class SoldierControler : MonoBehaviour {
 
 	public GameObject deathAngel;
 
+	public Animator XpBar;
+
 	//FLAGS
 
 	private bool gameEnded = false;
@@ -72,7 +74,9 @@ public class SoldierControler : MonoBehaviour {
 
 	//STATUS
 
-	public int xp;
+	public float xp;
+
+	private float xpMax;
 
 	public int level;
 
@@ -163,7 +167,7 @@ public class SoldierControler : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		ChooseLane(Random.Range(0,2));
+		ChooseLane(Random.Range(0,3));
 
 		if (heroUnity) {// CONFIGURAÇÃO DE HEROIS
 			SetupHero();
@@ -333,6 +337,7 @@ public class SoldierControler : MonoBehaviour {
 		//
 		if(this.xp < 25 && this.xp < 125){
 			this.level = 1;
+			xpMax = 25;
 			if (skill1.skillLevel <= this.level) {
 				skill1.Enable ();
 			}
@@ -342,6 +347,7 @@ public class SoldierControler : MonoBehaviour {
 		}
 		if(this.xp > 25 && this.xp < 125){
 			this.level = 2;
+			xpMax = 125;
 			if (skill1.skillLevel <= this.level) {
 				skill1.Enable ();
 			}
@@ -351,6 +357,7 @@ public class SoldierControler : MonoBehaviour {
 		}
 		if (this.xp >= 125) {
 			this.level = 3;
+			xpMax = 125;
 			if (skill1.skillLevel <= this.level) {
 				skill1.Enable ();
 			}
@@ -358,6 +365,10 @@ public class SoldierControler : MonoBehaviour {
 				skill2.Enable ();
 			}
 		}
+		if (XpBar != null)
+			XpBar.SetFloat ("Blend", xp / xpMax);
+
+		Debug.Log ("xp: " + xp / xpMax);
 
 		//
 		//COOLDOWN DE EFEITOS
@@ -387,8 +398,9 @@ public class SoldierControler : MonoBehaviour {
 					Progress--;
 				}
 			} else {
-
+				ChooseLane (Random.Range (0, 3));
 				ChangeState ();
+
 				GetComponent<SpriteRenderer> ().flipX = false;
 
 				if (this.vida <= this.vidaMax - 2) {
@@ -419,7 +431,11 @@ public class SoldierControler : MonoBehaviour {
 			if (targetEnemy == null ) {//CONFIRMA SE ALVO VIVE
 				targetEnemy = SeekEnemyTarget ();
 			} else if(seeking ) {
-				
+
+				if (this.team == 2 && this.vida <= 1) {
+					this.state = STATE.RETREAT;
+				}
+
 				//DESLOCAMENTO ATE INIMIGO
 				if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
 					anim.SetTrigger ("Walk");
