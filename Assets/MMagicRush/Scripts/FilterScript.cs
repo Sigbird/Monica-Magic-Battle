@@ -81,7 +81,7 @@ public class FilterScript : MonoBehaviour {
 
 	public void UpdatePlayerCardList(){
 		cs = new int[30];
-		for (int i = 1; i <= 29; i++) {
+		for (int i = 1; i <= 20; i++) {
 			cs [i] = i;
 		}
 		

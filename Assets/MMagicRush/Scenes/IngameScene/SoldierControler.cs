@@ -56,6 +56,8 @@ public class SoldierControler : MonoBehaviour {
 
 	public Animator XpBar;
 
+	public Animator LvlUpAnim;
+
 	//FLAGS
 
 	private bool gameEnded = false;
@@ -212,7 +214,6 @@ public class SoldierControler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
 //		//Debugging
 //		if(this.team == 1){
 //			if(heroImputs[0].text !=null)
@@ -338,6 +339,7 @@ public class SoldierControler : MonoBehaviour {
 		if(this.xp < 25 && this.xp < 125){
 			this.level = 1;
 			xpMax = 25;
+			LvlUpAnim.SetInteger ("LevelUpInt", -1);
 			if (skill1.skillLevel <= this.level) {
 				skill1.Enable ();
 			}
@@ -348,6 +350,7 @@ public class SoldierControler : MonoBehaviour {
 		if(this.xp > 25 && this.xp < 125){
 			this.level = 2;
 			xpMax = 125;
+			LvlUpAnim.SetInteger ("LevelUpInt", 1);
 			if (skill1.skillLevel <= this.level) {
 				skill1.Enable ();
 			}
@@ -358,6 +361,7 @@ public class SoldierControler : MonoBehaviour {
 		if (this.xp >= 125) {
 			this.level = 3;
 			xpMax = 125;
+			LvlUpAnim.SetInteger ("LevelUpInt", 2);
 			if (skill1.skillLevel <= this.level) {
 				skill1.Enable ();
 			}
@@ -365,10 +369,11 @@ public class SoldierControler : MonoBehaviour {
 				skill2.Enable ();
 			}
 		}
+
 		if (XpBar != null)
 			XpBar.SetFloat ("Blend", xp / xpMax);
 
-		Debug.Log ("xp: " + xp / xpMax);
+		//Debug.Log ("xp: " + xp / xpMax);
 
 		//
 		//COOLDOWN DE EFEITOS
