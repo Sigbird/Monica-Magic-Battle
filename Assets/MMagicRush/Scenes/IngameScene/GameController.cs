@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
-	[HideInInspector]
+
 	public int playerCharges;
-	[HideInInspector]
+
 	public int enemyCharges;
 	[HideInInspector]
 	public int round ;
@@ -185,32 +185,46 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void NextRound(){
-		if (enemyCharges > 1 || playerCharges > 1) {
+		
+		StartCoroutine (newRound ());
+
+	}
+
+	IEnumerator newRound(){
+		yield return new WaitForSeconds (0.1f);
+		Debug.Log (enemyCharges);
+		if (enemyCharges == 3) {
+			PlayerPrefs.SetInt ("round", 1);
+			PlayerPrefs.SetInt ("playerCharges", 0);
+			PlayerPrefs.SetInt ("enemyCharges", 0);
+			StartCoroutine (endGame());
+		}else if(playerCharges == 3) {
 			PlayerPrefs.SetInt ("round", 1);
 			PlayerPrefs.SetInt ("playerCharges", 0);
 			PlayerPrefs.SetInt ("enemyCharges", 0);
 			StartCoroutine (endGame());
 		} else {
 			PlayerPrefs.SetInt ("round", round + 1);
-			StartCoroutine (newRound ());
+			yield return new WaitForSeconds (2);
+			SceneManager.LoadScene ("Jogo");
 		}
-	}
 
-	IEnumerator newRound(){
-		yield return new WaitForSeconds (2);
-		SceneManager.LoadScene ("Jogo");
 	}
 
 	IEnumerator endGame(){
 		
 		yield return new WaitForSeconds (1);
-		Debug.Log ("playercharges " + playerCharges);
-		if (playerCharges >= 2) {
+
+		if (playerCharges == 3 && enemyCharges <= 2) {
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
 			endGamePanel [0].SetActive (true);
-		} else {
+		} else if (enemyCharges == 3 && playerCharges <= 2) {
 			this.GetComponent<AudioManager> ().PlayAudio ("defeat");
 			endGamePanel [1].SetActive (true);
+		} else { // EMPATE
+			Debug.Log ("EMPATE");
+			this.GetComponent<AudioManager> ().PlayAudio ("victory");
+			endGamePanel [0].SetActive (true);
 		}
 		Time.timeScale = 0;
 	}

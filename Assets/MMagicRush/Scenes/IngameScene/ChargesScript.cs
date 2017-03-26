@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ChargesScript : MonoBehaviour {
-	[HideInInspector]
+
 	public int charges;
 	public Text scoreText;
 	public GameController gc;
@@ -30,8 +30,10 @@ public class ChargesScript : MonoBehaviour {
 
 		if (this.tag == "enemytower1") {
 			PlayerPrefs.SetInt ("playerCharges",charges);
+			gc.playerCharges = this.charges;
 		} else {
 			PlayerPrefs.SetInt ("enemyCharges",charges);
+			gc.enemyCharges = this.charges;
 		}
 	}
 }

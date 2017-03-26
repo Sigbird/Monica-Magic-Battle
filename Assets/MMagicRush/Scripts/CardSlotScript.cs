@@ -11,6 +11,8 @@ public class CardSlotScript : MonoBehaviour {
 
 	public int[] cards;
 
+	public float holdCounter;
+
 	[HideInInspector]
 	public int[] empty;
 
@@ -74,22 +76,24 @@ public class CardSlotScript : MonoBehaviour {
 			if (Movable != null)
 				Movable.transform.position = Vector2.MoveTowards (Movable.transform.position, Camera.main.ScreenToWorldPoint (Input.mousePosition), 5);
 		}
+		holdCounter += Time.deltaTime;
 	}
 
 	//FIM DO ARRASTO
 	void OnMouseUp(){
-		if (HoveringObject != null && Movable != null ) {
-			if (HoveringObject.tag == "Trash") {
-				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds += (int)cardCost / 2;
-				UpdateCard ();
-				Movable.GetComponent<sparkScript> ().DestroyItself ();
-			} else {
-				if (PlayerPrefs.GetString ("Tutorial") == "False") {
-					ActivateCardEffect ();
+		if (holdCounter > 0.1f) {
+			if (HoveringObject != null && Movable != null) {
+				if (HoveringObject.tag == "Trash") {
+					GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds += (int)cardCost / 2;
+					UpdateCard ();
+					Movable.GetComponent<sparkScript> ().DestroyItself ();
 				} else {
-					SendCard ();
+//					if (PlayerPrefs.GetString ("Tutorial") == "False") {
+						ActivateCardEffect ();
+//					} else {
+//						SendCard ();
+//					}
 				}
-			}
 //			if (HoveringObject.tag == "enemysoldier1") {
 //				ActivateCardEffect (HoveringObject);
 //			}
@@ -100,6 +104,10 @@ public class CardSlotScript : MonoBehaviour {
 //				ActivateCardEffect (HoveringObject);
 //			}
 			
+				projectileCreated = false;
+			}
+		} else {
+			SendCard ();
 			projectileCreated = false;
 		}
 		released = true;

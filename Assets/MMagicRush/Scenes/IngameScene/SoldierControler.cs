@@ -90,8 +90,7 @@ public class SoldierControler : MonoBehaviour {
 	[HideInInspector]
 	public int vida;
 
-	[HideInInspector]
-	private float reach;
+	public float reach;
 
 	[HideInInspector]
 	public int damage;
@@ -336,40 +335,41 @@ public class SoldierControler : MonoBehaviour {
 		//
 		//FLAGS PARA LEVEL
 		//
-		if(this.xp < 25 && this.xp < 125){
-			this.level = 1;
-			xpMax = 25;
-			LvlUpAnim.SetInteger ("LevelUpInt", -1);
-			if (skill1.skillLevel <= this.level) {
-				skill1.Enable ();
+		if (heroUnity) {
+			if (this.xp < 25 && this.xp < 125) {
+				this.level = 1;
+				xpMax = 25;
+				LvlUpAnim.SetInteger ("LevelUpInt", -1);
+				if (skill1.skillLevel <= this.level) {
+					skill1.Enable ();
+				}
+				if (skill2.skillLevel <= this.level) {
+					skill2.Enable ();
+				}
 			}
-			if (skill2.skillLevel <= this.level) {
-				skill2.Enable ();
+			if (this.xp > 25 && this.xp < 125) {
+				this.level = 2;
+				xpMax = 125;
+				LvlUpAnim.SetInteger ("LevelUpInt", 1);
+				if (skill1.skillLevel <= this.level) {
+					skill1.Enable ();
+				}
+				if (skill2.skillLevel <= this.level) {
+					skill2.Enable ();
+				}
+			}
+			if (this.xp >= 125) {
+				this.level = 3;
+				xpMax = 125;
+				LvlUpAnim.SetInteger ("LevelUpInt", 2);
+				if (skill1.skillLevel <= this.level) {
+					skill1.Enable ();
+				}
+				if (skill2.skillLevel <= this.level) {
+					skill2.Enable ();
+				}
 			}
 		}
-		if(this.xp > 25 && this.xp < 125){
-			this.level = 2;
-			xpMax = 125;
-			LvlUpAnim.SetInteger ("LevelUpInt", 1);
-			if (skill1.skillLevel <= this.level) {
-				skill1.Enable ();
-			}
-			if (skill2.skillLevel <= this.level) {
-				skill2.Enable ();
-			}
-		}
-		if (this.xp >= 125) {
-			this.level = 3;
-			xpMax = 125;
-			LvlUpAnim.SetInteger ("LevelUpInt", 2);
-			if (skill1.skillLevel <= this.level) {
-				skill1.Enable ();
-			}
-			if (skill2.skillLevel <= this.level) {
-				skill2.Enable ();
-			}
-		}
-
 		if (XpBar != null)
 			XpBar.SetFloat ("Blend", xp / xpMax);
 
@@ -624,7 +624,7 @@ public class SoldierControler : MonoBehaviour {
 		case(1): // BIDU
 			this.vidaMax = 2;
 			this.vida = 2;
-			this.reach = 0.5f;
+			this.reach = 1;
 			this.damage = 1;
 			this.damageSpeed = 3;
 			this.range = 1;
@@ -661,7 +661,7 @@ public class SoldierControler : MonoBehaviour {
 		case(4): //JOTALHÃO
 			this.vidaMax = 2;
 			this.vida = 2;
-			this.reach = 0.5f;
+			this.reach = 1;
 			this.damage = 1;
 			this.damageSpeed = 3;
 			this.range = 1;
@@ -673,7 +673,7 @@ public class SoldierControler : MonoBehaviour {
 		case(5): //PITECO
 			this.vidaMax = 2;
 			this.vida = 2;
-			this.reach = 0.5f;
+			this.reach = 1;
 			this.damage = 1;
 			this.damageSpeed = 3;
 			this.range = 1;
@@ -710,7 +710,7 @@ public class SoldierControler : MonoBehaviour {
 		case(8): //SANSAO
 			this.vidaMax = 6;
 			this.vida = 6;
-			this.reach = 0.5f;
+			this.reach = 1;
 			this.damage = 3;
 			this.damageSpeed = 3;
 			this.range = 1;
