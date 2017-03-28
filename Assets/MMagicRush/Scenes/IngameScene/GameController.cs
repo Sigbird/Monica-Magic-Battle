@@ -216,13 +216,19 @@ public class GameController : MonoBehaviour {
 		yield return new WaitForSeconds (1);
 
 		if (playerCharges == 3 && enemyCharges <= 2) {
+			this.GetComponent<AudioManager> ().StopAudio ();
+			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
 			endGamePanel [0].SetActive (true);
 		} else if (enemyCharges == 3 && playerCharges <= 2) {
+			this.GetComponent<AudioManager> ().StopAudio ();
+			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("defeat");
 			endGamePanel [1].SetActive (true);
 		} else { // EMPATE
 			Debug.Log ("EMPATE");
+			this.GetComponent<AudioManager> ().StopAudio ();
+
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
 			endGamePanel [0].SetActive (true);
 		}

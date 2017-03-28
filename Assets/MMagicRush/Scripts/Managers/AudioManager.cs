@@ -16,6 +16,14 @@ public class AudioManager : MonoBehaviour {
 		
 	}
 
+	public void StopAudio(){
+		source.Stop ();
+	}
+
+	public void SetVolume(float x){
+		source.volume = x;
+	}
+
 	public void PlayAudio(string track){
 
 		if (track == "magic") { 
