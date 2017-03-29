@@ -19,6 +19,10 @@ public class SoldierControler : MonoBehaviour {
 
 	public int troopId;
 
+	public float topPreference;
+	public float midPreference;
+	public float botPreference;
+
 	public STATE state = STATE.DEFAULT;
 
 	public int team;
@@ -168,7 +172,7 @@ public class SoldierControler : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		ChooseLane(Random.Range(0,3));
+		ChooseLane();
 
 		if (heroUnity) {// CONFIGURAÇÃO DE HEROIS
 			SetupHero();
@@ -403,7 +407,7 @@ public class SoldierControler : MonoBehaviour {
 					Progress--;
 				}
 			} else {
-				ChooseLane (Random.Range (0, 3));
+				ChooseLane ();
 				ChangeState ();
 
 				GetComponent<SpriteRenderer> ().flipX = false;
@@ -890,8 +894,18 @@ public class SoldierControler : MonoBehaviour {
 				StartCoroutine (HealingAndXp ());
 			}
 			if (GainXP) {
+				if (team == 1) {
+					this.xp = GameController.playerXp;
+				} else {
+					this.xp = GameController.enemyXp;
+				}
 				yield return new WaitForSeconds (1f);
 				this.xp += 5;
+				if (team == 1) {
+					GameController.playerXp = this.xp;
+				} else {
+					GameController.enemyXp = this.xp;
+				}
 				StartCoroutine (HealingAndXp ());
 
 			} 
@@ -1052,7 +1066,26 @@ public class SoldierControler : MonoBehaviour {
 	}
 
 
-	public void ChooseLane(int x){
+	public void ChooseLane(){
+		int x;
+		float random = Random.value;
+		if (random < (midPreference/100))
+		{
+			x = 0;
+		}
+		else if (random < ((topPreference/100) + (midPreference/100)))
+		{
+			x = 1;
+		}
+		else if (random < ((botPreference/100) + (topPreference/100) + (midPreference/100)))
+		{
+			x = 2;
+		}
+		else
+		{
+			x = 0;
+		}
+
 		switch (x) {
 		case 0:
 			ActualLane = LaneMid;

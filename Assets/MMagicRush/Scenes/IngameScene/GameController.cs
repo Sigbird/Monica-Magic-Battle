@@ -7,8 +7,12 @@ public class GameController : MonoBehaviour {
 
 
 	public int playerCharges;
+	public static float playerXp;
 
 	public int enemyCharges;
+	public static float enemyXp;
+
+
 	[HideInInspector]
 	public int round ;
 	[HideInInspector]
@@ -46,6 +50,8 @@ public class GameController : MonoBehaviour {
 		Debug.Log ("Round " + round);
 		if (enemyCharges == 0 && playerCharges == 0) {
 			this.round = 1;
+			GameController.playerXp = 0;
+			GameController.enemyXp = 0;
 		}
 
 		//StartCoroutine (EnemyAI ());
