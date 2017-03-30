@@ -38,9 +38,12 @@ public class CardSlotScript : MonoBehaviour {
 
 
 	//PREFABS
-	public GameObject tower;
+	public GameObject movementMarker;
 
 	public GameObject troop;
+
+	//PlayerHero
+	public SoldierControler PlayerHero;
 
 
 	private bool projectileCreated;
@@ -120,7 +123,11 @@ public class CardSlotScript : MonoBehaviour {
 		if (cards.Length == 0) {
 			cardID = 1;
 		} else {
-			cardID = cards [Random.Range(0, cards.Length)];
+			if(PlayerPrefs.GetString("MovementOnly") == "True"){
+				cardID = 21;
+			}else{
+				cardID = cards [Random.Range(0, cards.Length)];
+			}
 		}
 		switch (cardID) {
 		case 0://SEM CARTA
@@ -460,71 +467,70 @@ public class CardSlotScript : MonoBehaviour {
 			UpdateCard ();
 			break;
 
-											//TORRES
+											//MOVIMENTACAO
 
-			case 21:// TORRE: PAPEL
+		case 21:// MOVER
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = tower;
-			t.GetComponent<TowerController> ().towerID = 1;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
+			t = Instantiate (movementMarker, Movable.transform.position, Quaternion.identity);
+			PlayerHero.ChangeLane (t.transform.position);
 			UpdateCard ();
 			break;
-			case 22:// TORRE: AGUA
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = tower;
-			t.GetComponent<TowerController> ().towerID = 2;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
-			UpdateCard ();
-			break;
-			case 23:// TORRE: DESENTUPIDOR
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = tower;
-			t.GetComponent<TowerController> ().towerID = 3;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
-			UpdateCard ();
-			break;
-			case 24:// TORRE: NEVE
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = tower;
-			t.GetComponent<TowerController> ().towerID = 4;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
-			UpdateCard ();
-			break;
-			case 25:// TORRE: CURA
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = tower;
-			t.GetComponent<TowerController> ().towerID = 5;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
-			UpdateCard ();
-			break;
-			case 26:// TORRE: TESOURO
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = tower;
-			t.GetComponent<TowerController> ().towerID = 6;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
-			UpdateCard ();
-			break;
-			case 27:// TORRE: SONO
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = tower;
-			t.GetComponent<TowerController> ().towerID = 7;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
-			UpdateCard ();
-			break;
-			case 28:// TORRE: ANTI TORRE
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = tower;
-			t.GetComponent<TowerController> ().towerID = 8;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
-			UpdateCard ();
-			break;
-			case 29:// TORRE: PROTETORA
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = tower;
-			t.GetComponent<TowerController> ().towerID = 9;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
-			UpdateCard ();
-			break;
+//			case 22:// TORRE: AGUA
+//			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+//			t = tower;
+//			t.GetComponent<TowerController> ().towerID = 2;
+//			Instantiate(t,Movable.transform.position, Quaternion.identity);
+//			UpdateCard ();
+//			break;
+//			case 23:// TORRE: DESENTUPIDOR
+//			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+//			t = tower;
+//			t.GetComponent<TowerController> ().towerID = 3;
+//			Instantiate(t,Movable.transform.position, Quaternion.identity);
+//			UpdateCard ();
+//			break;
+//			case 24:// TORRE: NEVE
+//			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+//			t = tower;
+//			t.GetComponent<TowerController> ().towerID = 4;
+//			Instantiate(t,Movable.transform.position, Quaternion.identity);
+//			UpdateCard ();
+//			break;
+//			case 25:// TORRE: CURA
+//			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+//			t = tower;
+//			t.GetComponent<TowerController> ().towerID = 5;
+//			Instantiate(t,Movable.transform.position, Quaternion.identity);
+//			UpdateCard ();
+//			break;
+//			case 26:// TORRE: TESOURO
+//			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+//			t = tower;
+//			t.GetComponent<TowerController> ().towerID = 6;
+//			Instantiate(t,Movable.transform.position, Quaternion.identity);
+//			UpdateCard ();
+//			break;
+//			case 27:// TORRE: SONO
+//			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+//			t = tower;
+//			t.GetComponent<TowerController> ().towerID = 7;
+//			Instantiate(t,Movable.transform.position, Quaternion.identity);
+//			UpdateCard ();
+//			break;
+//			case 28:// TORRE: ANTI TORRE
+//			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+//			t = tower;
+//			t.GetComponent<TowerController> ().towerID = 8;
+//			Instantiate(t,Movable.transform.position, Quaternion.identity);
+//			UpdateCard ();
+//			break;
+//			case 29:// TORRE: PROTETORA
+//			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+//			t = tower;
+//			t.GetComponent<TowerController> ().towerID = 9;
+//			Instantiate(t,Movable.transform.position, Quaternion.identity);
+//			UpdateCard ();
+//			break;
 			default:
 			Debug.Log ("out of range");
 			break;

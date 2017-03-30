@@ -310,8 +310,11 @@ public class SoldierControler : MonoBehaviour {
 		//FLAGS PARA HABILIDADES
 		//
 		if(skill1.skillActivated){
+			
 			switch (skill1.skillID) {
 			case 0:
+				this.vida++;
+				UpdateLife ();
 				break;
 			case 1:
 				break;
@@ -325,6 +328,8 @@ public class SoldierControler : MonoBehaviour {
 		if (skill2.skillActivated) {
 			switch (skill2.skillID) {
 			case 0:
+				this.vida++;
+				UpdateLife ();
 				break;
 			case 1:
 				break;
@@ -1063,6 +1068,21 @@ public class SoldierControler : MonoBehaviour {
 		Destroy (arrow);
 	}
 
+	}
+
+	public void ChangeLane(Vector3 pos){
+		this.Progress = 1;
+		if (Vector3.Distance (pos, LaneTop [1].transform.position) < Vector3.Distance (pos, LaneMid [1].transform.position) && Vector3.Distance (pos, LaneTop [1].transform.position) < Vector3.Distance (pos, LaneBot [1].transform.position)) {
+			ActualLane = LaneTop;
+		} else if (Vector3.Distance (pos, LaneMid [1].transform.position) < Vector3.Distance (pos, LaneTop [1].transform.position) && Vector3.Distance (pos, LaneMid [1].transform.position) < Vector3.Distance (pos, LaneBot [1].transform.position)) {
+			ActualLane = LaneMid;
+		} else if (Vector3.Distance (pos, LaneBot [1].transform.position) < Vector3.Distance (pos, LaneMid [1].transform.position) && Vector3.Distance (pos, LaneBot [1].transform.position) < Vector3.Distance (pos, LaneTop [1].transform.position)) {
+			ActualLane = LaneBot;
+		} else {
+			//
+		}
+
+		Debug.Log("Top: " + Vector3.Distance (pos, LaneTop [1].transform.position) + "Mid: " + Vector3.Distance (pos, LaneMid [1].transform.position) + "Bot: " + Vector3.Distance (pos, LaneBot [1].transform.position)); 
 	}
 
 

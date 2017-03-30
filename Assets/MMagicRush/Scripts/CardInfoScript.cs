@@ -247,89 +247,89 @@ public class CardInfoScript : MonoBehaviour {
 			character.sprite = Persons[0];
 			break;
 
-			//TORRES
+			//Movimento
 
 		case 21:
-			cardname.text = "Torre de Papel";
-			descrition.text = "Constroi a torre para ajudar no campo";
-			cost.text = "1";
-			damage.text = "1";
-			efect.sprite = Efects[2];
+			cardname.text = "Mover";
+			descrition.text = "Muda a rota do jogador para outra especifica";
+			cost.text = "20";
+			damage.text = "0";
+			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[0];
 			break;
-		case 22:
-			cardname.text = "Torre de Agua";
-			descrition.text = "Constroi a torre para ajudar no campo";
-			cost.text = "3";
-			damage.text ="1";
-			efect.sprite = Efects[2];
-			image.sprite = Images[cardID];
-			character.sprite = Persons[0];
-			break;
-		case 23:
-			cardname.text = "Torre de Desentupidor";
-			descrition.text = "Constroi a torre para ajudar no campo";
-			cost.text = "1";
-			damage.text = "1";
-			efect.sprite = Efects[2];
-			image.sprite = Images[cardID];
-			character.sprite = Persons[0];
-			break;
-		case 24:
-			cardname.text = "Torre de Neve";
-			descrition.text = "Constroi a torre para ajudar no campo";
-			cost.text = "50";
-			damage.text = "1";
-			efect.sprite = Efects[2];
-			image.sprite = Images[cardID];
-			character.sprite = Persons[0];
-			break;
-		case 25:
-			cardname.text = "Torre da Cura";
-			descrition.text = "Constroi a torre para ajudar no campo";
-			cost.text = "15";
-			damage.text = "1";
-			efect.sprite = Efects[2];
-			image.sprite = Images[cardID];
-			character.sprite = Persons[0];
-			break;
-		case 26:
-			cardname.text = "Torre do Tesouro";
-			descrition.text = "Constroi a torre para ajudar no campo";
-			cost.text ="50";
-			damage.text = "1";
-			efect.sprite = Efects[2];
-			image.sprite = Images[cardID];
-			character.sprite = Persons[0];
-			break;
-		case 27:
-			cardname.text = "Torre do Sono";
-			descrition.text = "Constroi a torre para ajudar no campo";
-			cost.text ="100";
-			damage.text = "5";
-			efect.sprite = Efects[2];
-			image.sprite = Images[cardID];
-			character.sprite = Persons[0];;
-			break;
-		case 28:
-			cardname.text = "Torre AntiTorre";
-			descrition.text = "Constroi a torre para ajudar no campo";
-			cost.text = "40";
-			damage.text = "3";
-			efect.sprite = Efects[2];
-			image.sprite = Images[cardID];
-			character.sprite = Persons[0];
-			break;
-		case 29:
-			cardname.text = "Torre Protetora";
-			descrition.text = "Constroi a torre para ajudar no campo";
-			cost.text = "110";
-			damage.text = "5";
-			efect.sprite = Efects[2];
-			image.sprite = Images[cardID];
-			character.sprite = Persons[0];
-			break;
+//		case 22:
+//			cardname.text = "Torre de Agua";
+//			descrition.text = "Constroi a torre para ajudar no campo";
+//			cost.text = "3";
+//			damage.text ="1";
+//			efect.sprite = Efects[2];
+//			image.sprite = Images[cardID];
+//			character.sprite = Persons[0];
+//			break;
+//		case 23:
+//			cardname.text = "Torre de Desentupidor";
+//			descrition.text = "Constroi a torre para ajudar no campo";
+//			cost.text = "1";
+//			damage.text = "1";
+//			efect.sprite = Efects[2];
+//			image.sprite = Images[cardID];
+//			character.sprite = Persons[0];
+//			break;
+//		case 24:
+//			cardname.text = "Torre de Neve";
+//			descrition.text = "Constroi a torre para ajudar no campo";
+//			cost.text = "50";
+//			damage.text = "1";
+//			efect.sprite = Efects[2];
+//			image.sprite = Images[cardID];
+//			character.sprite = Persons[0];
+//			break;
+//		case 25:
+//			cardname.text = "Torre da Cura";
+//			descrition.text = "Constroi a torre para ajudar no campo";
+//			cost.text = "15";
+//			damage.text = "1";
+//			efect.sprite = Efects[2];
+//			image.sprite = Images[cardID];
+//			character.sprite = Persons[0];
+//			break;
+//		case 26:
+//			cardname.text = "Torre do Tesouro";
+//			descrition.text = "Constroi a torre para ajudar no campo";
+//			cost.text ="50";
+//			damage.text = "1";
+//			efect.sprite = Efects[2];
+//			image.sprite = Images[cardID];
+//			character.sprite = Persons[0];
+//			break;
+//		case 27:
+//			cardname.text = "Torre do Sono";
+//			descrition.text = "Constroi a torre para ajudar no campo";
+//			cost.text ="100";
+//			damage.text = "5";
+//			efect.sprite = Efects[2];
+//			image.sprite = Images[cardID];
+//			character.sprite = Persons[0];;
+//			break;
+//		case 28:
+//			cardname.text = "Torre AntiTorre";
+//			descrition.text = "Constroi a torre para ajudar no campo";
+//			cost.text = "40";
+//			damage.text = "3";
+//			efect.sprite = Efects[2];
+//			image.sprite = Images[cardID];
+//			character.sprite = Persons[0];
+//			break;
+//		case 29:
+//			cardname.text = "Torre Protetora";
+//			descrition.text = "Constroi a torre para ajudar no campo";
+//			cost.text = "110";
+//			damage.text = "5";
+//			efect.sprite = Efects[2];
+//			image.sprite = Images[cardID];
+//			character.sprite = Persons[0];
+//			break;
 		}
 
 

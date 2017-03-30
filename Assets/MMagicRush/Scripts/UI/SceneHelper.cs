@@ -14,7 +14,7 @@ public class SceneHelper : MonoBehaviour {
 		Camera.main.gameObject.GetComponent<AudioSource> ().Play ();
 
 		for (int i = 0; i < 10; i++) {
-			temp[i] = Random.Range(1,20);
+			temp[i] = Random.Range(1,22);
 		}
 
 		if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length <= 0) {

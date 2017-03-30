@@ -6,7 +6,8 @@ public class ConfigScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		PlayerPrefs.SetString ("MovementOnly", "False");
+		PlayerPrefs.SetString ("Tutorial", "True");
 	}
 	
 	// Update is called once per frame
@@ -20,5 +21,13 @@ public class ConfigScript : MonoBehaviour {
 
 	public void DesativeTutorial(){
 		PlayerPrefs.SetString ("Tutorial", "False");
+	}
+
+	public void AtiveMovimentOnly(){
+		PlayerPrefs.SetString ("MovementOnly", "True");
+	}
+
+	public void DesativeMovimentOnly(){
+		PlayerPrefs.SetString ("MovementOnly", "False");
 	}
 }

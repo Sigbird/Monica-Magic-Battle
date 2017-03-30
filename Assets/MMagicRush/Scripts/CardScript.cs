@@ -23,6 +23,8 @@ public class CardScript : MonoBehaviour {
 	public Sprite image;
 	public Sprite peson;
 
+
+
 	public GameObject cardInfo;
 
 	// Use this for initialization
