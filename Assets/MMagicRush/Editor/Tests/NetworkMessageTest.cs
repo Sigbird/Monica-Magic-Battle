@@ -62,31 +62,31 @@ public class NetworkMessageTest : AssertionHelper {
         Expect(receivedLength, EqualTo(sentLength));
     }
 
-    [Test, Ignore]
-    public void JsonCompressionTest()
-    {
-        string jsonString = message.ToJsonString();
-        byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonString);
-        Debug.Log(jsonString);
-        Debug.Log("uncompressed length: " + jsonBytes.Length);
-
-        byte[] jsonBytesCompressed = SevenZipHelper.Compress(jsonBytes);
-        Debug.Log("compressed length: " + jsonBytesCompressed.Length);
-
-        Expect(jsonBytesCompressed.Length, LessThan(jsonBytes.Length));
-    }
-
-    [Test, Ignore]
-    public void BytesCompressionTest()
-    {
-        byte[] messageBytes = message.ToBytes();
-        Debug.Log("uncompressed length: " + messageBytes.Length);
-
-        byte[] compressedMessageBytes = SevenZipHelper.Compress(messageBytes);
-        Debug.Log("compressed length: " + compressedMessageBytes.Length);
-
-        Expect(compressedMessageBytes.Length, LessThan(messageBytes.Length));
-    }
+//    [Test, Ignore]
+//    public void JsonCompressionTest()
+//    {
+//        string jsonString = message.ToJsonString();
+//        byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonString);
+//        Debug.Log(jsonString);
+//        Debug.Log("uncompressed length: " + jsonBytes.Length);
+//
+//        byte[] jsonBytesCompressed = SevenZipHelper.Compress(jsonBytes);
+//        Debug.Log("compressed length: " + jsonBytesCompressed.Length);
+//
+//        Expect(jsonBytesCompressed.Length, LessThan(jsonBytes.Length));
+//    }
+//
+//    [Test, Ignore]
+//    public void BytesCompressionTest()
+//    {
+//        byte[] messageBytes = message.ToBytes();
+//        Debug.Log("uncompressed length: " + messageBytes.Length);
+//
+//        byte[] compressedMessageBytes = SevenZipHelper.Compress(messageBytes);
+//        Debug.Log("compressed length: " + compressedMessageBytes.Length);
+//
+//        Expect(compressedMessageBytes.Length, LessThan(messageBytes.Length));
+//    }
 
     [Test]
     public void JsonFormatTest()
