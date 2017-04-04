@@ -188,6 +188,13 @@ public class SoldierControler : MonoBehaviour {
 		this.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
 		this.energybarSoldier.GetComponent<HealtBar> ().energy = true;
 
+		if(heroUnity)
+		if (team == 1) {
+			this.xp = GameController.playerXp;
+		} else {
+			this.xp = GameController.enemyXp;
+		}
+
 		if (GetComponent<Animator> () != null) {
 			anim = GetComponent<Animator> ();
 		}
@@ -278,7 +285,7 @@ public class SoldierControler : MonoBehaviour {
 		//	
 		//FLAGS PARA HEALING
 		//
-		if (this.team == 1) {
+		if (this.team == 1 && this.gameObject.GetComponent<SpriteRenderer> ().enabled == true) {
 			if (this.transform.position.y < -1) {
 				this.healing = true;
 			} else {
@@ -292,7 +299,7 @@ public class SoldierControler : MonoBehaviour {
 			}
 		} 
 
-		if (this.team == 2) {
+		if (this.team == 2 && this.gameObject.GetComponent<SpriteRenderer> ().enabled == true) {
 			if (this.transform.position.y > 1) {
 				this.healing = true;
 			} else {
@@ -406,7 +413,7 @@ public class SoldierControler : MonoBehaviour {
 				if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range - 0.5f) {
 					GetComponent<SpriteRenderer> ().flipX = true;
 					anim.SetTrigger ("Walk");
-					SpendingEnergy ();
+					//SpendingEnergy ();
 					transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
 				} else if (Progress > 0) {
 					Progress--;
@@ -453,7 +460,7 @@ public class SoldierControler : MonoBehaviour {
 				//DESLOCAMENTO ATE INIMIGO
 				if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
 					anim.SetTrigger ("Walk");
-					SpendingEnergy ();
+					//SpendingEnergy ();
 					transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
 						
 				}else if(targetEnemy.tag == "waypoint"){
@@ -899,11 +906,6 @@ public class SoldierControler : MonoBehaviour {
 				StartCoroutine (HealingAndXp ());
 			}
 			if (GainXP) {
-				if (team == 1) {
-					this.xp = GameController.playerXp;
-				} else {
-					this.xp = GameController.enemyXp;
-				}
 				yield return new WaitForSeconds (1f);
 				this.xp += 5;
 				if (team == 1) {

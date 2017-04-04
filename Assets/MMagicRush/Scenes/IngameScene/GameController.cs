@@ -52,6 +52,9 @@ public class GameController : MonoBehaviour {
 			this.round = 1;
 			GameController.playerXp = 0;
 			GameController.enemyXp = 0;
+		} else {
+			GameController.playerXp = PlayerPrefs.GetFloat("PlayerXP");
+			GameController.enemyXp = PlayerPrefs.GetFloat("EnemyXP");
 		}
 
 		//StartCoroutine (EnemyAI ());
@@ -191,7 +194,9 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void NextRound(){
-		
+		Debug.Log ("xp: "+GameController.playerXp);
+		PlayerPrefs.SetFloat ("PlayerXP", GameController.playerXp);
+		PlayerPrefs.SetFloat ("EnemyXP", GameController.enemyXp);
 		StartCoroutine (newRound ());
 
 	}
