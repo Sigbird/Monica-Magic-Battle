@@ -10,7 +10,7 @@ public class CloudMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		interval = Random.Range (17, 22);
+		interval = Random.Range (20, 30);
 	}
 	
 	// Update is called once per frame
@@ -35,7 +35,7 @@ public class CloudMovement : MonoBehaviour {
 
 		if (counter >= interval) {
 			transform.position = new Vector2 (-5, Random.Range (2, -1.5f));
-			interval = Random.Range (17, 22);
+			interval = Random.Range (20, 30);
 			counter = 0;
 		}
 

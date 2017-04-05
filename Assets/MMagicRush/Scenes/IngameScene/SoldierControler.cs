@@ -82,6 +82,10 @@ public class SoldierControler : MonoBehaviour {
 
 	public float xp;
 
+	public float xpLvl1 = 0;
+	public float xplvl2 = 25;
+	public float xplvl3 = 125;
+
 	private float xpMax;
 
 	public int level;
@@ -103,7 +107,7 @@ public class SoldierControler : MonoBehaviour {
 	public float damageSpeed;
 
 	[HideInInspector]
-	private float range;
+	public float range;
 
 	private float danoCD = 0;
 
@@ -352,7 +356,7 @@ public class SoldierControler : MonoBehaviour {
 		//FLAGS PARA LEVEL
 		//
 		if (heroUnity) {
-			if (this.xp < 25 && this.xp < 125) {
+			if (this.xp < xplvl2 && this.xp < xplvl3) {
 				this.level = 1;
 				xpMax = 25;
 				LvlUpAnim.SetInteger ("LevelUpInt", -1);
@@ -363,7 +367,7 @@ public class SoldierControler : MonoBehaviour {
 					skill2.Enable ();
 				}
 			}
-			if (this.xp > 25 && this.xp < 125) {
+			if (this.xp > xplvl2 && this.xp < xplvl3) {
 				this.level = 2;
 				xpMax = 125;
 				LvlUpAnim.SetInteger ("LevelUpInt", 1);
@@ -374,7 +378,7 @@ public class SoldierControler : MonoBehaviour {
 					skill2.Enable ();
 				}
 			}
-			if (this.xp >= 125) {
+			if (this.xp >= xplvl3) {
 				this.level = 3;
 				xpMax = 125;
 				LvlUpAnim.SetInteger ("LevelUpInt", 2);
@@ -815,7 +819,7 @@ public class SoldierControler : MonoBehaviour {
 
 		if (this.energy >= this.energyMax) {
 			resting = false;
-			this.speed = maxSpeed;
+			//this.speed = maxSpeed;
 			tired = false;
 		}
 
@@ -824,7 +828,7 @@ public class SoldierControler : MonoBehaviour {
 
 			if (tired == false) {
 				tired = true;
-				this.speed = speed / 2;
+				//this.speed = speed / 2;
 			}
 		}
 
