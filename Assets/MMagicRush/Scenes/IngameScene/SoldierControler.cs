@@ -13,7 +13,8 @@ public class SoldierControler : MonoBehaviour {
 		RETREAT,
 	}
 
-	//public TipoSoldado Tipo;
+	public int TipoSoldado;
+	public bool TipoSelecionado = false;
 
 	public bool heroUnity;
 
@@ -113,6 +114,7 @@ public class SoldierControler : MonoBehaviour {
 
 	[HideInInspector]
 	public float speed;
+	public float velocity;
 
 	[HideInInspector]
 	private float maxSpeed;
@@ -206,7 +208,7 @@ public class SoldierControler : MonoBehaviour {
 		StartCoroutine (Respawning ());
 
 		this.effects = "default";
-		this.speed = speed / 15;
+		this.speed = velocity / 15;
 		this.maxSpeed = this.speed;
 		this.level = 1;
 		this.healtbarSoldier.SetActive (true);
@@ -217,48 +219,11 @@ public class SoldierControler : MonoBehaviour {
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		audioManager.PlayAudio ("spawn");
 
-		//DESLOCAMENTO INICIAL
-		if (Random.value < 0.5f) {
-			desloc = 1f;
-		} else {
-			desloc = -1f;
-		}
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
-//		//Debugging
-//		if(this.team == 1){
-//			if(heroImputs[0].text !=null)
-//				this.vida = System.Int32.Parse(heroImputs [0].text);
-//			if(heroImputs[1].text !=null)
-//				this.vidaMax = System.Int32.Parse(heroImputs [1].text);
-//			if(heroImputs[2].text !=null)
-//				this.energy = System.Int32.Parse(heroImputs [2].text);
-//			if(heroImputs[3].text !=null)
-//				this.energyMax = System.Int32.Parse(heroImputs [3].text);
-//			if(heroImputs[4].text !=null)
-//				this.damage = System.Int32.Parse(heroImputs [4].text);
-//		//	if(heroImputs[5].text !=null)
-//			//this.speed = float.Parse(heroImputs [5].text);
-//		}
-//
-//		if(this.team == 2){
-//			if(enemyImputs[0].text !=null)
-//				this.vida = System.Int32.Parse(enemyImputs [0].text);
-//			if(enemyImputs[1].text !=null)
-//				this.vidaMax = System.Int32.Parse(enemyImputs [1].text);
-//			if(enemyImputs[2].text !=null)
-//				this.energy = System.Int32.Parse(enemyImputs [2].text);
-//			if(enemyImputs[3].text !=null)
-//				this.energyMax = System.Int32.Parse(enemyImputs [3].text);
-//			if(enemyImputs[4].text !=null)
-//				this.damage = System.Int32.Parse(enemyImputs [4].text);
-//		//	if(enemyImputs[5].text !=null)
-//		//	this.speed = float.Parse(enemyImputs [5].text);
-//		}
-
 
 		//
 		//ORDEM DE LAYER
@@ -266,11 +231,37 @@ public class SoldierControler : MonoBehaviour {
 		this.GetComponent<SpriteRenderer> ().sortingOrder = -(int)(this.transform.position.y - 0.5f);
 
 
-		//DESLOCAMENTO INICIAL
-//		if (deslocTimer < 30) {
-//			transform.Translate (Vector2.left * Time.deltaTime * desloc);
-//			deslocTimer++;
-//		}
+		//
+		// TIPO DE HEROI
+		//
+
+		if (TipoSelecionado == false) {
+			switch(TipoSoldado){
+			case 0: // CERTEIRO
+				this.damage += 1;
+				this.damageSpeed += 1;
+				this.reach += 2;
+
+				break;
+			case 1: //VALENTAO
+				this.vida += 3;
+				this.vidaMax += 3;
+				this.velocity -= 2;
+				Debug.Log ("Valentão");
+				break;
+			case 2: //SUPORTE
+				this.vida -= 1;
+				this.vidaMax -= 1;
+				this.reach += 4;
+
+				break;
+			}
+			UpdateLife ();
+			this.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
+			TipoSelecionado = true;
+		}
+		this.speed = velocity / 15;
+
 
 		//EVENTO DE MORTE
 		if (this.vida <= 0 && heroUnity) {
@@ -406,7 +397,7 @@ public class SoldierControler : MonoBehaviour {
 			}
 		}
 
-				
+
 			//
 			//ESTADOS DO PERSONAGEM
 			//
@@ -558,13 +549,14 @@ public class SoldierControler : MonoBehaviour {
 		Debug.Log ("id: " + id);
 			switch (id) {
 			case(0): 
+				this.TipoSoldado = 1;
 				this.vidaMax = 3;
 				this.vida = 3;
 				this.reach = 1;//3
 				this.damage = 1;
 				this.damageSpeed = 2;
 				this.range = 1;
-				this.speed = 8;
+				this.velocity = 8;
 				this.energyMax = 3;
 				this.energy = 3;
 				//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -572,13 +564,14 @@ public class SoldierControler : MonoBehaviour {
 				Debug.Log ("Monica");
 				break;
 			case(1):
+				this.TipoSoldado = 0;
 				this.vidaMax = 3;
 				this.vida = 3;
-			this.reach = 1;//3
+			    this.reach = 1;//3
 				this.damage = 1;
 				this.damageSpeed = 2;
 				this.range = 1;
-				this.speed = 8;
+				this.velocity = 8;
 				this.energyMax = 3;
 				this.energy = 3;
 				//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -592,7 +585,7 @@ public class SoldierControler : MonoBehaviour {
 				this.damage = 1;
 				this.damageSpeed = 2;
 				this.range = 1;
-				this.speed = 8;
+				this.velocity = 8;
 				this.energyMax = 4;
 				this.energy = 4;
 				this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -605,7 +598,7 @@ public class SoldierControler : MonoBehaviour {
 				this.damage = 1;
 				this.damageSpeed = 2;
 				this.range = 1;
-				this.speed = 8;
+				this.velocity = 8;
 				this.energyMax = 4;
 				this.energy = 4;
 				this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -617,7 +610,7 @@ public class SoldierControler : MonoBehaviour {
 				this.damage = 1;
 				this.damageSpeed = 2;
 				this.range = 1;
-				this.speed = 8;
+				this.velocity = 8;
 				this.energyMax = 4;
 				this.energy = 4;
 				this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -648,7 +641,7 @@ public class SoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 3;
 			this.range = 1;
-			this.speed = 4;
+			this.velocity = 4;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites[0];
@@ -660,7 +653,7 @@ public class SoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 3;
 			this.range = 4;
-			this.speed = 5;
+			this.velocity = 5;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [1];
@@ -673,7 +666,7 @@ public class SoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 3;
 			this.range = 3;
-			this.speed = 4;
+			this.velocity = 4;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [2];
@@ -685,7 +678,7 @@ public class SoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 3;
 			this.range = 1;
-			this.speed = 2;
+			this.velocity = 2;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [3];
@@ -697,7 +690,7 @@ public class SoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 3;
 			this.range = 1;
-			this.speed = 4;
+			this.velocity = 4;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [4];
@@ -709,7 +702,7 @@ public class SoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 3;
 			this.range = 5;
-			this.speed = 4;
+			this.velocity = 4;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [5];
@@ -722,7 +715,7 @@ public class SoldierControler : MonoBehaviour {
 			this.damage = 5;
 			this.damageSpeed = 3;
 			this.range = 1;
-			this.speed = 3;
+			this.velocity = 3;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [6];
@@ -734,7 +727,7 @@ public class SoldierControler : MonoBehaviour {
 			this.damage = 3;
 			this.damageSpeed = 3;
 			this.range = 1;
-			this.speed = 4;
+			this.velocity = 4;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [7];
@@ -746,7 +739,7 @@ public class SoldierControler : MonoBehaviour {
 			this.damage = 5;
 			this.damageSpeed = 3;
 			this.range = 6;
-			this.speed = 4;
+			this.velocity = 4;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [8];
@@ -758,7 +751,7 @@ public class SoldierControler : MonoBehaviour {
 			this.damage = 20;
 			this.damageSpeed = 3;
 			this.range = 8;
-			this.speed = 5;
+			this.velocity = 5;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [9];
@@ -1128,6 +1121,26 @@ public class SoldierControler : MonoBehaviour {
 		default:
 			ActualLane = LaneMid;
 			LaneName = "mid";
+			break;
+		}
+	}
+
+	public void RevertTipoSoldado(int x){
+		switch (x) {
+		case 0:
+			this.damage -= 1;
+			this.damageSpeed -= 1;
+			this.reach -= 2;
+			break;
+		case 1:
+			this.vida -= 3;
+			this.vidaMax -= 3;
+			this.velocity += 2;
+			break;
+		case 2:
+			this.vida += 1;
+			this.vidaMax += 1;
+			this.reach -= 4;
 			break;
 		}
 	}

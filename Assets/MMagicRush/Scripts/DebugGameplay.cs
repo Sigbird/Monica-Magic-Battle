@@ -115,7 +115,7 @@ public class DebugGameplay : MonoBehaviour {
 
 		Hero.damageSpeed = float.Parse (HeroRecInfluencia.text);
 
-		Hero.speed = float.Parse (HeroSpeed.text);
+		Hero.velocity = float.Parse (HeroSpeed.text);
 
 		Hero.range = float.Parse (HeroRange.text);
 
@@ -132,6 +132,7 @@ public class DebugGameplay : MonoBehaviour {
 		Hero.midPreference = float.Parse (HeroPrefMid.text);
 
 		Hero.botPreference = float.Parse (HeroPrefBot.text);
+
 
 		//ENEMY
 
@@ -153,7 +154,7 @@ public class DebugGameplay : MonoBehaviour {
 
 		Enemy.damageSpeed = float.Parse (EnemyRecInfluencia.text);
 
-		Enemy.speed = float.Parse (EnemySpeed.text);
+		Enemy.velocity = float.Parse (EnemySpeed.text);
 
 		Enemy.range = float.Parse (EnemyRange.text);
 
@@ -190,7 +191,7 @@ public class DebugGameplay : MonoBehaviour {
 		HeroMaxEnergy.text = Hero.energyMax.ToString ();
 		HeroDMG.text = Hero.damage.ToString ();
 		HeroRecInfluencia.text = Hero.damageSpeed.ToString ();
-		HeroSpeed.text = Hero.speed.ToString ();
+		HeroSpeed.text = Hero.velocity.ToString ();
 		HeroVisao.text = Hero.reach.ToString ();
 		HeroRange.text = Hero.range.ToString ();
 		HeroLVL1XP.text = Hero.xpLvl1.ToString ();
@@ -199,6 +200,7 @@ public class DebugGameplay : MonoBehaviour {
 		HeroPrefTop.text = Hero.topPreference.ToString ();
 		HeroPrefMid.text = Hero.midPreference.ToString ();
 		HeroPrefBot.text = Hero.botPreference.ToString ();
+		HeroCAT.text = Hero.TipoSoldado.ToString ();
 
 		EnemyHP.text = Enemy.vida.ToString ();
 		EnemyMaxHP.text = Enemy.vidaMax.ToString ();
@@ -206,7 +208,7 @@ public class DebugGameplay : MonoBehaviour {
 		EnemyMaxEnergy.text = Enemy.energyMax.ToString ();
 		EnemyDMG.text = Enemy.damage.ToString ();
 		EnemyRecInfluencia.text = Enemy.damageSpeed.ToString ();
-		EnemySpeed.text = Enemy.speed.ToString ();
+		EnemySpeed.text = Enemy.velocity.ToString ();
 		EnemyVisao.text = Enemy.reach.ToString ();
 		EnemyRange.text = Enemy.range.ToString ();
 		EnemyLVL1XP.text = Enemy.xpLvl1.ToString ();
@@ -215,9 +217,52 @@ public class DebugGameplay : MonoBehaviour {
 		EnemyPrefTop.text = Enemy.topPreference.ToString ();
 		EnemyPrefMid.text = Enemy.midPreference.ToString ();
 		EnemyPrefBot.text = Enemy.botPreference.ToString ();
+		EnemyCAT.text = Enemy.TipoSoldado.ToString();
 
 	}
 
+	public void RevertSoldado(int x){
+		SoldierControler Hero = GameObject.Find ("Hero").GetComponent<SoldierControler>();
+		SoldierControler Enemy = GameObject.Find ("HeroEnemy").GetComponent<SoldierControler>();
 
+		if (x == 0) {
+			switch (int.Parse(HeroCAT.text)) {
+			case 0:
+				this.HeroDMG.text = (Hero.damage + 1).ToString();
+				this.HeroRecInfluencia.text = (Hero.damageSpeed + 1).ToString();
+				this.HeroVisao.text = (Hero.reach + 2).ToString();
+				break;
+			case 1:
+				this.HeroHP.text = (Hero.vida + 3).ToString();
+				this.HeroMaxHP.text = (Hero.vidaMax + 3).ToString();
+				this.HeroSpeed.text = (Hero.velocity - 2).ToString();
+				break;
+			case 2:
+				this.HeroHP.text = (Hero.vida - 1).ToString();
+				this.HeroMaxHP.text = (Hero.vidaMax - 1).ToString();
+				this.HeroVisao.text = (Hero.reach + 4).ToString();
+				break;
+			}
+		} else {
+			switch (int.Parse(EnemyCAT.text)) {
+			case 0:
+				this.EnemyDMG.text = (Enemy.damage + 1).ToString();
+				this.EnemyRecInfluencia.text = (Enemy.damageSpeed + 1).ToString();
+				this.EnemyVisao.text = (Enemy.reach + 2).ToString();
+				break;
+			case 1:
+				this.EnemyHP.text = (Enemy.vida + 3).ToString();
+				this.EnemyMaxHP.text = (Enemy.vidaMax + 3).ToString();
+				this.EnemySpeed.text = (Enemy.velocity - 2).ToString();
+				break;
+			case 2:
+				this.EnemyHP.text = (Enemy.vida - 1).ToString();
+				this.EnemyMaxHP.text = (Enemy.vidaMax - 1).ToString();
+				this.EnemyVisao.text = (Enemy.reach + 4).ToString();
+				break;
+			}
+		}
+
+	}
 
 }
