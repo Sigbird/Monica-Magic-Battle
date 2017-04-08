@@ -12,10 +12,10 @@ public class returnbutton : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Hero.GetComponent<SoldierControler> ().state == SoldierControler.STATE.RETREAT) {
-			GetComponent<Image> ().enabled = false;
-		} else {
-			GetComponent<Image> ().enabled = true;
-		}
+//		if (Hero.GetComponent<SoldierControler> ().state == SoldierControler.STATE.RETREAT) {
+//			GetComponent<Image> ().enabled = false;
+//		} else {
+//			GetComponent<Image> ().enabled = true;
+//		}
 	}
 }
