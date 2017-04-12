@@ -95,26 +95,24 @@ public class WPSoldierControler : MonoBehaviour {
 	[HideInInspector]
 	public int vidaMax;
 
-	[HideInInspector]
+
 	public int vida;
 
 	public float reach;
 
-	[HideInInspector]
 	public int damage;
 
-	[HideInInspector]
 	public float damageSpeed;
+
+	public float danoCD = 0;
 
 	[HideInInspector]
 	public float range;
 
-	private float danoCD = 0;
 
-	[HideInInspector]
 	public float speed;
 
-	[HideInInspector]
+
 	private float maxSpeed;
 
 	[HideInInspector]
@@ -360,8 +358,9 @@ public class WPSoldierControler : MonoBehaviour {
 
 		//SEGUINDO OS MARCADORES DE MOVIMENTO
 
-		if (GetNewWaypoint() !=  null) {
-			WaypointMark = GetNewWaypoint();
+		if (GetNewWaypoint () != null) {
+			seeking = false;
+			WaypointMark = GetNewWaypoint ();
 			targetEnemy = null;
 			if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f) {
 				anim.SetTrigger ("Walk");
@@ -371,28 +370,28 @@ public class WPSoldierControler : MonoBehaviour {
 				WaypointMark = GetNewWaypoint ();
 			}
 
-		} 
+		} else {
+			seeking = true;
+		}
+			
+				if (seeking && cdSeek >= 1) {
+					this.targetEnemy = SeekEnemyTarget ();
+					if (this.targetEnemy != null) {
+						seeking = false;
+					}
+					cdSeek = 0;
+				} else {
+					cdSeek += Time.deltaTime;
+				}
+			
 
-		//			if (this.state == STATE.SEEKING) { // BUSCANDO ALVO
-		//				targetEnemy = SeekEnemyTarget ();
-		//				if (targetEnemy != null) {
-		//					this.state = STATE.DEFAULT;
-		//				}
-		//			}
-		//		if (seeking && cdSeek >= 1) {
-		//			this.targetEnemy = SeekEnemyTarget ();
-		//			cdSeek = 0;
-		//		} else {
-		//			cdSeek += Time.deltaTime;
-		//		}
-
-
+//		if (targetEnemy == null ) {//CONFIRMA SE ALVO VIVE
+//			seeking = true;
+//		} else 
 
 		// PERSEGUINDO E ATACANDO ALVO ENCONTRADO
 
-		if (targetEnemy == null ) {//CONFIRMA SE ALVO VIVE
-			//targetEnemy = SeekEnemyTarget ();
-		} else if(seeking ) {
+			if(seeking == false && this.targetEnemy != null ) { 
 
 			if (this.team == 2 && this.vida <= 1) {
 				//inimigo recua
@@ -406,16 +405,23 @@ public class WPSoldierControler : MonoBehaviour {
 
 			} else if(targetEnemy != null) { //ATACA ALVO
 				anim.SetTrigger ("Attack");
-				if (danoCD < damageSpeed ) { //TEMPO ENTRE ATAQUES
-					if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO HEROI
+				if (danoCD > damageSpeed ) { //TEMPO ENTRE ATAQUES
+					if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO HEROI
+						targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
+						targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife();
+						targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage ();
+						if(this.range>1)
+							TrowArrow ();
+						if (targetEnemy.GetComponent<WPIASoldierControler> ().vida <= -1) // ALVO MORREU
+							this.targetEnemy = null;
+					}else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
 						targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 						targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
 						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage ();
 						if(this.range>1)
 							TrowArrow ();
-					}else if (targetEnemy.GetComponent<TowerController> () != null) {//ALVO TORRE
-						targetEnemy.GetComponent<TowerController> ().vida -= damage;
-						targetEnemy.GetComponent<TowerController> ().UpdateLife();
+						if (targetEnemy.GetComponent<SoldierControler> ().vida <= -1) // ALVO MORREU
+							this.targetEnemy = null;
 					} else {//ALVO BASE
 						//							if(targetEnemy.tag == "waypoint"){
 						//								if (Progress == 2) {
@@ -436,14 +442,14 @@ public class WPSoldierControler : MonoBehaviour {
 
 						}
 					}
-					danoCD = 4;
+					danoCD = 0;
 					if (this.range > 1) {
 						audioManager.PlayAudio ("shot");
 					} else {
 						audioManager.PlayAudio ("atack");
 					}
 				} else {
-					danoCD -= Time.deltaTime;
+					danoCD += Time.deltaTime * 1000;
 				}
 			} 
 		}
@@ -464,7 +470,7 @@ public class WPSoldierControler : MonoBehaviour {
 		//					}
 
 		//FIM DO COMBATE
-		//					if (targetEnemy.GetComponent<SoldierControler> ().vida <= 0 || targetEnemy.GetComponent<SoldierControler>() == null) {
+		//					if (targetEnemy.GetComponent<WPIASoldierControler> ().vida <= 0 || targetEnemy.GetComponent<WPIASoldierControler>() == null) {
 		//						inCombat = false;
 		//					}
 		//	
@@ -877,8 +883,9 @@ public class WPSoldierControler : MonoBehaviour {
 		this.skill1.gameObject.SetActive (true);
 		this.skill2.gameObject.SetActive (true);
 		this.damage = 1;
+		this.speed = maxSpeed;
 		this.seeking = true;
-		this.targetEnemy = SeekEnemyTarget();
+		//this.targetEnemy = SeekEnemyTarget();
 		respawningTimer = 4;
 	}
 
@@ -887,12 +894,12 @@ public class WPSoldierControler : MonoBehaviour {
 		GameObject Emin = null;
 		float minDis = Mathf.Infinity;
 		if (this.tag == "enemysoldier1") { //Procura de Jogador 1
-			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null ) {//PROCURA TROPA
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
 					if (dist <= reach) {
 						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-							if (obj.GetComponent<SoldierControler> ().heroUnity == false) {
+							if (obj.GetComponent<SoldierControler> () != null) {
 								Emin = obj;
 								minDis = dist;
 							}
@@ -900,23 +907,12 @@ public class WPSoldierControler : MonoBehaviour {
 					}
 				}
 			} 
-			if (GameObject.FindGameObjectsWithTag ("enemytower2") != null) {
-				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower2")) {
-					float dist = Vector3.Distance (transform.position, obj.transform.position);
-					if (dist <= reach) {
-						if (dist < minDis) {
-							Emin = obj;
-							minDis = dist;
-						}
-					}
-				}
-			}
-			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {//PROCURA HEROI
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
 					if (dist <= reach) {
 						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-							if (obj.GetComponent<SoldierControler> ().heroUnity == true /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+							if (obj.GetComponent<WPIASoldierControler> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
 								Emin = obj;
 								minDis = dist;
 							}
@@ -924,21 +920,15 @@ public class WPSoldierControler : MonoBehaviour {
 					}
 				}
 			} 
-			if(Emin == null) {
-				if (heroUnity) {
-					return GameObject.Find ("HeroBaseEnemy");
-				} else {
-					return GameObject.Find ("HeroBaseEnemy");
-				}
-			}
+		
 
 		} else if (this.tag == "enemysoldier2") { //Procura de Jogador 2
-			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//PROCURA TROPA
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
 					if (dist <= reach) {
 						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-							if (obj.GetComponent<SoldierControler> ().heroUnity == false) {
+							if (obj.GetComponent<SoldierControler> () != null) {
 								Emin = obj;
 								minDis = dist;
 							}
@@ -946,23 +936,12 @@ public class WPSoldierControler : MonoBehaviour {
 					}
 				}
 			}
-			if (GameObject.FindGameObjectsWithTag ("enemytower1") != null) {
-				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower1")) {
-					float dist = Vector3.Distance (transform.position, obj.transform.position);
-					if (dist <= reach) {
-						if (dist < minDis) {
-							Emin = obj;
-							minDis = dist;
-						}
-					}
-				}
-			}
-			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//PROCURA HEROI
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
 					if (dist <= reach) {
 						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-							if (obj.GetComponent<SoldierControler> ().heroUnity == true /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+							if (obj.GetComponent<WPSoldierControler> ().heroUnity != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
 								Emin = obj;
 								minDis = dist;
 							}
@@ -970,13 +949,7 @@ public class WPSoldierControler : MonoBehaviour {
 					}
 				}
 			}
-			if(Emin == null) {
-				if (heroUnity) {
-					return GameObject.Find ("HeroBase");
-				} else {
-					return GameObject.Find ("HeroBase");
-				}
-			}
+		
 		}
 		return Emin;
 	}

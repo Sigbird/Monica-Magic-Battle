@@ -3,15 +3,15 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class SoldierControler : MonoBehaviour {
+public class WPIASoldierControler : MonoBehaviour {
 
 	//public enum TipoSoldado {Guerreiro, Mago, Lanceiro, General};
 
-	public enum STATE
-	{
-		DEFAULT,
-		RETREAT,
-	}
+	//	public enum STATE
+	//	{
+	//		DEFAULT,
+	//		RETREAT,
+	//	}
 
 	//public TipoSoldado Tipo;
 
@@ -23,7 +23,7 @@ public class SoldierControler : MonoBehaviour {
 	public float midPreference;
 	public float botPreference;
 
-	public STATE state = STATE.DEFAULT;
+	//	public STATE state = STATE.DEFAULT;
 
 	public int team;
 
@@ -135,14 +135,7 @@ public class SoldierControler : MonoBehaviour {
 
 	//LANE WAYPOINTS
 
-	public GameObject[] LaneTop;
-	public GameObject[] LaneMid;
-	public GameObject[] LaneBot;
-
-	public string LaneName;
-	public GameObject[] ActualLane;
-
-	public int Progress;
+	public GameObject WaypointMark;
 
 
 	//SKILLS
@@ -169,21 +162,19 @@ public class SoldierControler : MonoBehaviour {
 	public InputField[] enemyImputs;
 
 	private float count; 
-	[HideInInspector]
-	public float desloc;
-	public float deslocTimer;
+
 
 	// Use this for initialization
 	void Start () {
 
-		ChooseLane();
+
 
 		if (heroUnity) {// CONFIGURAÇÃO DE HEROIS
 			SetupHero();
 		} else {//CONFIGURAÇÃO DE TROPAS
 			SetupTroop(troopId);
 		}
-			
+
 		//CONFIGURAÇÃO EM COMUM 
 		UpdateLife ();
 		this.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
@@ -210,67 +201,23 @@ public class SoldierControler : MonoBehaviour {
 		this.maxSpeed = this.speed;
 		this.level = 1;
 		this.healtbarSoldier.SetActive (true);
-		this.state = STATE.DEFAULT;
+		//		this.state = STATE.DEFAULT;
 		if(heroUnity)
-		StartCoroutine (HealingAndXp ());
+			StartCoroutine (HealingAndXp ());
 
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		audioManager.PlayAudio ("spawn");
 
-		//DESLOCAMENTO INICIAL
-		if (Random.value < 0.5f) {
-			desloc = 1f;
-		} else {
-			desloc = -1f;
-		}
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-//		//Debugging
-//		if(this.team == 1){
-//			if(heroImputs[0].text !=null)
-//				this.vida = System.Int32.Parse(heroImputs [0].text);
-//			if(heroImputs[1].text !=null)
-//				this.vidaMax = System.Int32.Parse(heroImputs [1].text);
-//			if(heroImputs[2].text !=null)
-//				this.energy = System.Int32.Parse(heroImputs [2].text);
-//			if(heroImputs[3].text !=null)
-//				this.energyMax = System.Int32.Parse(heroImputs [3].text);
-//			if(heroImputs[4].text !=null)
-//				this.damage = System.Int32.Parse(heroImputs [4].text);
-//		//	if(heroImputs[5].text !=null)
-//			//this.speed = float.Parse(heroImputs [5].text);
-//		}
-//
-//		if(this.team == 2){
-//			if(enemyImputs[0].text !=null)
-//				this.vida = System.Int32.Parse(enemyImputs [0].text);
-//			if(enemyImputs[1].text !=null)
-//				this.vidaMax = System.Int32.Parse(enemyImputs [1].text);
-//			if(enemyImputs[2].text !=null)
-//				this.energy = System.Int32.Parse(enemyImputs [2].text);
-//			if(enemyImputs[3].text !=null)
-//				this.energyMax = System.Int32.Parse(enemyImputs [3].text);
-//			if(enemyImputs[4].text !=null)
-//				this.damage = System.Int32.Parse(enemyImputs [4].text);
-//		//	if(enemyImputs[5].text !=null)
-//		//	this.speed = float.Parse(enemyImputs [5].text);
-//		}
 
+	}
+
+	void Update () {
 
 		//
 		//ORDEM DE LAYER
 		//
-		this.GetComponent<SpriteRenderer> ().sortingOrder = -(int)(this.transform.position.y - 0.5f);
+		//this.GetComponent<SpriteRenderer> ().sortingOrder = -(int)(this.transform.position.y - 0.5f);
 
-
-		//DESLOCAMENTO INICIAL
-//		if (deslocTimer < 30) {
-//			transform.Translate (Vector2.left * Time.deltaTime * desloc);
-//			deslocTimer++;
-//		}
 
 		//EVENTO DE MORTE
 		if (this.vida <= 0 && heroUnity) {
@@ -321,7 +268,7 @@ public class SoldierControler : MonoBehaviour {
 		//FLAGS PARA HABILIDADES
 		//
 		if(skill1.skillActivated){
-			
+
 			switch (skill1.skillID) {
 			case 0:
 				this.vida++;
@@ -406,125 +353,135 @@ public class SoldierControler : MonoBehaviour {
 			}
 		}
 
-				
-			//
-			//ESTADOS DO PERSONAGEM
-			// 
-					
 
-		// PROCURANDO ALVO
+		//
+		//ESTADOS DO PERSONAGEM
+		//
 
-		if (cdSeek >= 1) {
-			this.targetEnemy = SeekEnemyTarget ();
-			if (this.targetEnemy != null) {
-				seeking = false;
+		//SEGUINDO OS MARCADORES DE MOVIMENTO
+
+		if (GetNewWaypoint () != null) {
+			seeking = false;
+			WaypointMark = GetNewWaypoint ();
+			targetEnemy = null;
+			if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f) {
+				anim.SetTrigger ("Walk");
+				transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
+			} else {
+				Destroy (WaypointMark.gameObject);
+				WaypointMark = GetNewWaypoint ();
 			}
-			cdSeek = 0;
+
 		} else {
-			cdSeek += Time.deltaTime;
-		}
-
-		//PERSEGUINDO E ATACANDO ALVO/WAYPOINT
-
-		if (targetEnemy == null ) {//CONFIRMA SE ALVO VIVE
 			seeking = true;
-		} else if(seeking == false ) {
+		} 
+
+		//			if (this.state == STATE.SEEKING) { // BUSCANDO ALVO
+		//				targetEnemy = SeekEnemyTarget ();
+		//				if (targetEnemy != null) {
+		//					this.state = STATE.DEFAULT;
+		//				}
+		//			}
+
+				if (seeking && cdSeek >= 1) {
+					this.targetEnemy = SeekEnemyTarget ();
+					if (this.targetEnemy != false) {
+						seeking = false;
+					}
+					cdSeek = 0;
+				} else {
+					cdSeek += Time.deltaTime;
+				}
+
+
+
+		// PERSEGUINDO E ATACANDO ALVO ENCONTRADO
+
+		if(seeking == false && this.targetEnemy != null ) { 
 
 			if (this.team == 2 && this.vida <= 1) {
 				//inimigo recua
 			}
 
-				//DESLOCAMENTO ATE INIMIGO
-				if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
-					anim.SetTrigger ("Walk");
-					//SpendingEnergy ();
-					transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
-						
-				}else if(targetEnemy.tag == "waypoint"){
-					if (Progress == 2 && gameEnded == false) {
-							//EVENTO QUANDO TROPA CHEGA NA BASE
-//							StartCoroutine (Respawning ());
-//							heroBase.GetComponent<ChargesScript> ().charges ++;
-//							gameEnded = true;
-//							GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
-						Destroy(this.gameObject);
-					} else if(Progress < 2) {
-						Progress++;
-						targetEnemy = null;
-					}
-				} else if(targetEnemy != null) { //ATACA ALVO
-					anim.SetTrigger ("Attack");
-					if (danoCD > damageSpeed ) { //TEMPO ENTRE ATAQUES
-						if (targetEnemy.GetComponent<WPSoldierControler> () != null) {//ALVO HEROI
-							targetEnemy.GetComponent<WPSoldierControler> ().vida -= damage;
-							targetEnemy.GetComponent<WPSoldierControler> ().UpdateLife();
-							targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage ();
-							if(this.range>1)
+			//DESLOCAMENTO ATE INIMIGO
+			if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
+				anim.SetTrigger ("Walk");
+				//SpendingEnergy ();
+				transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
+
+			} else if(targetEnemy != null) { //ATACA ALVO
+				anim.SetTrigger ("Attack");
+				if (danoCD > damageSpeed ) { //TEMPO ENTRE ATAQUES
+					if (targetEnemy.GetComponent<WPSoldierControler> () != null) {//ALVO HEROI
+						targetEnemy.GetComponent<WPSoldierControler> ().vida -= damage;
+						targetEnemy.GetComponent<WPSoldierControler> ().UpdateLife();
+						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage ();
+						if(this.range>1)
 							TrowArrow ();
-							if (targetEnemy.GetComponent<WPSoldierControler> ().vida <= -1)
+						if (targetEnemy.GetComponent<WPSoldierControler> ().vida <= -1) // ALVO MORREU
 							this.targetEnemy = null;
-						}else if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO TORRE
-							targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
-							targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife();
-							targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage ();
-							if(this.range>1)
-								TrowArrow ();
-							if (targetEnemy.GetComponent<WPIASoldierControler> ().vida <= -1)
+					}else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
+						targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
+						targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
+						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage ();
+						if(this.range>1)
+							TrowArrow ();
+						if (targetEnemy.GetComponent<SoldierControler> ().vida <= -1) // ALVO MORREU
 							this.targetEnemy = null;
-						} else {//ALVO BASE
-//							if(targetEnemy.tag == "waypoint"){
-//								if (Progress == 2) {
-//									if (heroUnity) {
-//										heroBase.GetComponent<ChargesScript> ().charges++;
-//										GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
-//										//StartCoroutine (Respawning ());
-//									}
-//								} else {
-//									Progress++;
-//									targetEnemy = null;
-//								}
-//							}
-//							if (heroUnity) {
-//								heroBase.GetComponent<ChargesScript> ().charges += 1;
-//								StartCoroutine (Respawning ());
-//								GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
-//
-//							}
+					} else {//ALVO BASE
+						//							if(targetEnemy.tag == "waypoint"){
+						//								if (Progress == 2) {
+						//									if (heroUnity) {
+						//										heroBase.GetComponent<ChargesScript> ().charges++;
+						//										GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
+						//										//StartCoroutine (Respawning ());
+						//									}
+						//								} else {
+						//									Progress++;
+						//									targetEnemy = null;
+						//								}
+						//							}
+						if (heroUnity) {
+							//								heroBase.GetComponent<ChargesScript> ().charges += 1;
+							//								StartCoroutine (Respawning ());
+							//								GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
+
 						}
-						danoCD = 0;
-						if (this.range > 1) {
-							audioManager.PlayAudio ("shot");
-						} else {
-							audioManager.PlayAudio ("atack");
-						}
-					} else {
-						danoCD += Time.deltaTime;
 					}
-				} 
-			}
+					danoCD = 0;
+					if (this.range > 1) {
+						audioManager.PlayAudio ("shot");
+					} else {
+						audioManager.PlayAudio ("atack");
+					}
+				} else {
+					danoCD += Time.deltaTime * 1000;
+				}
+			} 
+		}
 
-					//ANIMACAODE TIRO DE PROJETEIS
-//					if (inCombat == true && arrowSlot != null && this.Tipo == TipoSoldado.Lanceiro && targetEnemy != null) {
-//						if (Vector3.Distance (arrowSlot.transform.position, targetEnemy.transform.position) > 0.1f && targetEnemy != null) {
-//							arrowSlot.transform.position = Vector3.MoveTowards (arrowSlot.transform.position, targetEnemy.transform.position, Time.deltaTime * 5);
-//							Vector3 moveDirection = arrowSlot.transform.position - targetEnemy.transform.position; 
-//							if (moveDirection != Vector3.zero) {
-//								float angle = Mathf.Atan2 (moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-//								arrowSlot.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
-//							}
-//						} else {
-//							//arrowSlot.GetComponent<ArrowScript> ().DestroyArrow ();
-//							//arrowSlot = null;
-//						}
-//					}
+		//ANIMACAODE TIRO DE PROJETEIS
+		//					if (inCombat == true && arrowSlot != null && this.Tipo == TipoSoldado.Lanceiro && targetEnemy != null) {
+		//						if (Vector3.Distance (arrowSlot.transform.position, targetEnemy.transform.position) > 0.1f && targetEnemy != null) {
+		//							arrowSlot.transform.position = Vector3.MoveTowards (arrowSlot.transform.position, targetEnemy.transform.position, Time.deltaTime * 5);
+		//							Vector3 moveDirection = arrowSlot.transform.position - targetEnemy.transform.position; 
+		//							if (moveDirection != Vector3.zero) {
+		//								float angle = Mathf.Atan2 (moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+		//								arrowSlot.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
+		//							}
+		//						} else {
+		//							//arrowSlot.GetComponent<ArrowScript> ().DestroyArrow ();
+		//							//arrowSlot = null;
+		//						}
+		//					}
 
-					//FIM DO COMBATE
-//					if (targetEnemy.GetComponent<SoldierControler> ().vida <= 0 || targetEnemy.GetComponent<SoldierControler>() == null) {
-//						inCombat = false;
-//					}
-//	
+		//FIM DO COMBATE
+		//					if (targetEnemy.GetComponent<WPSoldierControler> ().vida <= 0 || targetEnemy.GetComponent<WPSoldierControler>() == null) {
+		//						inCombat = false;
+		//					}
+		//	
 
-			
+
 	}
 
 	public void SetupHero(){
@@ -536,75 +493,75 @@ public class SoldierControler : MonoBehaviour {
 			id = 1;
 		}
 		Debug.Log ("id: " + id);
-			switch (id) {
-			case(0): 
-				this.vidaMax = 3;
-				this.vida = 3;
-				this.reach = 1;//3
-				this.damage = 1;
-				this.damageSpeed = 2;
-				this.range = 1;
-				this.speed = 8;
-				this.energyMax = 3;
-				this.energy = 3;
-				//this.GetComponent<SpriteRenderer> ().sprite = warrior;
-				this.anim.SetInteger ("Char", 0);
-				Debug.Log ("Monica");
-				break;
-			case(1):
-				this.vidaMax = 3;
-				this.vida = 3;
+		switch (id) {
+		case(0): 
+			this.vidaMax = 3;
+			this.vida = 3;
 			this.reach = 1;//3
-				this.damage = 1;
-				this.damageSpeed = 2;
-				this.range = 1;
-				this.speed = 8;
-				this.energyMax = 3;
-				this.energy = 3;
-				//this.GetComponent<SpriteRenderer> ().sprite = warrior;
-				this.anim.SetInteger ("Char", 1);
-				Debug.Log ("Cebolinha");
-				break;
-			case(2):
-				this.vidaMax = 3;
-				this.vida = 3;
+			this.damage = 1;
+			this.damageSpeed = 2;
+			this.range = 1;
+			this.speed = 8;
+			this.energyMax = 3;
+			this.energy = 3;
+			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			this.anim.SetInteger ("Char", 0);
+			Debug.Log ("Monica");
+			break;
+		case(1):
+			this.vidaMax = 3;
+			this.vida = 3;
+			this.reach = 1;//3
+			this.damage = 1;
+			this.damageSpeed = 2;
+			this.range = 1;
+			this.speed = 8;
+			this.energyMax = 3;
+			this.energy = 3;
+			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			this.anim.SetInteger ("Char", 1);
+			Debug.Log ("Cebolinha");
+			break;
+		case(2):
+			this.vidaMax = 3;
+			this.vida = 3;
 			this.reach = 0.5f;
-				this.damage = 1;
-				this.damageSpeed = 2;
-				this.range = 1;
-				this.speed = 8;
-				this.energyMax = 4;
-				this.energy = 4;
-				this.GetComponent<SpriteRenderer> ().sprite = warrior;
-				Debug.Log ("Magali");
-				break;
-			case(3):
-				this.vidaMax = 3;
-				this.vida = 3;
+			this.damage = 1;
+			this.damageSpeed = 2;
+			this.range = 1;
+			this.speed = 8;
+			this.energyMax = 4;
+			this.energy = 4;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			Debug.Log ("Magali");
+			break;
+		case(3):
+			this.vidaMax = 3;
+			this.vida = 3;
 			this.reach = 0.5f;
-				this.damage = 1;
-				this.damageSpeed = 2;
-				this.range = 1;
-				this.speed = 8;
-				this.energyMax = 4;
-				this.energy = 4;
-				this.GetComponent<SpriteRenderer> ().sprite = warrior;
-				break;
-			default:
-				this.vidaMax = 3;
-				this.vida = 3;
+			this.damage = 1;
+			this.damageSpeed = 2;
+			this.range = 1;
+			this.speed = 8;
+			this.energyMax = 4;
+			this.energy = 4;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			break;
+		default:
+			this.vidaMax = 3;
+			this.vida = 3;
 			this.reach = 0.5f;
-				this.damage = 1;
-				this.damageSpeed = 2;
-				this.range = 1;
-				this.speed = 8;
-				this.energyMax = 4;
-				this.energy = 4;
-				this.GetComponent<SpriteRenderer> ().sprite = warrior;
-				Debug.Log ("Monica");
-				break;
+			this.damage = 1;
+			this.damageSpeed = 2;
+			this.range = 1;
+			this.speed = 8;
+			this.energyMax = 4;
+			this.energy = 4;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			Debug.Log ("Monica");
+			break;
 
-			}
+		}
 
 		// CONFIGURAÇÃO DE EQUIPE
 		if (this.team == 1) {
@@ -762,12 +719,12 @@ public class SoldierControler : MonoBehaviour {
 
 
 	public void ChangeState(){
-	
-		if (this.state == STATE.RETREAT) {
-			this.state = STATE.DEFAULT;
-		}else if (this.state == STATE.DEFAULT) {
-			this.state = STATE.RETREAT;
-		}
+
+		//		if (this.state == STATE.RETREAT) {
+		//			this.state = STATE.DEFAULT;
+		//		}else if (this.state == STATE.DEFAULT) {
+		//			this.state = STATE.RETREAT;
+		//		}
 
 	}
 
@@ -918,17 +875,17 @@ public class SoldierControler : MonoBehaviour {
 		this.vida = this.vidaMax;
 		UpdateLife ();
 		if(heroUnity)
-		this.energy = this.energyMax;
+			this.energy = this.energyMax;
 		this.seeking = false;
 		yield return new WaitForSeconds (respawningTimer);
-	
+
 		if(heroUnity)
-		transform.position = heroBase.transform.position;
+			transform.position = heroBase.transform.position;
 		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
 		this.healtbarSoldier.SetActive (true);
 		if (heroUnity)
-		this.energybarSoldier.SetActive (true);
+			this.energybarSoldier.SetActive (true);
 		this.skill1.gameObject.SetActive (true);
 		this.skill2.gameObject.SetActive (true);
 		this.damage = 1;
@@ -968,9 +925,6 @@ public class SoldierControler : MonoBehaviour {
 					}
 				}
 			} 
-			if(Emin == null) {
-				return ActualLane [Progress];
-			}
 
 		} else if (this.tag == "enemysoldier2") { //Procura de Jogador 2
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//PROCURA TROPA
@@ -999,79 +953,49 @@ public class SoldierControler : MonoBehaviour {
 					}
 				}
 			}
-			if(Emin == null) {
-				return ActualLane [Progress];
-			}
 		}
 		return Emin;
 	}
 
 	public void ReceiveDamage(){
-	
+
 		if (this.team == 1 && heroUnity == true) {
 			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
 		}
 
 	}
-		
+
 
 	public void TrowArrow(){
-		
-	GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity);
+
+		GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity);
 		if (targetEnemy != null) {
-		arrow.GetComponent<ArrowScript> ().target = targetEnemy;
-	} else {
-		Destroy (arrow);
-	}
-
-	}
-
-	public void ChangeLane(Vector3 pos){
-		this.Progress = 1;
-		if (Vector3.Distance (pos, LaneTop [1].transform.position) < Vector3.Distance (pos, LaneMid [1].transform.position) && Vector3.Distance (pos, LaneTop [1].transform.position) < Vector3.Distance (pos, LaneBot [1].transform.position)) {
-			ActualLane = LaneTop;
-		} else if (Vector3.Distance (pos, LaneMid [1].transform.position) < Vector3.Distance (pos, LaneTop [1].transform.position) && Vector3.Distance (pos, LaneMid [1].transform.position) < Vector3.Distance (pos, LaneBot [1].transform.position)) {
-			ActualLane = LaneMid;
-		} else if (Vector3.Distance (pos, LaneBot [1].transform.position) < Vector3.Distance (pos, LaneMid [1].transform.position) && Vector3.Distance (pos, LaneBot [1].transform.position) < Vector3.Distance (pos, LaneTop [1].transform.position)) {
-			ActualLane = LaneBot;
+			arrow.GetComponent<ArrowScript> ().target = targetEnemy;
 		} else {
-			//
+			Destroy (arrow);
 		}
 
-		Debug.Log("Top: " + Vector3.Distance (pos, LaneTop [1].transform.position) + "Mid: " + Vector3.Distance (pos, LaneMid [1].transform.position) + "Bot: " + Vector3.Distance (pos, LaneBot [1].transform.position)); 
 	}
 
-
-	public void ChooseLane(){
-		int x;
-		float random = Random.value;
-		if (random < (topPreference/100))
-		{
-			x = 1;
+	public GameObject GetNewWaypoint(){
+		GameObject[] wps = GameObject.FindGameObjectsWithTag ("enemywaypoint");
+		if (wps != null) {
+			foreach (GameObject wp in wps) {
+				if (wp.GetComponent<MovementMarkerScript> ().progress == 1) {
+					return wp;
+				} else if (wp.GetComponent<MovementMarkerScript> ().progress == 2) {
+					return wp;
+				} else if (wp.GetComponent<MovementMarkerScript> ().progress == 3) {
+					return wp;
+				} else {
+					return null;
+				}
+			}
+		} else {
+			return null;
 		}
-		else if (random < ((botPreference/100) + (topPreference/100)))
-		{
-			x = 2;
-		}
-		else
-		{
-			x = 1;
-		}
-
-		switch (x) {
-		case 1:
-			ActualLane = LaneTop;
-			LaneName = "top";
-			break;
-		case 2:
-			ActualLane = LaneBot;
-			LaneName = "bot";
-			break;
-		default:
-			ActualLane = LaneTop;
-			LaneName = "top";
-			break;
-		}
+		return null;
 	}
 
 }
+

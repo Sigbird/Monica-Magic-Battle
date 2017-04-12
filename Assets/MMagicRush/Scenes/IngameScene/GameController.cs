@@ -136,6 +136,13 @@ public class GameController : MonoBehaviour {
 
 	}
 
+	public void MiningGem(int x){
+
+		Diamonds = x;
+
+	}
+
+
 	public void SummonMinion(int team){
 		switch(tipo){
 		case "Guerreiro":

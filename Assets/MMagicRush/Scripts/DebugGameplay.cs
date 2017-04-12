@@ -91,8 +91,8 @@ public class DebugGameplay : MonoBehaviour {
 	}
 
 	public void SetValues(){
-		SoldierControler Hero = GameObject.Find ("Hero").GetComponent<SoldierControler>();
-		SoldierControler Enemy = GameObject.Find ("HeroEnemy").GetComponent<SoldierControler>();
+		WPSoldierControler Hero = GameObject.Find ("Hero").GetComponent<WPSoldierControler>();
+		WPIASoldierControler Enemy = GameObject.Find ("HeroEnemy").GetComponent<WPIASoldierControler>();
 		Time.timeScale = 1;
 
 		//HERO
@@ -128,8 +128,6 @@ public class DebugGameplay : MonoBehaviour {
 		Hero.xplvl3 = float.Parse (HeroLVL3XP.text);
 
 		Hero.topPreference = float.Parse (HeroPrefTop.text);
-
-		Hero.midPreference = float.Parse (HeroPrefMid.text);
 
 		Hero.botPreference = float.Parse (HeroPrefBot.text);
 
@@ -167,8 +165,6 @@ public class DebugGameplay : MonoBehaviour {
 
 		Enemy.topPreference = float.Parse (EnemyPrefTop.text);
 
-		Enemy.midPreference = float.Parse (EnemyPrefMid.text);
-
 		Enemy.botPreference = float.Parse (EnemyPrefBot.text);
 
 		Hero.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
@@ -180,8 +176,8 @@ public class DebugGameplay : MonoBehaviour {
 	}
 
 	public void GetValues(){
-		SoldierControler Hero = GameObject.Find ("Hero").GetComponent<SoldierControler>();
-		SoldierControler Enemy = GameObject.Find ("HeroEnemy").GetComponent<SoldierControler>();
+		WPSoldierControler Hero = GameObject.Find ("Hero").GetComponent<WPSoldierControler>();
+		WPIASoldierControler Enemy = GameObject.Find ("HeroEnemy").GetComponent<WPIASoldierControler>();
 		Time.timeScale = 0;
 
 		HeroHP.text = Hero.vida.ToString ();
@@ -197,7 +193,6 @@ public class DebugGameplay : MonoBehaviour {
 		HeroLVL2XP.text = Hero.xplvl2.ToString ();
 		HeroLVL3XP.text = Hero.xplvl3.ToString ();
 		HeroPrefTop.text = Hero.topPreference.ToString ();
-		HeroPrefMid.text = Hero.midPreference.ToString ();
 		HeroPrefBot.text = Hero.botPreference.ToString ();
 
 		EnemyHP.text = Enemy.vida.ToString ();
@@ -213,7 +208,6 @@ public class DebugGameplay : MonoBehaviour {
 		EnemyLVL2XP.text = Enemy.xplvl2.ToString ();
 		EnemyLVL3XP.text = Enemy.xplvl3.ToString ();
 		EnemyPrefTop.text = Enemy.topPreference.ToString ();
-		EnemyPrefMid.text = Enemy.midPreference.ToString ();
 		EnemyPrefBot.text = Enemy.botPreference.ToString ();
 
 	}
