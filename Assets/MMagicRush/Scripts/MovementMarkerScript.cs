@@ -13,6 +13,13 @@ public class MovementMarkerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+	}
+
+	public void SwitchWaypoints(){
+		if (this.gameObject.name == "Waypoint2")
+			this.gameObject.name = "Waypoint1";
+
+		if (this.gameObject.name == "Waypoint3") 
+			this.gameObject.name = "Waypoint2";
 	}
 }

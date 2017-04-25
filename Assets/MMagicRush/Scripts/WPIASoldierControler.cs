@@ -23,6 +23,18 @@ public class WPIASoldierControler : MonoBehaviour {
 	public float midPreference;
 	public float botPreference;
 
+	public float idleChance = 100;
+	public float gemColectorChance = 100;
+	public float cheapUnitySummonChance = 100;
+	public float pushHatChance = 100;
+	public float cheapMagicCastChance = 100;
+	public float itemColectorChance = 100;
+	public float heroHarassChance = 100;
+	public float retreatChance = 100;
+	public float protectHatChance = 100;
+
+
+
 	//	public STATE state = STATE.DEFAULT;
 
 	public int team;
@@ -208,16 +220,15 @@ public class WPIASoldierControler : MonoBehaviour {
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		audioManager.PlayAudio ("spawn");
 
-
+		Twist (1);
 	}
 
 	void Update () {
-
 		//
 		//ORDEM DE LAYER
 		//
 		//this.GetComponent<SpriteRenderer> ().sortingOrder = -(int)(this.transform.position.y - 0.5f);
-
+	
 
 		//EVENTO DE MORTE
 		if (this.vida <= 0 && heroUnity) {
@@ -399,8 +410,10 @@ public class WPIASoldierControler : MonoBehaviour {
 
 		if(seeking == false && this.targetEnemy != null ) { 
 
-			if (this.team == 2 && this.vida <= 1) {
-				//inimigo recua
+			if (this.team == 2 && this.vida <= 2) {
+				if (TryTwist() == false) {
+					Twist (5);
+				}
 			}
 
 			//DESLOCAMENTO ATE INIMIGO
@@ -460,26 +473,22 @@ public class WPIASoldierControler : MonoBehaviour {
 			} 
 		}
 
-		//ANIMACAODE TIRO DE PROJETEIS
-		//					if (inCombat == true && arrowSlot != null && this.Tipo == TipoSoldado.Lanceiro && targetEnemy != null) {
-		//						if (Vector3.Distance (arrowSlot.transform.position, targetEnemy.transform.position) > 0.1f && targetEnemy != null) {
-		//							arrowSlot.transform.position = Vector3.MoveTowards (arrowSlot.transform.position, targetEnemy.transform.position, Time.deltaTime * 5);
-		//							Vector3 moveDirection = arrowSlot.transform.position - targetEnemy.transform.position; 
-		//							if (moveDirection != Vector3.zero) {
-		//								float angle = Mathf.Atan2 (moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-		//								arrowSlot.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
-		//							}
-		//						} else {
-		//							//arrowSlot.GetComponent<ArrowScript> ().DestroyArrow ();
-		//							//arrowSlot = null;
-		//						}
-		//					}
+		//EVENTOS DE IA
 
-		//FIM DO COMBATE
-		//					if (targetEnemy.GetComponent<WPSoldierControler> ().vida <= 0 || targetEnemy.GetComponent<WPSoldierControler>() == null) {
-		//						inCombat = false;
-		//					}
-		//	
+		if (Vector2.Distance (GameObject.Find ("HeroBaseEnemy").transform.position, transform.position) <= 0.3f) {
+			if (GameObject.Find ("HeroBaseEnemy").GetComponent<ChargesScript> ().inCombat == false) {
+				if (TryTwist () == false) {
+					Twist (1);
+				}
+			}
+		}
+
+		if (Vector2.Distance (GameObject.Find ("HeroBase").transform.position, transform.position) <= 0.3f) {
+			if (TryTwist() == false) {
+				Twist (1);
+			}
+		}
+
 
 
 	}
@@ -816,6 +825,7 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	public void Removeeffect(){
 		if (effects == "slow") {
+			GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Unfrozen");
 			this.speed = maxSpeed;
 		}
 		if (effects == "speed") {
@@ -996,6 +1006,173 @@ public class WPIASoldierControler : MonoBehaviour {
 		}
 		return null;
 	}
+
+	IEnumerator WaitForTwist(){ // espera 3 segundos e chama um novo twist
+		yield return new WaitForSeconds (3);
+		if (TryTwist ()) {
+			//
+		} else {
+			StartCoroutine (WaitForTwist ());
+		}
+	}
+
+	public bool TryTwist(){ // checa se o twist ocorre
+		if (Random.value > 0.5f) {
+			return false;
+		} else {
+			Twist (0);
+			return true;
+		}
+	}
+
+	public void Twist(int x){ // aplica efeito do twist
+		WPScript waypoint = GameObject.Find ("Terreno").GetComponent<WPScript> ();
+		int chooser = 0;
+		if (x == 0) {
+			chooser = TwistIntChooser ();
+		} else {
+			chooser = x;
+		}
+	
+		switch (TwistIntChooser()) {
+		case 1://IDLE
+			WaitForTwist();
+			break;
+		case 2://MAGIC
+			WaitForTwist();
+			break;
+		case 3://UNIT
+			WaitForTwist();
+			break;
+		case 4://GEM COLECTOR
+			if (GameObject.FindGameObjectsWithTag ("enemygem").Length > 0) {
+				waypoint.EnemyMovementPlacement (GameObject.FindGameObjectsWithTag ("enemygem") [0].transform.position);
+			} else {
+				if (TryTwist () == false){ 
+					itemColectorChance -= 5;
+					Twist (4); // REFAZ O MESMO TWIST
+				}
+			}
+			break;
+		case 5://HERO HARASS
+			if (Vector2.Distance(GameObject.Find ("Hero").transform.position,transform.position) > 0.3f) {
+				waypoint.EnemyMovementPlacement (GameObject.Find ("Hero").transform.position);
+			} else {
+				if (TryTwist () == false) 
+					Twist (5);// idletwist
+			}
+			break;
+		case 6://ITEM COLECTOR
+			if (GameObject.FindGameObjectsWithTag ("enemygem").Length > 0) {
+				waypoint.EnemyMovementPlacement (GameObject.FindGameObjectsWithTag ("enemygem") [0].transform.position);
+			} else {
+				if (TryTwist () == false){ 
+					itemColectorChance -= 5;
+					Twist (6); // REFAZ O MESMO TWIST
+				}
+			}
+			break;
+		case 7://PROTECT HAT
+			if (Vector2.Distance(GameObject.Find ("HeroBaseEnemy").transform.position,transform.position) > 0.3f) {
+				waypoint.EnemyMovementPlacement (GameObject.Find ("HeroBaseEnemy").transform.position);
+			} else {
+				if (TryTwist () == false) 
+					Twist (1);// idletwist
+			}
+			break;
+		case 8://PUSH HAT 
+			if (Vector2.Distance(GameObject.Find ("HeroBase").transform.position,transform.position) > 0.3f) {
+				waypoint.EnemyMovementPlacement (GameObject.Find ("HeroBase").transform.position);
+			} else {
+				if (TryTwist () == false) 
+					Twist (1);// idletwist
+			}
+			break;
+		case 9://RETREAT
+			if (Vector2.Distance(GameObject.Find ("HeroBaseEnemy").transform.position,transform.position) > 0.3f) {
+				waypoint.EnemyMovementPlacement (GameObject.Find ("HeroBaseEnemy").transform.position);
+			} else {
+				if (TryTwist () == false) 
+					Twist (1);// idletwist
+			}
+			break;
+		default:
+			Twist (1);
+			break;
+		}
+
+	}
+
+	public int TwistIntChooser(){ // escolhe o twist a ser executado;
+		
+		int x = 0;
+		float random = Random.value;
+		float sumOfAll = cheapMagicCastChance + cheapUnitySummonChance + gemColectorChance + heroHarassChance + idleChance + itemColectorChance + protectHatChance + pushHatChance + retreatChance;
+
+		float a = cheapMagicCastChance / sumOfAll;
+		float b = (cheapUnitySummonChance / sumOfAll) + a;
+		float c = (gemColectorChance / sumOfAll) + a + b;
+		float d = (heroHarassChance / sumOfAll) + a + b + c;
+		float e = (idleChance / sumOfAll) + a + b + c + d;
+		float f = (itemColectorChance / sumOfAll) + a + b + c + d + e;
+		float g = (protectHatChance / sumOfAll) + a + b + c + d + e + f;
+		float h = (pushHatChance / sumOfAll) + a + b + c + d + e + f+ g;
+		float i = (retreatChance / sumOfAll) + a + b + c + d + e + f + g + h;
+
+		if (random < a)
+		{
+			//x = 1; //IDLE
+			if(Random.value > 0.5f){
+			x = 1; //IDLE
+			}else{
+			x = 6;
+			}
+		}else if (random < b)
+		{
+			//x = 2; //MAGIC
+			if(Random.value > 0.5f){
+				x = 2; //IDLE
+			}else{
+				x = 7;
+			}
+		}else if (random < c)
+		{
+			//x = 3; //UNIT
+			if(Random.value > 0.5f){
+				x = 3; //IDLE
+			}else{
+				x = 8;
+			}
+		}else if (random < d)
+		{
+			//x = 4; //GEMCOLECTOR
+			if(Random.value > 0.5f){
+				x = 4; //IDLE
+			}else{
+				x = 9;
+			}
+		}else if (random < e)
+		{
+			x = 5; //HERO HARASS
+		}else if (random < f)
+		{
+			x = 6; //ITEMCOLECTOR
+		}else if (random < g)
+		{
+			x = 7; //PROTECT HAT
+		}else if (random < h)
+		{
+			x = 8; //PUSH HAT
+		}else if (random < i)
+		{
+			x = 9; //RETREAT
+		}else{
+			return 10;
+		}
+		return x;
+
+	}
+
 
 }
 

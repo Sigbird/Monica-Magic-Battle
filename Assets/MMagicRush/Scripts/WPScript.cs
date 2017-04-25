@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class WPScript : MonoBehaviour {
 
-	public GameObject WaypointMarker;
+
 	public GameObject EnemyWaypointMarker;
+
+	public GameObject WaypointMarker;
+	public Sprite CaptureIcon;
+	public Sprite MineIcon;
+	public Sprite DefendIcon;
+	public Sprite MovementIcon;
+	public Sprite AttackIcon;
+
+	public static bool UIopen;
 	public int progress;
 	public int enemyprogress;
 
@@ -25,19 +34,17 @@ public class WPScript : MonoBehaviour {
 			enemyprogress = 1;
 		}
 
-
-		if (EnemyMovementCounter () < 3) {
-			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
-			Instantiate (EnemyWaypointMarker, new Vector2 (Random.Range(-2.5f,2.5f), Random.Range(0f,4.5f)), Quaternion.identity);
-			enemyprogress++;
+		if (MovementCounter () < 1) {
+			progress = 1;
 		}
 
 	}
 
 	void OnMouseDown(){
-		if (MovementCounter () < 3) {
+		if (MovementCounter () < 2 && Camera.main.ScreenToWorldPoint (Input.mousePosition).y > -3 && UIopen == false) {
 			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
-			Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity);
+			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
+			Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity).gameObject.name = "Waypoint"+progress;
 			progress++;
 		}
 			
@@ -59,5 +66,43 @@ public class WPScript : MonoBehaviour {
 			x++;
 		}
 		return x;
+	}
+
+	public void ChangeIcon(SpriteRenderer renderer){
+		if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("treasureChest").transform.position) < 0.5f) {
+			renderer.sprite = CaptureIcon; //CAPTURA DE BAU
+		} else if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBaseEnemy").transform.position) < 0.5f) {
+			renderer.sprite = CaptureIcon; //CAPTURA DE BASE INIMIGA
+		} else if (GemNearbyClick()) {
+			renderer.sprite = MineIcon; //CAPTURA DE GEMA
+		} else if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBase").transform.position) < 0.5f) {
+			renderer.sprite = DefendIcon; //DEFESA DE BASE
+		} else if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroEnemy").transform.position) < 0.5f) {
+			renderer.sprite = AttackIcon; //ATAQUE DE INIMIGO
+		} else{
+			renderer.sprite = MovementIcon; //ICONE DE MOVIMENTO
+		}
+
+	}
+
+	public bool GemNearbyClick(){
+		GameObject[] Gems = GameObject.FindGameObjectsWithTag ("gem");
+		foreach (GameObject o in Gems) {
+			if (Vector2.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), o.transform.position) <= 0.5f) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void EnemyMovementPlacement(Vector2 position){
+		if (EnemyMovementCounter () < 3) {
+			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
+			if (position == null) {
+				position = new Vector2 (Random.Range (-2.5f, 2.5f), Random.Range (0f, 4.5f));
+			}
+			Instantiate (EnemyWaypointMarker, position, Quaternion.identity);
+			enemyprogress++;
+		}
 	}
 }

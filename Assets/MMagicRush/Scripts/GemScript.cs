@@ -5,12 +5,33 @@ using UnityEngine;
 public class GemScript : MonoBehaviour {
 	public int team;
 
+	public Sprite[] gemsprite;
+	public int gemvalue;
 	private GameObject Hero;
 	private GameObject Enemy;
 	public GameObject gc;
 	// Use this for initialization
 	void Start () {
 		gc = GameObject.Find ("GameController");
+		switch (gemvalue) {
+		case 10:
+			GetComponent<SpriteRenderer> ().sprite = gemsprite [0];
+			break;
+		case 20:
+			GetComponent<SpriteRenderer> ().sprite = gemsprite [1];
+			break;
+		case 30:
+			GetComponent<SpriteRenderer> ().sprite = gemsprite [2];
+			break;
+		case 40:
+			GetComponent<SpriteRenderer> ().sprite = gemsprite [3];
+			break;
+		case 50:
+			GetComponent<SpriteRenderer> ().sprite = gemsprite [4];
+			break;
+		default:
+			break;
+		}
 	}
 	
 	// Update is called once per frame
@@ -20,8 +41,16 @@ public class GemScript : MonoBehaviour {
 
 			if (team == 1) {
 				if (Vector2.Distance (this.transform.position, Hero.transform.position) < 0.3) {
-					gc.GetComponent<GameController>().MiningGem (10);
-					Destroy (this.gameObject);
+					if (gemvalue < 40) {
+						gc.GetComponent<GameController> ().MiningGem (gemvalue);
+					} else {
+						//Hero.GetComponent<WPSoldierControler> ().ReceiveEffect ("healing");
+					}
+					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().usedValues.Clear ();
+					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().gemcounter = 0;
+					foreach (GameObject o in GameObject.FindGameObjectsWithTag("gem")) {
+						Destroy (o.gameObject);
+					}
 				}
 
 			}
@@ -32,7 +61,18 @@ public class GemScript : MonoBehaviour {
 
 			if( team == 2) {
 				if (Vector2.Distance (this.transform.position, Enemy.transform.position) < 0.3) {
-					Destroy (this.gameObject);
+					if (gemvalue < 40) {
+						if (Enemy.GetComponent<WPIASoldierControler> ().TryTwist () == false) {
+							Enemy.GetComponent<WPIASoldierControler> ().Twist (4);
+						} 
+					} else {
+						//Hero.GetComponent<WPSoldierControler> ().ReceiveEffect ("healing");
+					}
+					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().usedValues.Clear ();
+					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().enemgemcounter = 0;
+					foreach (GameObject o in GameObject.FindGameObjectsWithTag("enemygem")) {
+						Destroy (o.gameObject);
+					}
 				}
 			}
 		}

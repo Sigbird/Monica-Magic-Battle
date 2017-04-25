@@ -80,6 +80,8 @@ public class WPSoldierControler : MonoBehaviour {
 
 	//STATUS
 
+	public int enemyGems;
+
 	public float xp;
 
 	public float xpLvl1 = 0;
@@ -800,6 +802,9 @@ public class WPSoldierControler : MonoBehaviour {
 			this.damage++;
 			this.damageSpeed++;
 			this.speed = speed * 2;
+		}
+		if (effect == "increaseDamage") {
+			this.damage++;
 		}
 		if (effect == "sleep") {
 			this.damage--;

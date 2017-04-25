@@ -139,6 +139,7 @@ public class SoldierControler : MonoBehaviour {
 	public GameObject[] LaneMid;
 	public GameObject[] LaneBot;
 
+	public int lane;
 	public string LaneName;
 	public GameObject[] ActualLane;
 
@@ -176,7 +177,7 @@ public class SoldierControler : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		ChooseLane();
+		ChooseLane ();
 
 		if (heroUnity) {// CONFIGURAÇÃO DE HEROIS
 			SetupHero();
@@ -447,7 +448,7 @@ public class SoldierControler : MonoBehaviour {
 //							heroBase.GetComponent<ChargesScript> ().charges ++;
 //							gameEnded = true;
 //							GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
-						Destroy(this.gameObject);
+						//Destroy(this.gameObject);
 					} else if(Progress < 2) {
 						Progress++;
 						targetEnemy = null;
@@ -1042,23 +1043,25 @@ public class SoldierControler : MonoBehaviour {
 	}
 
 
-	public void ChooseLane(){
-		int x;
-		float random = Random.value;
-		if (random < (topPreference/100))
-		{
-			x = 1;
-		}
-		else if (random < ((botPreference/100) + (topPreference/100)))
-		{
-			x = 2;
-		}
-		else
-		{
-			x = 1;
-		}
 
-		switch (x) {
+
+	public void ChooseLane(){
+//		int x;
+//		float random = Random.value;
+//		if (random < (topPreference/100))
+//		{
+//			x = 1;
+//		}
+//		else if (random < ((botPreference/100) + (topPreference/100)))
+//		{
+//			x = 2;
+//		}
+//		else
+//		{
+//			x = 1;
+//		}
+
+		switch (lane) {
 		case 1:
 			ActualLane = LaneTop;
 			LaneName = "top";

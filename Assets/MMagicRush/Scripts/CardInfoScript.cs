@@ -459,6 +459,7 @@ public class CardInfoScript : MonoBehaviour {
 
 	public void CloseInfo(){
 		Time.timeScale = 1;
+		WPScript.UIopen = false;
 		this.gameObject.SetActive (false);
 	}
 
