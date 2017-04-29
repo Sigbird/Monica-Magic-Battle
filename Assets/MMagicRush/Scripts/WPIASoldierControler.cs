@@ -1017,7 +1017,7 @@ public class WPIASoldierControler : MonoBehaviour {
 	}
 
 	public bool TryTwist(){ // checa se o twist ocorre
-		if (Random.value > 0.5f) {
+		if (Random.value > 1) {
 			return false;
 		} else {
 			Twist (0);
@@ -1030,19 +1030,30 @@ public class WPIASoldierControler : MonoBehaviour {
 		int chooser = 0;
 		if (x == 0) {
 			chooser = TwistIntChooser ();
+			//chooser = Random.Range(1,11);
 		} else {
 			chooser = x;
 		}
-	
-		switch (TwistIntChooser()) {
+		Debug.Log (chooser);
+			switch(chooser) {
 		case 1://IDLE
-			WaitForTwist();
+			StartCoroutine (WaitForTwist ());
 			break;
 		case 2://MAGIC
-			WaitForTwist();
+			if (GameObject.Find ("HeroBaseEnemy").GetComponent<EnemyHand> ().ActivateCardEffect ("Magic")) {
+				cheapMagicCastChance -= 10;
+			}
+			if (TryTwist () == false){ 
+				Twist (1);
+			}
 			break;
 		case 3://UNIT
-			WaitForTwist();
+			if (GameObject.Find ("HeroBaseEnemy").GetComponent<EnemyHand> ().ActivateCardEffect ("Unit")) {
+				cheapUnitySummonChance -= 10;
+			}
+			if (TryTwist () == false){ 
+				Twist (1);
+			}
 			break;
 		case 4://GEM COLECTOR
 			if (GameObject.FindGameObjectsWithTag ("enemygem").Length > 0) {
@@ -1095,6 +1106,18 @@ public class WPIASoldierControler : MonoBehaviour {
 				if (TryTwist () == false) 
 					Twist (1);// idletwist
 			}
+			break;
+		case 10://HERO BATTLE
+			if (Vector2.Distance(GameObject.Find ("Hero").transform.position,transform.position) > 0.3f) {
+				waypoint.EnemyMovementPlacement (GameObject.Find ("Hero").transform.position);
+			} else {
+				if (TryTwist () == false) 
+					Twist (5);// idletwist
+			}
+			break;
+		case 11://RANDON MOVEMENT
+			waypoint.EnemyMovementPlacement (new Vector2 (Random.Range (-2.5f, 2.5f), Random.Range (0f, 4.5f)));
+			WaitForTwist ();
 			break;
 		default:
 			Twist (1);

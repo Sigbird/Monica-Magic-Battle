@@ -35,7 +35,7 @@ public class SoldierControler : MonoBehaviour {
 
 	//PREFABS
 
-	//[HideInInspector]
+
 	public GameObject targetEnemy;
 
 	public GameObject healtbarSoldier;
@@ -92,21 +92,21 @@ public class SoldierControler : MonoBehaviour {
 
 	private bool levelUp;
 
-	[HideInInspector]
+
 	public int vidaMax;
 
-	[HideInInspector]
+
 	public int vida;
 
 	public float reach;
 
-	[HideInInspector]
+
 	public int damage;
 
-	[HideInInspector]
+
 	public float damageSpeed;
 
-	[HideInInspector]
+
 	public float range;
 
 	private float danoCD = 0;
@@ -464,7 +464,7 @@ public class SoldierControler : MonoBehaviour {
 							TrowArrow ();
 							if (targetEnemy.GetComponent<WPSoldierControler> ().vida <= -1)
 							this.targetEnemy = null;
-						}else if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO TORRE
+						}else if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO IA
 							targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
 							targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife();
 							targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage ();
@@ -472,25 +472,15 @@ public class SoldierControler : MonoBehaviour {
 								TrowArrow ();
 							if (targetEnemy.GetComponent<WPIASoldierControler> ().vida <= -1)
 							this.targetEnemy = null;
-						} else {//ALVO BASE
-//							if(targetEnemy.tag == "waypoint"){
-//								if (Progress == 2) {
-//									if (heroUnity) {
-//										heroBase.GetComponent<ChargesScript> ().charges++;
-//										GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
-//										//StartCoroutine (Respawning ());
-//									}
-//								} else {
-//									Progress++;
-//									targetEnemy = null;
-//								}
-//							}
-//							if (heroUnity) {
-//								heroBase.GetComponent<ChargesScript> ().charges += 1;
-//								StartCoroutine (Respawning ());
-//								GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
-//
-//							}
+					} else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
+						targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
+						targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
+						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage ();
+						if(this.range>1)
+							TrowArrow ();
+						if (targetEnemy.GetComponent<SoldierControler> ().vida <= -1)
+							this.targetEnemy = null;
+
 						}
 						danoCD = 0;
 						if (this.range > 1) {
@@ -637,10 +627,10 @@ public class SoldierControler : MonoBehaviour {
 		case(2): // ASTRONAUTA
 			this.vidaMax = 2;
 			this.vida = 2;
-			this.reach = 4;
+			this.reach = 2;
 			this.damage = 1;
 			this.damageSpeed = 3;
-			this.range = 4;
+			this.range = 2;
 			this.speed = 5;
 			this.energyMax = 1;
 			this.energy = 200;
@@ -650,10 +640,10 @@ public class SoldierControler : MonoBehaviour {
 		case(3): //ANJINHO
 			this.vidaMax = 2;
 			this.vida = 2;
-			this.reach = 3;
+			this.reach = 2;
 			this.damage = 1;
 			this.damageSpeed = 3;
-			this.range = 3;
+			this.range = 2;
 			this.speed = 4;
 			this.energyMax = 1;
 			this.energy = 200;
@@ -686,10 +676,10 @@ public class SoldierControler : MonoBehaviour {
 		case(6): //PENADINHO
 			this.vidaMax = 2;
 			this.vida = 2;
-			this.reach = 5;
+			this.reach = 2;
 			this.damage = 1;
 			this.damageSpeed = 3;
-			this.range = 5;
+			this.range = 2;
 			this.speed = 4;
 			this.energyMax = 1;
 			this.energy = 200;

@@ -11,17 +11,19 @@ public class ArrowScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Vector3 relativePos = transform.position - target.transform.position;
+		if (target != null) {
+			Vector3 relativePos = transform.position - target.transform.position;
 
-		float angle = Mathf.Atan2(relativePos.y, relativePos.x) * Mathf.Rad2Deg;
-		Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+			float angle = Mathf.Atan2 (relativePos.y, relativePos.x) * Mathf.Rad2Deg;
+			Quaternion q = Quaternion.AngleAxis (angle, Vector3.forward);
 
-		transform.rotation = q;
+			transform.rotation = q;
 
-		if (Vector3.Distance (this.transform.position, target.transform.position) < 0.5f || target.GetComponent<ChargesScript>() != null || target.GetComponent<SpriteRenderer>().enabled == false) {
-			Destroy (gameObject);
-		} else {
-			this.transform.position = Vector3.MoveTowards (this.transform.position, target.transform.position, Time.deltaTime * 5);		
+			if (Vector3.Distance (this.transform.position, target.transform.position) < 0.5f || target.GetComponent<ChargesScript> () != null || target.GetComponent<SpriteRenderer> ().enabled == false) {
+				Destroy (gameObject);
+			} else {
+				this.transform.position = Vector3.MoveTowards (this.transform.position, target.transform.position, Time.deltaTime * 5);		
+			}
 		}
 	}
 		

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ChargesScript : MonoBehaviour {
+	
+
 
 	public int charges;
 	public Text scoreText;
@@ -16,6 +18,9 @@ public class ChargesScript : MonoBehaviour {
 
 	private GameObject[] enemies;
 	private float progress;
+
+
+
 
 
 	// Use this for initialization
@@ -32,6 +37,7 @@ public class ChargesScript : MonoBehaviour {
 		}else{
 			this.charges = 0;
 		}
+
 
 
 	}

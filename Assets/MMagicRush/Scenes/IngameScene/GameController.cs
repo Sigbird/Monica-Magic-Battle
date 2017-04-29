@@ -27,6 +27,7 @@ public class GameController : MonoBehaviour {
 	public string tipo{ get; set; }
 	public GameObject Soldado;
 	public int Diamonds;
+	public int EnemyDiamonds;
 	public Sprite[] cointSprites;
 	[HideInInspector]
 	public int WarriorCost = 10;
@@ -43,7 +44,7 @@ public class GameController : MonoBehaviour {
 	private float Mine2Assist;
 	// Use this for initialization
 	void Awake() {
-		
+		EnemyDiamonds = 100;
 		enemyCharges = PlayerPrefs.GetInt ("enemyCharges");
 		Debug.Log ("Enemy " + enemyCharges);
 		playerCharges = PlayerPrefs.GetInt ("playerCharges");
@@ -65,6 +66,7 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		GameObject.Find ("Diamonds").GetComponent<Text> ().text = Diamonds.ToString();
+		GameObject.Find ("DiamondsEnemy").GetComponent<Text> ().text = EnemyDiamonds.ToString();
 //		GameObject.Find ("Cost1").GetComponent<Text> ().text = WarriorCost.ToString();
 //		GameObject.Find ("Cost2").GetComponent<Text> ().text = LanceiroCost.ToString();
 //		GameObject.Find ("Cost3").GetComponent<Text> ().text = MageCost.ToString();
