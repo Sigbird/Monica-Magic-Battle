@@ -74,6 +74,8 @@ public class WPSoldierControler : MonoBehaviour {
 
 	public bool seeking;
 
+	public bool lockedTarget;
+
 	public float cdSeek;
 
 	public float respawningTimer;
@@ -361,6 +363,7 @@ public class WPSoldierControler : MonoBehaviour {
 		//SEGUINDO OS MARCADORES DE MOVIMENTO
 
 		if (GetNewWaypoint () != null) {
+			lockedTarget = false;
 			seeking = false;
 			WaypointMark = GetNewWaypoint ();
 			targetEnemy = null;
@@ -376,8 +379,10 @@ public class WPSoldierControler : MonoBehaviour {
 			seeking = true;
 		}
 			
-				if (seeking && cdSeek >= 1) {
-					this.targetEnemy = SeekEnemyTarget ();
+				if (seeking && cdSeek >= 0.01f) {
+					if (lockedTarget == false) {
+						this.targetEnemy = SeekEnemyTarget ();
+					}
 					if (this.targetEnemy != null) {
 						seeking = false;
 					}
@@ -395,35 +400,36 @@ public class WPSoldierControler : MonoBehaviour {
 
 			if(seeking == false && this.targetEnemy != null ) { 
 
-			if (this.team == 2 && this.vida <= 1) {
-				//inimigo recua
-			}
-
 			//DESLOCAMENTO ATE INIMIGO
 			if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
 				anim.SetTrigger ("Walk");
 				//SpendingEnergy ();
-				transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
+				transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed * 2);
 
 			} else if(targetEnemy != null) { //ATACA ALVO
-				anim.SetTrigger ("Attack");
+				
 				if (danoCD > damageSpeed ) { //TEMPO ENTRE ATAQUES
+					anim.SetTrigger ("Attack");
 					if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO HEROI
 						targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
 						targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife();
 						targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage ();
 						if(this.range>1)
 							TrowArrow ();
-						if (targetEnemy.GetComponent<WPIASoldierControler> ().vida <= -1) // ALVO MORREU
+						if (targetEnemy.GetComponent<SpriteRenderer>().enabled == false) { // ALVO MORREU
 							this.targetEnemy = null;
+							lockedTarget = false;
+						}
 					}else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
 						targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 						targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
 						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage ();
 						if(this.range>1)
 							TrowArrow ();
-						if (targetEnemy.GetComponent<SoldierControler> ().vida <= -1) // ALVO MORREU
+						if (targetEnemy.GetComponent<SpriteRenderer>().enabled == false){ // ALVO MORREU
 							this.targetEnemy = null;
+							lockedTarget = false;
+						}
 					} else {//ALVO BASE
 						//							if(targetEnemy.tag == "waypoint"){
 						//								if (Progress == 2) {
@@ -451,7 +457,7 @@ public class WPSoldierControler : MonoBehaviour {
 						audioManager.PlayAudio ("atack");
 					}
 				} else {
-					danoCD += Time.deltaTime * 1000;
+					danoCD += Time.deltaTime * 2;
 				}
 			} 
 		}
@@ -488,7 +494,7 @@ public class WPSoldierControler : MonoBehaviour {
 		} else {
 			id = 1;
 		}
-		Debug.Log ("id: " + id);
+//		Debug.Log ("id: " + id);
 		switch (id) {
 		case(0): 
 			this.vidaMax = 3;
@@ -815,6 +821,7 @@ public class WPSoldierControler : MonoBehaviour {
 
 	public void Removeeffect(){
 		if (effects == "slow") {
+			GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Unfrozen");
 			this.speed = maxSpeed;
 		}
 		if (effects == "speed") {

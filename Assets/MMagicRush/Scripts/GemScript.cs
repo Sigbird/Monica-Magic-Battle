@@ -7,6 +7,7 @@ public class GemScript : MonoBehaviour {
 
 	public Sprite[] gemsprite;
 	public int gemvalue;
+	public int id;
 	private GameObject Hero;
 	private GameObject Enemy;
 	public GameObject gc;
@@ -39,27 +40,35 @@ public class GemScript : MonoBehaviour {
 		if (GameObject.Find ("Hero") != null) {
 			Hero = GameObject.Find ("Hero");
 
-			if (team == 1) {
+			//if (team == 1) {
 				if (Vector2.Distance (this.transform.position, Hero.transform.position) < 0.3) {
 					if (gemvalue < 40) {
-						gc.GetComponent<GameController> ().MiningGem (gemvalue);
+						gc.GetComponent<GameController> ().MiningGem (25);
 					} else {
 						//Hero.GetComponent<WPSoldierControler> ().ReceiveEffect ("healing");
 					}
 					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().usedValues.Clear ();
-					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().gemcounter = 0;
+					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().gemsPlaced = 0;
+				if (team == 2) {
+					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().lastEnemyGem = id;
+					foreach (GameObject o in GameObject.FindGameObjectsWithTag("enemygem")) {
+						Destroy (o.gameObject);
+					}
+				} else {
+					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().lastGem = id;
 					foreach (GameObject o in GameObject.FindGameObjectsWithTag("gem")) {
 						Destroy (o.gameObject);
 					}
 				}
+				}
 
-			}
+			//}
 		}
 
 		if (GameObject.Find ("HeroEnemy") != null) {
 			Enemy = GameObject.Find ("HeroEnemy");
 
-			if( team == 2) {
+			//if( team == 2) {
 				if (Vector2.Distance (this.transform.position, Enemy.transform.position) < 0.3) {
 					if (gemvalue < 40) {
 						if (Enemy.GetComponent<WPIASoldierControler> ().TryTwist () == false) {
@@ -69,12 +78,21 @@ public class GemScript : MonoBehaviour {
 						//Hero.GetComponent<WPSoldierControler> ().ReceiveEffect ("healing");
 					}
 					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().usedValues.Clear ();
-					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().enemgemcounter = 0;
+					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().enemygemsPlaced = 0;
+
+				if (team == 2) {
+					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().lastEnemyGem = id;
 					foreach (GameObject o in GameObject.FindGameObjectsWithTag("enemygem")) {
 						Destroy (o.gameObject);
 					}
+				} else {
+					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().lastGem = id;
+					foreach (GameObject o in GameObject.FindGameObjectsWithTag("gem")) {
+						Destroy (o.gameObject);
+					}
 				}
-			}
+				}
+			//}
 		}
 
 

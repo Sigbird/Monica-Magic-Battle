@@ -850,6 +850,7 @@ public class SoldierControler : MonoBehaviour {
 
 	public void Removeeffect(){
 		if (effects == "slow") {
+			GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Unfrozen");
 			this.speed = maxSpeed;
 		}
 		if (effects == "speed") {

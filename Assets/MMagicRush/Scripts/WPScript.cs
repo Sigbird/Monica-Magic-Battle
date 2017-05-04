@@ -14,6 +14,10 @@ public class WPScript : MonoBehaviour {
 	public Sprite MovementIcon;
 	public Sprite AttackIcon;
 
+	public Transform Hero;
+	public Transform Enemy;
+	public Transform Base;
+
 	public static bool UIopen;
 	public int progress;
 	public int enemyprogress;
@@ -41,7 +45,16 @@ public class WPScript : MonoBehaviour {
 	}
 
 	void OnMouseDown(){
-		if (MovementCounter () < 2 && Camera.main.ScreenToWorldPoint (Input.mousePosition).y > -3 && UIopen == false) {
+		if (Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Enemy.position) < 1 && UIopen == false) {
+			Hero.GetComponent<WPSoldierControler> ().targetEnemy = Enemy.gameObject;
+			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
+		}else if(Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Base.position) < 1 && UIopen == false){
+			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
+				Destroy (o.gameObject);
+			}
+			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
+			Hero.GetComponent<WPSoldierControler> ().targetEnemy = Base.gameObject;
+		}else if (MovementCounter () < 2 && Camera.main.ScreenToWorldPoint (Input.mousePosition).y > -3 && UIopen == false) {
 			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
 			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
 			Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity).gameObject.name = "Waypoint"+progress;

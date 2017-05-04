@@ -78,8 +78,8 @@ public class EnemyHand : MonoBehaviour {
 						if (obj.GetComponent<SoldierControler> () != null)
 							obj.GetComponent<SoldierControler> ().ReceiveEffect ("slow");
 
-						if (obj.GetComponent<WPIASoldierControler> () != null)
-							obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("slow");
+						if (obj.GetComponent<WPSoldierControler> () != null)
+							obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("slow");
 
 					}
 
@@ -88,14 +88,14 @@ public class EnemyHand : MonoBehaviour {
 			case 4:// TERREMOTO 
 				if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
 					GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds -= CheckCost(id);
-					GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Frozen");
+					//GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Frozen");
 
 					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
 						if (obj.GetComponent<SoldierControler> () != null)
 							obj.GetComponent<SoldierControler> ().ReceiveEffect ("slow");
 
-						if (obj.GetComponent<WPIASoldierControler> () != null)
-							obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("slow");
+						if (obj.GetComponent<WPSoldierControler> () != null)
+							obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("slow");
 
 					}
 
@@ -104,79 +104,55 @@ public class EnemyHand : MonoBehaviour {
 			case 5:// HORA DA SONECA
 				if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
 					GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds -= CheckCost(id);
-					GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Frozen");
+					//GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Frozen");
 
 					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
 						if (obj.GetComponent<SoldierControler> () != null)
 							obj.GetComponent<SoldierControler> ().ReceiveEffect ("slow");
 
-						if (obj.GetComponent<WPIASoldierControler> () != null)
-							obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("slow");
+						if (obj.GetComponent<WPSoldierControler> () != null)
+							obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("slow");
 
 					}
 
 				}
 				break;
 			case 6:// REMEDIO
-				if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
+				if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
 					GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds -= CheckCost(id);
-					GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Frozen");
-
-					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
-						if (obj.GetComponent<SoldierControler> () != null)
-							obj.GetComponent<SoldierControler> ().ReceiveEffect ("slow");
-
-						if (obj.GetComponent<WPIASoldierControler> () != null)
-							obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("slow");
-
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
+						if (obj.GetComponent<SoldierControler>() != null) 
+							obj.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
 					}
 
 				}
 				break;
 			case 7:// CANJA DE GALINHA
-				if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
+				if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
 					GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds -= CheckCost(id);
-					GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Frozen");
-
-					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
-						if (obj.GetComponent<SoldierControler> () != null)
-							obj.GetComponent<SoldierControler> ().ReceiveEffect ("slow");
-
-						if (obj.GetComponent<WPIASoldierControler> () != null)
-							obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("slow");
-
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
+						if (obj.GetComponent<SoldierControler>() != null) 
+							obj.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
 					}
 
 				}
 				break;
 			case 8:// ESCUDO
-				if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
+				if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
 					GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds -= CheckCost(id);
-					GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Frozen");
-
-					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
-						if (obj.GetComponent<SoldierControler> () != null)
-							obj.GetComponent<SoldierControler> ().ReceiveEffect ("slow");
-
-						if (obj.GetComponent<WPIASoldierControler> () != null)
-							obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("slow");
-
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
+						if (obj.GetComponent<SoldierControler>() != null) 
+							obj.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
 					}
 
 				}
 				break;
 			case 9:// GRITO DE GUERRA
-				if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
+				if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
 					GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds -= CheckCost(id);
-					GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Frozen");
-
-					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
-						if (obj.GetComponent<SoldierControler> () != null)
-							obj.GetComponent<SoldierControler> ().ReceiveEffect ("slow");
-
-						if (obj.GetComponent<WPIASoldierControler> () != null)
-							obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("slow");
-
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
+						if (obj.GetComponent<SoldierControler>() != null) 
+							obj.GetComponent<SoldierControler> ().ReceiveEffect ("warShout");
 					}
 
 				}
@@ -190,8 +166,8 @@ public class EnemyHand : MonoBehaviour {
 						if (obj.GetComponent<SoldierControler> () != null)
 							obj.GetComponent<SoldierControler> ().ReceiveEffect ("slow");
 
-						if (obj.GetComponent<WPIASoldierControler> () != null)
-							obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("slow");
+						if (obj.GetComponent<WPSoldierControler> () != null)
+							obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("slow");
 
 					}
 

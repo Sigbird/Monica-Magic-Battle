@@ -107,7 +107,7 @@ public class WPIASoldierControler : MonoBehaviour {
 	[HideInInspector]
 	public int vidaMax;
 
-	[HideInInspector]
+
 	public int vida;
 
 	public float reach;
@@ -423,8 +423,9 @@ public class WPIASoldierControler : MonoBehaviour {
 				transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
 
 			} else if(targetEnemy != null) { //ATACA ALVO
-				anim.SetTrigger ("Attack");
+				
 				if (danoCD > damageSpeed ) { //TEMPO ENTRE ATAQUES
+					anim.SetTrigger ("Attack");
 					if (targetEnemy.GetComponent<WPSoldierControler> () != null) {//ALVO HEROI
 						targetEnemy.GetComponent<WPSoldierControler> ().vida -= damage;
 						targetEnemy.GetComponent<WPSoldierControler> ().UpdateLife();
@@ -1034,7 +1035,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		} else {
 			chooser = x;
 		}
-		Debug.Log (chooser);
+//		Debug.Log (chooser);
 			switch(chooser) {
 		case 1://IDLE
 			StartCoroutine (WaitForTwist ());
