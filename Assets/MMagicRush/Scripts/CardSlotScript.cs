@@ -654,42 +654,42 @@ public class CardSlotScript : MonoBehaviour {
 	}
 
 	public void UpdatePosition(){
-
+		
 
 		switch (CardPosition) {
 		case 0:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (-2.3f, -4), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -2.3f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
 			} else {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (-2.3f, -4.2f), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -2.3f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
 			}
 			break;
 		case 10:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (-1.7f, -4), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.7f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
 			} else {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (-1.7f, -4.2f), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.7f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
 			}
 			break;
 		case 20:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (-1.3f, -4), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.3f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
 			} else {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (-1.3f, -4.2f), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.3f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
 			}
 			break;
 		case 30:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (-0.7f, -4), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -0.7f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
 			} else {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (-0.7f, -4.2f), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -0.7f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
 			}
 			break;
 		case 40:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (-0.3f, -4), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -0.3f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
 			} else {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (-0.3f, -4.2f), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -0.3f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
 			}
 			break;
 		case 50:

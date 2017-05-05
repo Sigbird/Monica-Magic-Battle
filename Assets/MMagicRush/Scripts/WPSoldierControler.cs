@@ -372,7 +372,7 @@ public class WPSoldierControler : MonoBehaviour {
 				transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
 			} else {
 				Destroy (WaypointMark.gameObject);
-				WaypointMark = GetNewWaypoint ();
+				StartCoroutine (RedrawLine ());
 			}
 
 		} else {
@@ -1004,6 +1004,25 @@ public class WPSoldierControler : MonoBehaviour {
 			return null;
 		}
 		return null;
+	}
+
+	IEnumerator RedrawLine(){
+		
+//		foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
+//			o.name = "Waypoint1";
+//			o.GetComponent<MovementMarkerScript> ().progress = 1;
+//			GameObject.Find ("Line1").GetComponent<LineScript> ().endObject = o;
+//		}
+		if(GameObject.Find("Waypoint2")){
+			GameObject.Find ("Waypoint2").GetComponent<MovementMarkerScript> ().progress = 1;
+			GameObject.Find ("Waypoint2").GetComponent<MovementMarkerScript> ().name = "Waypoint1";
+			GameObject.Find ("Terreno").GetComponent<WPScript> ().progress = 2;
+		}
+
+		yield return new WaitForSeconds (0.01f);
+		GameObject.Find ("Line1").GetComponent<LineScript> ().firstLineDraw = false;
+		yield return new WaitForSeconds (0.01f);
+		WaypointMark = GetNewWaypoint ();
 	}
 
 }

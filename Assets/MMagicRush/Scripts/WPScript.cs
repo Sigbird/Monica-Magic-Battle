@@ -45,7 +45,35 @@ public class WPScript : MonoBehaviour {
 	}
 
 	void OnMouseDown(){
-		if (Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Enemy.position) < 1 && UIopen == false) {
+		bool cancel = false;
+		int lastprogress = 0;
+		string lastname = "";
+
+		if (MovementCounter () > 0) {
+			foreach (GameObject a in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
+				if (Vector2.Distance (Camera.main.ScreenToWorldPoint (Input.mousePosition), a.transform.position) < 1) {
+					if (a.name == "Waypoint1") {
+//						lastname = a.name;
+//						lastprogress = a.GetComponent<MovementMarkerScript> ().progress;
+						cancel = true;
+					} else {
+						progress--;
+					}
+					Destroy (a.gameObject);
+				} 
+			}
+		}
+
+		if (cancel == true) {
+			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
+				o.name = "Waypoint1";
+				o.GetComponent<MovementMarkerScript> ().progress = 1;
+				GameObject.Find ("Line1").GetComponent<LineScript> ().endObject = o;
+			}
+			StartCoroutine (RedrawLine ());
+			progress--;
+			cancel = false;
+		}else if (Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Enemy.position) < 1 && UIopen == false) {
 			Hero.GetComponent<WPSoldierControler> ().targetEnemy = Enemy.gameObject;
 			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
 		}else if(Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Base.position) < 1 && UIopen == false){
@@ -117,5 +145,10 @@ public class WPScript : MonoBehaviour {
 			Instantiate (EnemyWaypointMarker, position, Quaternion.identity);
 			enemyprogress++;
 		}
+	}
+
+	IEnumerator RedrawLine(){
+		yield return new WaitForSeconds (0.01f);
+		GameObject.Find ("Line1").GetComponent<LineScript> ().firstLineDraw = false;
 	}
 }

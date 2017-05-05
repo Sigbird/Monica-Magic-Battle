@@ -27,8 +27,8 @@ public class LineScript : MonoBehaviour {
 				firstLineDraw = true;
 			} else if (endObject == null) {
 				transform.position = new Vector2 (50, 50);
-				if(GameObject.FindGameObjectsWithTag ("herowaypoint").Length<=0)
-				firstLineDraw = false;
+				if (GameObject.FindGameObjectsWithTag ("herowaypoint").Length <= 0)
+					firstLineDraw = false;
 			}
 		} else if(line == 2) {
 			startObject = GameObject.Find ("Waypoint1");
@@ -37,7 +37,7 @@ public class LineScript : MonoBehaviour {
 				startPosition = startObject.transform.position;
 				endPosition = endObject.transform.position;
 				Strech (gameObject, startPosition, endPosition, mirrorZ);
-			} else if (endObject == null) {
+			} else if (endObject == null || startObject == null) {
 				transform.position = new Vector2 (50, 50);
 			}
 		} else if(line == 3) {

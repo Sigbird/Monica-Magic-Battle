@@ -11,6 +11,7 @@ public class GemScript : MonoBehaviour {
 	private GameObject Hero;
 	private GameObject Enemy;
 	public GameObject gc;
+	public GameObject flyingGem;
 	// Use this for initialization
 	void Start () {
 		gc = GameObject.Find ("GameController");
@@ -44,6 +45,7 @@ public class GemScript : MonoBehaviour {
 				if (Vector2.Distance (this.transform.position, Hero.transform.position) < 0.3) {
 					if (gemvalue < 40) {
 						gc.GetComponent<GameController> ().MiningGem (25);
+						Instantiate (flyingGem, this.transform.position, Quaternion.identity);
 					} else {
 						//Hero.GetComponent<WPSoldierControler> ().ReceiveEffect ("healing");
 					}
