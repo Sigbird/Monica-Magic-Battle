@@ -709,20 +709,20 @@ public class CardSlotScript : MonoBehaviour {
 		UIgems.sortingOrder = 103 - CardPosition;
 		UItexts.sortingOrder = 104 - CardPosition;
 		UIcategory.sortingOrder = 105 - CardPosition;
-		StartCoroutine (SwitchCollider ());
+		//StartCoroutine (SwitchCollider ());
 
 
 	}
 
-	IEnumerator SwitchCollider(){
-		yield return new WaitForSeconds (1);
-		if (this.GetComponent<BoxCollider2D> ().isTrigger == true) {
-			this.GetComponent<BoxCollider2D> ().isTrigger = false;
-		} else {
-			this.GetComponent<BoxCollider2D> ().isTrigger = true;
-		}
-		StartCoroutine (SwitchCollider ());
-	}
+//	IEnumerator SwitchCollider(){
+//		yield return new WaitForSeconds (1);
+//		if (this.GetComponent<BoxCollider2D> ().isTrigger == true) {
+//			this.GetComponent<BoxCollider2D> ().isTrigger = false;
+//		} else {
+//			this.GetComponent<BoxCollider2D> ().isTrigger = true;
+//		}
+//		StartCoroutine (SwitchCollider ());
+//	}
 		
 
 	public void SendCard(){

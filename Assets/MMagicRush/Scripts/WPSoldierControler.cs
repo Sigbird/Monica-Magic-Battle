@@ -503,7 +503,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 1;
-			this.speed = 8;
+			this.speed = 10;
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -517,7 +517,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 1;
-			this.speed = 8;
+			this.speed = 10;
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -531,7 +531,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 1;
-			this.speed = 8;
+			this.speed = 10;
 			this.energyMax = 4;
 			this.energy = 4;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;

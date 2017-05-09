@@ -220,7 +220,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		audioManager.PlayAudio ("spawn");
 
-		Twist (1);
+		Twist (1); ///INICIA ESCOLHA DE DECISOES
 	}
 
 	void Update () {
@@ -1013,7 +1013,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		if (TryTwist ()) {
 			//
 		} else {
-			StartCoroutine (WaitForTwist ());
+			Twist (1);
 		}
 	}
 

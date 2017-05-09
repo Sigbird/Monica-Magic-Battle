@@ -44,7 +44,8 @@ public class GameController : MonoBehaviour {
 	private float Mine2Assist;
 	// Use this for initialization
 	void Awake() {
-		EnemyDiamonds = 100;
+		EnemyDiamonds = 0;
+		Diamonds = 0;
 		enemyCharges = PlayerPrefs.GetInt ("enemyCharges");
 		Debug.Log ("Enemy " + enemyCharges);
 		playerCharges = PlayerPrefs.GetInt ("playerCharges");
@@ -65,6 +66,15 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		float gempertime = 0;
+		if (gempertime >= 2) {
+			gempertime = 0;
+			Diamonds += 1;
+			EnemyDiamonds += 1;
+		} else {
+			gempertime += Time.deltaTime;
+		}
+
 		GameObject.Find ("Diamonds").GetComponent<Text> ().text = Diamonds.ToString();
 		GameObject.Find ("DiamondsEnemy").GetComponent<Text> ().text = EnemyDiamonds.ToString();
 //		GameObject.Find ("Cost1").GetComponent<Text> ().text = WarriorCost.ToString();
