@@ -531,10 +531,10 @@ public class SoldierControler : MonoBehaviour {
 			case(0): 
 				this.vidaMax = 3;
 				this.vida = 3;
-				this.reach = 1;//3
+				this.reach = 2;//3
 				this.damage = 1;
 				this.damageSpeed = 2;
-				this.range = 1;
+				this.range = 2;
 				this.speed = 8;
 				this.energyMax = 3;
 				this.energy = 3;
@@ -545,10 +545,10 @@ public class SoldierControler : MonoBehaviour {
 			case(1):
 				this.vidaMax = 3;
 				this.vida = 3;
-			this.reach = 1;//3
+			this.reach = 2;//3
 				this.damage = 1;
 				this.damageSpeed = 2;
-				this.range = 1;
+				this.range = 2;
 				this.speed = 8;
 				this.energyMax = 3;
 				this.energy = 3;
@@ -562,7 +562,7 @@ public class SoldierControler : MonoBehaviour {
 			this.reach = 0.5f;
 				this.damage = 1;
 				this.damageSpeed = 2;
-				this.range = 1;
+				this.range = 2;
 				this.speed = 8;
 				this.energyMax = 4;
 				this.energy = 4;
@@ -575,7 +575,7 @@ public class SoldierControler : MonoBehaviour {
 			this.reach = 0.5f;
 				this.damage = 1;
 				this.damageSpeed = 2;
-				this.range = 1;
+				this.range = 2;
 				this.speed = 8;
 				this.energyMax = 4;
 				this.energy = 4;
@@ -587,7 +587,7 @@ public class SoldierControler : MonoBehaviour {
 			this.reach = 0.5f;
 				this.damage = 1;
 				this.damageSpeed = 2;
-				this.range = 1;
+				this.range = 2;
 				this.speed = 8;
 				this.energyMax = 4;
 				this.energy = 4;
@@ -615,10 +615,10 @@ public class SoldierControler : MonoBehaviour {
 		case(1): // BIDU
 			this.vidaMax = 2;
 			this.vida = 2;
-			this.reach = 1;
+			this.reach = 2;
 			this.damage = 1;
 			this.damageSpeed = 3;
-			this.range = 1;
+			this.range = 2;
 			this.speed = 4;
 			this.energyMax = 1;
 			this.energy = 200;
@@ -652,10 +652,10 @@ public class SoldierControler : MonoBehaviour {
 		case(4): //JOTALHÃO
 			this.vidaMax = 2;
 			this.vida = 2;
-			this.reach = 1;
+			this.reach = 2;
 			this.damage = 1;
 			this.damageSpeed = 3;
-			this.range = 1;
+			this.range = 2;
 			this.speed = 2;
 			this.energyMax = 1;
 			this.energy = 200;
@@ -664,10 +664,10 @@ public class SoldierControler : MonoBehaviour {
 		case(5): //PITECO
 			this.vidaMax = 2;
 			this.vida = 2;
-			this.reach = 1;
+			this.reach = 2;
 			this.damage = 1;
 			this.damageSpeed = 3;
-			this.range = 1;
+			this.range = 2;
 			this.speed = 4;
 			this.energyMax = 1;
 			this.energy = 200;
@@ -692,7 +692,7 @@ public class SoldierControler : MonoBehaviour {
 			this.reach = 0.5f;
 			this.damage = 5;
 			this.damageSpeed = 3;
-			this.range = 1;
+			this.range = 2;
 			this.speed = 3;
 			this.energyMax = 1;
 			this.energy = 200;
@@ -701,10 +701,10 @@ public class SoldierControler : MonoBehaviour {
 		case(8): //SANSAO
 			this.vidaMax = 6;
 			this.vida = 6;
-			this.reach = 1;
+			this.reach = 2;
 			this.damage = 3;
 			this.damageSpeed = 3;
-			this.range = 1;
+			this.range = 2;
 			this.speed = 4;
 			this.energyMax = 1;
 			this.energy = 200;

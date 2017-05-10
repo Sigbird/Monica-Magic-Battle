@@ -72,7 +72,7 @@ public class GemScript : MonoBehaviour {
 			if (Vector2.Distance (this.transform.position, Hero.transform.position) < 0.5) {
 				gemBarUI.transform.position = this.transform.position;
 				heroProgressObj.SetActive (true);
-				heroProgress += Time.deltaTime * 0.5f;
+				heroProgress += Time.deltaTime * 0.7f;
 				heroProgressBar.GetComponent<Animator> ().SetFloat ("Blend", heroProgress);
 				Debug.Log ("Entrou");
 				if (heroProgress >= 1) {
@@ -115,7 +115,7 @@ public class GemScript : MonoBehaviour {
 			if (Vector2.Distance (this.transform.position, Enemy.transform.position) < 0.5) {
 				gemBarUI.transform.position = Camera.main.ViewportToWorldPoint (this.transform.position);
 				enemyProgressObj.SetActive (true);
-				enemyProgress += Time.deltaTime * 0.5f;
+				enemyProgress += Time.deltaTime * 0.7f;
 				enemyProgressBar.GetComponent<Animator> ().SetFloat ("Blend", heroProgress);
 				if (enemyProgress >= 1) {
 
