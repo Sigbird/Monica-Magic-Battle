@@ -167,74 +167,7 @@ public class GemsRespawn : MonoBehaviour {
 	}
 
 
-//	public void InstatiateEnemyGem(){
-//		enemgemvalue += 10;
-//		GemPrefab.GetComponent<GemScript> ().gemvalue = enemgemvalue;
-//		GemPrefab.GetComponent<GemScript> ().team = 2;
-//		GemPrefab.tag = "enemygem";
-//		Instantiate (GemPrefab, GetEnemyRandomPosition(), Quaternion.identity);
-//	}
-//
-//	public int RandomIntEnem(){
-//		int x = 0;
-//
-//		switch (remainingPosEnem) {
-//		case 1:
-//			if (posTaken1Enem == 1 && posTaken2Enem == 2) {
-//				x = 3;
-//			}
-//			if (posTaken1Enem == 2 && posTaken2Enem == 1) {
-//				x = 3;
-//			}
-//			if (posTaken1Enem == 1 && posTaken2Enem == 3) {
-//				x = 2;
-//			}
-//			if (posTaken1Enem == 3 && posTaken2Enem == 1) {
-//				x = 2;
-//			}
-//			if (posTaken1Enem == 2 && posTaken2Enem == 3) {
-//				x = 1;
-//			}
-//			if (posTaken1Enem == 3 && posTaken2Enem == 2) {
-//				x = 1;
-//			}
-//			remainingPosEnem--;
-//			break;
-//		case 2: 
-//			if (posTaken1Enem == 1) {
-//				x = Random.Range (2, 3);
-//				posTaken2Enem = x;
-//			}
-//			if (posTaken1Enem == 3) {
-//				x = Random.Range (1, 2);
-//				posTaken2Enem = x;
-//			}
-//			if (posTaken1Enem == 2){
-//				x = Random.Range(1,2);
-//				if(x == 1){
-//					x = 1;
-//					posTaken2Enem = x;
-//				}else{
-//					x = 3;
-//					posTaken2Enem = x;
-//				}
-//			}
-//			remainingPosEnem--;
-//			break;
-//		case 3:
-//			x = Random.Range (1, 3);
-//			posTaken1Enem = x;
-//			remainingPosEnem--;
-//			break;
-//		default:
-//			remainingPosEnem = 3;
-//			posTaken1Enem = 0;
-//			posTaken2Enem = 0;
-//			return RandomIntEnem();
-//			break;
-//		}
-//		return x;
-//	}
+
 
 	public int RandomInt(){
 		int x = 0;
@@ -259,7 +192,7 @@ public class GemsRespawn : MonoBehaviour {
 			if (posTaken1 == 3 && posTaken2 == 2) {
 				x = 1;
 			}
-			Debug.Log ("LastPost: " + x);
+//			Debug.Log ("LastPost: " + x);
 			remainingPos--;
 			break;
 		case 2: 

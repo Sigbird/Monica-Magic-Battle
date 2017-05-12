@@ -23,17 +23,19 @@ public class WPIASoldierControler : MonoBehaviour {
 	public float midPreference;
 	public float botPreference;
 
-	public float idleChance = 100;
-	public float gemColectorChance = 100;
-	public float cheapUnitySummonChance = 100;
-	public float pushHatChance = 100;
-	public float cheapMagicCastChance = 100;
-	public float itemColectorChance = 100;
-	public float heroHarassChance = 100;
-	public float retreatChance = 100;
-	public float protectHatChance = 100;
+	public float idleChance;
+	public float gemColectorChance;
+	public float cheapUnitySummonChance;
+	public float pushHatChance;
+	public float cheapMagicCastChance;
+	public float itemColectorChance;
+	public float heroHarassChance;
+	public float retreatChance;
+	public float protectHatChance;
+	public float heroBattleChance;
+	public float randomMovementChance;
 
-
+	public int twist;
 
 	//	public STATE state = STATE.DEFAULT;
 
@@ -225,9 +227,41 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	void Update () {
 
-		//ALTERAÇÔES DE CHANCE DE TWIST
+		//ALTERAÇÔES DE CHANCE DE ESCOLHAS NO TWIST
 
+		if (this.vida <= 1) {
+			retreatChance = 90;
+		} else {
+			retreatChance = 0;
+		}
 
+		if (GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds >= 10) {
+			cheapMagicCastChance = 90;
+			cheapUnitySummonChance = 90;
+		} else {
+			cheapMagicCastChance = 0;
+			cheapUnitySummonChance = 0;
+		}
+
+		if (GameObject.Find ("treasureChest").GetComponent<TreasureScript> ().heroProgress > 0) {
+			heroHarassChance = 75;
+		} else if (GameObject.Find ("HeroBaseEnemy").GetComponent<ChargesScript> ().inCombat == true) {
+			heroHarassChance = 90;
+		} else if (GameObject.Find ("Hero").GetComponent<SpriteRenderer> ().enabled == true && GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().vida == 1) {
+			heroHarassChance = 75;
+		} else if (GameObject.Find ("Hero").GetComponent<SpriteRenderer> ().enabled == true && GameObject.Find ("Hero").transform.position.y > 0) {
+			heroHarassChance = 60;
+		} else {
+			heroHarassChance = 0;
+		}
+
+		if (GameObject.Find ("Hero").GetComponent<SpriteRenderer> ().enabled == false) {
+			pushHatChance = 95;
+		} else {
+			pushHatChance = 0;
+		}
+
+		
 	
 
 		//EVENTO DE MORTE
@@ -422,7 +456,7 @@ public class WPIASoldierControler : MonoBehaviour {
 				//SpendingEnergy ();
 				transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
 
-			} else if(targetEnemy != null) { //ATACA ALVO
+			} else if(targetEnemy != null && this.GetComponent<SpriteRenderer>().enabled == true) { //ATACA ALVO
 				
 				if (danoCD > damageSpeed ) { //TEMPO ENTRE ATAQUES
 					anim.SetTrigger ("Attack");
@@ -783,6 +817,10 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	public void ReceiveEffect(string effect){
 		effects = effect;
+		if (effect == "sight") {
+			this.range += 2;
+			this.reach += 2;
+		}
 		if (effect == "slow") {
 			this.speed = speed / 2;
 		}
@@ -825,6 +863,10 @@ public class WPIASoldierControler : MonoBehaviour {
 	}
 
 	public void Removeeffect(){
+		if (effects == "sight") {
+			this.range -= 2;
+			this.reach -= 2;
+		}
 		if (effects == "slow") {
 			GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Unfrozen");
 			this.speed = maxSpeed;
@@ -902,7 +944,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		this.damage = 1;
 		this.seeking = true;
 		this.targetEnemy = SeekEnemyTarget();
-		respawningTimer = 4;
+		respawningTimer = 7;
 	}
 
 	public GameObject SeekEnemyTarget (){
@@ -1128,74 +1170,115 @@ public class WPIASoldierControler : MonoBehaviour {
 	}
 
 	public int TwistIntChooser(){ // escolhe o twist a ser executado;
-		
-		int x = 0;
-		float random = Random.value;
-		float sumOfAll = cheapMagicCastChance + cheapUnitySummonChance + gemColectorChance + heroHarassChance + idleChance + itemColectorChance + protectHatChance + pushHatChance + retreatChance;
+		float[] probs = new float[12];
 
-		float a = cheapMagicCastChance / sumOfAll;
-		float b = (cheapUnitySummonChance / sumOfAll) + a;
-		float c = (gemColectorChance / sumOfAll) + a + b;
-		float d = (heroHarassChance / sumOfAll) + a + b + c;
-		float e = (idleChance / sumOfAll) + a + b + c + d;
-		float f = (itemColectorChance / sumOfAll) + a + b + c + d + e;
-		float g = (protectHatChance / sumOfAll) + a + b + c + d + e + f;
-		float h = (pushHatChance / sumOfAll) + a + b + c + d + e + f+ g;
-		float i = (retreatChance / sumOfAll) + a + b + c + d + e + f + g + h;
+		probs [0] = 0;
+		probs [1] = idleChance;
+		probs [2] = cheapMagicCastChance;
+		probs [3] = cheapUnitySummonChance;
+		probs [4] = gemColectorChance;
+		probs [5] = heroHarassChance;
+		probs [6] = itemColectorChance;
+		probs [7] = protectHatChance;
+		probs [8] = pushHatChance;
+		probs [9] = retreatChance;
+		probs [10] = heroBattleChance;
+		probs [11] = randomMovementChance;
 
-		if (random < a)
-		{
-			//x = 1; //IDLE
-			if(Random.value > 0.5f){
-			x = 1; //IDLE
-			}else{
-			x = 6;
-			}
-		}else if (random < b)
-		{
-			//x = 2; //MAGIC
-			if(Random.value > 0.5f){
-				x = 2; //IDLE
-			}else{
-				x = 7;
-			}
-		}else if (random < c)
-		{
-			//x = 3; //UNIT
-			if(Random.value > 0.5f){
-				x = 3; //IDLE
-			}else{
-				x = 8;
-			}
-		}else if (random < d)
-		{
-			//x = 4; //GEMCOLECTOR
-			if(Random.value > 0.5f){
-				x = 4; //IDLE
-			}else{
-				x = 9;
-			}
-		}else if (random < e)
-		{
-			x = 5; //HERO HARASS
-		}else if (random < f)
-		{
-			x = 6; //ITEMCOLECTOR
-		}else if (random < g)
-		{
-			x = 7; //PROTECT HAT
-		}else if (random < h)
-		{
-			x = 8; //PUSH HAT
-		}else if (random < i)
-		{
-			x = 9; //RETREAT
-		}else{
-			return 10;
-		}
-		return x;
+		return (int)Choose(probs);
 
 	}
+
+	float Choose (float[] probs) {
+
+		float total = 0;
+
+		foreach (float elem in probs) {
+			total += elem;
+		}
+
+		float randomPoint = Random.value * total;
+
+		for (int i= 0; i < probs.Length; i++) {
+			if (randomPoint < probs[i]) {
+				return i;
+			}
+			else {
+				randomPoint -= probs[i];
+			}
+		}
+		return probs.Length - 1;
+	}
+
+//	public int TwistIntChooser(){ // escolhe o twist a ser executado;
+//		
+//		int x = 0;
+//		float random = Random.value;
+//		float sumOfAll = cheapMagicCastChance + cheapUnitySummonChance + gemColectorChance + heroHarassChance + idleChance + itemColectorChance + protectHatChance + pushHatChance + retreatChance;
+//
+//		float a = cheapMagicCastChance / sumOfAll;
+//		float b = (cheapUnitySummonChance / sumOfAll) + a;
+//		float c = (gemColectorChance / sumOfAll) + a + b;
+//		float d = (heroHarassChance / sumOfAll) + a + b + c;
+//		float e = (idleChance / sumOfAll) + a + b + c + d;
+//		float f = (itemColectorChance / sumOfAll) + a + b + c + d + e;
+//		float g = (protectHatChance / sumOfAll) + a + b + c + d + e + f;
+//		float h = (pushHatChance / sumOfAll) + a + b + c + d + e + f+ g;
+//		float i = (retreatChance / sumOfAll) + a + b + c + d + e + f + g + h;
+//
+//		if (random < a)
+//		{
+//			//x = 1; //IDLE
+//			if(Random.value > 0.5f){
+//			x = 1; //IDLE
+//			}else{
+//			x = 6;
+//			}
+//		}else if (random < b)
+//		{
+//			//x = 2; //MAGIC
+//			if(Random.value > 0.5f){
+//				x = 2; //IDLE
+//			}else{
+//				x = 7;
+//			}
+//		}else if (random < c)
+//		{
+//			//x = 3; //UNIT
+//			if(Random.value > 0.5f){
+//				x = 3; //IDLE
+//			}else{
+//				x = 8;
+//			}
+//		}else if (random < d)
+//		{
+//			//x = 4; //GEMCOLECTOR
+//			if(Random.value > 0.5f){
+//				x = 4; //IDLE
+//			}else{
+//				x = 9;
+//			}
+//		}else if (random < e)
+//		{
+//			x = 5; //HERO HARASS
+//		}else if (random < f)
+//		{
+//			x = 6; //ITEMCOLECTOR
+//		}else if (random < g)
+//		{
+//			x = 7; //PROTECT HAT
+//		}else if (random < h)
+//		{
+//			x = 8; //PUSH HAT
+//		}else if (random < i)
+//		{
+//			x = 9; //RETREAT
+//		}else{
+//			return 10;
+//		}
+//		return x;
+//
+//	}
 
 
 }

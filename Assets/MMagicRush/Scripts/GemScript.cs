@@ -82,12 +82,9 @@ public class GemScript : MonoBehaviour {
 					heroProgress = 0;
 					enemyProgress = 0;
 
-					if (gemvalue < 40) {
 						gc.GetComponent<GameController> ().MiningGem (5);
 						Instantiate (flyingGem, this.transform.position, Quaternion.identity);
-					} else {
-						//Hero.GetComponent<WPSoldierControler> ().ReceiveEffect ("healing");
-					}
+
 					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().usedValues.Clear ();
 					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().gemsPlaced = 0;
 					if (team == 2) {//GRAVA A POSIÇÂO QUE FOI PEGA E LIMPA AS GEMAS
@@ -124,14 +121,12 @@ public class GemScript : MonoBehaviour {
 					heroProgress = 0;
 					enemyProgress = 0;
 
-					if (gemvalue < 40) {
+
 						gc.GetComponent<GameController> ().EnemyDiamonds += 5;
 						if (Enemy.GetComponent<WPIASoldierControler> ().TryTwist () == false) {
 							Enemy.GetComponent<WPIASoldierControler> ().Twist (4);
 						} 
-					} else {
-						//Hero.GetComponent<WPSoldierControler> ().ReceiveEffect ("healing");
-					}
+
 					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().usedValues.Clear ();
 					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().enemygemsPlaced = 0;
 

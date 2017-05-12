@@ -219,7 +219,7 @@ public class CardSlotScript : MonoBehaviour {
 																//TROPAS
 
 		case 11://TROPA: BIDU
-			cardCost = 1;
+			cardCost = 5;
 			nameText.text = "Bidu";
 			UIilustration.sprite = cardsImages [11];
 			break;

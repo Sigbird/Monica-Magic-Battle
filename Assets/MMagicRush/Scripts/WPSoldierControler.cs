@@ -195,7 +195,7 @@ public class WPSoldierControler : MonoBehaviour {
 		if (GetComponent<Animator> () != null) {
 			anim = GetComponent<Animator> ();
 		}
-		respawningTimer = 0.5f;
+		respawningTimer = 0;
 		StartCoroutine (Respawning ());
 
 		this.effects = "default";
@@ -406,7 +406,7 @@ public class WPSoldierControler : MonoBehaviour {
 				//SpendingEnergy ();
 				transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed * 2);
 
-			} else if(targetEnemy != null) { //ATACA ALVO
+			} else if(targetEnemy != null && this.GetComponent<SpriteRenderer>().enabled == true) { //ATACA ALVO
 				
 				if (danoCD > damageSpeed ) { //TEMPO ENTRE ATAQUES
 					anim.SetTrigger ("Attack");
@@ -775,6 +775,11 @@ public class WPSoldierControler : MonoBehaviour {
 
 	public void ReceiveEffect(string effect){
 		effects = effect;
+
+		if (effect == "sight") {
+			this.range += 2;
+			this.reach += 2;
+		}
 		if (effect == "slow") {
 			this.speed = speed / 2;
 		}
@@ -820,6 +825,10 @@ public class WPSoldierControler : MonoBehaviour {
 	}
 
 	public void Removeeffect(){
+		if (effects == "sight") {
+			this.range -= 2;
+			this.reach -= 2;
+		}
 		if (effects == "slow") {
 			GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Unfrozen");
 			this.speed = maxSpeed;
@@ -898,7 +907,7 @@ public class WPSoldierControler : MonoBehaviour {
 		this.speed = maxSpeed;
 		this.seeking = true;
 		//this.targetEnemy = SeekEnemyTarget();
-		respawningTimer = 4;
+		respawningTimer = 7;
 	}
 
 	public GameObject SeekEnemyTarget (){

@@ -5,14 +5,17 @@ using UnityEngine.UI;
 
 public class TreasureScript : MonoBehaviour {
 	private GameObject Hero;
-	private float heroProgress;
+	public float heroProgress;
 	public GameObject heroProgressObj;
 	public GameObject heroProgressBar;
 	private GameObject Enemy;
-	private float enemyProgress;
+	public float enemyProgress;
 	public GameObject enemyProgressObj;
 	public GameObject enemyProgressBar;
 	public bool enabled = true;
+
+	public Sprite[] sprites;
+	public string bonus;
 	// Use this for initialization
 	void Start () {
 		StartCoroutine (Begin ());
@@ -59,6 +62,13 @@ public class TreasureScript : MonoBehaviour {
 		yield return new WaitForSeconds (30);
 		this.enabled = true;
 		this.GetComponent<SpriteRenderer> ().enabled = true;
+		if (Random.value >= 0.5) {
+			this.GetComponent<SpriteRenderer> ().sprite = sprites [0];
+			this.bonus = "sight";
+		} else {
+			this.GetComponent<SpriteRenderer> ().sprite = sprites [1];
+			this.bonus = "speed";
+		}
 	}
 
 	IEnumerator HeroReset(){
@@ -68,10 +78,18 @@ public class TreasureScript : MonoBehaviour {
 		this.GetComponent<SpriteRenderer> ().enabled = false;
 		heroProgress = 0;
 		enemyProgress = 0;
-		Hero.GetComponent<WPSoldierControler> ().ReceiveEffect ("increaseDamage");
+		Hero.GetComponent<WPSoldierControler> ().ReceiveEffect (this.bonus);
 		yield return new WaitForSeconds (30);
 		this.enabled = true;
 		this.GetComponent<SpriteRenderer> ().enabled = true;
+		if (Random.value >= 0.5) {
+			this.GetComponent<SpriteRenderer> ().sprite = sprites [0];
+			this.bonus = "sight";
+		} else {
+			this.GetComponent<SpriteRenderer> ().sprite = sprites [1];
+			this.bonus = "speed";
+		}
+
 	}
 
 	IEnumerator EnemyReset(){
@@ -81,9 +99,16 @@ public class TreasureScript : MonoBehaviour {
 		this.GetComponent<SpriteRenderer> ().enabled = false;
 		heroProgress = 0;
 		enemyProgress = 0;
-		Enemy.GetComponent<WPIASoldierControler> ().ReceiveEffect ("increaseDamage");
+		Enemy.GetComponent<WPIASoldierControler> ().ReceiveEffect (this.bonus);
 		yield return new WaitForSeconds (30);
 		this.enabled = true;
 		this.GetComponent<SpriteRenderer> ().enabled = true;
+		if (Random.value >= 0.5) {
+			this.GetComponent<SpriteRenderer> ().sprite = sprites [0];
+			this.bonus = "sight";
+		} else {
+			this.GetComponent<SpriteRenderer> ().sprite = sprites [1];
+			this.bonus = "speed";
+		}
 	}
 }
