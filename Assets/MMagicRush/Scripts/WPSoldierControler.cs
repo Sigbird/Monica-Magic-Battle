@@ -239,11 +239,11 @@ public class WPSoldierControler : MonoBehaviour {
 		//FLAGS PARA HEALING
 		//
 		if (this.team == 1 && this.gameObject.GetComponent<SpriteRenderer> ().enabled == true) {
-			if (this.transform.position.y < -1) {
-				this.healing = true;
-			} else {
-				this.healing = false;
-			}
+//			if (this.transform.position.y < -1) {
+//				this.healing = true;
+//			} else {
+//				this.healing = false;
+//			}
 
 			if (this.transform.position.y > 1) {
 				this.GainXP = true;
@@ -253,11 +253,11 @@ public class WPSoldierControler : MonoBehaviour {
 		} 
 
 		if (this.team == 2 && this.gameObject.GetComponent<SpriteRenderer> ().enabled == true) {
-			if (this.transform.position.y > 1) {
-				this.healing = true;
-			} else {
-				this.healing = false;
-			}
+//			if (this.transform.position.y > 1) {
+//				this.healing = true;
+//			} else {
+//				this.healing = false;
+//			}
 
 			if (this.transform.position.y < -1) {
 				this.GainXP = true;
@@ -497,8 +497,8 @@ public class WPSoldierControler : MonoBehaviour {
 //		Debug.Log ("id: " + id);
 		switch (id) {
 		case(0): 
-			this.vidaMax = 3;
-			this.vida = 3;
+			this.vidaMax = 6;
+			this.vida = 6;
 			this.reach = 2;//3
 			this.damage = 1;
 			this.damageSpeed = 2;
@@ -511,8 +511,8 @@ public class WPSoldierControler : MonoBehaviour {
 			Debug.Log ("Monica");
 			break;
 		case(1):
-			this.vidaMax = 3;
-			this.vida = 3;
+			this.vidaMax = 6;
+			this.vida = 6;
 			this.reach = 2;//3
 			this.damage = 1;
 			this.damageSpeed = 2;
@@ -525,8 +525,8 @@ public class WPSoldierControler : MonoBehaviour {
 			Debug.Log ("Cebolinha");
 			break;
 		case(2):
-			this.vidaMax = 3;
-			this.vida = 3;
+			this.vidaMax = 6;
+			this.vida = 6;
 			this.reach = 0.5f;
 			this.damage = 1;
 			this.damageSpeed = 2;
@@ -538,8 +538,8 @@ public class WPSoldierControler : MonoBehaviour {
 			Debug.Log ("Magali");
 			break;
 		case(3):
-			this.vidaMax = 3;
-			this.vida = 3;
+			this.vidaMax = 6;
+			this.vida = 6;
 			this.reach = 0.5f;
 			this.damage = 1;
 			this.damageSpeed = 2;
@@ -550,8 +550,8 @@ public class WPSoldierControler : MonoBehaviour {
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			break;
 		default:
-			this.vidaMax = 3;
-			this.vida = 3;
+			this.vidaMax = 6;
+			this.vida = 6;
 			this.reach = 0.5f;
 			this.damage = 1;
 			this.damageSpeed = 2;

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
+	public float gempertime;	
 
 	public int playerCharges;
 	public static float playerXp;
@@ -66,7 +67,7 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		float gempertime = 0;
+
 		if (gempertime >= 2) {
 			gempertime = 0;
 			Diamonds += 1;
@@ -76,7 +77,7 @@ public class GameController : MonoBehaviour {
 		}
 
 		GameObject.Find ("Diamonds").GetComponent<Text> ().text = Diamonds.ToString();
-		GameObject.Find ("DiamondsEnemy").GetComponent<Text> ().text = EnemyDiamonds.ToString();
+//		GameObject.Find ("DiamondsEnemy").GetComponent<Text> ().text = EnemyDiamonds.ToString();
 //		GameObject.Find ("Cost1").GetComponent<Text> ().text = WarriorCost.ToString();
 //		GameObject.Find ("Cost2").GetComponent<Text> ().text = LanceiroCost.ToString();
 //		GameObject.Find ("Cost3").GetComponent<Text> ().text = MageCost.ToString();
@@ -156,63 +157,6 @@ public class GameController : MonoBehaviour {
 
 	}
 
-
-	public void SummonMinion(int team){
-		switch(tipo){
-		case "Guerreiro":
-			if (Diamonds >= WarriorCost) {
-				Diamonds = Diamonds - WarriorCost;
-				//Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Guerreiro;
-				WarriorCost = WarriorCost + 10;
-				Soldado.GetComponent<SoldierControler> ().team = team;
-				if (team == 1) {
-					Instantiate (Soldado, GameObject.Find ("SpawPoint1").transform.position, Quaternion.identity);
-				} else {
-					Instantiate (Soldado, GameObject.Find ("SpawPoint2").transform.position, Quaternion.identity);
-				}
-			}
-			break;
-		case "Mago":
-			if (Diamonds >= MageCost) {
-				Diamonds = Diamonds - MageCost;
-				//Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Mago;
-				MageCost = MageCost + 10;
-				Soldado.GetComponent<SoldierControler> ().team = team;
-				if (team == 1) {
-					Instantiate (Soldado, GameObject.Find ("SpawPoint1").transform.position, Quaternion.identity);
-				} else {
-					Instantiate (Soldado, GameObject.Find ("SpawPoint2").transform.position, Quaternion.identity);
-				}
-			}
-			break;
-		case "Lanceiro":
-			if (Diamonds >= LanceiroCost) {
-				Diamonds = Diamonds - LanceiroCost;
-				//Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.Lanceiro;
-				LanceiroCost = LanceiroCost + 10;
-				Soldado.GetComponent<SoldierControler> ().team = team;
-				if (team == 1) {
-					Instantiate (Soldado, GameObject.Find ("SpawPoint1").transform.position, Quaternion.identity);
-				} else {
-					Instantiate (Soldado, GameObject.Find ("SpawPoint2").transform.position, Quaternion.identity);
-				}
-			}
-			break;
-		case "General":
-			//Soldado.GetComponent<SoldierControler> ().Tipo = SoldierControler.TipoSoldado.General;
-			Soldado.GetComponent<SoldierControler> ().team = team;
-			if (team == 1) {
-				Instantiate (Soldado, GameObject.Find("SpawPoint1").transform.position, Quaternion.identity);
-			} else {
-				Instantiate (Soldado, GameObject.Find("SpawPoint2").transform.position, Quaternion.identity);
-			}
-			break;
-		default:
-			//
-			break;
-		}
-
-	}
 
 	public void NextRound(){
 		Debug.Log ("xp: "+GameController.playerXp);

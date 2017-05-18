@@ -139,6 +139,12 @@ public class SoldierControler : MonoBehaviour {
 	public GameObject[] LaneMid;
 	public GameObject[] LaneBot;
 
+	public GameObject[] LeftExit = new GameObject[3];
+	public GameObject[] RightExit = new GameObject[3];
+	public int step;
+	public Transform t;
+
+
 	public int lane;
 	public string LaneName;
 	public GameObject[] ActualLane;
@@ -176,7 +182,17 @@ public class SoldierControler : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		step = 1;
 
+		 LeftExit = new GameObject[3];
+		 RightExit = new GameObject[3];
+
+		LeftExit [0] = GameObject.Find ("Left1").gameObject;
+		LeftExit [1] = GameObject.Find ("Left2").gameObject;
+		LeftExit [2] = GameObject.Find ("Left3").gameObject;
+		RightExit [0] = GameObject.Find ("Right1").gameObject;
+		RightExit [1] = GameObject.Find ("Right2").gameObject;
+		RightExit [2] = GameObject.Find ("Right3").gameObject;
 		ChooseLane ();
 
 		if (heroUnity) {// CONFIGURAÇÃO DE HEROIS
@@ -411,7 +427,40 @@ public class SoldierControler : MonoBehaviour {
 			//
 			//ESTADOS DO PERSONAGEM
 			// 
-					
+		if (this.tag == "enemysoldier1" && LeftExit.Length > 0 && RightExit.Length > 0 ) {
+
+			if (Vector2.Distance (this.transform.position, LeftExit [0].transform.position) <= 1 || Vector2.Distance (this.transform.position, RightExit [0].transform.position) <= 1) {
+				step = 2;
+			}
+			if (Vector2.Distance (this.transform.position, LeftExit [1].transform.position) <= 1 || Vector2.Distance (this.transform.position, RightExit [1].transform.position) <= 1) {
+				step = 3;
+			}
+
+			if (Vector2.Distance (this.transform.position, LeftExit [0].transform.position) > Vector2.Distance (this.transform.position, RightExit [0].transform.position) && step == 1) {
+				t = RightExit [0].transform;
+				//transform.position = Vector2.MoveTowards (transform.position, RightExit [0].transform.position, Time.deltaTime * speed);
+			} else if (Vector2.Distance (this.transform.position, LeftExit [0].transform.position) < Vector2.Distance (this.transform.position, RightExit [0].transform.position) && step == 1) {
+				t = LeftExit [0].transform;
+				//transform.position = Vector2.MoveTowards (transform.position, RightExit [0].transform.position, Time.deltaTime * speed);
+			}
+
+			if (Vector2.Distance (this.transform.position, LeftExit [1].transform.position) > Vector2.Distance (this.transform.position, RightExit [1].transform.position) && step == 2) {
+				t = RightExit [1].transform;
+				//transform.position = Vector2.MoveTowards (transform.position, RightExit [1].transform.position, Time.deltaTime * speed);
+			} else if (Vector2.Distance (this.transform.position, LeftExit [1].transform.position) < Vector2.Distance (this.transform.position, RightExit [1].transform.position) && step == 2) {
+				t = LeftExit [1].transform;
+				//transform.position = Vector2.MoveTowards (transform.position, RightExit [1].transform.position, Time.deltaTime * speed);
+			}
+
+			if (Vector2.Distance (this.transform.position, LeftExit [2].transform.position) > Vector2.Distance (this.transform.position, RightExit [2].transform.position) && step == 3) {
+				t = RightExit [2].transform;
+				//transform.position = Vector2.MoveTowards (transform.position, RightExit [2].transform.position, Time.deltaTime * speed);
+			} else if (Vector2.Distance (this.transform.position, LeftExit [2].transform.position) < Vector2.Distance (this.transform.position, RightExit [2].transform.position) && step == 3)  {
+				t = LeftExit [2].transform;
+				//transform.position = Vector2.MoveTowards (transform.position, RightExit [2].transform.position, Time.deltaTime * speed);
+			}
+			transform.position = Vector2.MoveTowards (transform.position, t.position, Time.deltaTime * speed);
+		}			
 
 		// PROCURANDO ALVO
 
@@ -441,7 +490,7 @@ public class SoldierControler : MonoBehaviour {
 					//SpendingEnergy ();
 					transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
 						
-				}else if(targetEnemy.tag == "waypoint"){
+				}else if(targetEnemy.tag == "waypoint" && this.tag == "enemysoldier2"){
 					if (Progress == 2 && gameEnded == false) {
 							//EVENTO QUANDO TROPA CHEGA NA BASE
 //							StartCoroutine (Respawning ());
@@ -949,19 +998,21 @@ public class SoldierControler : MonoBehaviour {
 			} 
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {//PROCURA HEROI
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
-					float dist = Vector3.Distance (transform.position, obj.transform.position);
-					if (dist <= reach) {
-						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-							if (obj.GetComponent<WPIASoldierControler> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
-								Emin = obj;
-								minDis = dist;
+					if (obj.GetComponent<SpriteRenderer> ().enabled == true) {
+						float dist = Vector3.Distance (transform.position, obj.transform.position);
+						if (dist <= reach) {
+							if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
+								if (obj.GetComponent<WPIASoldierControler> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+									Emin = obj;
+									minDis = dist;
+								}
 							}
 						}
 					}
 				}
-			} 
+			}
 			if(Emin == null) {
-				return ActualLane [Progress];
+				//return ActualLane [Progress];
 			}
 
 		} else if (this.tag == "enemysoldier2") { //Procura de Jogador 2
@@ -980,12 +1031,14 @@ public class SoldierControler : MonoBehaviour {
 			}
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//PROCURA HEROI
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
-					float dist = Vector3.Distance (transform.position, obj.transform.position);
-					if (dist <= reach) {
-						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-							if (obj.GetComponent<WPSoldierControler> ().heroUnity != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
-								Emin = obj;
-								minDis = dist;
+					if (obj.GetComponent<SpriteRenderer> ().enabled == true) {
+						float dist = Vector3.Distance (transform.position, obj.transform.position);
+						if (dist <= reach) {
+							if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
+								if (obj.GetComponent<WPSoldierControler> ().heroUnity != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+									Emin = obj;
+									minDis = dist;
+								}
 							}
 						}
 					}

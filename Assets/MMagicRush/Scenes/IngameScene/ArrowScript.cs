@@ -24,6 +24,8 @@ public class ArrowScript : MonoBehaviour {
 			} else {
 				this.transform.position = Vector3.MoveTowards (this.transform.position, target.transform.position, Time.deltaTime * 5);		
 			}
+		} else {
+			Destroy (this.gameObject);
 		}
 	}
 		
