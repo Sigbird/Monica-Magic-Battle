@@ -62,6 +62,8 @@ public class WPSoldierControler : MonoBehaviour {
 
 	public Animator LvlUpAnim;
 
+	public GameObject HitAnimationObject;
+
 	//FLAGS
 
 	private bool gameEnded = false;
@@ -503,7 +505,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 2;
-			this.speed = 10;
+			this.speed = 12;
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -517,7 +519,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 2;
-			this.speed = 10;
+			this.speed = 12;
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -787,7 +789,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.speed = speed / 4;
 		}
 		if (effect == "speed") {
-			this.speed = speed * 2;
+			this.speed = speed * 3.5f;
 		}
 		if (effect == "damage") {
 			this.vida--;
@@ -981,6 +983,8 @@ public class WPSoldierControler : MonoBehaviour {
 	}
 
 	public void ReceiveDamage(){
+
+		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
 
 		if (this.team == 1 && heroUnity == true) {
 			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");

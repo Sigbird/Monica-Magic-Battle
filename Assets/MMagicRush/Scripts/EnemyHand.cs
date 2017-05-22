@@ -8,6 +8,7 @@ public class EnemyHand : MonoBehaviour {
 	//public int cardID;
 	public int cardCost;
 	public int[] cardlist;
+	public CardHistoric UIHistoric;
 
 
 
@@ -31,19 +32,27 @@ public class EnemyHand : MonoBehaviour {
 		GameObject t;
 		int id = 0;
 
-			if(CardType == "Magic"){
-			foreach (int c in cardlist) {
-				if (CheckCost(c) <= GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds && c < 11) {
-					id = c;
-				}
-			}
-			}else{
-			foreach (int c in cardlist) {
-				if (CheckCost(c) <= GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds && c >= 11) {
-					id = c;
-				}
-			}
-			}
+//			if(CardType == "Magic"){
+//			foreach (int c in cardlist) {
+//				if (CheckCost(c) <= GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds && c < 11) {
+//					id = c;
+//				}
+//			}
+//			}else{
+//			foreach (int c in cardlist) {
+//				if (CheckCost(c) <= GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds && c >= 11) {
+//					id = c;
+//				}
+//			}
+//			}
+
+		if (CardType == "Magic" && GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds > 20) {
+			id = 3;
+		} else if(GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds > 40) {
+			id = 11;
+		}
+
+		UIHistoric.AddCard (id,2);
 
 		if (id > 0) {
 

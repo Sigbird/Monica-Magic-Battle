@@ -62,6 +62,8 @@ public class SoldierControler : MonoBehaviour {
 
 	public Animator LvlUpAnim;
 
+	public GameObject HitAnimationObject;
+
 	//FLAGS
 
 	private bool gameEnded = false;
@@ -1053,6 +1055,8 @@ public class SoldierControler : MonoBehaviour {
 
 	public void ReceiveDamage(){
 	
+		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+
 		if (this.team == 1 && heroUnity == true) {
 			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
 		}

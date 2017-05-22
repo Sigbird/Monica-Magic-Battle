@@ -16,6 +16,8 @@ public class CardSlotScript : MonoBehaviour {
 	public Canvas UItexts;
 	public SpriteRenderer UIcategory;
 
+	public CardHistoric UIHistoric;
+
 
 	//CARD INFO
 
@@ -317,7 +319,7 @@ public class CardSlotScript : MonoBehaviour {
 		//ATIVA EFEITO DA CARTA SOBRE O ALVO DO OBJETO MOVABLE
 		public void ActivateCardEffect(){
 		GameObject t;
-
+		GameObject.Find("HistoricContent").GetComponent<CardHistoric>().AddCard (cardID, 1);
 			switch (cardID) {
 
 									//HABILIDADES
@@ -333,7 +335,6 @@ public class CardSlotScript : MonoBehaviour {
 					if (obj.GetComponent<SoldierControler>() != null) 
 						obj.GetComponent<SoldierControler> ().ReceiveEffect ("damage");
 					}
-
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 				Destroy (this.gameObject);
 			}

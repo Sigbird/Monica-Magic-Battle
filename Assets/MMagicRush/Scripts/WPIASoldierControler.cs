@@ -79,6 +79,8 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	public Animator LvlUpAnim;
 
+	public GameObject HitAnimationObject;
+
 	//FLAGS
 
 	private bool gameEnded = false;
@@ -233,13 +235,13 @@ public class WPIASoldierControler : MonoBehaviour {
 
 		//ALTERAÇÔES DE CHANCE DE ESCOLHAS NO TWIST
 
-		if (this.vida <= 1) {
+		if (this.vida <= 5) {
 			retreatChance = 90;
 		} else {
 			retreatChance = 0;
 		}
 
-		if (GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds >= 10) {
+		if (GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds >= 40) {
 			cheapMagicCastChance = 90;
 			cheapUnitySummonChance = 90;
 		} else {
@@ -250,7 +252,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		if (GameObject.Find ("treasureChest").GetComponent<TreasureScript> ().heroProgress > 0) {
 			heroHarassChance = 75;
 		} else if (GameObject.Find ("HeroBaseEnemy").GetComponent<ChargesScript> ().inCombat == true) {
-			heroHarassChance = 90;
+			retreatChance = 90;
 		} else if (GameObject.Find ("Hero").GetComponent<SpriteRenderer> ().enabled == true && GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().vida == 1) {
 			heroHarassChance = 75;
 		} else if (GameObject.Find ("Hero").GetComponent<SpriteRenderer> ().enabled == true && GameObject.Find ("Hero").transform.position.y > 0) {
@@ -836,7 +838,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.speed = speed / 4;
 		}
 		if (effect == "speed") {
-			this.speed = speed * 2;
+			this.speed = speed * 3.5f;
 		}
 		if (effect == "damage") {
 			this.vida--;
@@ -938,6 +940,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		if(heroUnity)
 			this.energy = this.energyMax;
 		this.seeking = false;
+
 		yield return new WaitForSeconds (respawningTimer);
 
 		if(heroUnity)
@@ -947,13 +950,16 @@ public class WPIASoldierControler : MonoBehaviour {
 		this.healtbarSoldier.SetActive (true);
 		if (heroUnity)
 			this.energybarSoldier.SetActive (true);
+		this.targetEnemy = null;
 		this.skill1.gameObject.SetActive (true);
 		this.skill2.gameObject.SetActive (true);
 		this.damage = 1;
+		this.speed = maxSpeed;
 		this.seeking = true;
 		this.targetEnemy = SeekEnemyTarget();
 		respawningTimer = 7;
 		twisting = false;
+		Twist (0);
 	}
 
 	public GameObject SeekEnemyTarget (){
@@ -1027,6 +1033,8 @@ public class WPIASoldierControler : MonoBehaviour {
 	}
 
 	public void ReceiveDamage(){
+		
+		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
 
 		if (this.team == 1 && heroUnity == true) {
 			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
@@ -1101,7 +1109,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			break;
 		case 4://GEM COLECTOR
 			if (GameObject.FindGameObjectsWithTag ("enemygem").Length > 0) {
-				waypoint.EnemyMovementPlacement (GameObject.FindGameObjectsWithTag ("enemygem") [0].transform.position);
+				waypoint.EnemyMovementPlacement (GameObject.FindGameObjectsWithTag ("enemygem") [Random.Range(3,5)].transform.position);
 
 			} else {
 				StartCoroutine (WaitForTwist ());
