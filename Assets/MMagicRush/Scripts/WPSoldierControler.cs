@@ -46,6 +46,8 @@ public class WPSoldierControler : MonoBehaviour {
 
 	public Sprite[] tropasSprites;
 
+	public Sprite[] heroPortraits;
+
 	public GameObject FlashingEffects;
 
 	public GameObject platform;
@@ -63,6 +65,8 @@ public class WPSoldierControler : MonoBehaviour {
 	public Animator LvlUpAnim;
 
 	public GameObject HitAnimationObject;
+
+	public Animation Arrival;
 
 	//FLAGS
 
@@ -140,6 +144,7 @@ public class WPSoldierControler : MonoBehaviour {
 	//LANE WAYPOINTS
 
 	public GameObject WaypointMark;
+	private float captureMarkerTimer;
 
 
 	//SKILLS
@@ -201,7 +206,7 @@ public class WPSoldierControler : MonoBehaviour {
 		StartCoroutine (Respawning ());
 
 		this.effects = "default";
-		this.speed = speed / 15;
+		this.speed = speed / 10;
 		this.maxSpeed = this.speed;
 		this.level = 1;
 		this.healtbarSoldier.SetActive (true);
@@ -217,6 +222,12 @@ public class WPSoldierControler : MonoBehaviour {
 
 	void Update () {
 
+//		if (gameObject.GetComponent<SpriteRenderer> ().bounds.Intersects (GameObject.Find ("HeroEnemy").GetComponent<SpriteRenderer> ().bounds)) {
+//			Debug.Log ("intersecsionou!");
+//		}
+
+
+
 		//
 		//ORDEM DE LAYER
 		//
@@ -224,9 +235,10 @@ public class WPSoldierControler : MonoBehaviour {
 
 
 		//EVENTO DE MORTE
-		if (this.vida <= 0 && heroUnity) {
+		if (this.vida <= 0 && heroUnity && this.GetComponent<SpriteRenderer>().enabled == true) {
 			this.speed = 0;
 			Instantiate (deathAngel, this.transform.position, Quaternion.identity).transform.parent = this.transform;
+			GameObject.Find ("RespawnTimerHero").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
 			StartCoroutine (Respawning ());
 			audioManager.PlayAudio ("death");
 		} else if(this.vida <= 0) {
@@ -368,13 +380,23 @@ public class WPSoldierControler : MonoBehaviour {
 			lockedTarget = false;
 			seeking = false;
 			WaypointMark = GetNewWaypoint ();
-			targetEnemy = null;
+			//targetEnemy = null;
 			if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f) {
 				anim.SetTrigger ("Walk");
 				transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
 			} else {
-				Destroy (WaypointMark.gameObject);
-				StartCoroutine (RedrawLine ());
+				if (WaypointMark.GetComponent<MovementMarkerScript> ().capture == true && WaypointMark.GetComponent<MovementMarkerScript> ().enabled == true) {
+					if (captureMarkerTimer >= 0.7f) {
+						captureMarkerTimer = 0;
+						Destroy (WaypointMark.gameObject);
+						StartCoroutine (RedrawLine ());
+					} else {
+						captureMarkerTimer += Time.deltaTime;
+					}
+				} else {
+					Destroy (WaypointMark.gameObject);
+					StartCoroutine (RedrawLine ());
+				}
 			}
 
 		} else {
@@ -505,7 +527,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 2;
-			this.speed = 12;
+			this.speed = 13;
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -519,7 +541,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 2;
-			this.speed = 12;
+			this.speed = 13;
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -533,7 +555,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 2;
-			this.speed = 10;
+			this.speed = 13;
 			this.energyMax = 4;
 			this.energy = 4;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -546,7 +568,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 2;
-			this.speed = 8;
+			this.speed = 13;
 			this.energyMax = 4;
 			this.energy = 4;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -558,7 +580,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 2;
-			this.speed = 8;
+			this.speed = 13;
 			this.energyMax = 4;
 			this.energy = 4;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -789,7 +811,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.speed = speed / 4;
 		}
 		if (effect == "speed") {
-			this.speed = speed * 3.5f;
+			this.speed = speed + 0.1f;
 		}
 		if (effect == "damage") {
 			this.vida--;
@@ -882,6 +904,7 @@ public class WPSoldierControler : MonoBehaviour {
 	}
 
 	IEnumerator Respawning(){
+		GameObject.Find ("RespawnTimerHero").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
 		yield return new WaitForSeconds (0.01f);
 		this.gameObject.GetComponent<SpriteRenderer> ().enabled = false;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
@@ -910,6 +933,7 @@ public class WPSoldierControler : MonoBehaviour {
 		this.seeking = true;
 		//this.targetEnemy = SeekEnemyTarget();
 		respawningTimer = 7;
+		Arrival.Play ();
 	}
 
 	public GameObject SeekEnemyTarget (){

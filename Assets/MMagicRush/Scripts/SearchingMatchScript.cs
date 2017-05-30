@@ -11,6 +11,8 @@ public class SearchingMatchScript : MonoBehaviour {
 
 	public Image AdvImage;
 
+	public GameObject LoadingAnim;
+
 	public Sprite Image;
 
 	public int SelectedCharacterID;
@@ -36,6 +38,7 @@ public class SearchingMatchScript : MonoBehaviour {
 		yield return new WaitForSeconds(2);
 		print(Time.time);
 		AdvImage.sprite = Image;
+		LoadingAnim.SetActive (false);
 		yield return new WaitForSeconds(1);
 		CallToBattle ();
 	}

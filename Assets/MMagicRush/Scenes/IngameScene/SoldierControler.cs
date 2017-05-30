@@ -64,6 +64,7 @@ public class SoldierControler : MonoBehaviour {
 
 	public GameObject HitAnimationObject;
 
+	public GameObject troop;
 	//FLAGS
 
 	private bool gameEnded = false;
@@ -131,6 +132,9 @@ public class SoldierControler : MonoBehaviour {
 
 	private float energyCounter;
 
+	private float summonCounter;
+	public bool summon = false;
+
 	public string effects;
 	public float effectsDuration;
 
@@ -184,6 +188,7 @@ public class SoldierControler : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if(step == 0)
 		step = 1;
 
 		 LeftExit = new GameObject[3];
@@ -225,7 +230,7 @@ public class SoldierControler : MonoBehaviour {
 		StartCoroutine (Respawning ());
 
 		this.effects = "default";
-		this.speed = speed / 15;
+		this.speed = speed / 10;
 		this.maxSpeed = this.speed;
 		this.level = 1;
 		this.healtbarSoldier.SetActive (true);
@@ -336,9 +341,26 @@ public class SoldierControler : MonoBehaviour {
 			}
 		}
 
+
+
 		//
 		//FLAGS PARA HABILIDADES
 		//
+		if(this.GetComponent<SpriteRenderer>().enabled == true){
+			summonCounter += Time.deltaTime;
+		}
+
+		if (summonCounter >= 9 && this.summon == true) {
+			summonCounter = 0;
+			GameObject t = troop;
+			t.GetComponent<SoldierControler> ().troopId = 11;
+			t.GetComponent<SoldierControler> ().step = this.step;
+			t.GetComponent<SoldierControler> ().summon = false;
+			Instantiate (t, new Vector2(this.transform.position.x - 0.5f, this.transform.position.y), Quaternion.identity);
+			Instantiate (t, new Vector2(this.transform.position.x + 0.5f, this.transform.position.y), Quaternion.identity);
+		}
+
+
 		if(skill1.skillActivated){
 			
 			switch (skill1.skillID) {
@@ -429,12 +451,12 @@ public class SoldierControler : MonoBehaviour {
 			//
 			//ESTADOS DO PERSONAGEM
 			// 
-		if (this.tag == "enemysoldier1" && LeftExit.Length > 0 && RightExit.Length > 0 ) {
+		if (this.tag == "enemysoldier1" && LeftExit.Length > 0 && RightExit.Length > 0  && targetEnemy == null) {
 
-			if (Vector2.Distance (this.transform.position, LeftExit [0].transform.position) <= 1 || Vector2.Distance (this.transform.position, RightExit [0].transform.position) <= 1) {
+			if (Vector2.Distance (this.transform.position, LeftExit [0].transform.position) <= 0.2f || Vector2.Distance (this.transform.position, RightExit [0].transform.position) <= 0.2f) {
 				step = 2;
 			}
-			if (Vector2.Distance (this.transform.position, LeftExit [1].transform.position) <= 1 || Vector2.Distance (this.transform.position, RightExit [1].transform.position) <= 1) {
+			if (Vector2.Distance (this.transform.position, LeftExit [1].transform.position) <= 0.2f || Vector2.Distance (this.transform.position, RightExit [1].transform.position) <= 0.2f) {
 				step = 3;
 			}
 
@@ -490,8 +512,8 @@ public class SoldierControler : MonoBehaviour {
 				if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
 					anim.SetTrigger ("Walk");
 					//SpendingEnergy ();
-					transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
-						
+					//transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
+					targetEnemy = null;	
 				}else if(targetEnemy.tag == "waypoint" && this.tag == "enemysoldier2"){
 					if (Progress == 2 && gameEnded == false) {
 							//EVENTO QUANDO TROPA CHEGA NA BASE
@@ -664,15 +686,16 @@ public class SoldierControler : MonoBehaviour {
 
 		switch (id) {
 		case(1): // BIDU
-			this.vidaMax = 2;
-			this.vida = 2;
+			this.vidaMax = 5;
+			this.vida = 5;
 			this.reach = 2;
-			this.damage = 1;
+			this.damage = 2;
 			this.damageSpeed = 3;
 			this.range = 2;
 			this.speed = 4;
 			this.energyMax = 1;
 			this.energy = 200;
+			this.summon = false;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites[0];
 			break;
 		case(2): // ASTRONAUTA
@@ -685,6 +708,7 @@ public class SoldierControler : MonoBehaviour {
 			this.speed = 5;
 			this.energyMax = 1;
 			this.energy = 200;
+			this.summon = false;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [1];
 			this.GetComponent<SpriteRenderer> ().flipX = true;
 			break;
@@ -698,6 +722,7 @@ public class SoldierControler : MonoBehaviour {
 			this.speed = 4;
 			this.energyMax = 1;
 			this.energy = 200;
+			this.summon = false;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [2];
 			break;
 		case(4): //JOTALHÃO
@@ -710,6 +735,7 @@ public class SoldierControler : MonoBehaviour {
 			this.speed = 2;
 			this.energyMax = 1;
 			this.energy = 200;
+			this.summon = false;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [3];
 			break;
 		case(5): //PITECO
@@ -722,18 +748,20 @@ public class SoldierControler : MonoBehaviour {
 			this.speed = 4;
 			this.energyMax = 1;
 			this.energy = 200;
+			this.summon = false;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [4];
 			break;
 		case(6): //PENADINHO
-			this.vidaMax = 2;
-			this.vida = 2;
-			this.reach = 2;
-			this.damage = 1;
+			this.vidaMax = 3;
+			this.vida = 3;
+			this.reach = 3;
+			this.damage = 2;
 			this.damageSpeed = 3;
-			this.range = 2;
-			this.speed = 4;
+			this.range = 3;
+			this.speed = 2;
 			this.energyMax = 1;
 			this.energy = 200;
+			this.summon = true;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [5];
 			this.GetComponent<SpriteRenderer> ().flipX = true;
 			break;
@@ -747,6 +775,7 @@ public class SoldierControler : MonoBehaviour {
 			this.speed = 3;
 			this.energyMax = 1;
 			this.energy = 200;
+			this.summon = false;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [6];
 			break;
 		case(8): //SANSAO
@@ -759,6 +788,7 @@ public class SoldierControler : MonoBehaviour {
 			this.speed = 4;
 			this.energyMax = 1;
 			this.energy = 200;
+			this.summon = false;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [7];
 			break;
 		case(9): //MINGAU
@@ -771,19 +801,36 @@ public class SoldierControler : MonoBehaviour {
 			this.speed = 4;
 			this.energyMax = 1;
 			this.energy = 200;
+			this.summon = false;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [8];
 			break;
 		case(10): //ALFREDO
-			this.vidaMax = 12;
-			this.vida = 12;
-			this.reach = 8;
-			this.damage = 20;
-			this.damageSpeed = 3;
-			this.range = 8;
-			this.speed = 5;
+			this.vidaMax = 9;
+			this.vida = 9;
+			this.reach = 5;
+			this.damage = 5;
+			this.damageSpeed = 5;
+			this.range = 5;
+			this.speed = 3;
 			this.energyMax = 1;
 			this.energy = 200;
+			this.summon = false;
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [9];
+			break;
+
+			/// MINIONS
+
+		case(11): //MUMINHO
+			this.vidaMax = 2;
+			this.vida = 2;
+			this.reach = 2;
+			this.damage = 1;
+			this.damageSpeed = 3;
+			this.range = 2;
+			this.speed = 3;
+			this.energyMax = 1;
+			this.energy = 200;
+			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [10];
 			break;
 		default:
 			Debug.LogWarning ("TroopOutofRange");

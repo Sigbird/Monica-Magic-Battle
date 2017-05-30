@@ -14,12 +14,14 @@ public class EnemyHand : MonoBehaviour {
 
 
 	void Start () {
-		cardlist = new int[5];
+//		cardlist = new int[5];
+//
+//		for (int i = 0; i < 5; i++) {
+//			int x = Random.Range (1, 16);
+//			cardlist [i] = x;
+//		}
 
-		for (int i = 0; i < 5; i++) {
-			int x = Random.Range (1, 16);
-			cardlist [i] = x;
-		}
+
 
 	}
 	
@@ -31,6 +33,14 @@ public class EnemyHand : MonoBehaviour {
 	public bool ActivateCardEffect(string CardType){
 		GameObject t;
 		int id = 0;
+
+		int[] numbers = new int[6];
+		numbers [0] = 1;
+		numbers [1] = 3;
+		numbers [2] = 7;
+		numbers [3] = 11;
+		numbers [4] = 16;
+		numbers [5] = 20;
 
 //			if(CardType == "Magic"){
 //			foreach (int c in cardlist) {
@@ -46,10 +56,10 @@ public class EnemyHand : MonoBehaviour {
 //			}
 //			}
 
-		if (CardType == "Magic" && GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds > 20) {
-			id = 3;
-		} else if(GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds > 40) {
-			id = 11;
+		if (CardType == "Magic" && GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds > 75) {
+			id = numbers[Random.Range(0,3)];
+		} else if(GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds > 120) {
+			id = numbers[Random.Range(3,6)];
 		}
 
 		UIHistoric.AddCard (id,2);
@@ -329,13 +339,13 @@ public class EnemyHand : MonoBehaviour {
 	{
 		switch (cardid) {
 		case 1:
-			return 2;
+			return 10;
 			break;
 		case 2:
 			return 10;
 			break;
 		case 3:
-			return  20;
+			return  25;
 			break;
 		case 4:
 			return  50;
@@ -347,7 +357,7 @@ public class EnemyHand : MonoBehaviour {
 			return  5;
 			break;
 		case 7:
-			return  25;
+			return  75;
 			break;
 		case 8:
 			return  25;
@@ -359,7 +369,7 @@ public class EnemyHand : MonoBehaviour {
 			return  50;
 			break;
 		case 11:
-			return  40;
+			return  5;
 			break;
 		case 12:
 			return  50;
@@ -375,6 +385,18 @@ public class EnemyHand : MonoBehaviour {
 			break;
 		case 16:
 			return  50;
+			break;
+		case 17:
+			return  50;
+			break;
+		case 18:
+			return  50;
+			break;
+		case 19:
+			return  50;
+			break;
+		case 20:
+			return  120;
 			break;
 		default:
 			break;

@@ -11,6 +11,8 @@ public class BaseDefense : MonoBehaviour {
 	public float damageSpeed;
 	public float danoCD;
 	public int damage;
+	public float heroHealingCD;
+
 
 	public AudioManager audioManager;
 	public bool seeking;
@@ -26,6 +28,17 @@ public class BaseDefense : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
+		heroHealingCD += Time.deltaTime;
+
+		if (heroHealingCD >= 10 && HeroNearby()) {
+			heroHealingCD = 0;
+			if (team == 1) {
+				GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().vida += 1;
+			} else {
+				GameObject.Find ("HeroEnemy").GetComponent<WPIASoldierControler> ().vida += 1;
+			}
+		}
 
 		if (seeking && cdSeek >= 0.01f) {
 			if (lockedTarget == false) {
@@ -92,6 +105,22 @@ public class BaseDefense : MonoBehaviour {
 		}
 
 
+	}
+
+	public bool HeroNearby(){
+		if (team == 1) {
+			if (Vector2.Distance (GameObject.Find ("Hero").transform.position, transform.position) <= reach) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			if (Vector2.Distance (GameObject.Find ("HeroEnemy").transform.position, transform.position) <= reach) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 
 	public GameObject SeekEnemyTarget (){

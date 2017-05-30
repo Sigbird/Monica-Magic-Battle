@@ -33,7 +33,7 @@ public class CardHistoric : MonoBehaviour {
 				Image.GetComponent<Image> ().sprite = sprites [0];
 				break;
 			case 3:
-				Image.GetComponent<Image> ().sprite = sprites [1];
+				Image.GetComponent<Image> ().sprite = sprites [2];
 				break;
 			case 4:
 				Image.GetComponent<Image> ().sprite = sprites [0];
@@ -45,7 +45,7 @@ public class CardHistoric : MonoBehaviour {
 				Image.GetComponent<Image> ().sprite = sprites [0];
 				break;
 			case 7:
-				Image.GetComponent<Image> ().sprite = sprites [0];
+				Image.GetComponent<Image> ().sprite = sprites [4];
 				break;
 			case 8:
 				Image.GetComponent<Image> ().sprite = sprites [0];
@@ -57,7 +57,7 @@ public class CardHistoric : MonoBehaviour {
 				Image.GetComponent<Image> ().sprite = sprites [0];
 				break;
 			case 11:
-				Image.GetComponent<Image> ().sprite = sprites [0];
+				Image.GetComponent<Image> ().sprite = sprites [6];
 				break;
 			case 12:
 				Image.GetComponent<Image> ().sprite = sprites [0];
@@ -72,16 +72,28 @@ public class CardHistoric : MonoBehaviour {
 				Image.GetComponent<Image> ().sprite = sprites [0];
 				break;
 			case 16:
-				Image.GetComponent<Image> ().sprite = sprites [0];
+				Image.GetComponent<Image> ().sprite = sprites [8];
+				break;
+			case 17:
+				Image.GetComponent<Image> ().sprite = sprites [8];
+				break;
+			case 18:
+				Image.GetComponent<Image> ().sprite = sprites [8];
+				break;
+			case 19:
+				Image.GetComponent<Image> ().sprite = sprites [8];
+				break;
+			case 20:
+				Image.GetComponent<Image> ().sprite = sprites [10];
 				break;
 			default:
-				Image.GetComponent<Image> ().sprite = sprites [0];
+				Image.GetComponent<Image> ().sprite = sprites [10];
 				break;
 			}
 		} else {
 			switch (cardid) {
 			case 1:
-				Image.GetComponent<Image> ().sprite = sprites [2];
+				Image.GetComponent<Image> ().sprite = sprites [1];
 				break;
 			case 2:
 				Image.GetComponent<Image> ().sprite = sprites [2];
@@ -99,7 +111,7 @@ public class CardHistoric : MonoBehaviour {
 				Image.GetComponent<Image> ().sprite = sprites [2];
 				break;
 			case 7:
-				Image.GetComponent<Image> ().sprite = sprites [2];
+				Image.GetComponent<Image> ().sprite = sprites [5];
 				break;
 			case 8:
 				Image.GetComponent<Image> ().sprite = sprites [2];
@@ -111,7 +123,7 @@ public class CardHistoric : MonoBehaviour {
 				Image.GetComponent<Image> ().sprite = sprites [2];
 				break;
 			case 11:
-				Image.GetComponent<Image> ().sprite = sprites [2];
+				Image.GetComponent<Image> ().sprite = sprites [7];
 				break;
 			case 12:
 				Image.GetComponent<Image> ().sprite = sprites [2];
@@ -126,7 +138,19 @@ public class CardHistoric : MonoBehaviour {
 				Image.GetComponent<Image> ().sprite = sprites [2];
 				break;
 			case 16:
-				Image.GetComponent<Image> ().sprite = sprites [2];
+				Image.GetComponent<Image> ().sprite = sprites [9];
+				break;
+			case 17:
+				Image.GetComponent<Image> ().sprite = sprites [9];
+				break;
+			case 18:
+				Image.GetComponent<Image> ().sprite = sprites [9];
+				break;
+			case 19:
+				Image.GetComponent<Image> ().sprite = sprites [9];
+				break;
+			case 20:
+				Image.GetComponent<Image> ().sprite = sprites [11];
 				break;
 			default:
 				Image.GetComponent<Image> ().sprite = sprites [0];

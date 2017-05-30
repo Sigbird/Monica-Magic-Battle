@@ -61,7 +61,7 @@ public class AudioManager : MonoBehaviour {
 		if (track == "ingame") {
 			source.loop = true;
 			source.clip = audios [10];
-			source.volume = 0.2f;
+			source.volume = 0.08f;
 			source.Play ();
 		}
 

@@ -48,6 +48,8 @@ public class CardSlotScript : MonoBehaviour {
 
 	public CardInfoScript cardInfo;
 
+	public bool beeingDraged;
+
 
 	//SPARKOBJECT
 	public GameObject Spark;
@@ -87,7 +89,25 @@ public class CardSlotScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		UpdatePosition ();
+		if (beeingDraged == false) {
+			transform.localScale = new Vector3(0.1f,0.1f,1);
+			Uibg.color = new Color (1, 1, 1, 1);
+			UIilustration.color = new Color (1, 1, 1, 1);
+			UIframe.color = new Color (1, 1, 1, 1);
+			UIribbon.color = new Color (1, 1, 1, 1);
+			UIgems.color = new Color (1, 1, 1, 1);
+			UIcategory.color = new Color (1, 1, 1, 1);
+			UpdatePosition ();
+		} else {
+			transform.localScale = new Vector3(0.15f,0.15f,1);
+			Uibg.color = new Color (1, 1, 1, 0.5f);
+			UIilustration.color = new Color (1, 1, 1, 0.5f);
+			UIframe.color = new Color (1, 1, 1, 0.5f);
+			UIribbon.color = new Color (1, 1, 1, 0.5f);
+			UIgems.color = new Color (1, 1, 1, 0.5f);
+			UIcategory.color = new Color (1, 1, 1, 0.5f);
+			transform.position = Vector2.MoveTowards (this.transform.position, Camera.main.ScreenToWorldPoint (Input.mousePosition), 5);
+		}
 		
 	}
 
@@ -95,6 +115,7 @@ public class CardSlotScript : MonoBehaviour {
 	void OnMouseDrag() {
 		Debug.Log (cardID);
 		this.released = false;
+		beeingDraged = true;
 		if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 			if (projectileCreated == false) {
 				projectileCreated = true;
@@ -136,19 +157,25 @@ public class CardSlotScript : MonoBehaviour {
 				projectileCreated = false;
 			}
 		} else {
-			SendCard ();
+			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+				SendCard ();
+			}
 			projectileCreated = false;
 		}
 		released = true;
+		beeingDraged = false;
 	}
 
 	//PUXA CARTA NOVA PARA O SLOT
 	public void UpdateCard(){
 		cards = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
-		int[] numbers = new int[3];
-		numbers [0] = 3;
-		numbers [1] = 11;
-		numbers [2] = 17;
+		int[] numbers = new int[6];
+		numbers [0] = 1;
+		numbers [1] = 3;
+		numbers [2] = 7;
+		numbers [3] = 11;
+		numbers [4] = 16;
+		numbers [5] = 20;
 
 		if (cards.Length == 0) {
 			cardID = 1;
@@ -158,7 +185,7 @@ public class CardSlotScript : MonoBehaviour {
 //			}else{
 //				cardID = cards [Random.Range(0, cards.Length)];
 //			}
-			cardID = numbers[Random.Range(0,2)];
+			cardID = numbers[Random.Range(0,6)];
 		}
 		switch (cardID) {
 		case 0://SEM CARTA
@@ -168,7 +195,7 @@ public class CardSlotScript : MonoBehaviour {
 		 													//HABILIDADES
 
 		case 1://ESTALO MAGICO
-			cardCost = 2;
+			cardCost = 10;
 			nameText.text = "Estalo Magico";
 			UIilustration.sprite = cardsImages [1];
 			break;
@@ -178,7 +205,7 @@ public class CardSlotScript : MonoBehaviour {
 			UIilustration.sprite = cardsImages [2];
 			break;
 		case 3://NEVASCA
-			cardCost = 20;
+			cardCost = 25;
 			nameText.text = "Nevasca";
 			UIilustration.sprite = cardsImages [3];
 			break;
@@ -198,7 +225,7 @@ public class CardSlotScript : MonoBehaviour {
 			UIilustration.sprite = cardsImages [6];
 			break;
 		case 7://CANJA
-			cardCost = 25;
+			cardCost = 75;
 			nameText.text = "Canja";
 			UIilustration.sprite = cardsImages [7];
 			break;
@@ -266,7 +293,7 @@ public class CardSlotScript : MonoBehaviour {
 			UIilustration.sprite = cardsImages [19];
 			break;
 		case 20://TROPA: ALFREDO
-			cardCost = 150;
+			cardCost = 125;
 			nameText.text = "Alfredo";
 			UIilustration.sprite = cardsImages [20];
 			break;
@@ -334,6 +361,8 @@ public class CardSlotScript : MonoBehaviour {
 					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 					if (obj.GetComponent<SoldierControler>() != null) 
 						obj.GetComponent<SoldierControler> ().ReceiveEffect ("damage");
+					if (obj.GetComponent<WPIASoldierControler>() != null) 
+						obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("damage");
 					}
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 				Destroy (this.gameObject);
@@ -419,6 +448,8 @@ public class CardSlotScript : MonoBehaviour {
 					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
 						if (obj.GetComponent<SoldierControler>() != null) 
 						obj.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
+					if (obj.GetComponent<WPSoldierControler>() != null) 
+						obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("healing");
 					}
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 				Destroy (this.gameObject);
@@ -461,11 +492,15 @@ public class CardSlotScript : MonoBehaviour {
 
 											//TROPAS
 
-			case 11:// TROPA: BIDU
+		case 11:// TROPA: BIDU
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 1;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
+			if (Movable != null) {
+				Instantiate (t, Movable.transform.position, Quaternion.identity);
+			} else {
+				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
+			}
 //			if (Random.Range (1, 3) == 1) {
 //				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
 //			} else {
@@ -478,7 +513,11 @@ public class CardSlotScript : MonoBehaviour {
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 2;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
+			if (Movable != null) {
+				Instantiate (t, Movable.transform.position, Quaternion.identity);
+			} else {
+				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
+			}
 //			if (Random.Range (1, 3) == 1) {
 //				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
 //			} else {
@@ -491,7 +530,11 @@ public class CardSlotScript : MonoBehaviour {
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 3;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
+			if (Movable != null) {
+				Instantiate (t, Movable.transform.position, Quaternion.identity);
+			} else {
+				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
+			}
 //			if (Random.Range (1, 3) == 1) {
 //				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
 //			} else {
@@ -504,7 +547,11 @@ public class CardSlotScript : MonoBehaviour {
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 4;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
+			if (Movable != null) {
+				Instantiate (t, Movable.transform.position, Quaternion.identity);
+			} else {
+				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
+			}
 //			if (Random.Range (1, 3) == 1) {
 //				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
 //			} else {
@@ -530,7 +577,11 @@ public class CardSlotScript : MonoBehaviour {
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 6;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
+			if (Movable != null) {
+				Instantiate (t, Movable.transform.position, Quaternion.identity);
+			} else {
+				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
+			}
 //			if (Random.Range (1, 3) == 1) {
 //				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
 //			} else {
@@ -543,7 +594,11 @@ public class CardSlotScript : MonoBehaviour {
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 7;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
+			if (Movable != null) {
+				Instantiate (t, Movable.transform.position, Quaternion.identity);
+			} else {
+				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
+			}
 //			if (Random.Range (1, 3) == 1) {
 //				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
 //			} else {
@@ -556,7 +611,11 @@ public class CardSlotScript : MonoBehaviour {
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 8;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
+			if (Movable != null) {
+				Instantiate (t, Movable.transform.position, Quaternion.identity);
+			} else {
+				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
+			}
 //			if (Random.Range (1, 3) == 1) {
 //				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
 //			} else {
@@ -569,7 +628,11 @@ public class CardSlotScript : MonoBehaviour {
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 9;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
+			if (Movable != null) {
+				Instantiate (t, Movable.transform.position, Quaternion.identity);
+			} else {
+				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
+			}
 //			if (Random.Range (1, 3) == 1) {
 //				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
 //			} else {
@@ -582,7 +645,11 @@ public class CardSlotScript : MonoBehaviour {
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 10;
-			Instantiate(t,Movable.transform.position, Quaternion.identity);
+			if (Movable != null) {
+				Instantiate (t, Movable.transform.position, Quaternion.identity);
+			} else {
+				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
+			}
 //			if (Random.Range (1, 3) == 1) {
 //				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
 //			} else {
@@ -670,30 +737,30 @@ public class CardSlotScript : MonoBehaviour {
 		switch (CardPosition) {
 		case 0:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -2.3f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.2f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
 			} else {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -2.3f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.2f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
 			}
 			break;
 		case 10:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.7f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x - 0.05f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
 			} else {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.7f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x - 0.05f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
 			}
 			break;
 		case 20:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.3f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 1.1f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
 			} else {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.3f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 1.1f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
 			}
 			break;
 		case 30:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -0.7f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 2.25f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
 			} else {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -0.7f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 2.25f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
 			}
 			break;
 		case 40:

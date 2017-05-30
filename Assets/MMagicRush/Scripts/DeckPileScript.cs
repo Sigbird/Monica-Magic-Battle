@@ -40,7 +40,7 @@ public class DeckPileScript : MonoBehaviour {
 	IEnumerator StartingHand(){
 		yield return new WaitForSeconds (0.5f);
 		DrawCard ();
-		if (Hand <= 40) {
+		if (Hand <= 30) {
 			StartCoroutine (StartingHand ());
 		}
 	}

@@ -44,11 +44,12 @@ public class WPScript : MonoBehaviour {
 
 	}
 
-	void OnMouseDown(){
+	void OnMouseUp(){
+		WaypointMarker.GetComponent<MovementMarkerScript> ().herobase = false;
 		bool cancel = false;
 		int lastprogress = 0;
 		string lastname = "";
-
+		Hero.GetComponent<WPSoldierControler> ().targetEnemy = null;
 		if (MovementCounter () > 0) {
 			foreach (GameObject a in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
 				if (Vector2.Distance (Camera.main.ScreenToWorldPoint (Input.mousePosition), a.transform.position) < 1) {
@@ -75,13 +76,24 @@ public class WPScript : MonoBehaviour {
 			cancel = false;
 		}else if (Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Enemy.position) < 1 && UIopen == false) {
 			Hero.GetComponent<WPSoldierControler> ().targetEnemy = Enemy.gameObject;
+			Hero.GetComponent<WPSoldierControler> ().seeking = false;
 			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
-		}else if(Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Base.position) < 1 && UIopen == false){
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
+					Destroy (o.gameObject);
+			}
+			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
+			Instantiate (WaypointMarker, Enemy).transform.position = Enemy.transform.position;
+			//Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity);
+		}else if(Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Base.position) < 1 && UIopen == false){
+			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
+			WaypointMarker.GetComponent<MovementMarkerScript> ().herobase = true;
+			Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity);
+			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
+				if(o.GetComponent<MovementMarkerScript>().herobase == false)
 				Destroy (o.gameObject);
 			}
-			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
-			Hero.GetComponent<WPSoldierControler> ().targetEnemy = Base.gameObject;
+			//Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
+			//Hero.GetComponent<WPSoldierControler> ().targetEnemy = Base.gameObject;
 		}else if (MovementCounter () < 2 && Camera.main.ScreenToWorldPoint (Input.mousePosition).y > -3 && UIopen == false) {
 			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
 			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
@@ -110,26 +122,33 @@ public class WPScript : MonoBehaviour {
 	}
 
 	public void ChangeIcon(SpriteRenderer renderer){
-		if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("treasureChest").transform.position) < 0.5f) {
-			renderer.sprite = CaptureIcon; //CAPTURA DE BAU
-		} else if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBaseEnemy").transform.position) < 0.5f) {
+//		if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("treasureChest").transform.position) < 0.5f) {
+//			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
+//			renderer.sprite = CaptureIcon; //CAPTURA DE BAU
+//		} else 
+		if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBaseEnemy").transform.position) < 0.5f) {
+			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;	
 			renderer.sprite = CaptureIcon; //CAPTURA DE BASE INIMIGA
 		} else if (GemNearbyClick()) {
+			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = true;
 			renderer.sprite = MineIcon; //CAPTURA DE GEMA
 		} else if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBase").transform.position) < 0.5f) {
+			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 			renderer.sprite = DefendIcon; //DEFESA DE BASE
 		} else if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroEnemy").transform.position) < 0.5f) {
+			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 			renderer.sprite = AttackIcon; //ATAQUE DE INIMIGO
 		} else{
+			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 			renderer.sprite = MovementIcon; //ICONE DE MOVIMENTO
 		}
 
 	}
 
 	public bool GemNearbyClick(){
-		GameObject[] Gems = GameObject.FindGameObjectsWithTag ("gem");
+		GameObject[] Gems = GameObject.FindGameObjectsWithTag ("enemygem");
 		foreach (GameObject o in Gems) {
-			if (Vector2.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), o.transform.position) <= 0.5f) {
+			if (Vector2.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), o.transform.position) <= 0.6f && o.GetComponent<GemScript>().enabled == true) {
 				return true;
 			}
 		}
@@ -138,10 +157,19 @@ public class WPScript : MonoBehaviour {
 
 	public void EnemyMovementPlacement(Vector2 position){
 		if (EnemyMovementCounter () < 3) {
-			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
+			EnemyWaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
 			if (position == null) {
 				position = new Vector2 (Random.Range (-2.5f, 2.5f), Random.Range (0f, 4.5f));
 			}
+			EnemyWaypointMarker.GetComponent<MovementMarkerScript> ().capture = false;
+			GameObject[] Gems = GameObject.FindGameObjectsWithTag ("enemygem");
+			foreach (GameObject o in Gems) {
+				if (Vector2.Distance (position, o.transform.position) <= 0.6f && o.GetComponent<GemScript> ().enabled == true) {
+					EnemyWaypointMarker.GetComponent<MovementMarkerScript> ().capture = true;
+					Debug.Log ("pegou");
+				} 
+			}
+
 			Instantiate (EnemyWaypointMarker, position, Quaternion.identity);
 			enemyprogress++;
 		}

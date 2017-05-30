@@ -74,7 +74,7 @@ public class GemScript : MonoBehaviour {
 			if (Vector2.Distance (this.transform.position, Hero.transform.position) < 0.5 && this.enabled == true) {
 				gemBarUI.transform.position = this.transform.position;
 				heroProgressObj.SetActive (true);
-				heroProgress += Time.deltaTime * 0.7f;
+				heroProgress += Time.deltaTime * 1.5f;
 				heroProgressBar.GetComponent<Animator> ().SetFloat ("Blend", heroProgress);
 				Debug.Log ("Entrou");
 				if (heroProgress >= 1) {

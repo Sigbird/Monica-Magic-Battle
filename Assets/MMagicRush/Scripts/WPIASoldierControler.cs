@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -62,6 +63,8 @@ public class WPIASoldierControler : MonoBehaviour {
 	public Sprite warrior;
 
 	public Sprite[] tropasSprites;
+		
+	public Sprite[] heroPortraits;
 
 	public GameObject FlashingEffects;
 
@@ -80,6 +83,8 @@ public class WPIASoldierControler : MonoBehaviour {
 	public Animator LvlUpAnim;
 
 	public GameObject HitAnimationObject;
+
+	public Animation Arrival;
 
 	//FLAGS
 
@@ -119,16 +124,16 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	public float reach;
 
-	[HideInInspector]
+
 	public int damage;
 
-	[HideInInspector]
+
 	public float damageSpeed;
 
 	[HideInInspector]
 	public float range;
 
-	private float danoCD = 0;
+	public float danoCD = 0;
 
 	[HideInInspector]
 	public float speed;
@@ -150,6 +155,8 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	public string effects;
 	public float effectsDuration;
+
+	public float captureMarkerTimer;
 
 
 	//LANE WAYPOINTS
@@ -216,7 +223,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		StartCoroutine (Respawning ());
 
 		this.effects = "default";
-		this.speed = speed / 15;
+		this.speed = speed / 10;
 		this.maxSpeed = this.speed;
 		this.level = 1;
 		this.healtbarSoldier.SetActive (true);
@@ -249,9 +256,10 @@ public class WPIASoldierControler : MonoBehaviour {
 			cheapUnitySummonChance = 0;
 		}
 
-		if (GameObject.Find ("treasureChest").GetComponent<TreasureScript> ().heroProgress > 0) {
-			heroHarassChance = 75;
-		} else if (GameObject.Find ("HeroBaseEnemy").GetComponent<ChargesScript> ().inCombat == true) {
+//		if (GameObject.Find ("treasureChest").GetComponent<TreasureScript> ().heroProgress > 0) {
+//			heroHarassChance = 75;
+//		} else 
+		if (GameObject.Find ("HeroBaseEnemy").GetComponent<ChargesScript> ().inCombat == true) {
 			retreatChance = 90;
 		} else if (GameObject.Find ("Hero").GetComponent<SpriteRenderer> ().enabled == true && GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().vida == 1) {
 			heroHarassChance = 75;
@@ -274,9 +282,10 @@ public class WPIASoldierControler : MonoBehaviour {
 	
 
 		//EVENTO DE MORTE
-		if (this.vida <= 0 && heroUnity) {
+		if (this.vida <= 0 && heroUnity && this.GetComponent<SpriteRenderer>().enabled == true) {
 			this.speed = 0;
 			Instantiate (deathAngel, this.transform.position, Quaternion.identity).transform.parent = this.transform;
+			GameObject.Find ("RespawnTimerEnemy").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
 			StartCoroutine (Respawning ());
 			audioManager.PlayAudio ("death");
 		} else if(this.vida <= 0) {
@@ -414,17 +423,43 @@ public class WPIASoldierControler : MonoBehaviour {
 
 		//SEGUINDO OS MARCADORES DE MOVIMENTO
 
+//		if (GetNewWaypoint () != null) {
+//			seeking = false;
+//			WaypointMark = GetNewWaypoint ();
+//			targetEnemy = null;
+//			if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f) {
+//				anim.SetTrigger ("Walk");
+//				transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
+//			} else {
+//				Destroy (WaypointMark.gameObject);
+//				twisting = false;
+//				WaypointMark = GetNewWaypoint ();
+//			}
 		if (GetNewWaypoint () != null) {
+			//lockedTarget = false;
 			seeking = false;
 			WaypointMark = GetNewWaypoint ();
-			targetEnemy = null;
+			//targetEnemy = null;
 			if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f) {
 				anim.SetTrigger ("Walk");
 				transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
 			} else {
-				Destroy (WaypointMark.gameObject);
-				twisting = false;
-				WaypointMark = GetNewWaypoint ();
+				if (WaypointMark.GetComponent<MovementMarkerScript> ().capture == true && WaypointMark.GetComponent<MovementMarkerScript> ().enabled == true) {
+					if (captureMarkerTimer >= 0.7f) {
+						captureMarkerTimer = 0;
+						Destroy (WaypointMark.gameObject);
+						twisting = false;
+						WaypointMark = GetNewWaypoint ();
+
+					} else {
+						captureMarkerTimer += Time.deltaTime;
+					}
+				} else {
+					Destroy (WaypointMark.gameObject);
+					twisting = false;
+					WaypointMark = GetNewWaypoint ();
+
+				}
 			}
 
 		} else {
@@ -513,7 +548,7 @@ public class WPIASoldierControler : MonoBehaviour {
 						audioManager.PlayAudio ("atack");
 					}
 				} else {
-					danoCD += Time.deltaTime * 1000;
+					danoCD += Time.deltaTime * 2;
 				}
 			} 
 		}
@@ -555,11 +590,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 2;
-			this.speed = 8;
+			this.speed = 13;
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim.SetInteger ("Char", 0);
+			if (team == 1)
+				GameObject.Find ("HeroPortrait").GetComponent<Image> ().sprite = heroPortraits [0];
 			Debug.Log ("Monica");
 			break;
 		case(1):
@@ -569,11 +606,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 2;
-			this.speed = 8;
+			this.speed = 13;
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim.SetInteger ("Char", 1);
+			if (team == 1)
+				GameObject.Find ("HeroPortrait").GetComponent<Image> ().sprite = heroPortraits [1];
 			Debug.Log ("Cebolinha");
 			break;
 		case(2):
@@ -583,7 +622,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 2;
-			this.speed = 8;
+			this.speed = 13;
 			this.energyMax = 4;
 			this.energy = 4;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -596,7 +635,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 2;
-			this.speed = 8;
+			this.speed = 13;
 			this.energyMax = 4;
 			this.energy = 4;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -608,7 +647,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.damage = 1;
 			this.damageSpeed = 2;
 			this.range = 2;
-			this.speed = 8;
+			this.speed = 13;
 			this.energyMax = 4;
 			this.energy = 4;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -838,7 +877,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.speed = speed / 4;
 		}
 		if (effect == "speed") {
-			this.speed = speed * 3.5f;
+			this.speed = speed + 0.1f;
 		}
 		if (effect == "damage") {
 			this.vida--;
@@ -960,6 +999,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		respawningTimer = 7;
 		twisting = false;
 		Twist (0);
+		Arrival.Play ();
 	}
 
 	public GameObject SeekEnemyTarget (){
@@ -1108,9 +1148,8 @@ public class WPIASoldierControler : MonoBehaviour {
 
 			break;
 		case 4://GEM COLECTOR
-			if (GameObject.FindGameObjectsWithTag ("enemygem").Length > 0) {
-				waypoint.EnemyMovementPlacement (GameObject.FindGameObjectsWithTag ("enemygem") [Random.Range(3,5)].transform.position);
-
+			if (GetEnabledGem() != null) {
+				waypoint.EnemyMovementPlacement (GetEnabledGem().transform.position);
 			} else {
 				StartCoroutine (WaitForTwist ());
 			} 
@@ -1207,6 +1246,25 @@ public class WPIASoldierControler : MonoBehaviour {
 			}
 		}
 		return probs.Length - 1;
+	}
+		
+	public GameObject GetEnabledGem(){
+		List<GameObject> enablegems = new List<GameObject> ();
+		if (GameObject.FindGameObjectsWithTag ("enemygem").Length > 0) {
+			foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemygem")) {
+				if (obj.GetComponent<GemScript> ().enabled == true) {
+					enablegems.Add (obj);
+				}
+			}
+			if (enablegems.Count > 0) {
+				return enablegems [0];
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+		return null;
 	}
 
 }

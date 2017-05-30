@@ -9,13 +9,13 @@ public class FixPositionToParalax : MonoBehaviour {
 	void Start () {
 
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
 		Vector2 reference = Camera.main.transform.position;
 
-			this.transform.position = new Vector2 (reference.x + 0.75f, reference.x - 3.9f);
+			this.transform.position = new Vector2 (reference.x + 3.5f, reference.y - 3.9f);
 
 
 //		if (this.transform.position.x >= 0 && this.transform.position.y >= 0) {

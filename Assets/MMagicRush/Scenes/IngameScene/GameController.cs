@@ -169,12 +169,12 @@ public class GameController : MonoBehaviour {
 	IEnumerator newRound(){
 		yield return new WaitForSeconds (0.1f);
 		Debug.Log (enemyCharges);
-		if (enemyCharges == 3) {
+		if (enemyCharges == 1) {//3
 			PlayerPrefs.SetInt ("round", 1);
 			PlayerPrefs.SetInt ("playerCharges", 0);
 			PlayerPrefs.SetInt ("enemyCharges", 0);
 			StartCoroutine (endGame());
-		}else if(playerCharges == 3) {
+		}else if(playerCharges == 1) {//3
 			PlayerPrefs.SetInt ("round", 1);
 			PlayerPrefs.SetInt ("playerCharges", 0);
 			PlayerPrefs.SetInt ("enemyCharges", 0);
@@ -191,12 +191,12 @@ public class GameController : MonoBehaviour {
 		
 		yield return new WaitForSeconds (1);
 
-		if (playerCharges == 3 && enemyCharges <= 2) {
+		if (playerCharges == 1 && enemyCharges <= 0) {//3 2
 			this.GetComponent<AudioManager> ().StopAudio ();
 			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
 			endGamePanel [0].SetActive (true);
-		} else if (enemyCharges == 3 && playerCharges <= 2) {
+		} else if (enemyCharges == 1 && playerCharges <= 0) {//3 2
 			this.GetComponent<AudioManager> ().StopAudio ();
 			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("defeat");

@@ -5,6 +5,8 @@ using UnityEngine;
 public class MovementMarkerScript : MonoBehaviour {
 
 	public int progress;
+	public bool capture;
+	public bool herobase;
 
 	// Use this for initialization
 	void Start () {
