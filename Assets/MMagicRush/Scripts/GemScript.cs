@@ -8,6 +8,9 @@ public class GemScript : MonoBehaviour {
 
 	public GameObject gemBarUI;
 
+	public GameObject[] AvaiaBleGems;
+	public GameObject ActualGem;
+
 	public float heroProgress;
 	public GameObject heroProgressObj;
 	public GameObject heroProgressBar;
@@ -16,6 +19,9 @@ public class GemScript : MonoBehaviour {
 	public GameObject enemyProgressBar;
 	public bool enabled = true;
 
+	public bool canceled = false;
+
+	public GameObject arrowModel;
 	public Sprite[] gemsprite;
 	public GameObject SRender;
 	public int gemvalue;
@@ -61,8 +67,15 @@ public class GemScript : MonoBehaviour {
 			enemyProgressBar = gemBarUI.GetComponent<GemBarUI> ().enemyProgressBar;
 		}
 
-		StartCoroutine (Begin ());
-
+		//StartCoroutine (Begin ());
+		heroProgressObj.SetActive (false);
+		enemyProgressObj.SetActive (false);
+		this.enabled = false;
+		ActualGem = AvaiaBleGems [0];
+		ActualGem.SetActive (false);
+		//SRender.SetActive (false);
+		heroProgress = 0;
+		enemyProgress = 0;
 
 	}
 	
@@ -78,19 +91,48 @@ public class GemScript : MonoBehaviour {
 				heroProgressBar.GetComponent<Animator> ().SetFloat ("Blend", heroProgress);
 				Debug.Log ("Entrou");
 				if (heroProgress >= 1) {
-
+						
+					if (ActualGem.transform.name == "GO_greenGem") {
 						gc.GetComponent<GameController> ().MiningGem (5);
 						Instantiate (flyingGem, this.transform.position, Quaternion.identity);
+					}
 
-					StartCoroutine (HeroReset ());
+					if (ActualGem.transform.name == "GO_greenGemYellow") {
+						gc.GetComponent<GameController> ().MiningGem (1);
+						if (GameObject.Find ("HeroEnemy").GetComponent<SpriteRenderer>().enabled == true) {
+							TrowArrow (GameObject.Find ("HeroEnemy"));
+							GameObject.Find ("HeroEnemy").GetComponent<WPIASoldierControler> ().ReceiveDamage (1);
+						}
+					}
+
+					if (ActualGem.transform.name == "GO_greenGemPurple") {
+						gc.GetComponent<GameController> ().MiningGem (1);
+						Hero.GetComponent<WPSoldierControler> ().vida += 3;
+						Hero.GetComponent<WPSoldierControler> ().UpdateLife ();
+					}
+
+
+
+//					if (team == 1) {//GRAVA A POSIÇÂO QUE FOI PEGA E LIMPA AS GEMAS
+//						foreach (GameObject o in GameObject.FindGameObjectsWithTag("gem")) {
+//							Destroy (this.gameObject);
+//						}
+//					}
+
+					if(team == 2)
+						GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().ResetEnemyGems ();
+
+					if(team == 1)
+						GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().ResetHeroGems ();
+					//StartCoroutine (HeroReset ());
 //					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().usedValues.Clear ();
 //					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().gemsPlaced = 0;
 //
 //					if (team == 2) {//GRAVA A POSIÇÂO QUE FOI PEGA E LIMPA AS GEMAS
 //						GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().lastEnemyGem = id;
-//						//foreach (GameObject o in GameObject.FindGameObjectsWithTag("enemygem")) {
+//						foreach (GameObject o in GameObject.FindGameObjectsWithTag("enemygem")) {
 //							Destroy (this.gameObject);
-//						//}
+//						}
 //					} else {
 //						GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().lastGem = id;
 //						//foreach (GameObject o in GameObject.FindGameObjectsWithTag("gem")) {
@@ -114,10 +156,35 @@ public class GemScript : MonoBehaviour {
 				enemyProgress += Time.deltaTime * 0.7f;
 				enemyProgressBar.GetComponent<Animator> ().SetFloat ("Blend", heroProgress);
 				if (enemyProgress >= 1) {
-
+						
+					if(ActualGem.transform.name == "GO_greenGem")
 						gc.GetComponent<GameController> ().EnemyDiamonds += 5;
 
-					StartCoroutine (HeroReset ());
+					if (ActualGem.transform.name == "GO_greenGemYellow") {
+						gc.GetComponent<GameController> ().EnemyDiamonds += 1;
+						if (GameObject.Find ("Hero").GetComponent<SpriteRenderer>().enabled == true) {
+							TrowArrow (GameObject.Find ("Hero"));
+							GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().ReceiveDamage (1);
+						}
+					}
+
+					if (ActualGem.transform.name == "GO_greenGemPurple") {
+						gc.GetComponent<GameController> ().EnemyDiamonds += 1;
+						Enemy.GetComponent<WPIASoldierControler> ().vida += 3;
+						Enemy.GetComponent<WPIASoldierControler> ().UpdateLife ();
+					}
+
+//					if (team == 2) {//GRAVA A POSIÇÂO QUE FOI PEGA E LIMPA AS GEMAS
+//						foreach (GameObject o in GameObject.FindGameObjectsWithTag("enemygem")) {
+//							Destroy (this.gameObject);
+//						}
+//					}
+					if(team == 2)
+					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().ResetEnemyGems ();
+
+					if(team == 1)
+						GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().ResetHeroGems ();
+					//StartCoroutine (HeroReset ());
 //					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().usedValues.Clear ();
 //					GameObject.Find ("Terreno").GetComponent<GemsRespawn> ().enemygemsPlaced = 0;
 //
@@ -144,11 +211,41 @@ public class GemScript : MonoBehaviour {
 
 	}
 
+	public void TrowArrow(GameObject target){
+
+		GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity);
+		if (target != null) {
+			arrow.GetComponent<ArrowScript> ().target = target;
+		} else {
+			Destroy (arrow);
+		}
+
+	}
+
+	public void EnableRandomGem(){
+		if (team == 1) {
+			//ActualGem = AvaiaBleGems [Random.Range (0, AvaiaBleGems.Length - 1)];
+			ActualGem = AvaiaBleGems [gc.GetComponent<GameController> ().heroSpawnedGems];
+			ActualGem.SetActive (true);
+			gc.GetComponent<GameController> ().heroSpawnedGems += 1;
+		} else {
+			ActualGem = AvaiaBleGems [gc.GetComponent<GameController> ().enemySpawnedGems];
+			ActualGem.SetActive (true);
+			gc.GetComponent<GameController> ().enemySpawnedGems += 1;
+		}
+	}
+
+	public void BeginInterface(){
+		StartCoroutine (Begin ());
+	}
+
 	IEnumerator Begin(){
 		heroProgressObj.SetActive (false);
 		enemyProgressObj.SetActive (false);
 		this.enabled = false;
-		SRender.SetActive (false);
+		ActualGem = AvaiaBleGems [3];
+		ActualGem.SetActive (false);
+		//SRender.SetActive (false);
 		heroProgress = 0;
 		enemyProgress = 0;
 
@@ -158,22 +255,49 @@ public class GemScript : MonoBehaviour {
 			yield return new WaitForSeconds (5);
 		if(sync == 3)
 			yield return new WaitForSeconds (9);
-		this.enabled = true;
-		SRender.SetActive (true);
+		if(sync == 4)
+			yield return new WaitForSeconds (3);
+		if(sync == 5)
+			yield return new WaitForSeconds (6);
+		if(sync == 6)
+			yield return new WaitForSeconds (10);
+		if(sync == 7)
+			yield return new WaitForSeconds (4);
+
+			this.enabled = true;
+
+		if(ActualGem.name == "EmptyGem")
+			EnableRandomGem ();
+		
+
+		//SRender.SetActive (true);
+	}
+
+	public void GemReset(){
+			heroProgressObj.SetActive (false);
+			enemyProgressObj.SetActive (false);
+			this.enabled = false;
+			//ActualGem = AvaiaBleGems [3];
+			ActualGem.SetActive (false);
+			//SRender.SetActive (false);
+			heroProgress = 0;
+			enemyProgress = 0;
 	}
 
 	IEnumerator HeroReset(){
 		heroProgressObj.SetActive (false);
 		enemyProgressObj.SetActive (false);
 		this.enabled = false;
-		SRender.SetActive (false);
+		ActualGem.SetActive (false);
+		//SRender.SetActive (false);
 		heroProgress = 0;
 		enemyProgress = 0;
 
 		yield return new WaitForSeconds (30);
 
 		this.enabled = true;
-		SRender.SetActive (true);
+		EnableRandomGem ();
+		//SRender.SetActive (true);
 	}
 
 //	IEnumerator EnemyReset(){

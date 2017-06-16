@@ -157,6 +157,7 @@ public class CardHistoric : MonoBehaviour {
 				break;
 			}
 		}
+		if(cardid == 1 || cardid == 3 || cardid == 6 || cardid == 11 || cardid == 16 ||cardid == 20)
 		Instantiate (Image, transform);
 	}
 

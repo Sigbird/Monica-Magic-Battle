@@ -52,19 +52,19 @@ public class BaseDefense : MonoBehaviour {
 			cdSeek += Time.deltaTime;
 		}
 
-		if(seeking == false && this.targetEnemy != null ) { 
+		if (seeking == false && this.targetEnemy != null) { 
 
 			//DESLOCAMENTO ATE INIMIGO
 			if (Vector3.Distance (transform.position, targetEnemy.transform.position) > reach) { //FORA DO ALCANCE
 				seeking = true;
-			} else if(targetEnemy != null) { //ATACA ALVO
+			} else if (targetEnemy != null) { //ATACA ALVO
 
 				if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
 					//anim.SetTrigger ("Attack");
 					if (targetEnemy.GetComponent<WPIASoldierControler> () != null && targetEnemy.GetComponent<SpriteRenderer> ().enabled == true) {//ALVO HEROI
-						targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
-						targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife ();
-						targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage ();
+						//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
+						//targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife ();
+						targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
 						if (this.reach > 1)
 							TrowArrow ();
 						if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
@@ -72,9 +72,9 @@ public class BaseDefense : MonoBehaviour {
 							lockedTarget = false;
 						}
 					} else if (targetEnemy.GetComponent<SoldierControler> () != null && targetEnemy.GetComponent<SpriteRenderer> ().enabled == true) {//ALVO TROPA
-						targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
-						targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage ();
+						//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
+						//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
+						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
 						if (this.reach > 1)
 							TrowArrow ();
 						if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
@@ -82,9 +82,9 @@ public class BaseDefense : MonoBehaviour {
 							lockedTarget = false;
 						}
 					} else if (targetEnemy.GetComponent<WPSoldierControler> () != null && targetEnemy.GetComponent<SpriteRenderer> ().enabled == true) {//ALVO HEROI
-						targetEnemy.GetComponent<WPSoldierControler> ().vida -= damage;
-						targetEnemy.GetComponent<WPSoldierControler> ().UpdateLife ();
-						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage ();
+						//targetEnemy.GetComponent<WPSoldierControler> ().vida -= damage;
+						//targetEnemy.GetComponent<WPSoldierControler> ().UpdateLife ();
+						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
 						if (this.reach > 1)
 							TrowArrow ();
 						if (targetEnemy.GetComponent<WPSoldierControler> ().vida <= -1) // ALVO MORREU
@@ -102,6 +102,8 @@ public class BaseDefense : MonoBehaviour {
 					danoCD += Time.deltaTime * 2;
 				}
 			} 
+		} else {
+			seeking = true;
 		}
 
 

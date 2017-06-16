@@ -31,7 +31,12 @@ public class LineScript : MonoBehaviour {
 					firstLineDraw = false;
 			}
 		} else if(line == 2) {
-			startObject = GameObject.Find ("Waypoint1");
+			if (GameObject.Find ("Waypoint1")!= null)
+			if (GameObject.Find ("Waypoint1").GetComponent<MovementMarkerScript> ().reached == true) {
+				startObject = GameObject.Find ("Hero");
+			} else {
+				startObject = GameObject.Find ("Waypoint1");
+			}
 			endObject = GameObject.Find ("Waypoint2");
 			if (startObject != null && endObject != null) {
 				startPosition = startObject.transform.position;
@@ -41,7 +46,12 @@ public class LineScript : MonoBehaviour {
 				transform.position = new Vector2 (50, 50);
 			}
 		} else if(line == 3) {
-			startObject = GameObject.Find ("Waypoint2");
+			if (GameObject.Find ("Waypoint2")!= null)
+			if (GameObject.Find ("Waypoint2").GetComponent<MovementMarkerScript> ().reached == true) {
+				startObject = GameObject.Find ("Hero");
+			} else {
+				startObject = GameObject.Find ("Waypoint2");
+			}
 			endObject = GameObject.Find ("Waypoint3");
 			if (startObject != null && endObject != null) {
 				startPosition = startObject.transform.position;
@@ -51,7 +61,12 @@ public class LineScript : MonoBehaviour {
 				transform.position = new Vector2 (50, 50);
 			}
 		} else if(line == 4) {
-			startObject = GameObject.Find ("Waypoint3");
+			if (GameObject.Find ("Waypoint3")!= null)
+			if (GameObject.Find ("Waypoint3").GetComponent<MovementMarkerScript> ().reached == true) {
+				startObject = GameObject.Find ("Hero");
+			} else {
+				startObject = GameObject.Find ("Waypoint3");
+			}
 			endObject = GameObject.Find ("Waypoint1");
 			if (startObject != null && endObject != null && GameObject.Find ("Line1").transform.position.x > 40) {
 				startPosition = startObject.transform.position;

@@ -15,6 +15,8 @@ public class GameController : MonoBehaviour {
 
 	public CardInfoScript cardInfo;
 
+	public int enemySpawnedGems = 0;
+	public int heroSpawnedGems = 0;
 
 	[HideInInspector]
 	public int round ;
@@ -67,6 +69,12 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (heroSpawnedGems >= 3)
+			heroSpawnedGems = 0;
+
+		if (enemySpawnedGems >= 3)
+			enemySpawnedGems = 0;
 
 		if (gempertime >= 2) {
 			gempertime = 0;

@@ -409,9 +409,9 @@ public class GuidedSoldierControler : MonoBehaviour {
 					anim.SetTrigger ("Attack");
 					if (danoCD < damageSpeed ) { //TEMPO ENTRE ATAQUES
 						if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO HEROI
-							targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
-							targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
-							targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage ();
+							//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
+							//targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
+							targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
 							if(this.range>1)
 							TrowArrow ();
 						}else if (targetEnemy.GetComponent<TowerController> () != null) {//ALVO TORRE

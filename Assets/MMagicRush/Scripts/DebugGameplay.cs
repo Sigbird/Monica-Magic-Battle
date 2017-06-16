@@ -104,12 +104,12 @@ public class DebugGameplay : MonoBehaviour {
 		Hero.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
 		Hero.UpdateLife ();
 
-		Hero.energy = int.Parse (HeroEnergy.text);
-		Hero.UpdateEnergy ();
+		//Hero.energy = int.Parse (HeroEnergy.text);
+		//Hero.UpdateEnergy ();
 
-		Hero.energyMax = int.Parse (HeroMaxEnergy.text);
-		Hero.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
-		Hero.UpdateEnergy ();
+//		Hero.energyMax = int.Parse (HeroMaxEnergy.text);
+//		Hero.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
+//		Hero.UpdateEnergy ();
 
 		Hero.damage = int.Parse (HeroDMG.text);
 
@@ -140,12 +140,12 @@ public class DebugGameplay : MonoBehaviour {
 		Enemy.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
 		Enemy.UpdateLife ();
 
-		Enemy.energy = int.Parse (EnemyEnergy.text);
-		Enemy.UpdateEnergy ();
-
-		Enemy.energyMax = int.Parse (EnemyMaxEnergy.text);
-		Enemy.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
-		Enemy.UpdateEnergy ();
+//		Enemy.energy = int.Parse (EnemyEnergy.text);
+//		Enemy.UpdateEnergy ();
+//
+//		Enemy.energyMax = int.Parse (EnemyMaxEnergy.text);
+//		Enemy.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
+//		Enemy.UpdateEnergy ();
 
 		Enemy.damage = int.Parse (EnemyDMG.text);
 
@@ -168,9 +168,9 @@ public class DebugGameplay : MonoBehaviour {
 		Enemy.botPreference = float.Parse (EnemyPrefBot.text);
 
 		Hero.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
-		Hero.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
+		//Hero.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
 		Enemy.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
-		Enemy.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
+		//Enemy.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
 		this.gameObject.SetActive (false);
 
 	}

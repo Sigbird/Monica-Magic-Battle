@@ -12,6 +12,7 @@ public class CardSlotScript : MonoBehaviour {
 	public SpriteRenderer UIribbon;
 	public SpriteRenderer UIgems;
 	public SpriteRenderer UIilustration;
+	public SpriteRenderer UIilustrationAnim;
 	public SpriteRenderer Uibg;
 	public Canvas UItexts;
 	public SpriteRenderer UIcategory;
@@ -113,6 +114,19 @@ public class CardSlotScript : MonoBehaviour {
 
 	//INICIO DO ARRASTO
 	void OnMouseDrag() {
+		if (cardID == 1) {
+			UIilustrationAnim.gameObject.SetActive (true);
+			UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill1", true);
+		}
+		if (cardID == 3) {
+			UIilustrationAnim.gameObject.SetActive (true);
+			UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill2", true);
+		}
+		if (cardID == 7) {
+			UIilustrationAnim.gameObject.SetActive (true);
+			UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill3", true);
+		}
+		GameObject.Find ("EnemyArea").GetComponent<Image> ().enabled = true;
 		Debug.Log (cardID);
 		this.released = false;
 		beeingDraged = true;
@@ -131,13 +145,22 @@ public class CardSlotScript : MonoBehaviour {
 
 	//FIM DO ARRASTO
 	void OnMouseUp(){
+
+		UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill1", false);
+		UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill2", false);
+		UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill3", false);
+		UIilustrationAnim.gameObject.SetActive (false);
+
+
+		GameObject.Find ("EnemyArea").GetComponent<Image> ().enabled = false;
 		if (holdCounter > 0.1f) {
 			if (HoveringObject != null && Movable != null) {
-				if (HoveringObject.tag == "Trash") {
-					GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds += (int)cardCost / 2;
-					GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
-					Movable.GetComponent<sparkScript> ().DestroyItself ();
-				} else {
+//				if (HoveringObject.tag == "Trash") {
+//					GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds += (int)cardCost / 2;
+//					GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
+//					Movable.GetComponent<sparkScript> ().DestroyItself ();
+//				} else 
+				if(Movable.transform.position.y<0f && cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 //					if (PlayerPrefs.GetString ("Tutorial") == "False") {
 						ActivateCardEffect ();
 //					} else {
@@ -157,13 +180,14 @@ public class CardSlotScript : MonoBehaviour {
 				projectileCreated = false;
 			}
 		} else {
-			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+			//if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				SendCard ();
-			}
+			//}
 			projectileCreated = false;
 		}
 		released = true;
 		beeingDraged = false;
+		holdCounter = 0;
 	}
 
 	//PUXA CARTA NOVA PARA O SLOT
@@ -780,8 +804,9 @@ public class CardSlotScript : MonoBehaviour {
 		default:
 			break;
 		}
-		Uibg.sortingOrder = 99 - CardPosition;
-		UIilustration.sortingOrder = 100 - CardPosition;
+		Uibg.sortingOrder = 98 - CardPosition;
+		UIilustration.sortingOrder = 99 - CardPosition;
+		UIilustrationAnim.sortingOrder = 100 - CardPosition;
 		UIframe.sortingOrder = 101 - CardPosition;
 		UIribbon.sortingOrder = 102 - CardPosition;
 		UIgems.sortingOrder = 103 - CardPosition;

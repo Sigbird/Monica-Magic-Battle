@@ -36,11 +36,13 @@ public class WPSoldierControler : MonoBehaviour {
 	//PREFABS
 
 	//[HideInInspector]
+	public SpriteRenderer CharBound;
+
 	public GameObject targetEnemy;
 
 	public GameObject healtbarSoldier;
 
-	public GameObject energybarSoldier;
+	//public GameObject energybarSoldier;
 
 	public Sprite warrior;
 
@@ -140,6 +142,8 @@ public class WPSoldierControler : MonoBehaviour {
 	public string effects;
 	public float effectsDuration;
 
+	private Vector3 previous;
+	private float velocity;
 
 	//LANE WAYPOINTS
 
@@ -188,9 +192,9 @@ public class WPSoldierControler : MonoBehaviour {
 		UpdateLife ();
 		this.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
 
-		UpdateEnergy ();
-		this.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
-		this.energybarSoldier.GetComponent<HealtBar> ().energy = true;
+//		UpdateEnergy ();
+//		this.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
+//		this.energybarSoldier.GetComponent<HealtBar> ().energy = true;
 
 		if(heroUnity)
 		if (team == 1) {
@@ -222,9 +226,48 @@ public class WPSoldierControler : MonoBehaviour {
 
 	void Update () {
 
-//		if (gameObject.GetComponent<SpriteRenderer> ().bounds.Intersects (GameObject.Find ("HeroEnemy").GetComponent<SpriteRenderer> ().bounds)) {
-//			Debug.Log ("intersecsionou!");
-//		}
+		// VELOCIDADE
+		if (previous.x < transform.position.x) {
+			GetComponent<SpriteRenderer> ().flipX = false;
+		} else if (previous.x > transform.position.x) {
+			GetComponent<SpriteRenderer> ().flipX = true;
+		}
+
+		velocity = ((transform.position - previous).magnitude) / Time.deltaTime;
+		previous = transform.position;
+
+		//Debug.Log ("Velocity: "+ velocity);
+
+		if (this.velocity <= 0) {
+			anim.SetBool ("Walk", false);
+			anim.SetBool ("Idle", true);
+		} else if (this.velocity >= 1) {
+			anim.SetBool ("Walk", true);
+			anim.SetBool ("Idle", false);
+		}
+
+
+
+
+
+		// COLISÕES COM TROPAS E ADVERSÁRIOS
+
+		foreach (GameObject obstacle in GameObject.FindGameObjectsWithTag("CharacterBound")) {
+			if (CharBound.bounds.Intersects (obstacle.GetComponent<SpriteRenderer> ().bounds) && obstacle != this.CharBound.transform.gameObject) {
+				if (this.CharBound.transform.position.x > obstacle.transform.position.x) {
+					transform.Translate (Vector3.right * Time.deltaTime * 0.5f);
+				} else {
+					transform.Translate (Vector3.left * Time.deltaTime * 0.5f);
+				}
+				if (this.CharBound.transform.position.y > obstacle.transform.position.y) {
+					transform.Translate (Vector3.up * Time.deltaTime * 0.5f);
+				} else {
+					transform.Translate (Vector3.down * Time.deltaTime * 0.5f);
+				}
+
+			}
+			Debug.Log (obstacle.name);
+		}
 
 
 
@@ -381,8 +424,10 @@ public class WPSoldierControler : MonoBehaviour {
 			seeking = false;
 			WaypointMark = GetNewWaypoint ();
 			//targetEnemy = null;
-			if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f) {
-				anim.SetTrigger ("Walk");
+			if(Vector3.Distance (transform.position, WaypointMark.transform.position) > range && WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == true ) {
+				transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
+			} else if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f && WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == false) {
+				//anim.SetTrigger ("Walk");
 				transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
 			} else {
 				if (WaypointMark.GetComponent<MovementMarkerScript> ().capture == true && WaypointMark.GetComponent<MovementMarkerScript> ().enabled == true) {
@@ -393,7 +438,7 @@ public class WPSoldierControler : MonoBehaviour {
 					} else {
 						captureMarkerTimer += Time.deltaTime;
 					}
-				} else {
+				} else if(WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == false) {
 					Destroy (WaypointMark.gameObject);
 					StartCoroutine (RedrawLine ());
 				}
@@ -428,63 +473,32 @@ public class WPSoldierControler : MonoBehaviour {
 			if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
 				anim.SetTrigger ("Walk");
 				//SpendingEnergy ();
-				transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed * 2);
+				//transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
 
-			} else if(targetEnemy != null && this.GetComponent<SpriteRenderer>().enabled == true) { //ATACA ALVO
-				
-				if (danoCD > damageSpeed ) { //TEMPO ENTRE ATAQUES
+			} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
+
+				if (targetEnemy.transform.position.x < transform.position.x) {
+					GetComponent<SpriteRenderer> ().flipX = true;
+				} else if (targetEnemy.transform.position.x > transform.position.x) {
+					GetComponent<SpriteRenderer> ().flipX = false;
+				}
+
+				//if (targetEnemy.transform.Find ("MovementMarker(Clone)"))
+				//Destroy (targetEnemy.transform.Find ("MovementMarker(Clone)").gameObject);
+
+				if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
 					anim.SetTrigger ("Attack");
-					if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO HEROI
-						targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
-						targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife();
-						targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage ();
-						if(this.range>1)
-							TrowArrow ();
-						if (targetEnemy.GetComponent<SpriteRenderer>().enabled == false) { // ALVO MORREU
-							this.targetEnemy = null;
-							lockedTarget = false;
-						}
-					}else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
-						targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
-						targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
-						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage ();
-						if(this.range>1)
-							TrowArrow ();
-						if (targetEnemy.GetComponent<SpriteRenderer>().enabled == false){ // ALVO MORREU
-							this.targetEnemy = null;
-							lockedTarget = false;
-						}
-					} else {//ALVO BASE
-						//							if(targetEnemy.tag == "waypoint"){
-						//								if (Progress == 2) {
-						//									if (heroUnity) {
-						//										heroBase.GetComponent<ChargesScript> ().charges++;
-						//										GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
-						//										//StartCoroutine (Respawning ());
-						//									}
-						//								} else {
-						//									Progress++;
-						//									targetEnemy = null;
-						//								}
-						//							}
-						if (heroUnity) {
-							//								heroBase.GetComponent<ChargesScript> ().charges += 1;
-							//								StartCoroutine (Respawning ());
-							//								GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
-
-						}
-					}
-					danoCD = 0;
-					if (this.range > 1) {
-						audioManager.PlayAudio ("shot");
-					} else {
-						audioManager.PlayAudio ("atack");
-					}
+					StartCoroutine (DealDamage ());
 				} else {
 					danoCD += Time.deltaTime * 2;
 				}
-			} 
-		}
+			}
+		} else { // ALVO SUMIU OU MORREU
+			if (GameObject.Find ("MovementMarker(Clone)")) {
+				if (GameObject.Find ("MovementMarker(Clone)").GetComponent<MovementMarkerScript> ().herobase == false)
+					Destroy (GameObject.Find ("MovementMarker(Clone)").gameObject);
+			}
+		} 
 
 		//ANIMACAODE TIRO DE PROJETEIS
 		//					if (inCombat == true && arrowSlot != null && this.Tipo == TipoSoldado.Lanceiro && targetEnemy != null) {
@@ -525,7 +539,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.vida = 6;
 			this.reach = 2;//3
 			this.damage = 1;
-			this.damageSpeed = 2;
+			this.damageSpeed = 4;
 			this.range = 2;
 			this.speed = 13;
 			this.energyMax = 3;
@@ -539,7 +553,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.vida = 6;
 			this.reach = 2;//3
 			this.damage = 1;
-			this.damageSpeed = 2;
+			this.damageSpeed = 4;
 			this.range = 2;
 			this.speed = 13;
 			this.energyMax = 3;
@@ -760,42 +774,42 @@ public class WPSoldierControler : MonoBehaviour {
 		this.healtbarSoldier.GetComponent<HealtBar> ().UpdateHealtbars();
 	}
 
-	public void UpdateEnergy(){
-		this.energybarSoldier.GetComponent<HealtBar> ().Life = this.energy;
-		this.energybarSoldier.GetComponent<HealtBar> ().MaxLife = this.energyMax;
-		this.energybarSoldier.GetComponent<HealtBar> ().UpdateHealtbars();
-	}
+//	public void UpdateEnergy(){
+//		this.energybarSoldier.GetComponent<HealtBar> ().Life = this.energy;
+//		this.energybarSoldier.GetComponent<HealtBar> ().MaxLife = this.energyMax;
+//		this.energybarSoldier.GetComponent<HealtBar> ().UpdateHealtbars();
+//	}
 
-	public void SpendingEnergy(){
-		energyCounter += Time.deltaTime;
-		if (energyCounter > 2 && resting == false) {
-			this.energy--;
-			UpdateEnergy ();
-			energyCounter = 0;
-		}
-
-		if (energyCounter > 2 && resting == true) {
-			this.energy++;
-			UpdateEnergy ();
-			energyCounter = 0;
-		}
-
-		if (this.energy >= this.energyMax) {
-			resting = false;
-			//this.speed = maxSpeed;
-			tired = false;
-		}
-
-		if (this.energy <= 0) {
-			resting = true;
-
-			if (tired == false) {
-				tired = true;
-				//this.speed = speed / 2;
-			}
-		}
-
-	}
+//	public void SpendingEnergy(){
+//		energyCounter += Time.deltaTime;
+//		if (energyCounter > 2 && resting == false) {
+//			this.energy--;
+//			UpdateEnergy ();
+//			energyCounter = 0;
+//		}
+//
+//		if (energyCounter > 2 && resting == true) {
+//			this.energy++;
+//			UpdateEnergy ();
+//			energyCounter = 0;
+//		}
+//
+//		if (this.energy >= this.energyMax) {
+//			resting = false;
+//			//this.speed = maxSpeed;
+//			tired = false;
+//		}
+//
+//		if (this.energy <= 0) {
+//			resting = true;
+//
+//			if (tired == false) {
+//				tired = true;
+//				//this.speed = speed / 2;
+//			}
+//		}
+//
+//	}
 
 	public void ReceiveEffect(string effect){
 		effects = effect;
@@ -805,6 +819,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.reach += 2;
 		}
 		if (effect == "slow") {
+			this.GetComponent<SpriteRenderer> ().color = new Color (0.5f, 0.5f, 1f);
 			this.speed = speed / 2;
 		}
 		if (effect == "extraSlow") {
@@ -855,6 +870,7 @@ public class WPSoldierControler : MonoBehaviour {
 		}
 		if (effects == "slow") {
 			GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Unfrozen");
+			this.GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f);
 			this.speed = maxSpeed;
 		}
 		if (effects == "speed") {
@@ -909,13 +925,13 @@ public class WPSoldierControler : MonoBehaviour {
 		this.gameObject.GetComponent<SpriteRenderer> ().enabled = false;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
 		this.healtbarSoldier.SetActive (false);
-		this.energybarSoldier.SetActive (false);
+		//this.energybarSoldier.SetActive (false);
 		this.skill1.gameObject.SetActive (false);
 		this.skill2.gameObject.SetActive (false);
 		this.vida = this.vidaMax;
 		UpdateLife ();
-		if(heroUnity)
-			this.energy = this.energyMax;
+//		if(heroUnity)
+//			this.energy = this.energyMax;
 		this.seeking = false;
 		yield return new WaitForSeconds (respawningTimer);
 
@@ -924,15 +940,15 @@ public class WPSoldierControler : MonoBehaviour {
 		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
 		this.healtbarSoldier.SetActive (true);
-		if (heroUnity)
-			this.energybarSoldier.SetActive (true);
+//		if (heroUnity)
+//			this.energybarSoldier.SetActive (true);
 		this.skill1.gameObject.SetActive (true);
 		this.skill2.gameObject.SetActive (true);
 		this.damage = 1;
 		this.speed = maxSpeed;
 		this.seeking = true;
 		//this.targetEnemy = SeekEnemyTarget();
-		respawningTimer = 7;
+		respawningTimer = 12;
 		Arrival.Play ();
 	}
 
@@ -1006,9 +1022,65 @@ public class WPSoldierControler : MonoBehaviour {
 		return Emin;
 	}
 
-	public void ReceiveDamage(){
+	IEnumerator DealDamage(){
+		danoCD = 0;
+		yield return new WaitForSeconds (0.5f);
+		if (targetEnemy != null) {
+			if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO HEROI
+				//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
+				//targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife ();
+				targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
+				if (this.range > 1)
+					TrowArrow ();
+				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
+					this.targetEnemy = null;
+					lockedTarget = false;
+				}
+			} else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
+				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
+				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
+				targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
+				if (this.range > 1)
+					TrowArrow ();
+				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
+					this.targetEnemy = null;
+					lockedTarget = false;
+				}
+			} else {//ALVO BASE
+				//							if(targetEnemy.tag == "waypoint"){
+				//								if (Progress == 2) {
+				//									if (heroUnity) {
+				//										heroBase.GetComponent<ChargesScript> ().charges++;
+				//										GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
+				//										//StartCoroutine (Respawning ());
+				//									}
+				//								} else {
+				//									Progress++;
+				//									targetEnemy = null;
+				//								}
+				//							}
+				if (heroUnity) {
+					//								heroBase.GetComponent<ChargesScript> ().charges += 1;
+					//								StartCoroutine (Respawning ());
+					//								GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
 
-		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+				}
+			}
+
+			if (this.range > 1) {
+				audioManager.PlayAudio ("shot");
+			} else {
+				audioManager.PlayAudio ("atack");
+			}
+		}
+	}
+
+	public void ReceiveDamage(int x){
+
+		this.vida -= x;
+		UpdateLife ();
+
+		//Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
 
 		if (this.team == 1 && heroUnity == true) {
 			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");

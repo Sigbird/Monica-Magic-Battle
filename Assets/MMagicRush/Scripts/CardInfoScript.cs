@@ -11,6 +11,7 @@ public class CardInfoScript : MonoBehaviour {
 	public Text damage;
 	public Image efect;
 	public Image image;
+	public GameObject ImageAnimated;
 	public Image character;
 	public GameObject lastCard;
 
@@ -66,10 +67,12 @@ public class CardInfoScript : MonoBehaviour {
 		case 1:
 			cardname.text = "Estalo Magico";
 			descrition.text = "Aplica um de dano em uma unidade ininimga";
-			cost.text = "2";
+			cost.text = "10";
 			damage.text = "1";
 			efect.sprite = Efects [0];
 			image.sprite = Images [cardID];
+			ImageAnimated.SetActive (true);
+			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill1",true);
 			character.sprite = Persons [0];
 			break;
 		case 2:
@@ -84,16 +87,18 @@ public class CardInfoScript : MonoBehaviour {
 		case 3:
 			cardname.text = "Nevasca";
 			descrition.text = "Aplica dois de dano em todas unidades ininimgas";
-			cost.text = "10";
+			cost.text = "25";
 			damage.text = "2";
-			efect.sprite = Efects[0];
-			image.sprite = Images[cardID];
+			efect.sprite = Efects [0];
+			image.sprite = Images [cardID];
+			ImageAnimated.SetActive (true);
+			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill2",true);
 			character.sprite = Persons[0];
 			break;
 		case 4:
 			cardname.text = "Terremoto";
 			descrition.text = "Deixa Tropas Inimigas Lentas";
-			cost.text = "10";
+			cost.text = "50";
 			damage.text = "2";
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
@@ -102,7 +107,7 @@ public class CardInfoScript : MonoBehaviour {
 		case 5:
 			cardname.text = "Hora da Soneca";
 			descrition.text = "Para Tropas Inimigas";
-			cost.text = "10";
+			cost.text = "75";
 			damage.text = "2";
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
@@ -111,7 +116,7 @@ public class CardInfoScript : MonoBehaviour {
 		case 6:
 			cardname.text = "Remédio";
 			descrition.text = "Cura seu heroi";
-			cost.text = "10";
+			cost.text = "5";
 			damage.text = "0";
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
@@ -120,16 +125,18 @@ public class CardInfoScript : MonoBehaviour {
 		case 7:
 			cardname.text = "Canja de Galinha";
 			descrition.text = "Cura toda sua tropa";
-			cost.text = "10";
+			cost.text = "75";
 			damage.text = "0";
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
+			ImageAnimated.SetActive (true);
+			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill3",true);
 			character.sprite = Persons[0];
 			break;
 		case 8:
 			cardname.text = "Escudo";
 			descrition.text = "Parotege suas Tropas";
-			cost.text = "10";
+			cost.text = "25";
 			damage.text = "0";
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
@@ -138,7 +145,7 @@ public class CardInfoScript : MonoBehaviour {
 		case 9:
 			cardname.text = "Grito de Guerra";
 			descrition.text = "Fortalece suas tropas";
-			cost.text = "10";
+			cost.text = "100";
 			damage.text = "0";
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
@@ -147,7 +154,7 @@ public class CardInfoScript : MonoBehaviour {
 		case 10:
 			cardname.text = "Sem Munição";
 			descrition.text = "Paralisa torres inimigas";
-			cost.text = "10";
+			cost.text = "50";
 			damage.text = "0";
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
@@ -159,7 +166,7 @@ public class CardInfoScript : MonoBehaviour {
 		case 11:
 			cardname.text = "Bidu";
 			descrition.text = "Chama a unidade Bidu para ajudar";
-			cost.text = "1";
+			cost.text = "5";
 			damage.text = "1";
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
@@ -240,7 +247,7 @@ public class CardInfoScript : MonoBehaviour {
 		case 20:
 			cardname.text = "Alfredo";
 			descrition.text = "Chama a unidade Alfredo para ajudar";
-			cost.text = "150";
+			cost.text = "125";
 			damage.text = "2";
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
@@ -460,12 +467,23 @@ public class CardInfoScript : MonoBehaviour {
 	public void CloseInfo(){
 		Time.timeScale = 1;
 		WPScript.UIopen = false;
+		ImageAnimated.GetComponent<Animator> ().SetBool ("Skill1",false);
+		ImageAnimated.GetComponent<Animator> ().SetBool ("Skill2",false);
+		ImageAnimated.GetComponent<Animator> ().SetBool ("Skill3",false);
+		ImageAnimated.SetActive (false);
 		this.gameObject.SetActive (false);
 	}
 
 	public void RecicleCard(){
 		Time.timeScale = 1;
-		lastCard.GetComponent<CardSlotScript> ().UpdateCard ();
+		WPScript.UIopen = false;
+		GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds += (int)(lastCard.GetComponent<CardSlotScript> ().cardCost / 2);
+		GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(lastCard.GetComponent<CardSlotScript>().CardPosition);
+		ImageAnimated.GetComponent<Animator> ().SetBool ("Skill1",false);
+		ImageAnimated.GetComponent<Animator> ().SetBool ("Skill2",false);
+		ImageAnimated.GetComponent<Animator> ().SetBool ("Skill3",false);
+		ImageAnimated.SetActive (false);
+		Destroy (lastCard.gameObject);
 		this.gameObject.SetActive (false);
 	}
 
@@ -474,6 +492,10 @@ public class CardInfoScript : MonoBehaviour {
 		WPScript.UIopen = false;
 		lastCard.GetComponent<CardSlotScript> ().ActivateCardEffect ();
 		lastCard.GetComponent<CardSlotScript> ().UpdateCard ();
+		ImageAnimated.GetComponent<Animator> ().SetBool ("Skill1",false);
+		ImageAnimated.GetComponent<Animator> ().SetBool ("Skill2",false);
+		ImageAnimated.GetComponent<Animator> ().SetBool ("Skill3",false);
+		ImageAnimated.SetActive (false);
 		this.gameObject.SetActive (false);
 	}
 

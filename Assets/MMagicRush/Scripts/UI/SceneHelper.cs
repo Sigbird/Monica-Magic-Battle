@@ -43,7 +43,11 @@ public class SceneHelper : MonoBehaviour {
 	}
 
 	public void Exit() {
-		Application.Quit ();
+		System.Diagnostics.Process.GetCurrentProcess().Kill();
+	}
+
+	public void Suspend(){
+		Application.Quit();
 	}
 
 

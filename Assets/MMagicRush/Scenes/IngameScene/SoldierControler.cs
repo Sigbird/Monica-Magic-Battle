@@ -35,6 +35,14 @@ public class SoldierControler : MonoBehaviour {
 
 	//PREFABS
 
+	public GameObject HeroCharacter;
+
+	public GameObject EnemyCharacter;
+
+	public GameObject SoldierCharacter;
+
+
+	public SpriteRenderer CharBound;
 
 	public GameObject targetEnemy;
 
@@ -242,59 +250,65 @@ public class SoldierControler : MonoBehaviour {
 		audioManager.PlayAudio ("spawn");
 
 		//DESLOCAMENTO INICIAL
-		if (Random.value < 0.5f) {
-			desloc = 1f;
-		} else {
-			desloc = -1f;
-		}
+		HeroCharacter = GameObject.Find("HeroSpritezone");
+		EnemyCharacter = GameObject.Find ("EnemySpritezone");
 	
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-//		//Debugging
-//		if(this.team == 1){
-//			if(heroImputs[0].text !=null)
-//				this.vida = System.Int32.Parse(heroImputs [0].text);
-//			if(heroImputs[1].text !=null)
-//				this.vidaMax = System.Int32.Parse(heroImputs [1].text);
-//			if(heroImputs[2].text !=null)
-//				this.energy = System.Int32.Parse(heroImputs [2].text);
-//			if(heroImputs[3].text !=null)
-//				this.energyMax = System.Int32.Parse(heroImputs [3].text);
-//			if(heroImputs[4].text !=null)
-//				this.damage = System.Int32.Parse(heroImputs [4].text);
-//		//	if(heroImputs[5].text !=null)
-//			//this.speed = float.Parse(heroImputs [5].text);
-//		}
-//
-//		if(this.team == 2){
-//			if(enemyImputs[0].text !=null)
-//				this.vida = System.Int32.Parse(enemyImputs [0].text);
-//			if(enemyImputs[1].text !=null)
-//				this.vidaMax = System.Int32.Parse(enemyImputs [1].text);
-//			if(enemyImputs[2].text !=null)
-//				this.energy = System.Int32.Parse(enemyImputs [2].text);
-//			if(enemyImputs[3].text !=null)
-//				this.energyMax = System.Int32.Parse(enemyImputs [3].text);
-//			if(enemyImputs[4].text !=null)
-//				this.damage = System.Int32.Parse(enemyImputs [4].text);
-//		//	if(enemyImputs[5].text !=null)
-//		//	this.speed = float.Parse(enemyImputs [5].text);
-//		}
-
 
 		//
 		//ORDEM DE LAYER
 		//
-		this.GetComponent<SpriteRenderer> ().sortingOrder = -(int)(this.transform.position.y - 0.5f);
+		//this.GetComponent<SpriteRenderer> ().sortingOrder = -(int)(this.transform.position.y - 0.5f);
 
 
-		//DESLOCAMENTO INICIAL
-//		if (deslocTimer < 30) {
-//			transform.Translate (Vector2.left * Time.deltaTime * desloc);
-//			deslocTimer++;
+		//DESLOCAMENTO LATERAL COM INTERSESSÃO
+//		if (gameObject.GetComponent<SpriteRenderer> ().bounds.Intersects (HeroCharacter.GetComponent<SpriteRenderer> ().bounds)) {
+//			if (this.transform.position.x > HeroCharacter.transform.position.x) {
+//				transform.Translate (Vector3.right * Time.deltaTime * 0.5f);
+//			} else {
+//				transform.Translate (Vector3.right * Time.deltaTime *  0.5f);
+//			}
+//			if (this.transform.position.y > HeroCharacter.transform.position.y) {
+//				transform.Translate (Vector3.up * Time.deltaTime *  0.5f);
+//			} else {
+//				transform.Translate (Vector3.down * Time.deltaTime *  0.5f);
+//			}
+//
+//
 //		}
+//		if (gameObject.GetComponent<SpriteRenderer> ().bounds.Intersects (EnemyCharacter.GetComponent<SpriteRenderer> ().bounds)) {
+//			if (this.transform.position.x > EnemyCharacter.transform.position.x) {
+//				transform.Translate (Vector3.right * Time.deltaTime * 0.5f);
+//			} else {
+//				transform.Translate (Vector3.right * Time.deltaTime * 0.5f);
+//			}
+//			if (this.transform.position.y > EnemyCharacter.transform.position.y) {
+//				transform.Translate (Vector3.up * Time.deltaTime * 0.5f);
+//			} else {
+//				transform.Translate (Vector3.down * Time.deltaTime * 0.5f);
+//			};
+//		}
+		foreach (GameObject obstacle in GameObject.FindGameObjectsWithTag("CharacterBound")) {
+			if (CharBound.bounds.Intersects (obstacle.GetComponent<SpriteRenderer> ().bounds) && obstacle != this.CharBound.transform.gameObject) {
+				if (this.CharBound.transform.position.x > obstacle.transform.position.x) {
+					transform.Translate (Vector3.right * Time.deltaTime * 0.5f);
+				} else {
+					transform.Translate (Vector3.left * Time.deltaTime * 0.5f);
+				}
+				if (this.CharBound.transform.position.y > obstacle.transform.position.y) {
+					transform.Translate (Vector3.up * Time.deltaTime * 0.5f);
+				} else {
+					transform.Translate (Vector3.down * Time.deltaTime * 0.5f);
+				}
+					
+			}
+		
+		}
+
 
 		//EVENTO DE MORTE
 		if (this.vida <= 0 && heroUnity) {
@@ -530,25 +544,25 @@ public class SoldierControler : MonoBehaviour {
 					anim.SetTrigger ("Attack");
 					if (danoCD > damageSpeed ) { //TEMPO ENTRE ATAQUES
 						if (targetEnemy.GetComponent<WPSoldierControler> () != null) {//ALVO HEROI
-							targetEnemy.GetComponent<WPSoldierControler> ().vida -= damage;
-							targetEnemy.GetComponent<WPSoldierControler> ().UpdateLife();
-							targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage ();
+							//targetEnemy.GetComponent<WPSoldierControler> ().vida -= damage;
+							//targetEnemy.GetComponent<WPSoldierControler> ().UpdateLife();
+							targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
 							if(this.range>1)
 							TrowArrow ();
 							if (targetEnemy.GetComponent<WPSoldierControler> ().vida <= -1)
 							this.targetEnemy = null;
 						}else if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO IA
-							targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
-							targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife();
-							targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage ();
+							//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
+							//targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife();
+							targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
 							if(this.range>1)
 								TrowArrow ();
 							if (targetEnemy.GetComponent<WPIASoldierControler> ().vida <= -1)
 							this.targetEnemy = null;
 					} else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
-						targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
-						targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
-						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage ();
+						//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
+						//targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
+						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
 						if(this.range>1)
 							TrowArrow ();
 						if (targetEnemy.GetComponent<SoldierControler> ().vida <= -1)
@@ -1100,7 +1114,10 @@ public class SoldierControler : MonoBehaviour {
 		return Emin;
 	}
 
-	public void ReceiveDamage(){
+	public void ReceiveDamage(int x){
+
+		this.vida -= x;
+		UpdateLife ();
 	
 		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
 
