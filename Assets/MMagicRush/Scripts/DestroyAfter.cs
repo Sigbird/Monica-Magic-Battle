@@ -19,4 +19,8 @@ public class DestroyAfter : MonoBehaviour {
 	public void DestroyObj(){
 		Destroy (this.gameObject);
 	}
+
+	public void DisableObj(){
+		gameObject.SetActive (false);
+	}
 }

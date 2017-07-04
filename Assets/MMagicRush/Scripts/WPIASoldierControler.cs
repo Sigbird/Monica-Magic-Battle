@@ -15,6 +15,7 @@ public class WPIASoldierControler : MonoBehaviour {
 	//	}
 
 	//public TipoSoldado Tipo;
+	public bool tutorial;
 
 	public bool heroUnity;
 
@@ -240,6 +241,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		audioManager.PlayAudio ("spawn");
 
+		if(tutorial == false)
 		Twist (0); ///INICIA ESCOLHA DE DECISOES
 	}
 
@@ -320,7 +322,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			pushHatChance = 0;
 		}
 
-		if (twisting == false) {
+		if (twisting == false && tutorial == false) {
 			twisting = true;
 			Twist (0);
 		}
@@ -330,8 +332,13 @@ public class WPIASoldierControler : MonoBehaviour {
 		if (this.vida <= 0 && heroUnity && this.GetComponent<SpriteRenderer>().enabled == true) {
 			this.speed = 0;
 			Instantiate (deathAngel, this.transform.position, Quaternion.identity).transform.parent = this.transform;
-			GameObject.Find ("RespawnTimerEnemy").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
-			StartCoroutine (Respawning ());
+			if (tutorial == false) {
+				GameObject.Find ("RespawnTimerEnemy").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
+				StartCoroutine (Respawning ());
+			} else {
+				transform.position = new Vector2 (200, 200);
+				gameObject.SetActive (false);
+			}
 			audioManager.PlayAudio ("death");
 		} else if(this.vida <= 0) {
 			audioManager.PlayAudio ("death");
@@ -483,7 +490,7 @@ public class WPIASoldierControler : MonoBehaviour {
 //			}
 		if (GetNewWaypoint () != null) {
 			//lockedTarget = false;
-			seeking = false;
+			//seeking = false;
 			WaypointMark = GetNewWaypoint ();
 			//targetEnemy = null;
 			if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f) {
@@ -521,7 +528,7 @@ public class WPIASoldierControler : MonoBehaviour {
 
 				if (seeking && cdSeek >= 1) {
 					this.targetEnemy = SeekEnemyTarget ();
-					if (this.targetEnemy != false) {
+					if (this.targetEnemy != null) {
 						seeking = false;
 					}
 					cdSeek = 0;
@@ -533,7 +540,11 @@ public class WPIASoldierControler : MonoBehaviour {
 
 		// PERSEGUINDO E ATACANDO ALVO ENCONTRADO
 
-		if(seeking == false && this.targetEnemy != null ) { 
+		if (seeking == false && this.targetEnemy != null) { 
+
+			foreach (GameObject o in GameObject.FindGameObjectsWithTag("enemywaypoint")) {
+				Destroy (o.gameObject);
+			}
 
 			if (this.team == 2 && this.vida <= 2) {
 //				if (TryTwist() == false) {
@@ -547,7 +558,7 @@ public class WPIASoldierControler : MonoBehaviour {
 				//SpendingEnergy ();
 				transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
 
-			} else if(targetEnemy != null && this.GetComponent<SpriteRenderer>().enabled == true) { //ATACA ALVO
+			} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
 				if (targetEnemy.transform.position.x < transform.position.x) {
 					GetComponent<SpriteRenderer> ().flipX = true;
 				} else if (targetEnemy.transform.position.x > transform.position.x) {
@@ -557,13 +568,19 @@ public class WPIASoldierControler : MonoBehaviour {
 				if (targetEnemy.transform.Find ("MovementMarker(Clone)"))
 					Destroy (targetEnemy.transform.Find ("MovementMarker(Clone)").gameObject);
 				
-				if (danoCD > damageSpeed ) { //TEMPO ENTRE ATAQUES
+				if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
 					anim.SetTrigger ("Attack");
 					StartCoroutine (DealDamage ());
 				} else {
-					danoCD += Time.deltaTime * 2;
+					if (tutorial) {
+						danoCD += Time.deltaTime * 20;
+					} else {
+						danoCD += Time.deltaTime * 10;
+					}
 				}
 			} 
+		} else if(this.targetEnemy == null)  {
+			Twist (0);
 		}
 
 		//EVENTOS DE IA
@@ -617,7 +634,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.vida = 6;
 			this.reach = 2;//3
 			this.damage = 1;
-			this.damageSpeed = 2;
+			this.damageSpeed = 1;
 			this.range = 2;
 			this.speed = 13;
 			this.energyMax = 3;

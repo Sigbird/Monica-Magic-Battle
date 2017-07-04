@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
+	private bool tutorialending = false;
+	public bool tutorial;
 	public float gempertime;	
 
 	public int playerCharges;
@@ -45,6 +47,8 @@ public class GameController : MonoBehaviour {
 	[HideInInspector]
 	public int Mine2Value = 0;
 	private float Mine2Assist;
+
+	public GameObject[] rewardWindows;
 	// Use this for initialization
 	void Awake() {
 		EnemyDiamonds = 0;
@@ -76,7 +80,12 @@ public class GameController : MonoBehaviour {
 		if (enemySpawnedGems >= 3)
 			enemySpawnedGems = 0;
 
-		if (gempertime >= 2) {
+		if (Diamonds >= 5 && tutorial == true && tutorialending == false) {
+			GetComponent<TutorialController> ().StartTutorialEnding ();
+			tutorialending = true;
+		}
+
+		if (gempertime >= 2 && tutorial == false) {
 			gempertime = 0;
 			Diamonds += 1;
 			EnemyDiamonds += 1;
@@ -84,6 +93,7 @@ public class GameController : MonoBehaviour {
 			gempertime += Time.deltaTime;
 		}
 
+		if (GameObject.Find ("Diamonds") != null)
 		GameObject.Find ("Diamonds").GetComponent<Text> ().text = Diamonds.ToString();
 //		GameObject.Find ("DiamondsEnemy").GetComponent<Text> ().text = EnemyDiamonds.ToString();
 //		GameObject.Find ("Cost1").GetComponent<Text> ().text = WarriorCost.ToString();
@@ -165,7 +175,6 @@ public class GameController : MonoBehaviour {
 
 	}
 
-
 	public void NextRound(){
 		Debug.Log ("xp: "+GameController.playerXp);
 		PlayerPrefs.SetFloat ("PlayerXP", GameController.playerXp);
@@ -204,6 +213,11 @@ public class GameController : MonoBehaviour {
 			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
 			endGamePanel [0].SetActive (true);
+			if (tutorial == true) {
+				GetComponent<TutorialController> ().tutorialPanels [0].SetActive (false);
+				GetComponent<TutorialController> ().tutorialPanels [1].SetActive (false);
+				GetComponent<TutorialController> ().tutorialPanels [2].SetActive (false);
+			}
 		} else if (enemyCharges == 1 && playerCharges <= 0) {//3 2
 			this.GetComponent<AudioManager> ().StopAudio ();
 			this.GetComponent<AudioManager> ().SetVolume (1);
@@ -220,6 +234,8 @@ public class GameController : MonoBehaviour {
 	}
 
 	void OnApplicationQuit() {
+		PlayerPrefs.SetInt ("Lesson", 1);
+
 		PlayerPrefs.SetInt ("round",1);
 		PlayerPrefs.SetInt ("playerCharges",0);
 		PlayerPrefs.SetInt ("enemyCharges",0);
@@ -239,6 +255,41 @@ public class GameController : MonoBehaviour {
 		SceneManager.LoadScene (scene);
 	}
 
+	public void OpenReward(int x){
+		GameObject.Find ("Hero").SetActive (false);
+		if(GameObject.Find ("HeroEnemy") != null)
+		GameObject.Find ("HeroEnemy").SetActive (false);
+		GameObject.Find ("HeroBase").SetActive (false);
+		GameObject.Find ("HeroBaseEnemy").SetActive (false);
+
+		Time.timeScale = 1;
+
+		foreach(GameObject o in GameObject.FindGameObjectsWithTag("herowaypoint")){
+			Destroy (o.gameObject);
+		}
+
+		rewardWindows [x].SetActive (true);
+	}
+
+	public void GiveReward(int x){
+		switch (x) {
+		case 1:
+			PlayerPrefs.SetInt ("PlayerCoins", 100);
+			break;
+		case 2:
+			PlayerPrefs.SetInt ("PlayerCoins", 25);
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		default:
+			break;
+		}
+	}
+
 	public void ClearGame(){
 //		PlayerPrefs.SetInt ("round",1);
 //		PlayerPrefs.SetInt ("playerCharges",0);
@@ -252,7 +303,7 @@ public class GameController : MonoBehaviour {
 		}else if (scene == "start") {
 			Time.timeScale = 1;
 		} else {
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneManager.LoadScene(scene);
 		}
 	}
 

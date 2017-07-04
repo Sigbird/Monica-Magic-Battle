@@ -7,6 +7,7 @@ public class CardInfoScript : MonoBehaviour {
 
 	public Text cardname;
 	public Text descrition;
+	public Text Gemcost;
 	public Text cost;
 	public Text damage;
 	public Image efect;
@@ -38,6 +39,7 @@ public class CardInfoScript : MonoBehaviour {
 		cardname.text = o.GetComponent<CardScript> ().cardname;
 		descrition.text = o.GetComponent<CardScript> ().descrition;
 		cost.text = o.GetComponent<CardScript> ().cost;
+		Gemcost.text = o.GetComponent<CardScript> ().Gemcost;
 		damage.text = o.GetComponent<CardScript> ().damage;
 		efect.sprite = o.GetComponent<CardScript> ().efect.sprite;
 		image.sprite = o.GetComponent<CardScript> ().image;
@@ -343,23 +345,25 @@ public class CardInfoScript : MonoBehaviour {
 	}
 
 	public void BuyCard(){
-		int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+		int coins = PlayerPrefs.GetInt ("PlayerCoins");
+		if (int.Parse (cost.text) <= coins) {
+			int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
 
-		List<int> iList = new List<int>();
+			List<int> iList = new List<int> ();
 
-		for(int i = 0; i < original.Length; i ++ ) {
-			iList.Add (original [i]);
-		}
+			for (int i = 0; i < original.Length; i++) {
+				iList.Add (original [i]);
+			}
 
-		iList.Add (lastCard.GetComponent<CardScript> ().CardID);
+			iList.Add (lastCard.GetComponent<CardScript> ().CardID);
 
-		int[] finalArray = new int[iList.Count];
+			int[] finalArray = new int[iList.Count];
 
-		int x = 0;
-		foreach (int i in iList) {
-			finalArray [x] = i;
-			x++;
-		}
+			int x = 0;
+			foreach (int i in iList) {
+				finalArray [x] = i;
+				x++;
+			}
 
 
 //		int[] finalArray = new  int[original.Length + 1 ];
@@ -371,14 +375,16 @@ public class CardInfoScript : MonoBehaviour {
 //		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
 
 
-		//ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
-		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
+			//ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
+			PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
 
-		if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15) {
-			ActiveCard ();
+			if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15) {
+				ActiveCard ();
+			}
+
+			PlayerPrefs.SetInt ("PlayerCoins", coins - int.Parse (cost.text));
+			this.gameObject.SetActive (false);
 		}
-
-		this.gameObject.SetActive (false);
 	}
 
 	public void RemoveCard(){

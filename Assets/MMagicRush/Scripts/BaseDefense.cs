@@ -111,17 +111,23 @@ public class BaseDefense : MonoBehaviour {
 
 	public bool HeroNearby(){
 		if (team == 1) {
-			if (Vector2.Distance (GameObject.Find ("Hero").transform.position, transform.position) <= reach) {
-				return true;
-			} else {
-				return false;
+			if (GameObject.Find ("Hero") != null) {
+				if (Vector2.Distance (GameObject.Find ("Hero").transform.position, transform.position) <= reach) {
+					return true;
+				} else {
+					return false;
+				}
 			}
+			return false;
 		} else {
-			if (Vector2.Distance (GameObject.Find ("HeroEnemy").transform.position, transform.position) <= reach) {
-				return true;
-			} else {
-				return false;
+			if (GameObject.Find ("HeroEnemy") != null) {
+				if (Vector2.Distance (GameObject.Find ("HeroEnemy").transform.position, transform.position) <= reach) {
+					return true;
+				} else {
+					return false;
+				}
 			}
+			return false;
 		}
 	}
 

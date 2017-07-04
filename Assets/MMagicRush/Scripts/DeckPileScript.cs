@@ -7,6 +7,8 @@ public class DeckPileScript : MonoBehaviour {
 	public int Hand;
 	public int Deck;
 	public GameObject newCard;
+	public int tutorialID;
+	public bool tutorial;
 
 	void Start () {
 		Hand = 0;
@@ -21,6 +23,12 @@ public class DeckPileScript : MonoBehaviour {
 	public void DrawCard(){ 
 		if (Deck >= 1) {
 			newCard.GetComponent<CardSlotScript> ().CardPosition = Hand;
+			if(tutorial == true){
+				newCard.GetComponent<CardSlotScript> ().tutorialID = tutorialID;
+				tutorialID = 0;
+				tutorial = false;
+			}
+			Debug.Log ("puxou");
 			Instantiate (newCard, this.transform.position, Quaternion.identity);
 			Hand += 10;
 		}

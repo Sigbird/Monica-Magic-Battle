@@ -6,9 +6,10 @@ using YupiPlay;
 
 public class SplashAnim : MonoBehaviour {
 	public bool noLoading;
+	public string firstscene;
 	// Use this for initialization
 	void Start () {
-	
+		PlayerPrefs.SetInt ("Lesson", 1);
 	}
 	
 	// Update is called once per frame
@@ -18,9 +19,9 @@ public class SplashAnim : MonoBehaviour {
 
 	public void SplashEnd(){
 		if (noLoading) {
-			SceneManager.LoadScene ("Main");
+			SceneManager.LoadScene (firstscene);
 		} else {
-			SceneLoadingManager.LoadScene ("Main");
+			SceneLoadingManager.LoadScene (firstscene);
 		}
 	}
 }

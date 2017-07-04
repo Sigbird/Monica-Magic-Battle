@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WPScript : MonoBehaviour {
 
-
+	public bool tutorial;
 	public GameObject EnemyWaypointMarker;
 
 	public GameObject WaypointMarker;
@@ -87,6 +87,7 @@ public class WPScript : MonoBehaviour {
 
 			Debug.Log ("Clicou!");
 			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
+			WaypointMarker.GetComponent<SpriteRenderer> ().sprite = DefendIcon;
 			//WaypointMarker.GetComponent<MovementMarkerScript> ().herobase = true;
 			//Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity);
 			Instantiate (WaypointMarker, Base.position, Quaternion.identity);
@@ -99,6 +100,7 @@ public class WPScript : MonoBehaviour {
 		}else if (MovementCounter () < 3 && Camera.main.ScreenToWorldPoint (Input.mousePosition).y > -3 && UIopen == false) {
 			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
 			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
+			WaypointMarker.GetComponent<SpriteRenderer> ().sprite = MovementIcon;
 			Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity).gameObject.name = "Waypoint"+progress;
 			progress++;
 		}
@@ -132,6 +134,10 @@ public class WPScript : MonoBehaviour {
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
+			if (tutorial == true && GameObject.Find ("TutorialHand") != null && GameObject.Find ("Tut12") != null) {
+				GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
+				GameObject.Find ("Tut12").SetActive(false);
+			}
 			renderer.sprite = CaptureIcon; //CAPTURA DE BASE INIMIGA
 		} else if (GemNearbyClick()) {
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = true;
@@ -143,12 +149,15 @@ public class WPScript : MonoBehaviour {
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = true;
 			renderer.sprite = DefendIcon; //DEFESA DE BASE
-		} else if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroEnemy").transform.position) < 0.5f) {
+		} else if(GameObject.Find("HeroEnemy") != null && Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroEnemy").transform.position) < 0.5f){
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
+				if (tutorial == true && GameObject.Find ("TutorialHand") != null)
+					GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
 			renderer.sprite = AttackIcon; //ATAQUE DE INIMIGO
 		} else{
+			
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
@@ -178,7 +187,7 @@ public class WPScript : MonoBehaviour {
 			foreach (GameObject o in Gems) {
 				if (Vector2.Distance (position, o.transform.position) <= 0.6f && o.GetComponent<GemScript> ().enabled == true) {
 					EnemyWaypointMarker.GetComponent<MovementMarkerScript> ().capture = true;
-					Debug.Log ("pegou");
+				
 				} 
 			}
 

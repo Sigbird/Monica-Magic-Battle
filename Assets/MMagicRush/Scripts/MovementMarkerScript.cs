@@ -14,9 +14,15 @@ public class MovementMarkerScript : MonoBehaviour {
 	void Start () {
 		reached = false;
 	}
-	
+
+
+	void OnMouseDown(){
+		Destroy (this.gameObject);
+	}
+
 	// Update is called once per frame
 	void Update () {
+		if(GameObject.Find ("Hero") != null)
 		if (Vector2.Distance (GameObject.Find ("Hero").transform.position, this.transform.position) <= 0.5) {
 			reached = true;
 		}

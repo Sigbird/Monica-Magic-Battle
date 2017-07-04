@@ -17,18 +17,20 @@ public class CardScript : MonoBehaviour {
 
 	public string cardname;
 	public string descrition;
+	public string Gemcost;
 	public string cost;
 	public string damage;
 	public Image efect;
 	public Sprite image;
 	public Sprite peson;
 
-
+	public GameObject TutorialHand;
 
 	public GameObject cardInfo;
 
 	// Use this for initialization
 	void Start () {
+
 		this.GetComponent<Image> ().sprite = image;
 	}
 		
@@ -41,6 +43,9 @@ public class CardScript : MonoBehaviour {
 	}
 
 	public void OpenCardInfo(){
+		if(GameObject.Find ("TutorialHandP2") != null)
+			GameObject.Find ("TutorialHandP2").SetActive (false);
+		
 		cardInfo.SetActive (true);
 		cardInfo.GetComponent<CardInfoScript> ().SendCard (this.gameObject);
 	}

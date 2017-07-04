@@ -81,7 +81,7 @@ public class FilterScript : MonoBehaviour {
 
 	public void UpdatePlayerCardList(){
 		cs = new int[30];
-		for (int i = 1; i <= 20; i++) {
+		for (int i = 1; i <= 6; i++) {
 			cs [i] = i;
 		}
 		
@@ -104,16 +104,36 @@ public class FilterScript : MonoBehaviour {
 //		}
 		int minimun = 0;
 		foreach (int cardID in x){
-			
 			switch (cardID) {
 			case 1:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
 				g.GetComponent<CardScript> ().CardID = 1;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
+				g.GetComponent<CardScript> ().cardname = "Nevasca";
+				g.GetComponent<CardScript> ().descrition = "Aplica dois de dano em todas unidades ininimgas";
+				g.GetComponent<CardScript> ().Gemcost = "25";
+				g.GetComponent<CardScript> ().cost = "50";
+				g.GetComponent<CardScript> ().damage = "2";
+				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
+				g.GetComponent<CardScript> ().image = Images[cardID];
+				g.GetComponent<CardScript> ().peson = Persons[0];
+				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().cardInfo = CardInfo;
+				if (CardShop)
+					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				childrens.Add (g.transform);
+
+				break;
+			case 2:
+				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 2;
+				g.GetComponent<CardScript> ().efeito = "Magia";
+				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Estalo Magico";
 				g.GetComponent<CardScript> ().descrition = "Aplica um de dano em uma unidade ininimga";
-				g.GetComponent<CardScript> ().cost = "2";
+				g.GetComponent<CardScript> ().cost = "25";
+				g.GetComponent<CardScript> ().Gemcost = "10";
 				g.GetComponent<CardScript> ().damage = "1";
 				g.GetComponent<CardScript> ().efect.sprite = Efects [0];
 				g.GetComponent<CardScript> ().image = Images [cardID];
@@ -124,33 +144,16 @@ public class FilterScript : MonoBehaviour {
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
 				childrens.Add (g.transform);
 				break;
-			case 2:
-				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
-				g.GetComponent<CardScript> ().CardID = 2;
-				g.GetComponent<CardScript> ().efeito = "Magia";
-				g.GetComponent<CardScript> ().personagem = "Todos";
-				g.GetComponent<CardScript> ().cardname = "Explosão Magica";
-				g.GetComponent<CardScript> ().descrition = "Aplica dois de dano em todas unidades ininimgas";
-				g.GetComponent<CardScript> ().cost = "10";
-				g.GetComponent<CardScript> ().damage = "2";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
-				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
-					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
-				childrens.Add (g.transform);
-				break;
 			case 3:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
 				g.GetComponent<CardScript> ().CardID = 3;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
-				g.GetComponent<CardScript> ().cardname = "Nevasca";
-				g.GetComponent<CardScript> ().descrition = "Aplica dois de dano em todas unidades ininimgas";
-				g.GetComponent<CardScript> ().cost = "10";
-				g.GetComponent<CardScript> ().damage = "2";
+				g.GetComponent<CardScript> ().cardname = "Canja de Galinha";
+				g.GetComponent<CardScript> ().descrition = "Cura toda sua tropa";
+				g.GetComponent<CardScript> ().cost = "100";
+				g.GetComponent<CardScript> ().Gemcost = "75";
+				g.GetComponent<CardScript> ().damage = "0";
 				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
 				g.GetComponent<CardScript> ().image = Images[cardID];
 				g.GetComponent<CardScript> ().peson = Persons[0];
@@ -163,15 +166,16 @@ public class FilterScript : MonoBehaviour {
 			case 4:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
 				g.GetComponent<CardScript> ().CardID = 4;
-				g.GetComponent<CardScript> ().efeito = "Magia";
-				g.GetComponent<CardScript> ().personagem = "Todos";
-				g.GetComponent<CardScript> ().cardname = "Terremoto";
-				g.GetComponent<CardScript> ().descrition = "Deixa Tropas Inimigas Lentas";
-				g.GetComponent<CardScript> ().cost = "10";
-				g.GetComponent<CardScript> ().damage = "2";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
+				g.GetComponent<CardScript> ().efeito = "Unidade";
+				g.GetComponent<CardScript> ().personagem = "Monica";
+				g.GetComponent<CardScript> ().cardname = "Bidu";
+				g.GetComponent<CardScript> ().descrition = "Chama a unidade Bidu para ajudar";
+				g.GetComponent<CardScript> ().cost = "25";
+				g.GetComponent<CardScript> ().Gemcost = "5";
+				g.GetComponent<CardScript> ().damage = "1";
+				g.GetComponent<CardScript> ().efect.sprite = Efects[1];
 				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
+				g.GetComponent<CardScript> ().peson = Persons[1];
 				g.transform.SetParent (this.transform,false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
 				if (CardShop)
@@ -181,13 +185,14 @@ public class FilterScript : MonoBehaviour {
 			case 5:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
 				g.GetComponent<CardScript> ().CardID = 5;
-				g.GetComponent<CardScript> ().efeito = "Magia";
+				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Todos";
-				g.GetComponent<CardScript> ().cardname = "Hora da Soneca";
-				g.GetComponent<CardScript> ().descrition = "Para Tropas Inimigas";
-				g.GetComponent<CardScript> ().cost = "10";
-				g.GetComponent<CardScript> ().damage = "2";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
+				g.GetComponent<CardScript> ().cardname = "Penadinho";
+				g.GetComponent<CardScript> ().descrition = "Chama a unidade Penadinho para ajudar";
+				g.GetComponent<CardScript> ().cost = "100";
+				g.GetComponent<CardScript> ().Gemcost = "50";
+				g.GetComponent<CardScript> ().damage = "1";
+				g.GetComponent<CardScript> ().efect.sprite = Efects[1];
 				g.GetComponent<CardScript> ().image = Images[cardID];
 				g.GetComponent<CardScript> ().peson = Persons[0];
 				g.transform.SetParent (this.transform,false);
@@ -199,13 +204,14 @@ public class FilterScript : MonoBehaviour {
 			case 6:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
 				g.GetComponent<CardScript> ().CardID = 6;
-				g.GetComponent<CardScript> ().efeito = "Magia";
+				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Todos";
-				g.GetComponent<CardScript> ().cardname = "Remédio";
-				g.GetComponent<CardScript> ().descrition = "Cura seu heroi";
-				g.GetComponent<CardScript> ().cost = "10";
-				g.GetComponent<CardScript> ().damage = "0";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
+				g.GetComponent<CardScript> ().cardname = "Alfredo";
+				g.GetComponent<CardScript> ().descrition = "Chama a unidade Alfredo para ajudar";
+				g.GetComponent<CardScript> ().cost = "150";
+				g.GetComponent<CardScript> ().Gemcost = "125";
+				g.GetComponent<CardScript> ().damage = "2";
+				g.GetComponent<CardScript> ().efect.sprite = Efects[1];
 				g.GetComponent<CardScript> ().image = Images[cardID];
 				g.GetComponent<CardScript> ().peson = Persons[0];
 				g.transform.SetParent (this.transform,false);

@@ -222,6 +222,12 @@ public class GemScript : MonoBehaviour {
 
 	}
 
+	public void EnableSingleGem(){
+		this.enabled = true;
+		ActualGem = AvaiaBleGems [0];
+		ActualGem.SetActive (true);
+	}
+
 	public void EnableRandomGem(){
 		if (team == 1) {
 			//ActualGem = AvaiaBleGems [Random.Range (0, AvaiaBleGems.Length - 1)];
