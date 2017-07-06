@@ -132,6 +132,20 @@ public class TutorialController : MonoBehaviour {
 
 	}
 
+	public void CloseConfirmation(){
+		Time.timeScale = 1;
+		foreach(GameObject o in GameObject.FindGameObjectsWithTag("herowaypoint")){
+			Destroy (o.gameObject);
+		}
+	}
+
+	public void OpenConfirmation(){
+		Time.timeScale = 0;
+		foreach(GameObject o in GameObject.FindGameObjectsWithTag("herowaypoint")){
+			Destroy (o.gameObject);
+		}
+	}
+
 	public void CallScene(string scene){
 		Time.timeScale = 1;
 		if (scene == "quit") {

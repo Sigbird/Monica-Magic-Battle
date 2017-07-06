@@ -490,7 +490,7 @@ public class WPSoldierControler : MonoBehaviour {
 					anim.SetTrigger ("Attack");
 					StartCoroutine (DealDamage ());
 				} else {
-					danoCD += Time.deltaTime * 2;
+					//danoCD += Time.deltaTime * 2;
 				}
 			}
 		} else { // ALVO SUMIU OU MORREU
@@ -499,7 +499,7 @@ public class WPSoldierControler : MonoBehaviour {
 					Destroy (GameObject.Find ("MovementMarker(Clone)").gameObject);
 			}
 		} 
-
+		danoCD += Time.deltaTime * 2;
 		//ANIMACAODE TIRO DE PROJETEIS
 		//					if (inCombat == true && arrowSlot != null && this.Tipo == TipoSoldado.Lanceiro && targetEnemy != null) {
 		//						if (Vector3.Distance (arrowSlot.transform.position, targetEnemy.transform.position) > 0.1f && targetEnemy != null) {

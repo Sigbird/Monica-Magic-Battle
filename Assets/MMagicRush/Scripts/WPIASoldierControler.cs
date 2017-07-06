@@ -572,17 +572,18 @@ public class WPIASoldierControler : MonoBehaviour {
 					anim.SetTrigger ("Attack");
 					StartCoroutine (DealDamage ());
 				} else {
-					if (tutorial) {
-						danoCD += Time.deltaTime * 20;
-					} else {
-						danoCD += Time.deltaTime * 10;
-					}
+//					if (tutorial) {
+//						danoCD += Time.deltaTime * 20;
+//					} else {
+//						danoCD += Time.deltaTime * 10;
+//					}
 				}
 			} 
 		} else if(this.targetEnemy == null)  {
 			Twist (0);
 		}
 
+		danoCD += Time.deltaTime * 10;
 		//EVENTOS DE IA
 
 //		if (Vector2.Distance (GameObject.Find ("HeroBaseEnemy").transform.position, transform.position) <= 0.3f) {

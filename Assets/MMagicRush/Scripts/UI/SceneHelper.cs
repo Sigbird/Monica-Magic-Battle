@@ -61,7 +61,7 @@ public class SceneHelper : MonoBehaviour {
 			coinsText.text = "0";
 		}
 
-		if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length >= 14 && tutorial == true) {
+		if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length >= 12 && tutorial == true) {
 			TutorialPanels [1].SetActive (false);
 			TutorialPanels [2].SetActive (true);
  		}

@@ -67,26 +67,6 @@ public class CardInfoScript : MonoBehaviour {
 		
 		switch (cardID) {
 		case 1:
-			cardname.text = "Estalo Magico";
-			descrition.text = "Aplica um de dano em uma unidade ininimga";
-			cost.text = "10";
-			damage.text = "1";
-			efect.sprite = Efects [0];
-			image.sprite = Images [cardID];
-			ImageAnimated.SetActive (true);
-			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill1",true);
-			character.sprite = Persons [0];
-			break;
-		case 2:
-			cardname.text = "Explosão Magica";
-			descrition.text = "Aplica dois de dano em todas unidades ininimgas";
-			cost.text = "10";
-			damage.text = "2";
-			efect.sprite = Efects[0];
-			image.sprite = Images[cardID];
-			character.sprite = Persons[0];
-			break;
-		case 3:
 			cardname.text = "Nevasca";
 			descrition.text = "Aplica dois de dano em todas unidades ininimgas";
 			cost.text = "25";
@@ -97,32 +77,91 @@ public class CardInfoScript : MonoBehaviour {
 			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill2",true);
 			character.sprite = Persons[0];
 			break;
-		case 4:
-			cardname.text = "Terremoto";
-			descrition.text = "Deixa Tropas Inimigas Lentas";
-			cost.text = "50";
-			damage.text = "2";
-			efect.sprite = Efects[0];
-			image.sprite = Images[cardID];
-			character.sprite = Persons[0];
+		case 2:
+			cardname.text = "Estalo Magico";
+			descrition.text = "Aplica um de dano em uma unidade ininimga";
+			cost.text = "10";
+			damage.text = "1";
+			efect.sprite = Efects [0];
+			image.sprite = Images [cardID];
+			ImageAnimated.SetActive (true);
+			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill1",true);
+			character.sprite = Persons [0];
+//			cardname.text = "Explosão Magica";
+//			descrition.text = "Aplica dois de dano em todas unidades ininimgas";
+//			cost.text = "10";
+//			damage.text = "2";
+//			efect.sprite = Efects[0];
+//			image.sprite = Images[cardID];
+//			character.sprite = Persons[0];
 			break;
-		case 5:
-			cardname.text = "Hora da Soneca";
-			descrition.text = "Para Tropas Inimigas";
+		case 3:
+			cardname.text = "Canja de Galinha";
+			descrition.text = "Cura toda sua tropa";
 			cost.text = "75";
-			damage.text = "2";
-			efect.sprite = Efects[0];
-			image.sprite = Images[cardID];
-			character.sprite = Persons[0];
-			break;
-		case 6:
-			cardname.text = "Remédio";
-			descrition.text = "Cura seu heroi";
-			cost.text = "5";
 			damage.text = "0";
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
+			ImageAnimated.SetActive (true);
+			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill3",true);
 			character.sprite = Persons[0];
+//			cardname.text = "Nevasca";
+//			descrition.text = "Aplica dois de dano em todas unidades ininimgas";
+//			cost.text = "25";
+//			damage.text = "2";
+//			efect.sprite = Efects [0];
+//			image.sprite = Images [cardID];
+//			ImageAnimated.SetActive (true);
+//			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill2",true);
+//			character.sprite = Persons[0];
+			break;
+		case 4:
+			cardname.text = "Bidu";
+			descrition.text = "Chama a unidade Bidu para ajudar";
+			cost.text = "5";
+			damage.text = "1";
+			efect.sprite = Efects[1];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[1];
+//			cardname.text = "Terremoto";
+//			descrition.text = "Deixa Tropas Inimigas Lentas";
+//			cost.text = "50";
+//			damage.text = "2";
+//			efect.sprite = Efects[0];
+//			image.sprite = Images[cardID];
+//			character.sprite = Persons[0];
+			break;
+		case 5:
+			cardname.text = "Penadinho";
+			descrition.text = "Chama a unidade Penadinho para ajudar";
+			cost.text = "50";
+			damage.text = "1";
+			efect.sprite = Efects[1];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+//			cardname.text = "Hora da Soneca";
+//			descrition.text = "Para Tropas Inimigas";
+//			cost.text = "75";
+//			damage.text = "2";
+//			efect.sprite = Efects[0];
+//			image.sprite = Images[cardID];
+//			character.sprite = Persons[0];
+			break;
+		case 6:
+			cardname.text = "Alfredo";
+			descrition.text = "Chama a unidade Alfredo para ajudar";
+			cost.text = "125";
+			damage.text = "2";
+			efect.sprite = Efects[1];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[0];
+//			cardname.text = "Remédio";
+//			descrition.text = "Cura seu heroi";
+//			cost.text = "5";
+//			damage.text = "0";
+//			efect.sprite = Efects[0];
+//			image.sprite = Images[cardID];
+//			character.sprite = Persons[0];
 			break;
 		case 7:
 			cardname.text = "Canja de Galinha";

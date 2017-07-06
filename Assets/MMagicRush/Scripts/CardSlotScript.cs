@@ -72,10 +72,24 @@ public class CardSlotScript : MonoBehaviour {
 	//PlayerHero
 	public SoldierControler PlayerHero;
 
+	private Color defaultUiBG;
+	private Color defaultUIilustration;
+	private Color defaultUIilustrationAnim;
+	private Color defaultUIframe;
+	private Color defaultUUIribbon;
+	private Color defaultUIgems;
+
 
 	private bool projectileCreated;
 	// Use this for initialization
 	void Start () {
+		defaultUiBG = Uibg.color;
+		defaultUIilustration = UIilustration.color; 
+		defaultUIilustrationAnim = UIilustrationAnim.color;
+		defaultUIframe = UIframe.color;
+		defaultUUIribbon = UIribbon.color;
+		defaultUIgems = UIgems.color;
+
 		cardInfo = GameObject.Find ("GameController").GetComponent<GameController> ().cardInfo;
 		//Pegar lista de cartas via playerprefs
 //		cardlistIngame = PlayerPrefsX.GetIntArray ("CardsList");
@@ -836,43 +850,115 @@ public class CardSlotScript : MonoBehaviour {
 		case 0:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.2f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
+				Uibg.color = defaultUiBG;
+				UIilustration.color = defaultUIilustration;
+				UIilustrationAnim.color = defaultUIilustrationAnim;
+				UIframe.color = defaultUIframe;
+				UIribbon.color = defaultUUIribbon;
+				UIgems.color = defaultUIgems;
 			} else {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.2f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
+				Uibg.color = Color.gray;
+				UIilustration.color = Color.gray;
+				UIilustrationAnim.color = Color.gray;
+				UIframe.color = Color.gray;
+				UIribbon.color = Color.gray;
+				UIgems.color = Color.gray;	
 			}
 			break;
 		case 10:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x - 0.05f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
+				Uibg.color = defaultUiBG;
+				UIilustration.color = defaultUIilustration;
+				UIilustrationAnim.color = defaultUIilustrationAnim;
+				UIframe.color = defaultUIframe;
+				UIribbon.color = defaultUUIribbon;
+				UIgems.color = defaultUIgems;
 			} else {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x - 0.05f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
+				Uibg.color = Color.gray;
+				UIilustration.color = Color.gray;
+				UIilustrationAnim.color = Color.gray;
+				UIframe.color = Color.gray;
+				UIribbon.color = Color.gray;
+				UIgems.color = Color.gray;	
 			}
 			break;
 		case 20:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 1.1f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
+				Uibg.color = defaultUiBG;
+				UIilustration.color = defaultUIilustration;
+				UIilustrationAnim.color = defaultUIilustrationAnim;
+				UIframe.color = defaultUIframe;
+				UIribbon.color = defaultUUIribbon;
+				UIgems.color = defaultUIgems;
 			} else {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 1.1f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
+				Uibg.color = Color.gray;
+				UIilustration.color = Color.gray;
+				UIilustrationAnim.color = Color.gray;
+				UIframe.color = Color.gray;
+				UIribbon.color = Color.gray;
+				UIgems.color = Color.gray;	
 			}
 			break;
 		case 30:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 2.25f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
+				Uibg.color = defaultUiBG;
+				UIilustration.color = defaultUIilustration;
+				UIilustrationAnim.color = defaultUIilustrationAnim;
+				UIframe.color = defaultUIframe;
+				UIribbon.color = defaultUUIribbon;
+				UIgems.color = defaultUIgems;
 			} else {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 2.25f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
+				Uibg.color = Color.gray;
+				UIilustration.color = Color.gray;
+				UIilustrationAnim.color = Color.gray;
+				UIframe.color = Color.gray;
+				UIribbon.color = Color.gray;
+				UIgems.color = Color.gray;	
 			}
 			break;
 		case 40:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -0.3f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
+				Uibg.color = defaultUiBG;
+				UIilustration.color = defaultUIilustration;
+				UIilustrationAnim.color = defaultUIilustrationAnim;
+				UIframe.color = defaultUIframe;
+				UIribbon.color = defaultUUIribbon;
+				UIgems.color = defaultUIgems;
 			} else {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -0.3f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
+				Uibg.color = Color.gray;
+				UIilustration.color = Color.gray;
+				UIilustrationAnim.color = Color.gray;
+				UIframe.color = Color.gray;
+				UIribbon.color = Color.gray;
+				UIgems.color = Color.gray;	
 			}
 			break;
 		case 50:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (0.3f, -4), Time.deltaTime * 3);
+				Uibg.color = defaultUiBG;
+				UIilustration.color = defaultUIilustration;
+				UIilustrationAnim.color = defaultUIilustrationAnim;
+				UIframe.color = defaultUIframe;
+				UIribbon.color = defaultUUIribbon;
+				UIgems.color = defaultUIgems;
 			} else {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (0.3f, -4.1f), Time.deltaTime * 3);
+				Uibg.color = Color.gray;
+				UIilustration.color = Color.gray;
+				UIilustrationAnim.color = Color.gray;
+				UIframe.color = Color.gray;
+				UIribbon.color = Color.gray;
+				UIgems.color = Color.gray;
 			}
 			break;
 		default:
