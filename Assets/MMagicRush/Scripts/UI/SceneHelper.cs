@@ -105,7 +105,7 @@ public class SceneHelper : MonoBehaviour {
 
 	void OnApplicationQuit(){
 		PlayerPrefs.SetInt ("Lesson", 1);
-//		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
-//		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
+		//PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
+		//PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
 	}
 }

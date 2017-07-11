@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class CardInfoScript : MonoBehaviour {
-
+	public bool cardStore;
 	public Text cardname;
 	public Text descrition;
 	public Text Gemcost;
@@ -15,6 +15,9 @@ public class CardInfoScript : MonoBehaviour {
 	public GameObject ImageAnimated;
 	public Image character;
 	public GameObject lastCard;
+	public GameObject cardPurchasedButton;
+	public Button purchaseButton;
+
 
 	public Sprite[] Efects;
 	public Sprite[] Images;
@@ -51,6 +54,17 @@ public class CardInfoScript : MonoBehaviour {
 			enableButton.GetComponent<Button> ().interactable = true;
 		}
 
+		if (cardStore == true) {
+			cardPurchasedButton.SetActive (false);
+			purchaseButton.interactable = true;
+			foreach (int x in PlayerPrefsX.GetIntArray ("PlayerCardsIDs")) {
+				if (x == o.GetComponent<CardScript> ().CardID) {
+					cardPurchasedButton.SetActive (true);
+					purchaseButton.interactable = false;
+				}
+			}
+		}
+
 		if(enableButton != null && disableButton != null)
 		if (o.GetComponent<CardScript> ().isactivebutton) {
 			enableButton.SetActive (true);
@@ -64,6 +78,12 @@ public class CardInfoScript : MonoBehaviour {
 	}
 
 	public void DisplayCard(int cardID){ // INGAME CARD INFO
+		cardPurchasedButton.SetActive (false);
+		foreach (int x in PlayerPrefsX.GetIntArray ("PlayerCardsIDs")) {
+			if (x == cardID) {
+				cardPurchasedButton.SetActive (true);
+			}
+		}
 		
 		switch (cardID) {
 		case 1:
