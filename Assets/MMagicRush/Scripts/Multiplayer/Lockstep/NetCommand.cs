@@ -28,17 +28,16 @@ namespace YupiPlay.MMB.Lockstep {
         public const string SPELL = "SPELL";
 
         protected string Command = TURN;
-        protected long Turn      = 1;
+        protected ulong Turn      = 1;
 
-        public NetCommand(long turn, string command) {
-            Command = command;
-            Turn    = turn;
-        }
+        public NetCommand(ulong turn) {
+            Turn = turn;
+        }        
 
         public string GetCommand() {
             return Command;
         }
-        public long GetTurn() {
+        public ulong GetTurn() {
             return Turn;
         }
 

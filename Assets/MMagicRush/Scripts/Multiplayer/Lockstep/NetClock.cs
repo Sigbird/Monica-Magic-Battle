@@ -2,6 +2,7 @@
 using UnityEngine;
 using YupiPlay.MMB.Lockstep;
 using System.Collections.Generic;
+using System;
 
 namespace YupiPlay.MMB.LockStep {
 
@@ -10,10 +11,10 @@ namespace YupiPlay.MMB.LockStep {
 
         public static NetClock Instance = null;
 
-        private long Turn = 1;
+        private ulong Turn = 1;
         private Coroutine ClockCoroutine = null;
         private bool IsClockRunning = false;
-        private NetIOQueue Queue = null;
+        private CommandBuffer Queue = null;
 
         private void Awake() {
             if (Instance == null) {
@@ -29,10 +30,10 @@ namespace YupiPlay.MMB.LockStep {
             while (IsClockRunning) {                               
                 yield return new WaitForSecondsRealtime(TurnTime);
 
-                AddTurnToQueue(Turn);
+                AddTurnToCmdBuffer(Turn);
                 SendTurn(Turn);
 
-                if (Turn - 2 > 2) {
+                if (Turn > 2) {
                     PlayTurn(Turn - 2);
                 }
 
@@ -41,7 +42,7 @@ namespace YupiPlay.MMB.LockStep {
         }
 
         public void StartClock() {
-            Queue = NetIOQueue.Instance;
+            Queue = CommandBuffer.Instance;
             ClockCoroutine = StartCoroutine(RunClock());
         }
 
@@ -50,23 +51,34 @@ namespace YupiPlay.MMB.LockStep {
             StopCoroutine(ClockCoroutine);
         }
 
-        public long GetTurn() {
+        public ulong GetTurn() {
             return Turn;
         }
 
-        private void AddTurnToQueue(long turn) {
-            NetCommand cmd = new NetCommand(turn, NetCommand.TURN);
-            Queue.AddToOut(cmd);
+        private void AddTurnToCmdBuffer(ulong turn) {
+            Debug.Log("Input Turn:" + turn);
+            Queue.AddToOut(new NetCommand(turn));
         }
 
-        private void PlayTurn(long turn) {
+        private void PlayTurn(ulong turn) {
             Debug.Log("Playing Turn:" + turn);
             //notify objects to Play Turn;
+
+            //test command buffer
+            List<NetCommand> cmds = Queue.GetOutCommandsForTurn(turn);
+            foreach (NetCommand cmd in cmds) {
+                if (cmd.GetCommand() == NetCommand.MOVE) {
+                    if (cmd.GetType() == typeof(MoveCommand)) {
+                        MoveCommand moveCmd = (MoveCommand)cmd;
+                        Debug.Log(moveCmd);
+                    }
+                }
+            }
         }
 
-        private void SendTurn(long turn) {
-            List<NetCommand> cmds = Queue.GetOutCommandsForTurn(turn);
-            Debug.Log("Sending Turn: " + turn);
+        private void SendTurn(ulong turn) {
+            List<NetCommand> cmds = Queue.GetOutCommandsForTurn(turn);           
+            
         }
 
         // Use this for initialization
