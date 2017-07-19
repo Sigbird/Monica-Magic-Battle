@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace YupiPlay.MMB.Lockstep {
-    class NetCommand {
+    public class NetCommand {
         public const string TURN = "TURN";        
 
         //HELLO mensagem inical

@@ -11,6 +11,10 @@ namespace YupiPlay.MMB.Lockstep {
             Position = position;
         }
 
+        public Vector2 GetPosition() {
+            return Position;
+        }
+
         override public string ToString() {
             return "Turn: " + Turn + ", " + "Cmd: " + Command + ", " + "Pos: " + Position;
         }

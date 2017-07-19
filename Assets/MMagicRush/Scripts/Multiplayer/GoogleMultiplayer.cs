@@ -83,6 +83,10 @@ namespace YupiPlay {
         public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {
 			netSM.RealTimeMessageReceived(isReliable, senderId, data);
         }
+
+        public void SendMessageToAll(byte[] data) {
+            PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, data);
+        }
     }
 }
 #endif

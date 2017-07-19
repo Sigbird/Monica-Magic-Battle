@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using YupiPlay.MMB.Lockstep;
 using UnityEngine;
-using System.Text;
-using System;
+using System.Collections.Generic;
 
 namespace YupiPlay {
 	public class NetworkSessionManager {
@@ -150,6 +148,12 @@ namespace YupiPlay {
 				OnNetPrint(message);
 			}
 		}
+
+        public void SendMessage(List<NetCommand> commands) {            
+            byte[] data = NetSerializer.Serialize(commands);
+            
+
+        }
 	}
 }
 
