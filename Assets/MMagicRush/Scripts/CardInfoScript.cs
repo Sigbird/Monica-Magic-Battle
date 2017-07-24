@@ -17,6 +17,7 @@ public class CardInfoScript : MonoBehaviour {
 	public GameObject lastCard;
 	public GameObject cardPurchasedButton;
 	public Button purchaseButton;
+	public GameObject MinCardsWarning;
 
 
 	public Sprite[] Efects;
@@ -57,6 +58,7 @@ public class CardInfoScript : MonoBehaviour {
 		if (cardStore == true) {
 			cardPurchasedButton.SetActive (false);
 			purchaseButton.interactable = true;
+			Debug.Log (o.GetComponent<CardScript> ().CardID);
 			foreach (int x in PlayerPrefsX.GetIntArray ("PlayerCardsIDs")) {
 				if (x == o.GetComponent<CardScript> ().CardID) {
 					cardPurchasedButton.SetActive (true);
@@ -78,10 +80,12 @@ public class CardInfoScript : MonoBehaviour {
 	}
 
 	public void DisplayCard(int cardID){ // INGAME CARD INFO
-		cardPurchasedButton.SetActive (false);
-		foreach (int x in PlayerPrefsX.GetIntArray ("PlayerCardsIDs")) {
-			if (x == cardID) {
-				cardPurchasedButton.SetActive (true);
+		if (cardPurchasedButton != null) {
+			cardPurchasedButton.SetActive (false);
+			foreach (int x in PlayerPrefsX.GetIntArray ("PlayerCardsIDs")) {
+				if (x == cardID) {
+					cardPurchasedButton.SetActive (true);
+				}
 			}
 		}
 		
@@ -136,13 +140,13 @@ public class CardInfoScript : MonoBehaviour {
 //			character.sprite = Persons[0];
 			break;
 		case 4:
-			cardname.text = "Bidu";
-			descrition.text = "Chama a unidade Bidu para ajudar";
-			cost.text = "5";
-			damage.text = "1";
-			efect.sprite = Efects[1];
+			cardname.text = "Explosão Magica";
+			descrition.text = "Aplica dois de dano em todas unidades ininimgas";
+			cost.text = "10";
+			damage.text = "2";
+			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
-			character.sprite = Persons[1];
+			character.sprite = Persons[0];
 //			cardname.text = "Terremoto";
 //			descrition.text = "Deixa Tropas Inimigas Lentas";
 //			cost.text = "50";
@@ -152,11 +156,11 @@ public class CardInfoScript : MonoBehaviour {
 //			character.sprite = Persons[0];
 			break;
 		case 5:
-			cardname.text = "Penadinho";
-			descrition.text = "Chama a unidade Penadinho para ajudar";
+			cardname.text = "Terremoto";
+			descrition.text = "Deixa Tropas Inimigas Lentas";
 			cost.text = "50";
-			damage.text = "1";
-			efect.sprite = Efects[1];
+			damage.text = "2";
+			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[0];
 //			cardname.text = "Hora da Soneca";
@@ -168,11 +172,11 @@ public class CardInfoScript : MonoBehaviour {
 //			character.sprite = Persons[0];
 			break;
 		case 6:
-			cardname.text = "Alfredo";
-			descrition.text = "Chama a unidade Alfredo para ajudar";
-			cost.text = "125";
+			cardname.text = "Hora da Soneca";
+			descrition.text = "Para Tropas Inimigas";
+			cost.text = "75";
 			damage.text = "2";
-			efect.sprite = Efects[1];
+			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[0];
 //			cardname.text = "Remédio";
@@ -184,14 +188,12 @@ public class CardInfoScript : MonoBehaviour {
 //			character.sprite = Persons[0];
 			break;
 		case 7:
-			cardname.text = "Canja de Galinha";
-			descrition.text = "Cura toda sua tropa";
-			cost.text = "75";
+			cardname.text = "Remédio";
+			descrition.text = "Cura seu heroi";
+			cost.text = "5";
 			damage.text = "0";
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
-			ImageAnimated.SetActive (true);
-			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill3",true);
 			character.sprite = Persons[0];
 			break;
 		case 8:
@@ -450,7 +452,7 @@ public class CardInfoScript : MonoBehaviour {
 
 		int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
 
-		if (original.Length > 5) {
+		if (original.Length > 14) {
 
 			List<int> iList = new List<int> ();
 
@@ -473,6 +475,8 @@ public class CardInfoScript : MonoBehaviour {
 			DeactiveCard ();
 			Destroy (lastCard.gameObject);
 			this.gameObject.SetActive (false);
+		} else {
+			MinCardsWarning.SetActive (true);
 		}
 	}
 
@@ -553,15 +557,17 @@ public class CardInfoScript : MonoBehaviour {
 	}
 
 	public void ActivateEffect(){
-		Time.timeScale = 1;
-		WPScript.UIopen = false;
-		lastCard.GetComponent<CardSlotScript> ().ActivateCardEffect ();
-		lastCard.GetComponent<CardSlotScript> ().UpdateCard ();
-		ImageAnimated.GetComponent<Animator> ().SetBool ("Skill1",false);
-		ImageAnimated.GetComponent<Animator> ().SetBool ("Skill2",false);
-		ImageAnimated.GetComponent<Animator> ().SetBool ("Skill3",false);
-		ImageAnimated.SetActive (false);
-		this.gameObject.SetActive (false);
+		if (lastCard.GetComponent<CardSlotScript> ().cardCost < GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+			Time.timeScale = 1;
+			WPScript.UIopen = false;
+			lastCard.GetComponent<CardSlotScript> ().ActivateCardEffect ();
+			lastCard.GetComponent<CardSlotScript> ().UpdateCard ();
+			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill1", false);
+			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill2", false);
+			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill3", false);
+			ImageAnimated.SetActive (false);
+			this.gameObject.SetActive (false);
+		}
 	}
 
 }

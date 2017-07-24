@@ -268,24 +268,22 @@ public class WPIASoldierControler : MonoBehaviour {
 		}
 
 		// COLISÕES COM TROPAS E ADVERSÁRIOS
-
-		foreach (GameObject obstacle in GameObject.FindGameObjectsWithTag("CharacterBound")) {
-			if (CharBound.bounds.Intersects (obstacle.GetComponent<SpriteRenderer> ().bounds) && obstacle != this.CharBound.transform.gameObject) {
-				if (this.CharBound.transform.position.x > obstacle.transform.position.x) {
-					transform.Translate (Vector3.right * Time.deltaTime * 0.5f);
-				} else {
-					transform.Translate (Vector3.left * Time.deltaTime * 0.5f);
-				}
-				if (this.CharBound.transform.position.y > obstacle.transform.position.y) {
-					transform.Translate (Vector3.up * Time.deltaTime * 0.5f);
-				} else {
-					transform.Translate (Vector3.down * Time.deltaTime * 0.5f);
-				}
-
-			}
-
-		}
-
+//			foreach (GameObject obstacle in GameObject.FindGameObjectsWithTag("CharacterBound")) {
+//				if (CharBound.bounds.Intersects (obstacle.GetComponent<SpriteRenderer> ().bounds) && obstacle != this.CharBound.transform.gameObject) {
+//					if (this.CharBound.transform.position.x > obstacle.transform.position.x) {
+//						transform.Translate (Vector3.right * Time.deltaTime * 0.5f);
+//					} else {
+//						transform.Translate (Vector3.left * Time.deltaTime * 0.5f);
+//					}
+//					if (this.CharBound.transform.position.y > obstacle.transform.position.y) {
+//						transform.Translate (Vector3.up * Time.deltaTime * 0.5f);
+//					} else {
+//						transform.Translate (Vector3.down * Time.deltaTime * 0.5f);
+//					}
+//
+//				}
+//
+//			}
 
 		//ALTERAÇÔES DE CHANCE DE ESCOLHAS NO TWIST
 
@@ -569,6 +567,7 @@ public class WPIASoldierControler : MonoBehaviour {
 					Destroy (targetEnemy.transform.Find ("MovementMarker(Clone)").gameObject);
 				
 				if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
+					danoCD = 0;
 					anim.SetTrigger ("Attack");
 					StartCoroutine (DealDamage ());
 				} else {
@@ -583,7 +582,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			Twist (0);
 		}
 
-		danoCD += Time.deltaTime * 10;
+		danoCD += Time.deltaTime * 5;
 		//EVENTOS DE IA
 
 //		if (Vector2.Distance (GameObject.Find ("HeroBaseEnemy").transform.position, transform.position) <= 0.3f) {
@@ -1070,6 +1069,20 @@ public class WPIASoldierControler : MonoBehaviour {
 					}
 				}
 			} 
+			if (GameObject.FindGameObjectsWithTag ("enemytower2") != null) {//PROCURA BASE
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower2")) {
+					float dist = Vector3.Distance (transform.position, obj.transform.position);
+					if (dist <= reach) {
+						if (dist < minDis) {
+							if (obj.GetComponent<ChargesScript> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+								Emin = obj;
+								minDis = dist;
+							}
+						}
+					}
+				}
+			}
+
 
 
 		} else if (this.tag == "enemysoldier2") { //Procura de Jogador 2
@@ -1101,6 +1114,19 @@ public class WPIASoldierControler : MonoBehaviour {
 					}
 				}
 			}
+			if (GameObject.FindGameObjectsWithTag ("enemytower1") != null) {//PROCURA BASE
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower1")) {
+					float dist = Vector3.Distance (transform.position, obj.transform.position);
+					if (dist <= reach) {
+						if (dist < minDis) {
+							if (obj.GetComponent<ChargesScript> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+								Emin = obj;
+								minDis = dist;
+							}
+						}
+					}
+				}
+			}
 
 		}
 		return Emin;
@@ -1109,8 +1135,8 @@ public class WPIASoldierControler : MonoBehaviour {
 	IEnumerator DealDamage(){
 		danoCD = 0;
 		yield return new WaitForSeconds (0.5f);
-		if (targetEnemy != null) {
-			if (targetEnemy.GetComponent<WPSoldierControler> () != null) {//ALVO HEROI
+		if (targetEnemy != null && danoCD > damageSpeed) {
+			if (targetEnemy.GetComponent<WPSoldierControler> () != null && danoCD > damageSpeed) {//ALVO HEROI
 				//targetEnemy.GetComponent<WPSoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<WPSoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
@@ -1120,7 +1146,7 @@ public class WPIASoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					//lockedTarget = false;
 				}
-			} else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
+			} else if (targetEnemy.GetComponent<SoldierControler> () != null && danoCD > damageSpeed) {//ALVO TROPA
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
@@ -1130,7 +1156,17 @@ public class WPIASoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					//lockedTarget = false;
 				}
-			} else {//ALVO BASE
+			} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//ALVO TROPA
+					//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
+					//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
+					targetEnemy.GetComponent<ChargesScript> ().progress += 0.3f;
+					if (this.range > 1)
+						TrowArrow ();
+					//				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
+					//					this.targetEnemy = null;
+					//					lockedTarget = false;
+					//				}
+				//ALVO BASE
 				//							if(targetEnemy.tag == "waypoint"){
 				//								if (Progress == 2) {
 				//									if (heroUnity) {

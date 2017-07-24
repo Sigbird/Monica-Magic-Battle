@@ -255,14 +255,14 @@ public class WPSoldierControler : MonoBehaviour {
 		foreach (GameObject obstacle in GameObject.FindGameObjectsWithTag("CharacterBound")) {
 			if (CharBound.bounds.Intersects (obstacle.GetComponent<SpriteRenderer> ().bounds) && obstacle != this.CharBound.transform.gameObject) {
 				if (this.CharBound.transform.position.x > obstacle.transform.position.x) {
-					transform.Translate (Vector3.right * Time.deltaTime * 0.5f);
+					transform.Translate (Vector3.right * Time.deltaTime * 1f);
 				} else {
-					transform.Translate (Vector3.left * Time.deltaTime * 0.5f);
+					transform.Translate (Vector3.left * Time.deltaTime * 1f);
 				}
 				if (this.CharBound.transform.position.y > obstacle.transform.position.y) {
-					transform.Translate (Vector3.up * Time.deltaTime * 0.5f);
+					transform.Translate (Vector3.up * Time.deltaTime * 1f);
 				} else {
-					transform.Translate (Vector3.down * Time.deltaTime * 0.5f);
+					transform.Translate (Vector3.down * Time.deltaTime * 1f);
 				}
 
 			}
@@ -282,6 +282,9 @@ public class WPSoldierControler : MonoBehaviour {
 			this.speed = 0;
 			Instantiate (deathAngel, this.transform.position, Quaternion.identity).transform.parent = this.transform;
 			GameObject.Find ("RespawnTimerHero").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
+			foreach (GameObject o in GameObject.FindGameObjectsWithTag("herowaypoint")) {
+				Destroy (o.gameObject);
+			}
 			StartCoroutine (Respawning ());
 			audioManager.PlayAudio ("death");
 		} else if(this.vida <= 0) {
@@ -986,6 +989,19 @@ public class WPSoldierControler : MonoBehaviour {
 					}
 				}
 			} 
+			if (GameObject.FindGameObjectsWithTag ("enemytower2") != null) {//PROCURA BASE
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower2")) {
+						float dist = Vector3.Distance (transform.position, obj.transform.position);
+						if (dist <= reach) {
+							if (dist < minDis) {
+								if (obj.GetComponent<ChargesScript> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+									Emin = obj;
+									minDis = dist;
+								}
+							}
+						}
+				}
+			} 
 		
 
 		} else if (this.tag == "enemysoldier2") { //Procura de Jogador 2
@@ -1012,6 +1028,20 @@ public class WPSoldierControler : MonoBehaviour {
 									Emin = obj;
 									minDis = dist;
 								}
+							}
+						}
+					}
+				}
+			}
+
+			if (GameObject.FindGameObjectsWithTag ("enemytower1") != null) {//PROCURA BASE
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower1")) {
+					float dist = Vector3.Distance (transform.position, obj.transform.position);
+					if (dist <= reach) {
+						if (dist < minDis) {
+							if (obj.GetComponent<ChargesScript> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+								Emin = obj;
+								minDis = dist;
 							}
 						}
 					}
@@ -1046,7 +1076,17 @@ public class WPSoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					lockedTarget = false;
 				}
-			} else {//ALVO BASE
+			} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//ALVO TROPA
+				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
+				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
+				targetEnemy.GetComponent<ChargesScript> ().progress += 0.3f;
+				if (this.range > 1)
+					TrowArrow ();
+//				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
+//					this.targetEnemy = null;
+//					lockedTarget = false;
+//				}
+				//ALVO BASE
 				//							if(targetEnemy.tag == "waypoint"){
 				//								if (Progress == 2) {
 				//									if (heroUnity) {

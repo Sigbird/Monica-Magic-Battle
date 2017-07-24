@@ -34,10 +34,12 @@ public class ArrowScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Vector3.Distance (this.transform.position, target.transform.position) < 1f || target.GetComponent<ChargesScript> () != null || target.GetComponent<SpriteRenderer> ().enabled == false) {
-			Instantiate (HitAnimationObject,target.transform);				
-			Destroy (gameObject);
-						}
+		if (target != null) {
+			if (Vector3.Distance (this.transform.position, target.transform.position) < 1f || target.GetComponent<ChargesScript> () != null || target.GetComponent<SpriteRenderer> ().enabled == false) {
+				Instantiate (HitAnimationObject, target.transform);				
+				Destroy (gameObject);
+			}
+		}
 		if (target != null) {
 			Vector3 relativePos = transform.position - target.transform.position;
 

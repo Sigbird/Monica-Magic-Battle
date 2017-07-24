@@ -274,7 +274,7 @@ public class GameController : MonoBehaviour {
 	public void GiveReward(int x){
 		switch (x) {
 		case 1:
-			PlayerPrefs.SetInt ("PlayerCoins", 100);
+			PlayerPrefs.SetInt ("PlayerCoins", 1000);
 			break;
 		case 2:
 			PlayerPrefs.SetInt ("PlayerCoins", 25);
@@ -289,6 +289,14 @@ public class GameController : MonoBehaviour {
 			break;
 		}
 	}
+
+	public void GiveCard(int x){
+		int[] temp = new int[10];
+		temp [0] = x;
+//		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", temp);
+//		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", temp);
+	}
+
 
 	public void ClearGame(){
 //		PlayerPrefs.SetInt ("round",1);

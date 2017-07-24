@@ -17,7 +17,7 @@ public class ChargesScript : MonoBehaviour {
 	private bool endgame;
 
 	private GameObject[] enemies;
-	private float progress;
+	public float progress;
 	public float progressSpeed;
 
 	public GameObject VictoryScreen;
@@ -92,8 +92,8 @@ public class ChargesScript : MonoBehaviour {
 		if (this.tag == "enemytower1" && progress<1) {
 			enemies = GameObject.FindGameObjectsWithTag ("enemysoldier2");
 			foreach (GameObject en in enemies) {
-				if (Vector2.Distance (en.transform.position, this.transform.position) < 1 && en.GetComponent<SpriteRenderer>().enabled == true) {
-					progress += Time.deltaTime * progressSpeed;//0.1f
+				if (Vector2.Distance (en.transform.position, this.transform.position) < 3 && en.GetComponent<SpriteRenderer>().enabled == true) {
+					//progress += Time.deltaTime * progressSpeed;//0.1f
 					uiProgressBar.SetFloat ("Blend", progress);
 					inCombat = true;
 				} else {
@@ -104,8 +104,8 @@ public class ChargesScript : MonoBehaviour {
 		} else if (this.tag == "enemytower2"&& progress<1) {
 			enemies = GameObject.FindGameObjectsWithTag ("enemysoldier1");
 			foreach (GameObject en in enemies) {
-				if (Vector2.Distance (en.transform.position, this.transform.position) < 1  && en.GetComponent<SpriteRenderer>().enabled == true) {
-					progress += Time.deltaTime * progressSpeed;//0.1f
+				if (Vector2.Distance (en.transform.position, this.transform.position) < 3  && en.GetComponent<SpriteRenderer>().enabled == true) {
+					//progress += Time.deltaTime * progressSpeed;//0.1f
 					uiProgressBar.SetFloat ("Blend", progress);
 					inCombat = true;
 				} else {

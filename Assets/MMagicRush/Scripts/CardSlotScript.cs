@@ -19,6 +19,8 @@ public class CardSlotScript : MonoBehaviour {
 
 	public CardHistoric UIHistoric;
 
+	public Shader GrayShader;
+
 
 	//CARD INFO
 
@@ -40,6 +42,12 @@ public class CardSlotScript : MonoBehaviour {
 	public int[] empty;
 
 	public Sprite[] cardsImages;
+
+	public Sprite[] cardsImagesBW;
+
+	public Sprite[] cardFront;
+
+	public Sprite[] cardFrontBW;
 
 	public int[] cardlistIngame; 
 
@@ -244,36 +252,36 @@ public class CardSlotScript : MonoBehaviour {
 		case 1://ESTALO MAGICO
 			cardCost = 25;
 			nameText.text = "Nevasca";
-			UIilustration.sprite = cardsImages [3];
+			UIilustration.sprite = cardsImages [1];
 			break;
 		case 2://ESPLOSAO MAGICA
 			cardCost = 10;
 			nameText.text = "Estalo Magico";
-			UIilustration.sprite = cardsImages [1];
+			UIilustration.sprite = cardsImages [2];
 			break;
 		case 3://NEVASCA
 			cardCost = 75;
 			nameText.text = "Canja";
-			UIilustration.sprite = cardsImages [7];
+			UIilustration.sprite = cardsImages [3];
 			break;
 		case 4://TERREMOTO
 			cardCost = 5;
-			nameText.text = "Bidu";
-			UIilustration.sprite = cardsImages [11];
+			nameText.text = "Explosão";
+			UIilustration.sprite = cardsImages [4];
 			break;
 		case 5://HORA DA SONECA
 			cardCost = 50;
-			nameText.text = "Penadinho";
-			UIilustration.sprite = cardsImages [16];
+			nameText.text = "Terremoto";
+			UIilustration.sprite = cardsImages [5];
 			break;
 		case 6://REMEDIO
 			cardCost = 125;
-			nameText.text = "Alfredo";
-			UIilustration.sprite = cardsImages [20];
+			nameText.text = "Soneca";
+			UIilustration.sprite = cardsImages [6];
 			break;
 		case 7://CANJA
 			cardCost = 75;
-			nameText.text = "Canja";
+			nameText.text = "Remédio";
 			UIilustration.sprite = cardsImages [7];
 			break;
 		case 8://ESCUDO
@@ -435,18 +443,6 @@ public class CardSlotScript : MonoBehaviour {
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 				Destroy (this.gameObject);
 			}
-//			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
-//				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-////				if (target.GetComponent<SoldierControler> ().team == 2) {
-////					target.GetComponent<SoldierControler> ().ReceiveEffect ("extraDamage");
-////				}
-//					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
-//						if (obj.GetComponent<SoldierControler>() != null) 
-//						obj.GetComponent<SoldierControler> ().ReceiveEffect ("extraDamage");
-//					}
-//				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
-//				Destroy (this.gameObject);
-//			}
 				break;
 			case 3:// NEVASCA -> CANJA
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//CANJA
@@ -462,104 +458,66 @@ public class CardSlotScript : MonoBehaviour {
 				Destroy (this.gameObject);
 			}	
 			break;
-			case 4:// TERREMOTO -> BIDU
-			if(GameObject.Find ("GameController").GetComponent<GameController> ().tutorial == true){
-				GameObject.Find ("GameController").GetComponent<TutorialController> ().tutorialArrows.SetActive (true);
-			}
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = troop;
-			t.GetComponent<SoldierControler> ().troopId = 1;//BIDU
-			if (Movable != null) {
-				Instantiate (t, Movable.transform.position, Quaternion.identity);
-			} else {
-				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
-			}
-			//			if (Random.Range (1, 3) == 1) {
-			//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
-			//			} else {
-			//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
-			//			}
-			GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
-			Destroy (this.gameObject);
-//			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
-//				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-////				if (target.GetComponent<SoldierControler> ().team == 2) {
-////					target.GetComponent<SoldierControler> ().ReceiveEffect ("extraSlow");
-////				}
-//					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
-//						if (obj.GetComponent<SoldierControler>() != null) 
-//						obj.GetComponent<SoldierControler> ().ReceiveEffect ("extraSlow");
-//					}
-//				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
-//				Destroy (this.gameObject);
-//			}
-				break;
-			case 5:// HORA DA SONECA -> PENADINHO
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = troop;
-			t.GetComponent<SoldierControler> ().troopId = 6;//PENADINHO
-			if (Movable != null) {
-				Instantiate (t, Movable.transform.position, Quaternion.identity);
-			} else {
-				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
-			}
-			//			if (Random.Range (1, 3) == 1) {
-			//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
-			//			} else {
-			//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
-			//			}
-			GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
-			Destroy (this.gameObject);
-//			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
-//				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-////				target.GetComponent<SoldierControler> ().ReceiveEffect ("sleep");
-//					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
-//						if (obj.GetComponent<SoldierControler>() != null) 
-//						obj.GetComponent<SoldierControler> ().ReceiveEffect ("sleep");
-//					}
-//				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
-//				Destroy (this.gameObject);
-//			}
-				break;
-			case 6:// REMEDIO -> ALFREDO
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = troop;
-			t.GetComponent<SoldierControler> ().troopId = 10; //ALFREDO
-			if (Movable != null) {
-				Instantiate (t, Movable.transform.position, Quaternion.identity);
-			} else {
-				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
-			}
-			//			if (Random.Range (1, 3) == 1) {
-			//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
-			//			} else {
-			//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
-			//			}
-			GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
-			Destroy (this.gameObject);
-//			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
-//				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-////				target.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
-//					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
-//						if (obj.GetComponent<SoldierControler> () != null) {
-//							if (obj.GetComponent<SoldierControler> ().heroUnity == true)
-//								obj.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
-//						}
-//					}
-//				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
-//				Destroy (this.gameObject);
-//			}
-				break;
-			case 7:// CANJA DE GALINHA
-			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//CANJA
+			case 4:// TERREMOTO -> BIDU -> EXPLOSAOMAGICA
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-//				target.GetComponent<SoldierControler> ().ReceiveEffect ("extraHealing");
-					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
+//				if (target.GetComponent<SoldierControler> ().team == 2) {
+//					target.GetComponent<SoldierControler> ().ReceiveEffect ("extraDamage");
+//				}
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 						if (obj.GetComponent<SoldierControler>() != null) 
-						obj.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
-					if (obj.GetComponent<WPSoldierControler>() != null) 
-						obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("healing");
+						obj.GetComponent<SoldierControler> ().ReceiveEffect ("extraDamage");
 					}
+				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
+				Destroy (this.gameObject);
+			}
+			break;
+			case 5:// HORA DA SONECA -> PENADINHO -> TERREMOTO
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
+				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+	//				if (target.GetComponent<SoldierControler> ().team == 2) {
+	//					target.GetComponent<SoldierControler> ().ReceiveEffect ("extraSlow");
+	//				}
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
+					if (obj.GetComponent<SoldierControler> () != null) {
+						obj.GetComponent<SoldierControler> ().ReceiveEffect ("extraSlow");
+					}
+					if (obj.GetComponent<WPIASoldierControler> () != null) {
+						obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("extraSlow");
+					}
+					}
+				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
+				Destroy (this.gameObject);
+			}
+
+				break;
+			case 6:// REMEDIO -> ALFREDO -> HORADASONECA
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
+				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+//				target.GetComponent<SoldierControler> ().ReceiveEffect ("sleep");
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
+						if (obj.GetComponent<SoldierControler>() != null) 
+						obj.GetComponent<SoldierControler> ().ReceiveEffect ("sleep");
+					if (obj.GetComponent<WPIASoldierControler>() != null) 
+						obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("sleep");
+					}
+				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
+				Destroy (this.gameObject);
+			}
+
+				break;
+			case 7:// CANJA DE GALINHA -> REMEDIO
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
+				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+				//				target.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
+//					if (obj.GetComponent<SoldierControler> () != null) {
+//							obj.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
+//					}
+					if (obj.GetComponent<WPSoldierControler> () != null) {
+							obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("healing");
+					}
+				}
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 				Destroy (this.gameObject);
 			}
@@ -570,8 +528,10 @@ public class CardSlotScript : MonoBehaviour {
 //				target.GetComponent<SoldierControler> ().ReceiveEffect ("shield");
 					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
 						if (obj.GetComponent<SoldierControler> () != null) {
-							if (obj.GetComponent<SoldierControler> ().heroUnity == true)
 								obj.GetComponent<SoldierControler> ().ReceiveEffect ("extraHealing");
+						}
+						if (obj.GetComponent<WPSoldierControler> () != null) {
+								obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("extraHealing");
 						}
 					}
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
@@ -591,9 +551,10 @@ public class CardSlotScript : MonoBehaviour {
 			}
 				break;
 			case 10:// FALTA MUNICAO
-			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
+			if (GameObject.Find("HeroBaseEnemy") != null) {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 				//target.GetComponent<TroopController> ().ReceiveEffect ("lowAmmo");
+				GameObject.Find("HeroBaseEnemy").GetComponent<BaseDefense>().haveAmmo = false;
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 				Destroy (this.gameObject);
 			}
@@ -613,11 +574,11 @@ public class CardSlotScript : MonoBehaviour {
 			} else {
 				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
 			}
-//			if (Random.Range (1, 3) == 1) {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
-//			} else {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
-//			}
+			//			if (Random.Range (1, 3) == 1) {
+			//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
+			//			} else {
+			//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
+			//			}
 			GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 			Destroy (this.gameObject);
 			break;
@@ -850,115 +811,127 @@ public class CardSlotScript : MonoBehaviour {
 		case 0:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.2f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
-				Uibg.color = defaultUiBG;
-				UIilustration.color = defaultUIilustration;
+				Uibg.sprite = cardFront [2];
+				UIilustration.sprite = cardsImages[cardID];
+				//UIilustration.color = defaultUIilustration;
 				UIilustrationAnim.color = defaultUIilustrationAnim;
-				UIframe.color = defaultUIframe;
-				UIribbon.color = defaultUUIribbon;
+				UIframe.sprite = cardFront [1];
+				UIribbon.sprite = cardFront [0];
 				UIgems.color = defaultUIgems;
 			} else {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.2f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
-				Uibg.color = Color.gray;
-				UIilustration.color = Color.gray;
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.2f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);	
+				Uibg.sprite = cardFrontBW [2];
+				UIilustration.sprite = cardsImagesBW[cardID];
+				//UIilustration.color = Color.gray;//
 				UIilustrationAnim.color = Color.gray;
-				UIframe.color = Color.gray;
-				UIribbon.color = Color.gray;
-				UIgems.color = Color.gray;	
+				UIframe.sprite = cardFrontBW [1];
+				UIribbon.sprite = cardFrontBW [0];
+				UIgems.color = Color.gray;		
 			}
 			break;
 		case 10:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x - 0.05f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
-				Uibg.color = defaultUiBG;
-				UIilustration.color = defaultUIilustration;
+				Uibg.sprite = cardFront [2];
+				UIilustration.sprite = cardsImages[cardID];
+				//UIilustration.color = defaultUIilustration;
 				UIilustrationAnim.color = defaultUIilustrationAnim;
-				UIframe.color = defaultUIframe;
-				UIribbon.color = defaultUUIribbon;
+				UIframe.sprite = cardFront [1];
+				UIribbon.sprite = cardFront [0];
 				UIgems.color = defaultUIgems;
 			} else {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x - 0.05f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
-				Uibg.color = Color.gray;
-				UIilustration.color = Color.gray;
+				Uibg.sprite = cardFrontBW [2];
+				UIilustration.sprite = cardsImagesBW[cardID];
+				//UIilustration.color = Color.gray;//
 				UIilustrationAnim.color = Color.gray;
-				UIframe.color = Color.gray;
-				UIribbon.color = Color.gray;
-				UIgems.color = Color.gray;	
+				UIframe.sprite = cardFrontBW [1];
+				UIribbon.sprite = cardFrontBW [0];
+				UIgems.color = Color.gray;		
 			}
 			break;
 		case 20:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 1.1f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
-				Uibg.color = defaultUiBG;
-				UIilustration.color = defaultUIilustration;
+				Uibg.sprite = cardFront [2];
+				UIilustration.sprite = cardsImages[cardID];
+				//UIilustration.color = defaultUIilustration;
 				UIilustrationAnim.color = defaultUIilustrationAnim;
-				UIframe.color = defaultUIframe;
-				UIribbon.color = defaultUUIribbon;
+				UIframe.sprite = cardFront [1];
+				UIribbon.sprite = cardFront [0];
 				UIgems.color = defaultUIgems;
 			} else {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 1.1f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
-				Uibg.color = Color.gray;
-				UIilustration.color = Color.gray;
+				Uibg.sprite = cardFrontBW [2];
+				UIilustration.sprite = cardsImagesBW[cardID];
+				//UIilustration.color = Color.gray;//
 				UIilustrationAnim.color = Color.gray;
-				UIframe.color = Color.gray;
-				UIribbon.color = Color.gray;
+				UIframe.sprite = cardFrontBW [1];
+				UIribbon.sprite = cardFrontBW [0];
 				UIgems.color = Color.gray;	
 			}
 			break;
 		case 30:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 2.25f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
-				Uibg.color = defaultUiBG;
-				UIilustration.color = defaultUIilustration;
+				Uibg.sprite = cardFront [2];
+				UIilustration.sprite = cardsImages[cardID];
+				//UIilustration.color = defaultUIilustration;
 				UIilustrationAnim.color = defaultUIilustrationAnim;
-				UIframe.color = defaultUIframe;
-				UIribbon.color = defaultUUIribbon;
+				UIframe.sprite = cardFront [1];
+				UIribbon.sprite = cardFront [0];
 				UIgems.color = defaultUIgems;
 			} else {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 2.25f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
-				Uibg.color = Color.gray;
-				UIilustration.color = Color.gray;
+				Uibg.sprite = cardFrontBW [2];
+				UIilustration.sprite = cardsImagesBW[cardID];
+				//UIilustration.color = Color.gray;//
 				UIilustrationAnim.color = Color.gray;
-				UIframe.color = Color.gray;
-				UIribbon.color = Color.gray;
-				UIgems.color = Color.gray;	
+				UIframe.sprite = cardFrontBW [1];
+				UIribbon.sprite = cardFrontBW [0];
+				UIgems.color = Color.gray;		
 			}
 			break;
 		case 40:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -0.3f, Camera.main.transform.position.y -4), Time.deltaTime * 3);
-				Uibg.color = defaultUiBG;
-				UIilustration.color = defaultUIilustration;
+				Uibg.sprite = cardFront [2];
+				UIilustration.sprite = cardsImages[cardID];
+				//UIilustration.color = defaultUIilustration;
 				UIilustrationAnim.color = defaultUIilustrationAnim;
-				UIframe.color = defaultUIframe;
-				UIribbon.color = defaultUUIribbon;
+				UIframe.sprite = cardFront [1];
+				UIribbon.sprite = cardFront [0];
 				UIgems.color = defaultUIgems;
 			} else {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -0.3f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
-				Uibg.color = Color.gray;
-				UIilustration.color = Color.gray;
+				Uibg.sprite = cardFrontBW [2];
+				UIilustration.sprite = cardsImagesBW[cardID];
+				//UIilustration.color = Color.gray;//
 				UIilustrationAnim.color = Color.gray;
-				UIframe.color = Color.gray;
-				UIribbon.color = Color.gray;
+				UIframe.sprite = cardFrontBW [1];
+				UIribbon.sprite = cardFrontBW [0];
 				UIgems.color = Color.gray;	
 			}
 			break;
 		case 50:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (0.3f, -4), Time.deltaTime * 3);
-				Uibg.color = defaultUiBG;
-				UIilustration.color = defaultUIilustration;
+				Uibg.sprite = cardFront [2];
+				UIilustration.sprite = cardsImages[cardID];
+				//UIilustration.color = defaultUIilustration;
 				UIilustrationAnim.color = defaultUIilustrationAnim;
-				UIframe.color = defaultUIframe;
-				UIribbon.color = defaultUUIribbon;
+				UIframe.sprite = cardFront [1];
+				UIribbon.sprite = cardFront [0];
 				UIgems.color = defaultUIgems;
 			} else {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (0.3f, -4.1f), Time.deltaTime * 3);
-				Uibg.color = Color.gray;
-				UIilustration.color = Color.gray;
+				Uibg.sprite = cardFrontBW [2];
+				UIilustration.sprite = cardsImagesBW[cardID];
+				//UIilustration.color = Color.gray;//
 				UIilustrationAnim.color = Color.gray;
-				UIframe.color = Color.gray;
-				UIribbon.color = Color.gray;
-				UIgems.color = Color.gray;
+				UIframe.sprite = cardFrontBW [1];
+				UIribbon.sprite = cardFrontBW [0];
+				UIgems.color = Color.gray;	
 			}
 			break;
 		default:

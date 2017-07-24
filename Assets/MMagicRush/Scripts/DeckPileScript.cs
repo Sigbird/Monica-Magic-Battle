@@ -23,15 +23,25 @@ public class DeckPileScript : MonoBehaviour {
 	public void DrawCard(){ 
 		if (Deck >= 1) {
 			newCard.GetComponent<CardSlotScript> ().CardPosition = Hand;
-			if(tutorial == true){
-				newCard.GetComponent<CardSlotScript> ().tutorialID = tutorialID;
+			if (tutorial == true) {
+				newCard.GetComponent<CardSlotScript> ().cardID = tutorialID;
 				tutorialID = 0;
 				tutorial = false;
+				Debug.Log ("puxou");
+				Instantiate (newCard, this.transform.position, Quaternion.identity);
+				Hand += 10;
+			} else {
+				StartCoroutine (TriggerCards());
+//				Instantiate (newCard, this.transform.position, Quaternion.identity);
+//				Hand += 10;
 			}
-			Debug.Log ("puxou");
-			Instantiate (newCard, this.transform.position, Quaternion.identity);
-			Hand += 10;
 		}
+	}
+
+	IEnumerator TriggerCards(){
+		yield return new WaitForSeconds (0.1f);
+		Instantiate (newCard, this.transform.position, Quaternion.identity);
+		Hand += 10;
 	}
 
 	public void DrawNewCard(int usedCard){ 
@@ -48,7 +58,7 @@ public class DeckPileScript : MonoBehaviour {
 	IEnumerator StartingHand(){
 		yield return new WaitForSeconds (0.5f);
 		DrawCard ();
-		if (Hand <= 30) {
+		if (Hand <= 20) {
 			StartCoroutine (StartingHand ());
 		}
 	}

@@ -29,7 +29,7 @@ public class SceneHelper : MonoBehaviour {
 //		for (int i = 0; i < 10; i++) {
 //			temp[i] = Random.Range(1,22);
 //		}
-		temp[0] = 4;
+		temp[0] = 11;
 
 		if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length <= 0) {
 			PlayerPrefsX.SetIntArray ("PlayerCardsIDs", temp);
@@ -48,8 +48,10 @@ public class SceneHelper : MonoBehaviour {
 		if(tutorial == true)
 		GameObject.Find ("Canvas").GetComponent<Animator> ().SetTrigger ("menuCartas");
 
-		if(PlayerPrefs.GetInt("Lesson") == 7)
+		if (PlayerPrefs.GetInt ("Lesson") == 7) {
 			TutorialPanels [0].SetActive (true);
+			PlayerPrefs.SetInt ("Lesson", 8);
+		}
 	}
 	
 	// Update is called once per frame
@@ -100,12 +102,13 @@ public class SceneHelper : MonoBehaviour {
 
 	public void CallTutorial(){
 		PlayerPrefs.SetString ("ResetCards", "false");
+		PlayerPrefs.SetInt ("Lesson", 1);
 		SceneManager.LoadScene ("TutorialScene");
 	}
 
 	void OnApplicationQuit(){
 		PlayerPrefs.SetInt ("Lesson", 1);
-		//PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
-		//PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
+//		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
+//		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
 	}
 }

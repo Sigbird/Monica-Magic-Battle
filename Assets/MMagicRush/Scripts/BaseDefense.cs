@@ -13,6 +13,8 @@ public class BaseDefense : MonoBehaviour {
 	public int damage;
 	public float heroHealingCD;
 
+	public bool haveAmmo;
+	public float reloading;
 
 	public AudioManager audioManager;
 	public bool seeking;
@@ -22,12 +24,20 @@ public class BaseDefense : MonoBehaviour {
 	public GameObject arrowModel;
 	// Use this for initialization
 	void Start () {
+		this.haveAmmo = true;
 		this.seeking = true;
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (haveAmmo == false) {
+			reloading += Time.deltaTime;
+			if (reloading >= 3) {
+				haveAmmo = true;
+			}
+		}
 		
 		heroHealingCD += Time.deltaTime;
 
@@ -110,23 +120,27 @@ public class BaseDefense : MonoBehaviour {
 	}
 
 	public bool HeroNearby(){
-		if (team == 1) {
-			if (GameObject.Find ("Hero") != null) {
-				if (Vector2.Distance (GameObject.Find ("Hero").transform.position, transform.position) <= reach) {
-					return true;
-				} else {
-					return false;
+		if (haveAmmo == true) {
+			if (team == 1) {
+				if (GameObject.Find ("Hero") != null) {
+					if (Vector2.Distance (GameObject.Find ("Hero").transform.position, transform.position) <= reach) {
+						return true;
+					} else {
+						return false;
+					}
 				}
+				return false;
+			} else {
+				if (GameObject.Find ("HeroEnemy") != null) {
+					if (Vector2.Distance (GameObject.Find ("HeroEnemy").transform.position, transform.position) <= reach) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+				return false;
 			}
-			return false;
 		} else {
-			if (GameObject.Find ("HeroEnemy") != null) {
-				if (Vector2.Distance (GameObject.Find ("HeroEnemy").transform.position, transform.position) <= reach) {
-					return true;
-				} else {
-					return false;
-				}
-			}
 			return false;
 		}
 	}
