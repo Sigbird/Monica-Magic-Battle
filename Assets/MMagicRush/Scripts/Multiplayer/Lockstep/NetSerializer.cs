@@ -39,7 +39,7 @@ namespace YupiPlay.MMB.Lockstep {
                         switch (cmd.GetCommand()) {
                             case NetCommand.MOVE:                                
                                 cmddict["pos"] = GetPositionDictionary(cmd as MoveCommand);
-                                break;
+                                break;                            
                         }
 
                         cmds.Add(cmddict);
@@ -88,6 +88,9 @@ namespace YupiPlay.MMB.Lockstep {
                         switch (command) {
                             case NetCommand.MOVE:                                                                
                                 cmds.Add(MoveDictionaryToCommand(cmddict, turn));
+                                break;
+                            case NetCommand.END:
+                                cmds.Add(new EndCommand(turn));
                                 break;
                         }
                     }

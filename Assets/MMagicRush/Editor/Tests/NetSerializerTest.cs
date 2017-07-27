@@ -78,6 +78,22 @@ public class NetSerializerTest {
         Assert.AreEqual(NetCommand.START, start.GetCommand());
     }
 
+    [Test]
+    public void SerializeEndCommand() {
+        var cmds = new List<NetCommand>();
+        cmds.Add(new NetCommand(20000));
+        cmds.Add(new EndCommand(20000));
+
+        var json = NetSerializer.Serialize(cmds);
+        var newCmds = NetSerializer.Deserialize(json);
+
+        var end = newCmds[0] as EndCommand;
+
+        Assert.AreEqual(1, newCmds.Count);
+        Assert.AreEqual(NetCommand.END, end.GetCommand());
+        Assert.AreEqual(20000, end.GetTurn());
+    }
+
     // A UnityTest behaves like a coroutine in PlayMode
     // and allows you to yield null to skip a frame in EditMode
     [UnityTest]
