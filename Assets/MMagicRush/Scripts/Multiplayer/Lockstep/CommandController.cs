@@ -10,7 +10,7 @@ namespace YupiPlay.MMB.Lockstep {
         }
 
         public static void Start() {
-            CommandBuffer.Instance.AddToOut(new StartCommand());
+            NetworkSessionManager.Instance.SendStart();
         }
 
         public static void End() {

@@ -57,9 +57,7 @@ namespace YupiPlay {
 		public delegate void ShowOpponentInfo(ParticipantInfo opponent);
 		public static event ShowOpponentInfo OnOpponentInfo;
 						
-		public MatchInfo Match;
-
-        private PreMatchHandshake preMatchHandshake;
+		public MatchInfo Match;        
 
 		private NetworkSessionManager() {
 
@@ -122,7 +120,12 @@ namespace YupiPlay {
 		public void RealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {
 			DebugScr("received data size " + data.Length);
 
-			NetworkTypedMessageBroker.OnRealTimeMessageReceived(isReliable, senderId, data);
+            string json = Encoding.UTF8.GetString(data);
+
+            var cmds = NetSerializer.Deserialize(json);
+
+            //Interpretar commandos HELLO e START, fora do CommandBuffer
+            //Mandar comandos de turno para o CommandBuffer
 		}									
 			
 		public void LoadGame() {
@@ -130,8 +133,7 @@ namespace YupiPlay {
 
 			if (OnOpponentInfo != null) {
 				OnOpponentInfo(Match.Opponent);
-			}
-			//PlayGamesPlatform.Instance.RealTime.LeaveRoom();
+			}			
 		}
 
 		public void Reset() {
@@ -163,6 +165,15 @@ namespace YupiPlay {
             var cmds = new List<NetCommand>();
             cmds.Add(hello);
             SendMessage(cmds);
+        }
+
+        public void SendStart() {
+            var start = new StartCommand();
+            var cmds = new List<NetCommand>();
+            cmds.Add(start);
+            SendMessage(cmds);
+
+            State = States.WAITINGSTART;
         }
 	}
 }
