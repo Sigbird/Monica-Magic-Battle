@@ -1,5 +1,5 @@
 ﻿using YupiPlay.MMB.Lockstep;
-using UnityEngine;
+using System.Text;
 using System.Collections.Generic;
 
 namespace YupiPlay {
@@ -80,11 +80,11 @@ namespace YupiPlay {
 		public void RoomConnectedSuccess() {			
 			State = States.DATAEXCHANGE;
 
-			if (RoomConnectedSuccessEvent != null) RoomConnectedSuccessEvent();
+            SetMatch(ParticipantInfo.GetPlayer(), ParticipantInfo.GetOpponent());
+            SendHello();
 
-            preMatchHandshake = new PreMatchHandshake();
-            preMatchHandshake.SendPlayerInfo(Match);		
-		}
+            if (RoomConnectedSuccessEvent != null) RoomConnectedSuccessEvent();           
+        }
 
 		public void RoomConnectedFailure() {
 			state = States.ERRORCONNECTED;
@@ -150,9 +150,19 @@ namespace YupiPlay {
 		}
 
         public void SendMessage(List<NetCommand> commands) {            
-            byte[] data = NetSerializer.Serialize(commands);
-            
+            byte[] data = Encoding.UTF8.GetBytes(NetSerializer.Serialize(commands));
 
+#if UNITY_ANDROID
+            GoogleMultiplayer.SendMessageToAll(data);
+#endif
+
+        }        
+
+        public void SendHello() {
+            var hello = new HelloCommand(Match.Player.SelectedHero, Match.Player.Rating);
+            var cmds = new List<NetCommand>();
+            cmds.Add(hello);
+            SendMessage(cmds);
         }
 	}
 }

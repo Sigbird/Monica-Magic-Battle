@@ -3,7 +3,7 @@
 namespace YupiPlay.MMB.Lockstep {
 
     //MOVE move o herói para o ponto dado
-    class MoveCommand : NetCommand {
+    public class MoveCommand : NetCommand {
         private Vector2 Position;
         
         public MoveCommand(ulong turn, Vector2 position) : base(turn) {

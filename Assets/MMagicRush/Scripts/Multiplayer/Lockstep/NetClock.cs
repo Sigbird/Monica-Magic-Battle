@@ -91,7 +91,7 @@ namespace YupiPlay.MMB.LockStep {
 
         // Use this for initialization
         void Start() {
-            StartClock();
+            //StartClock();
         }
 
         // Update is called once per frame

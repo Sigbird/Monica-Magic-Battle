@@ -8,7 +8,10 @@ namespace YupiPlay.MMB.Lockstep {
         //HELLO mensagem inical
         public const string HELLO = "HELLO";
 
+        //START é enviado após o nível carregar
         public const string START = "START";
+        
+        //END é enviado após o último turno
         public const string END = "END";
 
         //MOVE move herói 
@@ -27,7 +30,7 @@ namespace YupiPlay.MMB.Lockstep {
         public const string SPELL = "SPELL";
 
         protected string Command = TURN;
-        protected ulong Turn      = 1;
+        protected ulong Turn     = 1;
 
         public NetCommand(ulong turn) {
             Turn = turn;

@@ -10,7 +10,7 @@ namespace YupiPlay {
 
 		public static ParticipantInfo GetPlayer() {
 			Participant player = PlayGamesPlatform.Instance.RealTime.GetSelf();
-			return new ParticipantInfo(player.ParticipantId, player.DisplayName, PlayerPrefs.GetInt(Matchmaking.PLAYERRATINGKEY, 500));
+            return new ParticipantInfo(player.ParticipantId, player.DisplayName);			
 		}
 
 		public static ParticipantInfo GetOpponent() {

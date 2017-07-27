@@ -55,8 +55,7 @@ namespace YupiPlay {
         }
 
         public void OnRoomConnected(bool success) {
-            if (success) {    
-				netSM.SetMatch(GoogleMultiplayerHelper.GetPlayer(), GoogleMultiplayerHelper.GetOpponent());
+            if (success) {    				
 				netSM.RoomConnectedSuccess();
             } else {				
 				netSM.RoomConnectedFailure();
@@ -84,7 +83,7 @@ namespace YupiPlay {
 			netSM.RealTimeMessageReceived(isReliable, senderId, data);
         }
 
-        public void SendMessageToAll(byte[] data) {
+        public static void SendMessageToAll(byte[] data) {
             PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, data);
         }
     }
