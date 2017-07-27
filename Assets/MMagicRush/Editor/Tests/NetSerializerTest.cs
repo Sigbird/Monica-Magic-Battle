@@ -115,4 +115,65 @@ public class NetSerializerTest {
         Assert.AreEqual(guid, (newCmds[2] as AttackCommand).GetTargetId());
     }
 
+    [Test]
+    public void TestSpawnCommandUnit() {
+        var cmds = new List<NetCommand>();
+        var guid = Guid.NewGuid().ToString();
+        var expectedX = 3.457f;
+        var expectedY = 4.099f;
+
+        cmds.Add(new NetCommand(3));
+        cmds.Add(new SpawnCommand(3, "bidu", guid, new Vector2(3.4565f, 4.0987f)));
+
+        var json = NetSerializer.Serialize(cmds);
+        var newCmds = NetSerializer.Deserialize(json);
+
+        Assert.AreEqual(1, newCmds.Count);
+
+        var cmd = newCmds[0] as SpawnCommand;
+
+        Assert.AreEqual("bidu", cmd.GetCard());
+        Assert.AreEqual(3, cmd.GetTurn());
+        Assert.AreEqual(guid, cmd.GetId());
+        Assert.AreEqual(expectedX, cmd.GetPosition().x);
+        Assert.AreEqual(expectedY, cmd.GetPosition().y);
+        Assert.AreEqual(true, cmd.HasPosition());
+    }
+
+    [Test]
+    public void TestSpawnCommandGlobal() {
+        var cmds = new List<NetCommand>();
+
+        cmds.Add(new NetCommand(4));
+        cmds.Add(new SpawnCommand(4, "nevasca"));
+
+        var json = NetSerializer.Serialize(cmds);
+        var newCmds = NetSerializer.Deserialize(json);
+
+        var cmd = newCmds[0] as SpawnCommand;
+
+        Assert.AreEqual(4, cmd.GetTurn());       
+        Assert.AreEqual("nevasca", cmd.GetCard());
+        Assert.AreEqual(false, cmd.HasPosition());
+    }
+
+    [Test]
+    public void TestSpawnCommandShoot() {
+        var cmds = new List<NetCommand>();
+
+        cmds.Add(new NetCommand(5));
+        cmds.Add(new SpawnCommand(5, "flechas", new Vector2(3.1234f, 3.1236f)));
+
+        var json = NetSerializer.Serialize(cmds);
+        var newCmds = NetSerializer.Deserialize(json);
+
+        var cmd = newCmds[0] as SpawnCommand;
+
+        Assert.AreEqual(5, cmd.GetTurn());
+        Assert.AreEqual("flechas", cmd.GetCard());
+        Assert.AreEqual(true, cmd.HasPosition());
+        Assert.AreEqual(3.123f, cmd.GetPosition().x);
+        Assert.AreEqual(3.124f, cmd.GetPosition().y);
+    }
+
 }

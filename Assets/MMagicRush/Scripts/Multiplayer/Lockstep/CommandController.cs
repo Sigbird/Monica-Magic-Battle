@@ -13,6 +13,18 @@ namespace YupiPlay.MMB.Lockstep {
         public static void End() {
             CommandBuffer.Instance.AddToOut(new EndCommand(NetClock.Instance.GetTurn() + 1));
         }
+
+        public static void Attack(string targetId) {
+            CommandBuffer.Instance.AddToOut(new AttackCommand(NetClock.Instance.GetTurn(), targetId));
+        }
+
+        public static void AttackEnemyHero() {
+            CommandBuffer.Instance.AddToOut(new AttackCommand(NetClock.Instance.GetTurn(), AttackCommand.EnemyHero));
+        }
+
+        public static void AttackEnemyFort() {
+            CommandBuffer.Instance.AddToOut(new AttackCommand(NetClock.Instance.GetTurn(), AttackCommand.EnemyFort));
+        }
     }
 
 }

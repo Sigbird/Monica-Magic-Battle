@@ -22,13 +22,10 @@ namespace YupiPlay.MMB.Lockstep {
         public const string ATK = "ATK";
 
         //cria uma unidade
-        public const string SPAWN = "SPAWN";
-        
-        //ação genéria, cartas globais
-        public const string ACTION = "ACTION";
+        public const string SPAWN = "SPAWN";                        
 
-        //para cartas com alvos
-        public const string SPELL = "SPELL";
+        //manda mensagem
+        public const string COMM = "COMM";
 
         protected string Command = TURN;
         protected ulong Turn     = 1;

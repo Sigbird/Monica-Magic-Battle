@@ -38,13 +38,16 @@ namespace YupiPlay.MMB.Lockstep {
 
                         switch (cmd.GetCommand()) {
                             case NetCommand.MOVE:                                
-                                cmddict["pos"] = GetPositionDictionary(cmd as MoveCommand);
+                                cmddict["pos"] = GetPositionDictionary((cmd as MoveCommand).GetPosition());
                                 break;
                             case NetCommand.ATK:
                                 cmddict["target"] = (cmd as AttackCommand).GetTargetId();
                                 break;
+                            case NetCommand.SPAWN:
+                                SpawnCommandToDictionary(cmd as SpawnCommand, cmddict);
+                                break;
                         }
-
+                        
                         cmds.Add(cmddict);
                     }                    
                 }
@@ -100,6 +103,9 @@ namespace YupiPlay.MMB.Lockstep {
                             case NetCommand.ATK:
                                 cmd = new AttackCommand(turn, cmddict["target"] as string);
                                 break;
+                            case NetCommand.SPAWN:
+                                cmd = SpawnDictionaryToCommand(cmddict, turn);
+                                break;
                         }
 
                         cmds.Add(cmd);
@@ -110,13 +116,11 @@ namespace YupiPlay.MMB.Lockstep {
             return cmds;
         }
 
-        private static Dictionary<string, object> GetPositionDictionary(MoveCommand move) {
-            var dict = new Dictionary<string, object>();
+        private static Dictionary<string, object> GetPositionDictionary(Vector2 position) {
+            var dict = new Dictionary<string, object>();            
 
-            var pos = move.GetPosition();
-
-            dict["x"] = pos.x.ToString(floatPrecision);
-            dict["y"] = pos.y.ToString(floatPrecision);
+            dict["x"] = position.x.ToString(floatPrecision);
+            dict["y"] = position.y.ToString(floatPrecision);
 
             return dict;
         }
@@ -134,12 +138,54 @@ namespace YupiPlay.MMB.Lockstep {
             return new HelloCommand(hero, rating);
         }
 
+        private static Vector2 DictionaryToVector2(Dictionary<string, object> pos) {
+            float x = float.Parse(pos["x"] as string);
+            float y = float.Parse(pos["y"] as string);
+
+            return new Vector2(x, y);
+        }
+
         private static MoveCommand MoveDictionaryToCommand(Dictionary<string, object> dict, ulong turn) {
             var posdict = dict["pos"] as Dictionary<string, object>;
-            float x = float.Parse(posdict["x"] as string);
-            float y = float.Parse(posdict["y"] as string);
+            var position = DictionaryToVector2(posdict);            
             
-            return new MoveCommand(turn, new Vector2(x, y));
+            return new MoveCommand(turn, position);
+        }
+
+        private static void SpawnCommandToDictionary(SpawnCommand cmd, Dictionary<string,object> dict) {
+            dict["card"] = cmd.GetCard();
+
+            string id = cmd.GetId();
+
+            if (!string.IsNullOrEmpty(id)) {
+                dict["id"] = id;
+            }
+            
+            if (cmd.HasPosition()) {
+                dict["pos"] = GetPositionDictionary(cmd.GetPosition());
+            }            
+        }
+
+        private static SpawnCommand SpawnDictionaryToCommand(Dictionary<string, object> dict, ulong turn) {
+            string card = dict["card"] as string;
+            string id = null;
+            Dictionary<string,object> pos;
+            Vector2 position = new Vector2();
+
+            if (!dict.ContainsKey("pos")) {
+                return new SpawnCommand(turn, card);
+            } else {
+                pos = dict["pos"] as Dictionary<string, object>;
+                position = DictionaryToVector2(pos);
+            }
+
+            if (!dict.ContainsKey("id")) {
+                return new SpawnCommand(turn, card, position);
+            } else {
+                id = dict["id"] as string;
+            }            
+
+            return new SpawnCommand(turn, card, id, position);
         }
     }
         
