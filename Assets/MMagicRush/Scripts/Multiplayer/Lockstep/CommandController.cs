@@ -10,6 +10,10 @@ namespace YupiPlay.MMB.Lockstep {
             CommandBuffer.Instance.AddToOut(new MoveCommand(NetClock.Instance.GetTurn(), position));
         }
 
+        public static void Start() {
+            CommandBuffer.Instance.AddToOut(new StartCommand());
+        }
+
         public static void End() {
             CommandBuffer.Instance.AddToOut(new EndCommand(NetClock.Instance.GetTurn() + 1));
         }
@@ -24,6 +28,24 @@ namespace YupiPlay.MMB.Lockstep {
 
         public static void AttackEnemyFort() {
             CommandBuffer.Instance.AddToOut(new AttackCommand(NetClock.Instance.GetTurn(), AttackCommand.EnemyFort));
+        }
+
+        public static void SpawnUnit(string card, string id, Vector2 position) {
+            CommandBuffer.Instance.AddToOut(
+                new SpawnCommand(NetClock.Instance.GetTurn(), card, id, position)
+            );
+        }
+
+        public static void SpawnGlobal(string card) {
+            CommandBuffer.Instance.AddToOut(
+                new SpawnCommand(NetClock.Instance.GetTurn(), card)
+            );
+        }
+
+        public static void SpawnShoot(string card, Vector2 position) {
+            CommandBuffer.Instance.AddToOut(
+                new SpawnCommand(NetClock.Instance.GetTurn(), card, position)
+            );
         }
     }
 

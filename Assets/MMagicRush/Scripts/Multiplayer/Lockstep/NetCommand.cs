@@ -21,7 +21,7 @@ namespace YupiPlay.MMB.Lockstep {
         //herói ataca uma alvo
         public const string ATK = "ATK";
 
-        //cria uma unidade
+        //cria uma unidade, lança feitiço global ou feitiço localizado
         public const string SPAWN = "SPAWN";                        
 
         //manda mensagem
