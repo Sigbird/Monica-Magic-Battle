@@ -3,30 +3,31 @@ using System.Collections.Generic;
 
 namespace YupiPlay.MMB.Lockstep {
     public class NetCommand {
+        //turno vazio
         public const string TURN = "TURN";        
 
-        //HELLO mensagem inical
+        //mensagem inical
         public const string HELLO = "HELLO";
 
-        //START é enviado após o nível carregar
+        //é enviado após o nível carregar, sinaliza que está pronto para começar
         public const string START = "START";
         
-        //END é enviado após o último turno
+        //é enviado após o último turno
         public const string END = "END";
 
-        //MOVE move herói 
+        //move herói 
         public const string MOVE = "MOVE";
         
-        //ATK ataca uma alvo
+        //herói ataca uma alvo
         public const string ATK = "ATK";
 
-        //SPAWN cria uma unidade
+        //cria uma unidade
         public const string SPAWN = "SPAWN";
         
-        //ACTION ação genéria, cartas globais
+        //ação genéria, cartas globais
         public const string ACTION = "ACTION";
 
-        //SPELL para cartas com alvos
+        //para cartas com alvos
         public const string SPELL = "SPELL";
 
         protected string Command = TURN;

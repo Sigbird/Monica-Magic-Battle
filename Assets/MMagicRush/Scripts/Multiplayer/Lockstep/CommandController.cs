@@ -9,6 +9,10 @@ namespace YupiPlay.MMB.Lockstep {
         public static void Move(Vector2 position) {
             CommandBuffer.Instance.AddToOut(new MoveCommand(NetClock.Instance.GetTurn(), position));
         }
+
+        public static void End() {
+            CommandBuffer.Instance.AddToOut(new EndCommand(NetClock.Instance.GetTurn() + 1));
+        }
     }
 
 }

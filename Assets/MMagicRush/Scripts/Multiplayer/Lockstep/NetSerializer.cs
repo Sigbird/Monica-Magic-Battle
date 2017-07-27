@@ -39,7 +39,10 @@ namespace YupiPlay.MMB.Lockstep {
                         switch (cmd.GetCommand()) {
                             case NetCommand.MOVE:                                
                                 cmddict["pos"] = GetPositionDictionary(cmd as MoveCommand);
-                                break;                            
+                                break;
+                            case NetCommand.ATK:
+                                cmddict["target"] = (cmd as AttackCommand).GetTargetId();
+                                break;
                         }
 
                         cmds.Add(cmddict);
@@ -74,9 +77,9 @@ namespace YupiPlay.MMB.Lockstep {
                 }
             } else {
                 long t = (long)dict["turn"];
-                ulong turn = (ulong)t;
-                
-                if(!dict.ContainsKey("cmds")) {
+                ulong turn = (ulong)t;                
+
+                if (!dict.ContainsKey("cmds")) {
                     cmds.Add(new NetCommand(turn));
                 } else {
                     var cmmds = dict["cmds"] as List<object>;
@@ -85,14 +88,21 @@ namespace YupiPlay.MMB.Lockstep {
                         var cmddict = c as Dictionary<string, object>;
                         var command = cmddict["cmd"] as string;
 
+                        NetCommand cmd = null;
+
                         switch (command) {
-                            case NetCommand.MOVE:                                                                
-                                cmds.Add(MoveDictionaryToCommand(cmddict, turn));
+                            case NetCommand.MOVE:
+                                cmd = MoveDictionaryToCommand(cmddict, turn);                                
                                 break;
                             case NetCommand.END:
-                                cmds.Add(new EndCommand(turn));
+                                cmd = new EndCommand(turn);                                
+                                break;
+                            case NetCommand.ATK:
+                                cmd = new AttackCommand(turn, cmddict["target"] as string);
                                 break;
                         }
+
+                        cmds.Add(cmd);
                     }
                 }                 
             }

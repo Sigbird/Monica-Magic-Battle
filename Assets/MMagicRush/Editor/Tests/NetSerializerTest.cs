@@ -5,11 +5,12 @@ using NUnit.Framework;
 using System.Collections;
 using YupiPlay.MMB.Lockstep;
 using System.Collections.Generic;
+using System;
 
 public class NetSerializerTest {
 
 	[Test]
-	public void SerializeTurnCommand() {
+	public void TestTurnCommand() {
         var cmds = new List<NetCommand>();
         cmds.Add(new NetCommand(1));
 
@@ -24,7 +25,7 @@ public class NetSerializerTest {
     }
 
     [Test]
-    public void SerializeMoveCommand() {
+    public void TestMoveCommand() {
         var cmds = new List<NetCommand>();
         var x = 1.2433f;
         var y = 2.4321f;
@@ -53,7 +54,7 @@ public class NetSerializerTest {
     }
 
     [Test]
-    public void SerializeHelloCommand() {
+    public void TestHelloCommand() {
         var cmds = new List<NetCommand>();        
         cmds.Add(new HelloCommand("Monica", 732));
 
@@ -66,7 +67,7 @@ public class NetSerializerTest {
     }
 
     [Test]
-    public void SerializeStartCommand() {
+    public void TestStartCommand() {
         var cmds = new List<NetCommand>();
         cmds.Add(new StartCommand());
 
@@ -79,7 +80,7 @@ public class NetSerializerTest {
     }
 
     [Test]
-    public void SerializeEndCommand() {
+    public void TestEndCommand() {
         var cmds = new List<NetCommand>();
         cmds.Add(new NetCommand(20000));
         cmds.Add(new EndCommand(20000));
@@ -94,12 +95,24 @@ public class NetSerializerTest {
         Assert.AreEqual(20000, end.GetTurn());
     }
 
-    // A UnityTest behaves like a coroutine in PlayMode
-    // and allows you to yield null to skip a frame in EditMode
-    [UnityTest]
-	public IEnumerator NetSerializerTestWithEnumeratorPasses() {
-		// Use the Assert class to test conditions.
-		// yield to skip a frame
-		yield return null;
-	}
+    [Test]
+    public void TestAttackCommand() {
+        var cmds = new List<NetCommand>();
+
+        cmds.Add(new NetCommand(2));
+        cmds.Add(new AttackCommand(2, AttackCommand.EnemyHero));
+        cmds.Add(new AttackCommand(2, AttackCommand.EnemyFort));
+
+        var guid = Guid.NewGuid().ToString();
+        cmds.Add(new AttackCommand(2, guid));
+
+        var json = NetSerializer.Serialize(cmds);
+        var newCmds = NetSerializer.Deserialize(json);
+
+        Assert.AreEqual(3, newCmds.Count);
+        Assert.AreEqual("H", (newCmds[0] as AttackCommand).GetTargetId() );
+        Assert.AreEqual("F", (newCmds[1] as AttackCommand).GetTargetId() );
+        Assert.AreEqual(guid, (newCmds[2] as AttackCommand).GetTargetId());
+    }
+
 }
