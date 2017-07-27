@@ -176,4 +176,20 @@ public class NetSerializerTest {
         Assert.AreEqual(3.124f, cmd.GetPosition().y);
     }
 
+    [Test]
+    public void TestMessageCommand() {
+        var cmds = new List<NetCommand>();
+
+        cmds.Add(new NetCommand(6));
+        cmds.Add(new MessageCommand(6, "msg1"));
+
+        var json = NetSerializer.Serialize(cmds);
+        var newCmds = NetSerializer.Deserialize(json);
+
+        var cmd = newCmds[0] as MessageCommand;
+
+        Assert.AreEqual(6, cmd.GetTurn());
+        Assert.AreEqual("msg1", cmd.GetMessageId());
+    }
+
 }

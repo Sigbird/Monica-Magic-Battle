@@ -25,7 +25,7 @@ namespace YupiPlay.MMB.Lockstep {
         public const string SPAWN = "SPAWN";                        
 
         //manda mensagem
-        public const string COMM = "COMM";
+        public const string MSG = "MSG";
 
         protected string Command = TURN;
         protected ulong Turn     = 1;

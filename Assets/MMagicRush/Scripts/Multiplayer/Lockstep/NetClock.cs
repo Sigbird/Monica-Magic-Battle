@@ -1,10 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
-using YupiPlay.MMB.Lockstep;
 using System.Collections.Generic;
-using System;
 
-namespace YupiPlay.MMB.LockStep {
+namespace YupiPlay.MMB.Lockstep {
 
     public class NetClock : MonoBehaviour {
         public const float TurnTime = 0.2f;

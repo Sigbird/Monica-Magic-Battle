@@ -46,6 +46,9 @@ namespace YupiPlay.MMB.Lockstep {
                             case NetCommand.SPAWN:
                                 SpawnCommandToDictionary(cmd as SpawnCommand, cmddict);
                                 break;
+                            case NetCommand.MSG:
+                                cmddict["msg"] = (cmd as MessageCommand).GetMessageId();
+                                break;
                         }
                         
                         cmds.Add(cmddict);
@@ -105,6 +108,9 @@ namespace YupiPlay.MMB.Lockstep {
                                 break;
                             case NetCommand.SPAWN:
                                 cmd = SpawnDictionaryToCommand(cmddict, turn);
+                                break;
+                            case NetCommand.MSG:
+                                cmd = new MessageCommand(turn, cmddict["msg"] as string);
                                 break;
                         }
 
