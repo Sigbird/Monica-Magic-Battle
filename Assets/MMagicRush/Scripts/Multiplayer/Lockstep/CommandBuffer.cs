@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace YupiPlay.MMB.Lockstep {
     class CommandBuffer {
@@ -17,15 +18,14 @@ namespace YupiPlay.MMB.Lockstep {
         protected static CommandBuffer _instance;
 
         public CommandBuffer() {
-            OutputBuffer = new List<NetCommand>();
-            InputBuffer  = new List<NetCommand>();
+            Reset();
         }
 
         public void InsertToOutput(NetCommand command) {
             OutputBuffer.Add(command);            
         }
 
-        public void InsertToInput(NetCommand command) {
+        public void InsertToInput(NetCommand command) {                       
             InputBuffer.Add(command);
         }
 
@@ -53,10 +53,18 @@ namespace YupiPlay.MMB.Lockstep {
         }
 
         public void RemoveAllForTurn(ulong turn) {
+            Debug.Log("Out " + OutputBuffer.Count);
+            Debug.Log("In " + InputBuffer.Count);
+
             OutputBuffer.RemoveAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
             InputBuffer.RemoveAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
             //Debug.Log("out count: " + OutBuffer.Count);
             //Debug.Log("in count: " + InBuffer.Count);
+        }
+
+        public void Reset() {
+            OutputBuffer = new List<NetCommand>();
+            InputBuffer  = new List<NetCommand>();
         }
 
     }

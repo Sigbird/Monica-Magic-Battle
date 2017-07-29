@@ -58,16 +58,13 @@ namespace YupiPlay.MMB.Lockstep {
                 dict["cmds"] = cmds;
             }            
 
-            string json = Json.Serialize(dict);
-            Debug.Log("Serializing: " + json);
-            return json;
-            //return Encoding.UTF8.GetBytes(json);                       
+            string json = Json.Serialize(dict);            
+            return json;            
         }
 
         public static List<NetCommand> Deserialize(string json) {
             var cmds = new List<NetCommand>();
-            
-            Debug.Log("Deserializing: " + json);
+                        
             var dict = Json.Deserialize(json) as Dictionary<string,object>;
 
             if (!dict.ContainsKey("turn")) {

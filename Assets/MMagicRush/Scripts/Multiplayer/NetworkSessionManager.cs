@@ -141,6 +141,7 @@ namespace YupiPlay {
 
             if (State == States.INGAME) {
                 CommandBuffer.Instance.InsertListToInput(cmds);
+                NetClock.Instance.CalculateRemoteLatency(cmd.GetTurn());
             }           
 		}									
 			
@@ -168,7 +169,7 @@ namespace YupiPlay {
         public void SendMessage(List<NetCommand> commands) {            
             byte[] data = Encoding.UTF8.GetBytes(NetSerializer.Serialize(commands));
 
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
             GoogleMultiplayer.SendMessageToAll(data);
 #endif
 

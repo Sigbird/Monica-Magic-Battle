@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace YupiPlay.MMB.Lockstep {
 
@@ -10,9 +11,13 @@ namespace YupiPlay.MMB.Lockstep {
         public static NetClock Instance = null;
 
         private ulong Turn = 1;
+        private ulong LastTurnPlayed = 0;
+
         private Coroutine ClockCoroutine = null;
         private bool IsClockRunning = false;
-        private CommandBuffer Queue = null;
+        private CommandBuffer Buffer = null;
+
+        private Stopwatch watch;
 
         private void Awake() {
             if (Instance == null) {
@@ -29,26 +34,25 @@ namespace YupiPlay.MMB.Lockstep {
                 yield return new WaitForSecondsRealtime(TurnTime);
                 
                 SendTurn(Turn);
-
+                
                 if (Turn > 2) {
                     PlayTurn(Turn - 2);
-                }
-                if (Turn > 4) {
-                    CleanBuffer(Turn - 4);
-                }
+                }                
 
                 Turn++;
             }
         }
 
         public void StartClock() {
-            Queue = CommandBuffer.Instance;
+            watch = new Stopwatch();
+            Buffer = CommandBuffer.Instance;
             ClockCoroutine = StartCoroutine(RunClock());
         }
 
         public void StopClock() {
-            IsClockRunning = false;
+            IsClockRunning = false;            
             StopCoroutine(ClockCoroutine);
+            Buffer.Reset();
         }
 
         public ulong GetTurn() {
@@ -57,34 +61,57 @@ namespace YupiPlay.MMB.Lockstep {
 
         private void AddTurnToCmdBuffer(ulong turn) {
             //Debug.Log("Player Input Turn:" + turn);
-            Queue.InsertToOutput(new NetCommand(turn));
+            Buffer.InsertToOutput(new NetCommand(turn));
         }
 
-        private void PlayTurn(ulong turn) {
-            //Debug.Log("Playing Turn:" + turn);
-            //notify objects to Play Turn;
+        private void PlayTurn(ulong turn) {                                               
+            List<NetCommand> playerCmds = Buffer.GetOutputForTurn(turn);
+            List<NetCommand> enemyCommands = Buffer.GetInputForTurn(turn);
 
-            //test command buffer
-            //TODO get opponent commands and advance the game
-            List<NetCommand> cmds = Queue.GetOutputForTurn(turn);
-            foreach (NetCommand cmd in cmds) {
-                if (cmd.GetCommand() == NetCommand.MOVE) {
-                    if (cmd.GetType() == typeof(MoveCommand)) {
-                        MoveCommand moveCmd = (MoveCommand)cmd;
-                        
-                    }
+            if (enemyCommands.Count > 0) {                
+                foreach (NetCommand cmd in playerCmds) {
+                    NetGameController.Instance.PlayerCommandListener(cmd);
                 }
-            }
+                foreach (NetCommand cmd in enemyCommands) {
+                    NetGameController.Instance.EnemyCommandListener(cmd);
+                }                                
+
+                if (turn > LastTurnPlayed) {
+                    RemoveTurn(LastTurnPlayed);
+                }
+
+                LastTurnPlayed = turn;
+            } else {
+                UnityEngine.Debug.Log("No input commands");
+            }            
         }
 
         private void SendTurn(ulong turn) {
-            List<NetCommand> cmds = Queue.GetOutputForTurn(turn);
+            List<NetCommand> cmds = Buffer.GetOutputForTurn(turn);
             NetworkSessionManager.Instance.SendMessage(cmds);
         }
 
-        private void CleanBuffer(ulong turn) {
+        private void RemoveTurn(ulong turn) {
             //Debug.Log("removing turn " + turn);
             CommandBuffer.Instance.RemoveAllForTurn(turn);
+        }            
+
+        public void RegisterInputTime() {
+            watch.Start();
+        }
+
+        public void GetInputLatency() {
+            watch.Stop();
+            UnityEngine.Debug.Log(watch.ElapsedMilliseconds);
+            watch.Reset();
+        }
+
+        public void CalculateRemoteLatency(ulong Turn) {
+
+        }
+
+        public bool IsRunning() {
+            return IsClockRunning;
         }
 
         // Use this for initialization
