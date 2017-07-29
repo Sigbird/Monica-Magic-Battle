@@ -44,6 +44,17 @@ namespace YupiPlay.MMB.Lockstep {
         override public string ToString() {
             return "Turn: " + Turn + ", " + "Cmd: " + Command;
         }
-        
+
+        public static List<NetCommand> CreateList(params NetCommand[] commands) {
+            if (commands.Length == 0) return null;
+
+            var cmds = new List<NetCommand>();
+
+            foreach (NetCommand cmd in commands) {                
+                cmds.Add(cmd);
+            }
+            
+            return cmds;
+        }        
     }
 }

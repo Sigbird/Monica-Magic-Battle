@@ -11,8 +11,7 @@ public class NetSerializerTest {
 
 	[Test]
 	public void TestTurnCommand() {
-        var cmds = new List<NetCommand>();
-        cmds.Add(new NetCommand(1));
+        var cmds = NetCommand.CreateList(new NetCommand(1));        
 
         var json = NetSerializer.Serialize(cmds);
         var newCmds = NetSerializer.Deserialize(json);
@@ -25,15 +24,16 @@ public class NetSerializerTest {
     }
 
     [Test]
-    public void TestMoveCommand() {
-        var cmds = new List<NetCommand>();
+    public void TestMoveCommand() {        
         var x = 1.2433f;
         var y = 2.4321f;
         var expectedX = 1.243f;
         var expectedY = 2.432f;
 
-        cmds.Add(new NetCommand(1));
-        cmds.Add(new MoveCommand(1, new Vector2(x, y)));
+        var cmds = NetCommand.CreateList(
+            new NetCommand(1), 
+            new MoveCommand(1, new Vector2(x, y))
+        );        
 
         var json = NetSerializer.Serialize(cmds);
         var newCmds = NetSerializer.Deserialize(json);
@@ -54,9 +54,10 @@ public class NetSerializerTest {
     }
 
     [Test]
-    public void TestHelloCommand() {
-        var cmds = new List<NetCommand>();        
-        cmds.Add(new HelloCommand("Monica", 732));
+    public void TestHelloCommand() {                
+        var cmds = NetCommand.CreateList(
+            new HelloCommand("Monica", 732)
+        );
 
         var json = NetSerializer.Serialize(cmds);
         var newCmds = NetSerializer.Deserialize(json);
@@ -68,8 +69,7 @@ public class NetSerializerTest {
 
     [Test]
     public void TestStartCommand() {
-        var cmds = new List<NetCommand>();
-        cmds.Add(new StartCommand());
+        var cmds = NetCommand.CreateList(new StartCommand());        
 
         var json = NetSerializer.Serialize(cmds);
         var newCmds = NetSerializer.Deserialize(json);
@@ -81,9 +81,10 @@ public class NetSerializerTest {
 
     [Test]
     public void TestEndCommand() {
-        var cmds = new List<NetCommand>();
-        cmds.Add(new NetCommand(20000));
-        cmds.Add(new EndCommand(20000));
+        var cmds = NetCommand.CreateList(
+            new NetCommand(20000),
+            new EndCommand(20000)
+        );                
 
         var json = NetSerializer.Serialize(cmds);
         var newCmds = NetSerializer.Deserialize(json);
@@ -97,14 +98,14 @@ public class NetSerializerTest {
 
     [Test]
     public void TestAttackCommand() {
-        var cmds = new List<NetCommand>();
-
-        cmds.Add(new NetCommand(2));
-        cmds.Add(new AttackCommand(2, AttackCommand.EnemyHero));
-        cmds.Add(new AttackCommand(2, AttackCommand.EnemyFort));
-
         var guid = Guid.NewGuid().ToString();
-        cmds.Add(new AttackCommand(2, guid));
+
+        var cmds = NetCommand.CreateList(
+            new NetCommand(2),
+            new AttackCommand(2, AttackCommand.EnemyHero),
+            new AttackCommand(2, AttackCommand.EnemyFort),
+            new AttackCommand(2, guid)
+        );                
 
         var json = NetSerializer.Serialize(cmds);
         var newCmds = NetSerializer.Deserialize(json);
@@ -116,14 +117,15 @@ public class NetSerializerTest {
     }
 
     [Test]
-    public void TestSpawnCommandUnit() {
-        var cmds = new List<NetCommand>();
+    public void TestSpawnCommandUnit() {        
         var guid = Guid.NewGuid().ToString();
         var expectedX = 3.457f;
         var expectedY = 4.099f;
 
-        cmds.Add(new NetCommand(3));
-        cmds.Add(new SpawnCommand(3, "bidu", guid, new Vector2(3.4565f, 4.0987f)));
+        var cmds = NetCommand.CreateList(
+            new NetCommand(3),
+            new SpawnCommand(3, "bidu", guid, new Vector2(3.4565f, 4.0987f))
+        );        
 
         var json = NetSerializer.Serialize(cmds);
         var newCmds = NetSerializer.Deserialize(json);
@@ -142,10 +144,10 @@ public class NetSerializerTest {
 
     [Test]
     public void TestSpawnCommandGlobal() {
-        var cmds = new List<NetCommand>();
-
-        cmds.Add(new NetCommand(4));
-        cmds.Add(new SpawnCommand(4, "nevasca"));
+        var cmds = NetCommand.CreateList(
+            new NetCommand(4),
+            new SpawnCommand(4, "nevasca")
+        );        
 
         var json = NetSerializer.Serialize(cmds);
         var newCmds = NetSerializer.Deserialize(json);
@@ -159,10 +161,10 @@ public class NetSerializerTest {
 
     [Test]
     public void TestSpawnCommandShoot() {
-        var cmds = new List<NetCommand>();
-
-        cmds.Add(new NetCommand(5));
-        cmds.Add(new SpawnCommand(5, "flechas", new Vector2(3.1234f, 3.1236f)));
+        var cmds = NetCommand.CreateList(
+            new NetCommand(5),
+            new SpawnCommand(5, "flechas", new Vector2(3.1234f, 3.1236f))
+        );        
 
         var json = NetSerializer.Serialize(cmds);
         var newCmds = NetSerializer.Deserialize(json);
@@ -178,10 +180,11 @@ public class NetSerializerTest {
 
     [Test]
     public void TestMessageCommand() {
-        var cmds = new List<NetCommand>();
 
-        cmds.Add(new NetCommand(6));
-        cmds.Add(new MessageCommand(6, "msg1"));
+        var cmds = NetCommand.CreateList(
+            new NetCommand(6),
+            new MessageCommand(6, "msg1")
+        );        
 
         var json = NetSerializer.Serialize(cmds);
         var newCmds = NetSerializer.Deserialize(json);

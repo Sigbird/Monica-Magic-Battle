@@ -2,52 +2,59 @@
 
 namespace YupiPlay.MMB.Lockstep {
     class CommandBuffer {
-        protected List<NetCommand> OutBuffer;
-        protected List<NetCommand> InBuffer;
+        protected List<NetCommand> OutputBuffer;
+        protected List<NetCommand> InputBuffer;
 
         public static CommandBuffer Instance {
             get {
-                if (_Instance == null) {
-                    _Instance = new CommandBuffer();
+                if (_instance == null) {
+                    _instance = new CommandBuffer();
                 }
-                return _Instance;
+                return _instance;
             }
             set { }
         }
-        protected static CommandBuffer _Instance;
+        protected static CommandBuffer _instance;
 
         public CommandBuffer() {
-            OutBuffer = new List<NetCommand>();
-            InBuffer  = new List<NetCommand>();
+            OutputBuffer = new List<NetCommand>();
+            InputBuffer  = new List<NetCommand>();
         }
 
-        public void AddToOut(NetCommand command) {
-            OutBuffer.Add(command);            
+        public void InsertToOutput(NetCommand command) {
+            OutputBuffer.Add(command);            
         }
 
-        public void AddToIn(NetCommand command) {
-            OutBuffer.Add(command);
+        public void InsertToInput(NetCommand command) {
+            InputBuffer.Add(command);
         }
 
-        public void RemoveFromOut(NetCommand command) {
-            OutBuffer.Remove(command);
+        public void InsertListToInput(List<NetCommand> commands) {
+            InputBuffer.AddRange(commands);
         }
 
-        public void RemoveFromIn(NetCommand command) {
-            OutBuffer.Remove(command);
+        public void RemoveFromOutput(NetCommand command) {
+            OutputBuffer.Remove(command);
         }
 
-        public List<NetCommand> GetOutCommandsForTurn(ulong turn) {
-            return OutBuffer.FindAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
+        public void RemoveFromInput(NetCommand command) {
+            InputBuffer.Remove(command);
         }
 
-        public List<NetCommand> GetInCommandsForTurn(ulong turn) {
-            return InBuffer.FindAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
+        public List<NetCommand> GetOutputForTurn(ulong turn) {
+            var cmds = OutputBuffer.FindAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
+
+            if (cmds.Count > 0) { return cmds; }
+            return NetCommand.CreateList(new NetCommand(turn));
         }
 
-        public void RemoveCommandsForTurn(ulong turn) {
-            OutBuffer.RemoveAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
-            InBuffer.RemoveAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
+        public List<NetCommand> GetInputForTurn(ulong turn) {
+            return InputBuffer.FindAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
+        }
+
+        public void RemoveAllForTurn(ulong turn) {
+            OutputBuffer.RemoveAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
+            InputBuffer.RemoveAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
             //Debug.Log("out count: " + OutBuffer.Count);
             //Debug.Log("in count: " + InBuffer.Count);
         }

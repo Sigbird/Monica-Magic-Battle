@@ -5,8 +5,20 @@ using YupiPlay.MMB.Lockstep;
 
 public class NetGameController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    public static NetGameController Instance { get { return instance; } set { } }
+
+    private static NetGameController instance;
+
+    void Awake() {
+        if (instance == null) {
+            instance = this;
+        } else {
+            Destroy(this.gameObject);
+        }
+    }
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -17,4 +29,12 @@ public class NetGameController : MonoBehaviour {
             CommandController.Move(moveTo);
         }
 	}
+
+    public void StartGame() {
+        
+    }
+
+    public void EndGame() {
+
+    }
 }

@@ -4,17 +4,22 @@ namespace YupiPlay
 {
 	public class ParticipantInfo
 	{		
-		public short Rating;
+		public int Rating {
+            get { return rating; }
+            set { rating = value > Matchmaking.RATINGLIMIT ? Matchmaking.RATINGLIMIT : value; }
+        }
 		public string DisplayName;
         public string ParticipantId;
         public string SelectedHero;
 
-        public ParticipantInfo(string participantId, string displayName, int rating) : this(participantId, displayName) {            
-            SetRating(rating);
+        private int rating;
+
+        public ParticipantInfo(string participantId, string displayName, int rating) : this(participantId, displayName) {
+            Rating = rating;
         }
 
-		public ParticipantInfo(string displayName, int rating) : this(displayName) {			
-            SetRating(rating);
+		public ParticipantInfo(string displayName, int rating) : this(displayName) {
+            Rating = rating;
         }
 
         public ParticipantInfo(string participantId, string displayName) : this(displayName) {
@@ -23,12 +28,7 @@ namespace YupiPlay
 
 		public ParticipantInfo(string displayName) {
 			DisplayName = displayName;
-		}
-
-		public void SetRating(int rating) {
-            rating = rating > Matchmaking.RATINGLIMIT ? Matchmaking.RATINGLIMIT : rating;
-			Rating = (short) rating;
-		}            
+		}		        
 
         public ParticipantInfo() { }
         
@@ -42,7 +42,7 @@ namespace YupiPlay
 #endif
 
             part.SelectedHero = "Monica";
-            part.SetRating(PlayerPrefs.GetInt(Matchmaking.PLAYERRATINGKEY, 500));
+            part.Rating = PlayerPrefs.GetInt(Matchmaking.PLAYERRATINGKEY, 500);
 
             return part;
         }

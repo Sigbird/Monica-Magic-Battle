@@ -121,19 +121,33 @@ namespace YupiPlay {
 			DebugScr("received data size " + data.Length);
 
             string json = Encoding.UTF8.GetString(data);
-
             var cmds = NetSerializer.Deserialize(json);
 
-            //Interpretar commandos HELLO e START, fora do CommandBuffer
-            //Mandar comandos de turno para o CommandBuffer
+            var cmd = cmds[0];
+
+            if (State == States.DATAEXCHANGE && cmd.GetCommand() == NetCommand.HELLO) {                
+                SetAdditionalOpponentInfo(cmd as HelloCommand);
+                LoadGame();
+                return;
+            }
+            if (State == States.WAITINGSTART && cmd.GetCommand() == NetCommand.START) {
+                NetGameController.Instance.StartGame();
+                return;
+            }
+            if (State == States.INGAME && cmd.GetCommand() == NetCommand.END) {
+                NetGameController.Instance.EndGame();
+                return;
+            }
+
+            if (State == States.INGAME) {
+                CommandBuffer.Instance.InsertListToInput(cmds);
+            }           
 		}									
 			
 		public void LoadGame() {
 			state = States.LOADING;
-
-			if (OnOpponentInfo != null) {
-				OnOpponentInfo(Match.Opponent);
-			}			
+            
+            //Carrega jogo            
 		}
 
 		public void Reset() {
@@ -161,20 +175,26 @@ namespace YupiPlay {
         }        
 
         public void SendHello() {
-            var hello = new HelloCommand(Match.Player.SelectedHero, Match.Player.Rating);
-            var cmds = new List<NetCommand>();
-            cmds.Add(hello);
+            var cmds = NetCommand.CreateList(new HelloCommand(Match.Player.SelectedHero, Match.Player.Rating));                        
             SendMessage(cmds);
         }
 
         public void SendStart() {
-            var start = new StartCommand();
-            var cmds = new List<NetCommand>();
-            cmds.Add(start);
+            var cmds = NetCommand.CreateList(new StartCommand());                                   
             SendMessage(cmds);
 
             State = States.WAITINGSTART;
         }
+
+        private void SetAdditionalOpponentInfo(HelloCommand hello) {
+            Match.Opponent.SelectedHero = hello.GetHero();
+            Match.Opponent.Rating = hello.GetRating();
+
+            if (OnOpponentInfo != null) {
+                OnOpponentInfo(Match.Opponent);
+            }
+        }
+
 	}
 }
 

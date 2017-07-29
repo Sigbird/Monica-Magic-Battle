@@ -27,8 +27,7 @@ namespace YupiPlay.MMB.Lockstep {
 
             while (IsClockRunning) {                               
                 yield return new WaitForSecondsRealtime(TurnTime);
-
-                AddTurnToCmdBuffer(Turn);
+                
                 SendTurn(Turn);
 
                 if (Turn > 2) {
@@ -58,7 +57,7 @@ namespace YupiPlay.MMB.Lockstep {
 
         private void AddTurnToCmdBuffer(ulong turn) {
             //Debug.Log("Player Input Turn:" + turn);
-            Queue.AddToOut(new NetCommand(turn));
+            Queue.InsertToOutput(new NetCommand(turn));
         }
 
         private void PlayTurn(ulong turn) {
@@ -66,7 +65,8 @@ namespace YupiPlay.MMB.Lockstep {
             //notify objects to Play Turn;
 
             //test command buffer
-            List<NetCommand> cmds = Queue.GetOutCommandsForTurn(turn);
+            //TODO get opponent commands and advance the game
+            List<NetCommand> cmds = Queue.GetOutputForTurn(turn);
             foreach (NetCommand cmd in cmds) {
                 if (cmd.GetCommand() == NetCommand.MOVE) {
                     if (cmd.GetType() == typeof(MoveCommand)) {
@@ -78,13 +78,13 @@ namespace YupiPlay.MMB.Lockstep {
         }
 
         private void SendTurn(ulong turn) {
-            List<NetCommand> cmds = Queue.GetOutCommandsForTurn(turn);
+            List<NetCommand> cmds = Queue.GetOutputForTurn(turn);
             NetworkSessionManager.Instance.SendMessage(cmds);
         }
 
         private void CleanBuffer(ulong turn) {
             //Debug.Log("removing turn " + turn);
-            CommandBuffer.Instance.RemoveCommandsForTurn(turn);
+            CommandBuffer.Instance.RemoveAllForTurn(turn);
         }
 
         // Use this for initialization
