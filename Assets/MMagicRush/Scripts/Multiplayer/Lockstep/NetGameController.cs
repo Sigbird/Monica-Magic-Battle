@@ -81,6 +81,7 @@ public class NetGameController : MonoBehaviour {
 
             if (IsInput) {
                 MoveEnemy(position);
+                EnemyAIController.Instance.GetEnemyInputLatency();
             } else {
                 MovePlayer(position);
                 NetClock.Instance.GetInputLatency();

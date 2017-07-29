@@ -102,7 +102,7 @@ namespace YupiPlay.MMB.Lockstep {
 
         public void GetInputLatency() {
             watch.Stop();
-            UnityEngine.Debug.Log(watch.ElapsedMilliseconds);
+            UnityEngine.Debug.Log("PIL: " + watch.ElapsedMilliseconds);
             watch.Reset();
         }
 
