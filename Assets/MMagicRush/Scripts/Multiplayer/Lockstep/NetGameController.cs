@@ -6,10 +6,10 @@ using YupiPlay.MMB.Lockstep;
 public class NetGameController : MonoBehaviour {
     public GameObject PlayerHero;
     public GameObject ClickFeeback;
-    public GameObject EnemyHero;
+    public PlayerController playerController;
+    public EnemyAIController enemyController;
 
-    private Vector2 targetPosition;
-    private Vector2 enemyTargetPosition;
+    private Vector2 targetPosition;    
 
     public static NetGameController Instance { get { return instance; } set { } }
 
@@ -30,42 +30,8 @@ public class NetGameController : MonoBehaviour {
 	
 	// Update is called once per frame
     // Update de testes
-	void Update () {
-		if (Input.GetMouseButtonUp(0)) {
-            Vector2 moveTo = Camera.main.ScreenToWorldPoint(Input.mousePosition);            
-            CommandController.Move(moveTo);
-
-            ClickFeeback.SetActive(true);
-            ClickFeeback.transform.position = moveTo;
-
-            NetClock.Instance.RegisterInputTime();
-        }
-
-        var distance = Vector2.Distance(targetPosition, PlayerHero.transform.position);
-        if (distance < 0.01f) {
-            PlayerHero.GetComponent<Rigidbody2D>().velocity = new Vector2();
-        }
-
-        var enemyDistance = Vector2.Distance(enemyTargetPosition, EnemyHero.transform.position);
-        if (enemyDistance < 0.01f) {
-            EnemyHero.GetComponent<Rigidbody2D>().velocity = new Vector2();
-        }
-	}
-
-    private void MovePlayer(Vector2 pos) {
-        targetPosition = pos;
-        MoveObject(PlayerHero, targetPosition);
-    }
-
-    private void MoveEnemy(Vector2 pos) {
-        enemyTargetPosition = pos;
-        MoveObject(EnemyHero, enemyTargetPosition);
-    }
-
-    private void MoveObject(GameObject unit, Vector2 pos) {
-        var direction = pos - (Vector2) unit.transform.position;
-        unit.GetComponent<Rigidbody2D>().velocity = direction.normalized;
-    }    
+	void Update () {		
+	}     
 
     public void PlayerCommandListener(NetCommand cmd) {
         Selector(false, cmd);
@@ -80,10 +46,10 @@ public class NetGameController : MonoBehaviour {
             var position = (cmd as MoveCommand).GetPosition();
 
             if (IsInput) {
-                MoveEnemy(position);
-                EnemyAIController.Instance.GetEnemyInputLatency();
+                enemyController.MoveTo(position);
+                enemyController.GetEnemyInputLatency();
             } else {
-                MovePlayer(position);
+                playerController.MoveTo(position);
                 NetClock.Instance.GetInputLatency();
             }            
         }

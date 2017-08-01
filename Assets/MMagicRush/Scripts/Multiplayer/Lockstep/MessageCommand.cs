@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace YupiPlay.MMB.Lockstep {
 
@@ -13,6 +14,14 @@ namespace YupiPlay.MMB.Lockstep {
 
         public string GetMessageId() {
             return MessageId;
-        }        
+        }
+
+        public override Dictionary<string, object> ToDictionary() {
+            var dict = new Dictionary<string, object>();
+            dict["cmd"] = MSG;
+            dict["msg"] = MessageId;
+
+            return dict;
+        }
     }
 }

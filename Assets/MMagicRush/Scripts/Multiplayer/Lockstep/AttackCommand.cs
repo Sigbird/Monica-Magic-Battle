@@ -1,4 +1,6 @@
-﻿namespace YupiPlay.MMB.Lockstep {
+﻿using System.Collections.Generic;
+
+namespace YupiPlay.MMB.Lockstep {
 
     //ATK herói ataca o alvo
     public class AttackCommand : NetCommand {
@@ -20,6 +22,14 @@
 
         override public string ToString() {
             return "Turn: " + Turn + ", " + "Cmd: " + Command + ", " + "Target: " + TargetId;
+        }
+
+        public override Dictionary<string, object> ToDictionary() {
+            var dict = new Dictionary<string, object>();
+            dict["cmd"] = ATK;
+            dict["target"] = TargetId;
+
+            return dict;
         }
     }
 }

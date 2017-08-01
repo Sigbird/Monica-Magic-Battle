@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace YupiPlay.MMB.Lockstep {
 
@@ -15,8 +16,19 @@ namespace YupiPlay.MMB.Lockstep {
             return Position;
         }
 
-        override public string ToString() {
-            return "Turn: " + Turn + ", " + "Cmd: " + Command + ", " + "Pos: " + Position;
+        public override Dictionary<string, object> ToDictionary() {
+            var dict = new Dictionary<string, object>();
+            dict["cmd"] = MOVE;
+            dict["pos"] = NetSerializer.ToDicionary(Position);
+
+            return dict;
+        }
+
+        public static MoveCommand ToCommand(Dictionary<string, object> dict, ulong turn) {
+            var posdict = dict["pos"] as Dictionary<string, object>;
+            var position = NetSerializer.ToVector2(posdict);
+
+            return new MoveCommand(turn, position);
         }
     }
 }

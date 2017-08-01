@@ -181,7 +181,7 @@ namespace YupiPlay {
         }
 
         public void SendStart() {
-            var cmds = NetCommand.CreateList(new StartCommand());                                   
+            var cmds = NetCommand.CreateList(new StartCommand(NetClock.Instance.GetTurn()));                                   
             SendMessage(cmds);
 
             State = States.WAITINGSTART;

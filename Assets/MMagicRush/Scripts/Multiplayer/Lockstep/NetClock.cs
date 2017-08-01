@@ -19,6 +19,8 @@ namespace YupiPlay.MMB.Lockstep {
 
         private Stopwatch watch;
 
+        private int lagTurns = 0;
+
         private void Awake() {
             if (Instance == null) {
                 Instance = this;
@@ -81,13 +83,15 @@ namespace YupiPlay.MMB.Lockstep {
                 }
 
                 LastTurnPlayed = turn;
+                lagTurns = 0;
             } else {
-                UnityEngine.Debug.Log("No input commands");
+                lagTurns++;
+                //UnityEngine.Debug.Log("No input commands: " + lagTurns);
             }            
         }
 
         private void SendTurn(ulong turn) {
-            List<NetCommand> cmds = Buffer.GetOutputForTurn(turn);
+            List<NetCommand> cmds = Buffer.GetOutputForTurn(turn);            
             NetworkSessionManager.Instance.SendMessage(cmds);
         }
 
@@ -116,7 +120,7 @@ namespace YupiPlay.MMB.Lockstep {
 
         // Use this for initialization
         void Start() {
-            //StartClock();
+            StartClock();
         }
 
         // Update is called once per frame

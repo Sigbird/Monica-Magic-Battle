@@ -69,7 +69,7 @@ public class NetSerializerTest {
 
     [Test]
     public void TestStartCommand() {
-        var cmds = NetCommand.CreateList(new StartCommand());        
+        var cmds = NetCommand.CreateList(new NetCommand(1), new StartCommand(2));        
 
         var json = NetSerializer.Serialize(cmds);
         var newCmds = NetSerializer.Deserialize(json);
@@ -77,6 +77,7 @@ public class NetSerializerTest {
         var start = newCmds[0] as StartCommand;
 
         Assert.AreEqual(NetCommand.START, start.GetCommand());
+        Assert.AreEqual(1, start.GetTurn());
     }
 
     [Test]

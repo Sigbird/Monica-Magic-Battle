@@ -20,20 +20,21 @@ public class EnemyAIController : MonoBehaviour {
 
     private List<NetCommand> outputBuffer;
 
-    private Stopwatch watch;
+    private Stopwatch watch;    
 
-    public static EnemyAIController Instance;
+    private Vector2 targetPosition;
+    private Rigidbody2D rb;
 
-    private void Awake() {
-        Instance = this;
+    void Awake() {
+        
     }
 
     // Use this for initialization
-    void Start () {        
+    void Start () {
+        rb = GetComponent<Rigidbody2D>();
         watch = new Stopwatch();
         outputBuffer = new List<NetCommand>();
-
-        NetClock.Instance.StartClock();
+               
         StartCoroutine(RunEnemyClock());
         StartCoroutine(RunMoveCommands());
     }
@@ -41,10 +42,17 @@ public class EnemyAIController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         
-	}
+    }
+
+    private void FixedUpdate() {
+        var enemyDistance = Vector2.Distance(targetPosition, transform.position);
+        if (enemyDistance < 0.001f) {
+            rb.velocity = new Vector2();
+        }
+    }
 
     private IEnumerator RunEnemyClock() {
-        while (NetClock.Instance.IsRunning()) {
+        while (true) {
             yield return new WaitForSecondsRealtime(NetClock.TurnTime);
 
             CommandBuffer.Instance.InsertToInput(new NetCommand(Turn));
@@ -52,22 +60,22 @@ public class EnemyAIController : MonoBehaviour {
             CommandBuffer.Instance.InsertListToInput(inputList);
 
             if (Turn > 2) {                
-                outputBuffer.RemoveAll((NetCommand cmd) => { return cmd.GetTurn() == Turn - 1; });
+                outputBuffer.RemoveAll((NetCommand cmd) => { return cmd.GetTurn() == Turn - 2; });
             }
 
-            Turn++;
+            Turn++;            
         }        
     }
 
     private IEnumerator RunMoveCommands() {
-        while (NetClock.Instance.IsRunning()) {
+        while (true) {
             yield return new WaitForSeconds(Random.Range(2f, 3f));
 
-            var target = positions[cmdIndex];
+            targetPosition = positions[cmdIndex];
                         
-            outputBuffer.Add(new MoveCommand(Turn, target));
+            outputBuffer.Add(new MoveCommand(Turn, targetPosition));
             InputFeedback.SetActive(true);
-            InputFeedback.transform.position = target;
+            InputFeedback.transform.position = targetPosition;
 
             watch.Start();
 
@@ -80,5 +88,10 @@ public class EnemyAIController : MonoBehaviour {
         watch.Stop();
         UnityEngine.Debug.Log("EIL: " + watch.ElapsedMilliseconds);
         watch.Reset();
+    }
+
+    public void MoveTo(Vector2 position) {
+        var direction = position - (Vector2) transform.position;
+        rb.velocity = direction.normalized;
     }
 }

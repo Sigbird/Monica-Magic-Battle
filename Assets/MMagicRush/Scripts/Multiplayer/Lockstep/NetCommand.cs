@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace YupiPlay.MMB.Lockstep {
     public class NetCommand {
@@ -43,6 +42,14 @@ namespace YupiPlay.MMB.Lockstep {
 
         override public string ToString() {
             return "Turn: " + Turn + ", " + "Cmd: " + Command;
+        }
+
+        virtual public Dictionary<string,object> ToDictionary() {
+            return null;
+        }
+
+        virtual public NetCommand ToCommand(Dictionary<string,object> dict) {
+            return new NetCommand(Turn);
         }
 
         public static List<NetCommand> CreateList(params NetCommand[] commands) {
