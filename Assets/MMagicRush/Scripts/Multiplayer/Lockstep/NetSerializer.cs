@@ -48,8 +48,11 @@ namespace YupiPlay.MMB.Lockstep {
                         case NetCommand.HELLO:
                             cmd = HelloCommand.ToCommand(cmddict);
                             break;
+                        case NetCommand.READY:
+                            cmd = new ReadyCommand();
+                            break;
                         case NetCommand.START:
-                            cmd = new StartCommand(turn);
+                            cmd = new StartCommand();
                             break;
                         case NetCommand.END:
                             cmd = new EndCommand(turn);

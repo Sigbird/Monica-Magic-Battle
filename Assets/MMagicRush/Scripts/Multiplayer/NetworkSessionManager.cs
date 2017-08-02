@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace YupiPlay {
 	public class NetworkSessionManager {
 		public enum States {
-			IDLE, MATCHMAKING, CONNECTING, CONNECTED, ERRORCONNECTED, DATAEXCHANGE, LOADING, WAITINGSTART,
+			IDLE, MATCHMAKING, CONNECTING, CONNECTED, ERRORCONNECTED, DATAEXCHANGE, LOADING, READY, WAITINGSTART,
 			INGAME, GAMEEND, PARTICIPANTLEFT, PLAYERLEFT, PARTICIPANTDISCONNECTED, PARTICIPANTCONNECTED, LOSTCONNECTION
 		}
 
@@ -125,24 +125,32 @@ namespace YupiPlay {
 
             var cmd = cmds[0];
 
-            if (State == States.DATAEXCHANGE && cmd.GetCommand() == NetCommand.HELLO) {                
+            if (State == States.INGAME && cmd.GetTurn() > 0) {
+                CommandBuffer.Instance.InsertListToInput(cmds);
+                NetClock.Instance.CalculateRemoteLatency(cmd.GetTurn());
+
+                return;
+            }
+
+            if (cmd.GetCommand() == NetCommand.HELLO) {                
                 SetAdditionalOpponentInfo(cmd as HelloCommand);
                 LoadGame();
                 return;
             }
-            if (State == States.WAITINGSTART && cmd.GetCommand() == NetCommand.START) {
-                NetGameController.Instance.StartGame();
-                return;
-            }
-            if (State == States.INGAME && cmd.GetCommand() == NetCommand.END) {
-                NetGameController.Instance.EndGame();
-                return;
-            }
+            if (cmd.GetCommand() == NetCommand.READY) {
+                Match.Opponent.Ready = true;
+                SendStart();
 
-            if (State == States.INGAME) {
-                CommandBuffer.Instance.InsertListToInput(cmds);
-                NetClock.Instance.CalculateRemoteLatency(cmd.GetTurn());
-            }           
+                State = States.WAITINGSTART;
+            }
+            if (cmd.GetCommand() == NetCommand.START) {
+                if (NetGameController.Instance != null) {
+                    NetGameController.Instance.StartGame();
+                    State = States.INGAME;
+                }
+
+                return;
+            }                               
 		}									
 			
 		public void LoadGame() {
@@ -180,11 +188,22 @@ namespace YupiPlay {
             SendMessage(cmds);
         }
 
-        public void SendStart() {
-            var cmds = NetCommand.CreateList(new StartCommand(NetClock.Instance.GetTurn()));                                   
+        public void SendReady() {
+            var cmds = NetCommand.CreateList(new ReadyCommand());
             SendMessage(cmds);
 
-            State = States.WAITINGSTART;
+            State = States.READY;
+        }
+
+        public void SendStart() {
+            var cmds = NetCommand.CreateList(new StartCommand());                                   
+            SendMessage(cmds);            
+        }
+        
+        public void EndGame() {
+            State = States.GAMEEND;
+
+            //Calcula pontuações, novo ranking de MM etc. e salva
         }
 
         private void SetAdditionalOpponentInfo(HelloCommand hello) {

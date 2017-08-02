@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 
 namespace YupiPlay.MMB.Lockstep {
-    public class StartCommand : NetCommand {
+    public class ReadyCommand : NetCommand {
 
-        public StartCommand() : base(0) {
-            Command = START;            
+        public ReadyCommand() : base(0) {
+            Command = READY;            
         }
 
         public override Dictionary<string, object> ToDictionary() {
             var dict = new Dictionary<string, object>();
-            dict["cmd"] = START;
+            dict["cmd"] = READY;
             return dict;
         }
     }

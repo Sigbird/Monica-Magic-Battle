@@ -86,7 +86,7 @@ namespace YupiPlay.MMB.Lockstep {
                 lagTurns = 0;
             } else {
                 lagTurns++;
-                //UnityEngine.Debug.Log("No input commands: " + lagTurns);
+                UnityEngine.Debug.Log("No input commands: " + lagTurns);
             }            
         }
 

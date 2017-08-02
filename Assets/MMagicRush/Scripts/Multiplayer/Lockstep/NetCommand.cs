@@ -8,7 +8,10 @@ namespace YupiPlay.MMB.Lockstep {
         //mensagem inical
         public const string HELLO = "HELLO";
 
-        //é enviado após o nível carregar, sinaliza que está pronto para começar
+        //enviado após carregar, indica que está pronto
+        public const string READY = "READY";
+
+        //sinal para começar partida
         public const string START = "START";
         
         //é enviado após o último turno

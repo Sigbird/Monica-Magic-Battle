@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using YupiPlay.MMB.Lockstep;
+using YupiPlay;
 
 public class NetGameController : MonoBehaviour {
     public GameObject PlayerHero;
@@ -25,7 +26,7 @@ public class NetGameController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
+        NetworkSessionManager.Instance.SendReady();
 	}
 	
 	// Update is called once per frame

@@ -68,8 +68,21 @@ public class NetSerializerTest {
     }
 
     [Test]
+    public void TestReadyCommand() {
+        var cmds = NetCommand.CreateList(new ReadyCommand());
+
+        var json = NetSerializer.Serialize(cmds);
+        var newCmds = NetSerializer.Deserialize(json);
+
+        var start = newCmds[0] as ReadyCommand;
+
+        Assert.AreEqual(NetCommand.READY, start.GetCommand());
+        Assert.AreEqual(0, start.GetTurn());
+    }
+
+    [Test]
     public void TestStartCommand() {
-        var cmds = NetCommand.CreateList(new NetCommand(1), new StartCommand(2));        
+        var cmds = NetCommand.CreateList(new StartCommand());        
 
         var json = NetSerializer.Serialize(cmds);
         var newCmds = NetSerializer.Deserialize(json);
@@ -77,7 +90,7 @@ public class NetSerializerTest {
         var start = newCmds[0] as StartCommand;
 
         Assert.AreEqual(NetCommand.START, start.GetCommand());
-        Assert.AreEqual(1, start.GetTurn());
+        Assert.AreEqual(0, start.GetTurn());
     }
 
     [Test]

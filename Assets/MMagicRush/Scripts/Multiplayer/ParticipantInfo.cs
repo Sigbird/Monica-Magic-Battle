@@ -11,6 +11,7 @@ namespace YupiPlay
 		public string DisplayName;
         public string ParticipantId;
         public string SelectedHero;
+        public bool Ready = false;
 
         private int rating;
 
