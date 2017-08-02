@@ -552,13 +552,13 @@ public class WPSoldierControler : MonoBehaviour {
 			Debug.Log ("Monica");
 			break;
 		case(1):
-			this.vidaMax = 6;
-			this.vida = 6;
+			this.vidaMax = 4;
+			this.vida = 4;
 			this.reach = 2;//3
 			this.damage = 1;
 			this.damageSpeed = 4;
 			this.range = 2;
-			this.speed = 13;
+			this.speed = 17;
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -566,21 +566,34 @@ public class WPSoldierControler : MonoBehaviour {
 			Debug.Log ("Cebolinha");
 			break;
 		case(2):
-			this.vidaMax = 6;
-			this.vida = 6;
+			this.vidaMax = 7;
+			this.vida = 7;
 			this.reach = 0.5f;
 			this.damage = 1;
-			this.damageSpeed = 2;
+			this.damageSpeed = 4;
 			this.range = 2;
-			this.speed = 13;
+			this.speed = 12;
 			this.energyMax = 4;
 			this.energy = 4;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			Debug.Log ("Magali");
 			break;
 		case(3):
-			this.vidaMax = 6;
-			this.vida = 6;
+			this.vidaMax = 4;
+			this.vida = 4;
+			this.reach = 0.5f;
+			this.damage = 2;
+			this.damageSpeed = 4;
+			this.range = 2;
+			this.speed = 13;
+			this.energyMax = 4;
+			this.energy = 4;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			Debug.Log ("Cascao");
+			break;
+		case(4):
+			this.vidaMax = 4;
+			this.vida = 4;
 			this.reach = 0.5f;
 			this.damage = 1;
 			this.damageSpeed = 2;
@@ -589,6 +602,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.energyMax = 4;
 			this.energy = 4;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			Debug.Log ("Chico");
 			break;
 		default:
 			this.vidaMax = 6;
@@ -947,7 +961,7 @@ public class WPSoldierControler : MonoBehaviour {
 //			this.energybarSoldier.SetActive (true);
 		this.skill1.gameObject.SetActive (true);
 		this.skill2.gameObject.SetActive (true);
-		this.damage = 1;
+//		this.damage = 1;
 		this.speed = maxSpeed;
 		this.seeking = true;
 		//this.targetEnemy = SeekEnemyTarget();

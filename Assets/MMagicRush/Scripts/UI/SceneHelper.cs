@@ -100,6 +100,10 @@ public class SceneHelper : MonoBehaviour {
 		Application.Quit();
 	}
 
+	public void PurchaseHero(string x){
+		PlayerPrefs.SetInt (x, 1);
+	}
+
 	public void CallTutorial(){
 		PlayerPrefs.SetString ("ResetCards", "false");
 		PlayerPrefs.SetInt ("Lesson", 1);

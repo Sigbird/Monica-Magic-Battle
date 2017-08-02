@@ -24,6 +24,7 @@ public class BaseDefense : MonoBehaviour {
 	public GameObject arrowModel;
 	// Use this for initialization
 	void Start () {
+		this.damage = 2;
 		this.haveAmmo = true;
 		this.seeking = true;
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();

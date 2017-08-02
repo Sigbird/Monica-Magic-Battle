@@ -41,7 +41,7 @@ public class TutorialController : MonoBehaviour {
 	public GameObject tutorialArrows;
 
 	void Awake() {
-		//wwwwPlayerPrefs.SetInt ("Lesson", 5);
+		//PlayerPrefs.SetInt ("Lesson", 5);
 		//PlayerPrefs.SetString ("TutorialCoins", "false");
 		Time.timeScale = 1;
 		EnemyDiamonds = 0;

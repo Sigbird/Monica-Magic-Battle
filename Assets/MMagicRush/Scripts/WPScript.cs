@@ -155,6 +155,7 @@ public class WPScript : MonoBehaviour {
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
 			renderer.sprite = MineIcon; //CAPTURA DE GEMA
+
 		} else if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBase").transform.position) < 0.5f) {
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
@@ -173,7 +174,7 @@ public class WPScript : MonoBehaviour {
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
 			if (tutorial == true && GameObject.Find ("TutorialHand") != null)
 				GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
-			renderer.sprite = AttackIcon; //ATAQUE DE INIMIGO
+			renderer.sprite = AttackIcon; //ATAQUE DE BASE INIMIGO
 		} else{
 			
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
