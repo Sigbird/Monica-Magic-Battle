@@ -48,6 +48,10 @@ public class GameController : MonoBehaviour {
 	public int Mine2Value = 0;
 	private float Mine2Assist;
 
+	public Sprite[] portraits;
+	public Image heroPortrait;
+	public Image enemyPortrait;
+
 	public GameObject[] rewardWindows;
 	// Use this for initialization
 	void Awake() {
@@ -66,6 +70,27 @@ public class GameController : MonoBehaviour {
 		} else {
 			GameController.playerXp = PlayerPrefs.GetFloat("PlayerXP");
 			GameController.enemyXp = PlayerPrefs.GetFloat("EnemyXP");
+		}
+
+		switch (PlayerPrefs.GetInt ("SelectedCharacter")) {
+		case 0:
+			heroPortrait.sprite = portraits [0];
+			break;
+		case 1:
+			heroPortrait.sprite = portraits [1];
+			break;
+		case 2:
+			heroPortrait.sprite = portraits [2];
+			break;
+		case 3:
+			heroPortrait.sprite = portraits [3];
+			break;
+		case 4:
+			heroPortrait.sprite = portraits [4];
+			break;
+		default:
+			heroPortrait.sprite = portraits [0];
+			break;
 		}
 
 		//StartCoroutine (EnemyAI ());

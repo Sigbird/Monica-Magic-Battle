@@ -630,8 +630,8 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Monica");
 			break;
 		case(1):
-			this.vidaMax = 6;
-			this.vida = 6;
+			this.vidaMax = 5;
+			this.vida = 5;
 			this.reach = 2;//3
 			this.damage = 1;
 			this.damageSpeed = 1;
@@ -1156,10 +1156,10 @@ public class WPIASoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					//lockedTarget = false;
 				}
-			} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//ALVO TROPA
+			} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//ALVO TORRE
 					//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 					//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-					targetEnemy.GetComponent<ChargesScript> ().progress += 0.3f;
+					targetEnemy.GetComponent<ChargesScript> ().progress += 0.2f;
 					if (this.range > 1)
 						TrowArrow ();
 					//				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
