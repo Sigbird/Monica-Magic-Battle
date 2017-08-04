@@ -1,9 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GooglePlayGames.Android;
-using GooglePlayGames.BasicApi;
-using GooglePlayGames.Native;
 using GooglePlayGames;
 
 
@@ -49,39 +46,39 @@ public class GooglePlayGame : MonoBehaviour {
 
 	/// <param name=”onLogin”></param>
 
-	public static void Login(bool onLogin)
-
-	{
-
-		if(Social.Active == null)
-
-		{
-
-			Debug.LogError("plataforma inativa");
-
-			return;
-
-		}
-
-		if (IsAuthenticated())
-
-		{
-
-			return; // verificando se já está logado
-
-		}
-
-		Social.localUser.Authenticate((bool success) => {
-
-			Debug.Log(success);
-
-			if(onLogin != null)
-
-				onLogin(success);
-
-		});
-
-	}
+//	public static void Login(bool onLogin)
+//
+//	{
+//
+//		if(Social.Active == null)
+//
+//		{
+//
+//			Debug.LogError("plataforma inativa");
+//
+//			return;
+//
+//		}
+//
+//		if (IsAuthenticated())
+//
+//		{
+//
+//			return; // verificando se já está logado
+//
+//		}
+//
+//		Social.localUser.Authenticate((bool success) => {
+//
+//			Debug.Log(success);
+//
+//			if(onLogin != null)
+//
+//				onLogin(success);
+//
+//		});
+//
+//	}
 
 
 	/// <summary>
