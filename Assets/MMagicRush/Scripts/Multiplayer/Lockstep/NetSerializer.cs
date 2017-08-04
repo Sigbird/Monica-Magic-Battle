@@ -29,7 +29,7 @@ namespace YupiPlay.MMB.Lockstep {
             }            
 
             string json = Json.Serialize(dict);
-            Debug.Log(json);
+            //Debug.Log(json);
             return json;            
         }
 

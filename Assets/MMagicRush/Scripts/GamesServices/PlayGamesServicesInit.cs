@@ -1,13 +1,8 @@
 ﻿#if UNITY_ANDROID
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using GooglePlayGames.BasicApi.Multiplayer;
-
-
-using UnityEngine.SocialPlatforms;
 
 namespace YupiPlay.MMagicRush {
 
@@ -21,7 +16,7 @@ namespace YupiPlay.MMagicRush {
 
 			PlayGamesPlatform.InitializeInstance(config);
 			PlayGamesPlatform.DebugLogEnabled = true;
-			PlayGamesPlatform.Activate();
+			PlayGamesPlatform.Activate();            
 		}
 
 		// Use this for initialization
