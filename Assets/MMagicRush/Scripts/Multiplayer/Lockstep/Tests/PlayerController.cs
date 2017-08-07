@@ -17,15 +17,17 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButtonUp(0)) {
-            target = Camera.main.ScreenToWorldPoint(Input.mousePosition);           
-            CommandController.Move(target);
+        if (NetGameController.Instance.IsGameRunning()) {
+            if (Input.GetMouseButtonUp(0)) {
+                target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                CommandController.Move(target);
 
-            ClickFeedback.SetActive(true);
-            ClickFeedback.transform.position = target;
+                ClickFeedback.SetActive(true);
+                ClickFeedback.transform.position = target;
 
-            NetClock.Instance.RegisterInputTime();
-        }        
+                NetClock.Instance.RegisterInputTime();
+            }
+        }              
     }
 
     private void FixedUpdate() {
