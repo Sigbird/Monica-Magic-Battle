@@ -33,8 +33,7 @@ namespace YupiPlay.MMB.Lockstep {
             IsClockRunning = true;
 
             while (IsClockRunning) {                               
-                yield return new WaitForSecondsRealtime(TurnTime);
-                
+                yield return new WaitForSecondsRealtime(TurnTime);                
                 SendTurn(Turn);
                 
                 if (Turn > 2) {
@@ -70,7 +69,13 @@ namespace YupiPlay.MMB.Lockstep {
             List<NetCommand> playerCmds = Buffer.GetOutputForTurn(turn);
             List<NetCommand> enemyCommands = Buffer.GetInputForTurn(turn);
 
-            if (enemyCommands.Count > 0) {                
+            bool ignoreRecv = false;
+
+            #if UNITY_EDITOR
+                ignoreRecv = true;
+            #endif
+
+            if (ignoreRecv || enemyCommands.Count > 0) {                
                 foreach (NetCommand cmd in playerCmds) {
                     NetGameController.Instance.PlayerCommandListener(cmd);
                 }

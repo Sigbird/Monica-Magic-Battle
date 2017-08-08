@@ -7,8 +7,9 @@ using YupiPlay;
 public class NetGameController : MonoBehaviour {
     public GameObject PlayerHero;
     public GameObject ClickFeeback;
-    public PlayerController playerController;
-    public EnemyRemoteController enemyController;
+    public PlayerController PlayerController;
+    public EnemyRemoteController EnemyController;
+    public ProtoGameUI GameUI;
 
     private Vector2 targetPosition;    
 
@@ -16,7 +17,7 @@ public class NetGameController : MonoBehaviour {
 
     private static NetGameController instance;
 
-    private bool isGameRunning = false;
+    private bool hasGameStarted = false;
 
     void Awake() {
         if (instance == null) {
@@ -25,14 +26,14 @@ public class NetGameController : MonoBehaviour {
             Destroy(this.gameObject);
         }
     }
-
-    // Use this for initialization
+    
     void Start () {
         NetworkSessionManager.Instance.SendReady();
-	}
-	
-	// Update is called once per frame
-    // Update de testes
+#if UNITY_EDITOR
+        StartGame();
+#endif
+    }
+		
 	void Update () {		
 	}     
 
@@ -44,30 +45,43 @@ public class NetGameController : MonoBehaviour {
         Selector(true, cmd);
     }
 
-    private void Selector(bool IsInput, NetCommand cmd) {
+    private void Selector(bool isInput, NetCommand cmd) {
         if (cmd.GetCommand() == NetCommand.MOVE) {            
             var position = (cmd as MoveCommand).GetPosition();
 
-            if (IsInput) {
-                enemyController.MoveTo(MirrorPosition(position));
-                enemyController.GetEnemyInputLatency();
+            if (isInput) {
+                EnemyController.MoveTo(MirrorPosition(position));
+                EnemyController.GetEnemyInputLatency();
             } else {
-                playerController.MoveTo(position);
+                PlayerController.MoveTo(position);
                 NetClock.Instance.GetInputLatency();
             }            
+        }
+
+        if (isInput && cmd.GetCommand() == NetCommand.END) {
+            NetClock.Instance.StopClock();
         }
     }
 
     public void StartGame() {
-        isGameRunning = true;
+        StartCoroutine(StartUITimer());
+    }
+
+    private IEnumerator StartUITimer() {
+        GameUI.ShowStart();
+        yield return new WaitForSeconds(2);
+
+        GameUI.HideStart();
+        hasGameStarted = true;
     }
 
     public void EndGame() {
-        isGameRunning = false;
+        hasGameStarted = false;
+        CommandController.End();
     }
 
-    public bool IsGameRunning() {
-        return isGameRunning;
+    public bool HasGameStarted() {
+        return hasGameStarted;
     }
 
     private Vector2 MirrorPosition(Vector2 position) {
