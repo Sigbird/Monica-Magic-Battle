@@ -11,6 +11,7 @@ public class SceneHelper : MonoBehaviour {
 	public int[] empty;
 	public Text coinsText;
 	public int coinsPurchasing;
+	public dreamloLeaderBoard LeaderBoard;
 
 
 	public GameObject[] TutorialPanels;
@@ -115,4 +116,9 @@ public class SceneHelper : MonoBehaviour {
 //		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
 //		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
 	}
+
+	public void OpenRanking(){
+		
+	}
+
 }

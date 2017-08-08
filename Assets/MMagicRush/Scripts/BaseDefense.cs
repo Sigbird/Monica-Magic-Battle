@@ -102,11 +102,13 @@ public class BaseDefense : MonoBehaviour {
 							this.targetEnemy = null;
 					}
 					danoCD = 0;
-					if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == true) {
-						if (this.reach > 1) {
-							audioManager.PlayAudio ("shot");
-						} else {
-							audioManager.PlayAudio ("atack");
+					if (targetEnemy.GetComponent<SpriteRenderer> () != null) {
+						if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == true) {
+							if (this.reach > 1) {
+								audioManager.PlayAudio ("shot");
+							} else {
+								audioManager.PlayAudio ("atack");
+							}
 						}
 					}
 				} else {
