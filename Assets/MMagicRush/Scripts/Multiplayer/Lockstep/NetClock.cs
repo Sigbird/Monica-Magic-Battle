@@ -45,7 +45,8 @@ namespace YupiPlay.MMB.Lockstep {
                 }
                 Turn++;
 
-                if (CurrentOpponentTurn > 2) {
+                //REDO
+                if (LastReceivedTurn > 2) {
                     if (CurrentOpponentTurn - 2 > LastPlayedOpponentTurn) {
                         PlayOpponentTurn(CurrentOpponentTurn - 2);
                     }                    
@@ -53,8 +54,9 @@ namespace YupiPlay.MMB.Lockstep {
                 if (LastReceivedTurn > CurrentOpponentTurn) {
                     CurrentOpponentTurn++;
                 }
+                //REDO
             }
-        }
+        }        
 
         public void StartClock() {
             watch = new Stopwatch();
@@ -151,7 +153,9 @@ namespace YupiPlay.MMB.Lockstep {
 
         // Use this for initialization
         void Start() {
+#if UNITY_EDITOR
             StartClock();
+#endif
         }
 
         // Update is called once per frame

@@ -64,6 +64,7 @@ public class NetGameController : MonoBehaviour {
     }
 
     public void StartGame() {
+        NetClock.Instance.StartClock();
         StartCoroutine(StartUITimer());
     }
 
