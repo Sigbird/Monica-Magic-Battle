@@ -23,5 +23,9 @@ namespace YupiPlay.MMB {
         }
 
         private static PlayerInfo instance;
+
+        public PlayerInfo() {
+            Inventory = new PlayerInventory();
+        }
     }
 }

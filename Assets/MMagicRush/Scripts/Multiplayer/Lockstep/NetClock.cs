@@ -13,6 +13,9 @@ namespace YupiPlay.MMB.Lockstep {
         private ulong Turn = 1;
         private ulong LastTurnPlayed = 0;
 
+        private ulong TurnToPlay = 0;
+        private ulong LastReceivedTurn = 0;
+
         private Coroutine ClockCoroutine = null;
         private bool IsClockRunning = false;
         private CommandBuffer Buffer = null;
@@ -33,14 +36,19 @@ namespace YupiPlay.MMB.Lockstep {
             IsClockRunning = true;
 
             while (IsClockRunning) {                               
-                yield return new WaitForSecondsRealtime(TurnTime);                
-                SendTurn(Turn);
-                
-                if (Turn > 2) {
-                    PlayTurn(Turn - 2);
-                }                
+                yield return new WaitForSecondsRealtime(TurnTime);
 
-                Turn++;
+                AddTurnToCmdBuffer(Turn);
+                SendTurn(Turn);
+
+                if (Turn < 3) {
+                    Turn++;
+                }
+
+                if (Turn > 2) {                    
+                    PlayTurn(Turn - 2);
+                    Turn++;
+                }                                                
             }
         }
 
@@ -60,14 +68,14 @@ namespace YupiPlay.MMB.Lockstep {
             return Turn;
         }
 
-        private void AddTurnToCmdBuffer(ulong turn) {
-            //Debug.Log("Player Input Turn:" + turn);
+        private void AddTurnToCmdBuffer(ulong turn) {          
             Buffer.InsertToOutput(new NetCommand(turn));
         }
-
-        private void PlayTurn(ulong turn) {                                               
+        
+        //retorna se o turno foi executado com sucesso;
+        private bool PlayTurn(ulong turn) {                                               
             List<NetCommand> playerCmds = Buffer.GetOutputForTurn(turn);
-            List<NetCommand> enemyCommands = Buffer.GetInputForTurn(turn);
+            List<NetCommand> enemyCmds  = Buffer.GetInputForTurn(turn);
 
             bool ignoreRecv = false;
 
@@ -75,23 +83,28 @@ namespace YupiPlay.MMB.Lockstep {
                 ignoreRecv = true;
             #endif
 
-            if (ignoreRecv || enemyCommands.Count > 0) {                
+            if (ignoreRecv || enemyCmds.Count > 0 && playerCmds.Count > 0) {                
                 foreach (NetCommand cmd in playerCmds) {
                     NetGameController.Instance.PlayerCommandListener(cmd);
                 }
-                foreach (NetCommand cmd in enemyCommands) {
+                foreach (NetCommand cmd in enemyCmds) {
                     NetGameController.Instance.EnemyCommandListener(cmd);
-                }                                
-
-                if (turn > LastTurnPlayed) {
-                    RemoveTurn(LastTurnPlayed);
                 }
+                
+                /*if (turn > LastTurnPlayed) {
+                    RemoveTurn(LastTurnPlayed);
+                }*/
 
                 LastTurnPlayed = turn;
                 lagTurns = 0;
-            } else {
+
+                return true;
+            } else {                
+                ProtoGameUI.Instance.PrintLag(turn);
                 lagTurns++;
                 UnityEngine.Debug.Log("No input commands: " + lagTurns);
+
+                return false;
             }            
         }
 
@@ -100,8 +113,7 @@ namespace YupiPlay.MMB.Lockstep {
             NetworkSessionManager.Instance.SendMessage(cmds);
         }
 
-        private void RemoveTurn(ulong turn) {
-            //Debug.Log("removing turn " + turn);
+        private void RemoveTurn(ulong turn) {            
             CommandBuffer.Instance.RemoveAllForTurn(turn);
         }            
 
@@ -115,8 +127,12 @@ namespace YupiPlay.MMB.Lockstep {
             watch.Reset();
         }
 
-        public void CalculateRemoteLatency(ulong Turn) {
+        public void CalculateRemoteLatency(ulong turn) {
 
+        }
+
+        public void UpdateRemoteTurn(ulong turn) {
+            LastReceivedTurn = turn;
         }
 
         public bool IsRunning() {

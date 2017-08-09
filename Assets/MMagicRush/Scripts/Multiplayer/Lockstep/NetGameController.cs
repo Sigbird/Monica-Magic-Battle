@@ -51,10 +51,10 @@ public class NetGameController : MonoBehaviour {
 
             if (isInput) {
                 EnemyController.MoveTo(MirrorPosition(position));
-                EnemyController.GetEnemyInputLatency();
+                //EnemyController.GetEnemyInputLatency();
             } else {
                 PlayerController.MoveTo(position);
-                NetClock.Instance.GetInputLatency();
+               // NetClock.Instance.GetInputLatency();
             }            
         }
 

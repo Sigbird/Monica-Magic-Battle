@@ -8,12 +8,12 @@ public class PlayGamesSignIn : MonoBehaviour {
     public delegate void OnLoginAction(string displayname, string username);
     public static event OnLoginAction OnLogin;
 
-	public dreamloLeaderBoard LeaderBoard;
+	//public dreamloLeaderBoard LeaderBoard;
 
 	// Use this for initialization
 	void Start () {
 		Social.localUser.Authenticate(OnAuth);  
-		LeaderBoard.LoadScores ();
+		//LeaderBoard.LoadScores ();
 	}
 
 	private void OnReport(bool success) {
@@ -27,12 +27,16 @@ public class PlayGamesSignIn : MonoBehaviour {
 	private void OnAuth(bool success) {
 		if (success) {
 			Debug.Log("Auth OK");
+            DebugHelper.Instance.Append("Authenticated");
 
             PlayerInfo.Instance.DisplayName = PlayGamesPlatform.Instance.GetUserDisplayName();
             PlayerInfo.Instance.Username    = Social.localUser.userName;
-			//Social.ReportScore (100, "CgkI4e_Ei7AREAIQBg",OnReport);
-			LeaderBoard.AddScore (Social.localUser.userName, 100);
+            
+            //Social.ReportScore (100, "CgkI4e_Ei7AREAIQBg",OnReport);
+            //LeaderBoard.AddScore (Social.localUser.userName, 100);
+
             if (OnLogin != null) {
+                DebugHelper.Instance.Append(PlayerInfo.Instance.DisplayName + " " + PlayerInfo.Instance.Username);
                 OnLogin(PlayerInfo.Instance.DisplayName, PlayerInfo.Instance.Username);
             }
 

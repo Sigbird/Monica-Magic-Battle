@@ -11,11 +11,22 @@ public class ProtoGameUI : MonoBehaviour {
     public Text EndText;
 
     public Text LivesCounter;
-    // Use this for initialization
+
+    public Text MessageDebug;
+    public Text EnemyDebug;
+
+    public Text LagIndicator;
+
+    public static ProtoGameUI Instance;
+
+    void Awake() {
+        Instance = this;
+    }
+
     void Start () {
 #if !UNITY_EDITOR
         Player.text = NetworkSessionManager.Instance.Match.Player.DisplayName;
-        Player.text = NetworkSessionManager.Instance.Match.Opponent.DisplayName;
+        Enemy.text  = NetworkSessionManager.Instance.Match.Opponent.DisplayName;
 #endif
     }
 	
@@ -38,5 +49,17 @@ public class ProtoGameUI : MonoBehaviour {
 
     public void SetLives(int lives) {
         LivesCounter.text = "Lives: " + lives.ToString();
+    }
+
+    public void PrintPlayer(string msg) {
+        MessageDebug.text = msg;
+    }
+
+    public void PrintEnemy(string msg) {
+        EnemyDebug.text = msg;
+    }
+
+    public void PrintLag(ulong turn) {
+        LagIndicator.text = "lag turn " + turn;
     }
 }

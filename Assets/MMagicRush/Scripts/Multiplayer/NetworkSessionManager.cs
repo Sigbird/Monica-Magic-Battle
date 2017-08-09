@@ -121,13 +121,19 @@ namespace YupiPlay {
 			DebugScr("received data size " + data.Length);
 
             string json = Encoding.UTF8.GetString(data);
+
+            if (ProtoGameUI.Instance != null) {
+                ProtoGameUI.Instance.PrintEnemy(json);
+            }
+
             var cmds = NetSerializer.Deserialize(json);
 
             var cmd = cmds[0];
 
             if (State == States.INGAME && cmd.GetTurn() > 0) {
                 CommandBuffer.Instance.InsertListToInput(cmds);
-                NetClock.Instance.CalculateRemoteLatency(cmd.GetTurn());
+                NetClock.Instance.UpdateRemoteTurn(cmd.GetTurn());
+                //NetClock.Instance.CalculateRemoteLatency(cmd.GetTurn());
 
                 return;
             }
@@ -147,17 +153,14 @@ namespace YupiPlay {
                 if (NetGameController.Instance != null) {
                     NetGameController.Instance.StartGame();
                     State = States.INGAME;
-                }
-
-                return;
+                }                
             }                               
 		}									
 			
 		public void LoadGame() {
 			state = States.LOADING;
 
-            SceneTestHelper.LoadTestGame();
-            //Carrega jogo            
+            SceneTestHelper.LoadTestGame();            
 		}
 
 		public void Reset() {
@@ -175,8 +178,14 @@ namespace YupiPlay {
 			}
 		}
 
-        public void SendMessage(List<NetCommand> commands) {            
-            byte[] data = Encoding.UTF8.GetBytes(NetSerializer.Serialize(commands));
+        public void SendMessage(List<NetCommand> commands) {
+            var jsonString = NetSerializer.Serialize(commands);
+
+            if (ProtoGameUI.Instance != null) {
+                ProtoGameUI.Instance.PrintPlayer(jsonString);
+            }            
+
+            byte[] data = Encoding.UTF8.GetBytes(jsonString);
 
 #if UNITY_ANDROID && !UNITY_EDITOR
             GoogleMultiplayer.SendMessageToAll(data);
@@ -210,6 +219,8 @@ namespace YupiPlay {
         private void SetAdditionalOpponentInfo(HelloCommand hello) {
             Match.Opponent.SelectedHero = hello.GetHero();
             Match.Opponent.Rating = hello.GetRating();
+
+            DebugHelper.Instance.Append(Match.Opponent.SelectedHero + " " + Match.Opponent.Rating);
 
             if (OnOpponentInfo != null) {
                 OnOpponentInfo(Match.Opponent);

@@ -19,7 +19,9 @@ namespace YupiPlay {
             GoogleMultiplayer listener = new GoogleMultiplayer(NetworkSessionManager.Instance);
             PlayGamesPlatform.Instance.RealTime.CreateQuickGame(MinOpponents, MaxOpponents, GameVariant, listener);
 
-			NetworkSessionManager.Instance.MatchmakingStarted();
+            DebugHelper.Instance.Append("Matchmaking started");
+
+            NetworkSessionManager.Instance.MatchmakingStarted();
         }
 
         public static void InviteToGame() {                        
@@ -55,10 +57,12 @@ namespace YupiPlay {
         }
 
         public void OnRoomConnected(bool success) {
-            if (success) {    				
-				netSM.RoomConnectedSuccess();
-            } else {				
-				netSM.RoomConnectedFailure();
+            if (success) {
+                DebugHelper.Instance.Append("Room Connected");
+                netSM.RoomConnectedSuccess();
+            } else {
+                DebugHelper.Instance.Append("MM Failed");
+                netSM.RoomConnectedFailure();
             }
         }
 

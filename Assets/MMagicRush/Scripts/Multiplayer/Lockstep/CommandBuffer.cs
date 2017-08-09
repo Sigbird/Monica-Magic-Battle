@@ -42,10 +42,7 @@ namespace YupiPlay.MMB.Lockstep {
         }
 
         public List<NetCommand> GetOutputForTurn(ulong turn) {
-            var cmds = OutputBuffer.FindAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
-
-            if (cmds.Count > 0) { return cmds; }
-            return NetCommand.CreateList(new NetCommand(turn));
+            return OutputBuffer.FindAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });            
         }
 
         public List<NetCommand> GetInputForTurn(ulong turn) {

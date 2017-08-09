@@ -25,6 +25,8 @@ public class BasePlayerController : MonoBehaviour {
             StopCoroutine(stopAfterCollision);
         }
 
+        target = position;
+
         var direction = position - (Vector2)transform.position;
         rb.velocity = direction.normalized;
     }
