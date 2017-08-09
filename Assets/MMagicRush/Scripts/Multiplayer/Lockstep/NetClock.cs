@@ -11,11 +11,9 @@ namespace YupiPlay.MMB.Lockstep {
         public static NetClock Instance = null;
 
         private ulong Turn = 1;
-        private ulong LastTurnPlayed = 0;
-        
-        private ulong LastReceivedTurn = 0;
-        private ulong CurrentOpponentTurn = 1;
-        private ulong LastPlayedOpponentTurn = 0;
+        private ulong LastTurnSent = 0;
+        private ulong LastTurnPlayed = 0;        
+        private ulong LastReceivedTurn = 0;                
 
         private Coroutine ClockCoroutine = null;
         private bool IsClockRunning = false;
@@ -31,37 +29,35 @@ namespace YupiPlay.MMB.Lockstep {
             }
         }       
 
-        private IEnumerator RunClock() {
-            IsClockRunning = true;
-
-            while (IsClockRunning) {                               
+        private IEnumerator TurnTimer() {                                        
                 yield return new WaitForSecondsRealtime(TurnTime);
 
                 AddTurnToCmdBuffer(Turn);
-                SendTurn(Turn);                
+                SendTurn(Turn);
 
+            #if UNITY_EDITOR
                 if (Turn > 2) {                                                           
                     PlayMyTurn(Turn - 2);                                                       
                 }
+            #endif
                 Turn++;
 
                 //REDO
-                if (LastReceivedTurn > 2) {
+                /*if (LastReceivedTurn > 2) {
                     if (CurrentOpponentTurn - 2 > LastPlayedOpponentTurn) {
                         PlayOpponentTurn(CurrentOpponentTurn - 2);
                     }                    
                 }
                 if (LastReceivedTurn > CurrentOpponentTurn) {
                     CurrentOpponentTurn++;
-                }
-                //REDO
-            }
+                }*/
+                //REDO            
         }        
 
         public void StartClock() {
             watch = new Stopwatch();
             Buffer = CommandBuffer.Instance;
-            ClockCoroutine = StartCoroutine(RunClock());
+            ClockCoroutine = StartCoroutine(TurnTimer());
         }
 
         public void StopClock() {
@@ -91,13 +87,7 @@ namespace YupiPlay.MMB.Lockstep {
             if (ignoreRecv || playerCmds.Count > 0) {                
                 foreach (NetCommand cmd in playerCmds) {
                     NetGameController.Instance.PlayerCommandListener(cmd);
-                }               
-                
-                if (turn > LastTurnPlayed) {
-                    RemoveTurn(LastTurnPlayed);
-                }
-
-                LastTurnPlayed = turn;                                
+                }                               
             }          
         }
 
@@ -107,21 +97,20 @@ namespace YupiPlay.MMB.Lockstep {
             if (enemyCmds.Count > 0) {
                 foreach (NetCommand cmd in enemyCmds) {
                     NetGameController.Instance.EnemyCommandListener(cmd);
-                }
-
-                LastPlayedOpponentTurn = turn;
+                }                
 
                 return true;
             }
 
-            ProtoGameUI.Instance.PrintLag(turn);           
+            //ProtoGameUI.Instance.PrintLag(turn);           
 
             return false;
         }
 
         private void SendTurn(ulong turn) {
-            List<NetCommand> cmds = Buffer.GetOutputForTurn(turn);            
+            List<NetCommand> cmds = Buffer.GetOutputForTurn(turn);
             NetworkSessionManager.Instance.SendMessage(cmds);
+            LastTurnSent = turn;
         }
 
         private void RemoveTurn(ulong turn) {            
@@ -143,8 +132,20 @@ namespace YupiPlay.MMB.Lockstep {
         }
 
         public void UpdateRemoteTurn(ulong turn) {
+            if (turn == LastReceivedTurn + 1) {
+                if (turn > 2) {
+                    var turnToPlay = LastReceivedTurn - 2;
+
+                    PlayMyTurn(turnToPlay);
+                    PlayOpponentTurn(turnToPlay);
+                }
+
+                LastReceivedTurn++;
+                StartCoroutine(TurnTimer());                
+            } else {
+                ProtoGameUI.Instance.PrintLag(turn);
+            }
             
-            LastReceivedTurn = turn;
         }
 
         public bool IsRunning() {
