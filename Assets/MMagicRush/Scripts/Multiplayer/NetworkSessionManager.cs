@@ -123,7 +123,7 @@ namespace YupiPlay {
             string json = Encoding.UTF8.GetString(data);
 
             if (ProtoGameUI.Instance != null) {
-                ProtoGameUI.Instance.PrintEnemy(json);
+               ProtoGameUI.Instance.PrintEnemy(json);
             }
 
             var cmds = NetSerializer.Deserialize(json);

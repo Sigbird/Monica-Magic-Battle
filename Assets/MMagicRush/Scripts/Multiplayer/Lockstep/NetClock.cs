@@ -12,17 +12,16 @@ namespace YupiPlay.MMB.Lockstep {
 
         private ulong Turn = 1;
         private ulong LastTurnPlayed = 0;
-
-        private ulong TurnToPlay = 0;
+        
         private ulong LastReceivedTurn = 0;
+        private ulong CurrentOpponentTurn = 1;
+        private ulong LastPlayedOpponentTurn = 0;
 
         private Coroutine ClockCoroutine = null;
         private bool IsClockRunning = false;
         private CommandBuffer Buffer = null;
 
-        private Stopwatch watch;
-
-        private int lagTurns = 0;
+        private Stopwatch watch;        
 
         private void Awake() {
             if (Instance == null) {
@@ -39,16 +38,21 @@ namespace YupiPlay.MMB.Lockstep {
                 yield return new WaitForSecondsRealtime(TurnTime);
 
                 AddTurnToCmdBuffer(Turn);
-                SendTurn(Turn);
+                SendTurn(Turn);                
 
-                if (Turn < 3) {
-                    Turn++;
+                if (Turn > 2) {                                                           
+                    PlayMyTurn(Turn - 2);                                                       
                 }
+                Turn++;
 
-                if (Turn > 2) {                    
-                    PlayTurn(Turn - 2);
-                    Turn++;
-                }                                                
+                if (CurrentOpponentTurn > 2) {
+                    if (CurrentOpponentTurn - 2 > LastPlayedOpponentTurn) {
+                        PlayOpponentTurn(CurrentOpponentTurn - 2);
+                    }                    
+                }
+                if (LastReceivedTurn > CurrentOpponentTurn) {
+                    CurrentOpponentTurn++;
+                }
             }
         }
 
@@ -73,9 +77,8 @@ namespace YupiPlay.MMB.Lockstep {
         }
         
         //retorna se o turno foi executado com sucesso;
-        private bool PlayTurn(ulong turn) {                                               
-            List<NetCommand> playerCmds = Buffer.GetOutputForTurn(turn);
-            List<NetCommand> enemyCmds  = Buffer.GetInputForTurn(turn);
+        private void PlayMyTurn(ulong turn) {                                               
+            List<NetCommand> playerCmds = Buffer.GetOutputForTurn(turn);            
 
             bool ignoreRecv = false;
 
@@ -83,29 +86,35 @@ namespace YupiPlay.MMB.Lockstep {
                 ignoreRecv = true;
             #endif
 
-            if (ignoreRecv || enemyCmds.Count > 0 && playerCmds.Count > 0) {                
+            if (ignoreRecv || playerCmds.Count > 0) {                
                 foreach (NetCommand cmd in playerCmds) {
                     NetGameController.Instance.PlayerCommandListener(cmd);
+                }               
+                
+                if (turn > LastTurnPlayed) {
+                    RemoveTurn(LastTurnPlayed);
                 }
+
+                LastTurnPlayed = turn;                                
+            }          
+        }
+
+        private bool PlayOpponentTurn(ulong turn) {
+            List<NetCommand> enemyCmds = Buffer.GetInputForTurn(turn);
+            
+            if (enemyCmds.Count > 0) {
                 foreach (NetCommand cmd in enemyCmds) {
                     NetGameController.Instance.EnemyCommandListener(cmd);
                 }
-                
-                /*if (turn > LastTurnPlayed) {
-                    RemoveTurn(LastTurnPlayed);
-                }*/
 
-                LastTurnPlayed = turn;
-                lagTurns = 0;
+                LastPlayedOpponentTurn = turn;
 
                 return true;
-            } else {                
-                ProtoGameUI.Instance.PrintLag(turn);
-                lagTurns++;
-                UnityEngine.Debug.Log("No input commands: " + lagTurns);
+            }
 
-                return false;
-            }            
+            ProtoGameUI.Instance.PrintLag(turn);           
+
+            return false;
         }
 
         private void SendTurn(ulong turn) {
@@ -132,6 +141,7 @@ namespace YupiPlay.MMB.Lockstep {
         }
 
         public void UpdateRemoteTurn(ulong turn) {
+            
             LastReceivedTurn = turn;
         }
 
