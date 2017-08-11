@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -53,6 +54,9 @@ public class GameController : MonoBehaviour {
 	public Image enemyPortrait;
 
 	public GameObject[] rewardWindows;
+
+	public dreamloLeaderBoard LeaderBoard;
+	public List<dreamloLeaderBoard.Score> LeaderList;
 	// Use this for initialization
 	void Awake() {
 		EnemyDiamonds = 0;
@@ -93,6 +97,7 @@ public class GameController : MonoBehaviour {
 			break;
 		}
 
+		LeaderBoard.LoadScores ();
 		//StartCoroutine (EnemyAI ());
 	}
 	
@@ -292,8 +297,17 @@ public class GameController : MonoBehaviour {
 		foreach(GameObject o in GameObject.FindGameObjectsWithTag("herowaypoint")){
 			Destroy (o.gameObject);
 		}
-
-		rewardWindows [x].SetActive (true);
+		if (PlayerPrefs.GetInt ("Ranked") == 1) {
+			rewardWindows [1].SetActive (true);
+			if (x == 5) {
+				IncrementLeaderBoard (-50);
+			} else {
+				IncrementLeaderBoard (50);
+			}
+			CheckPlayerPos ();
+		} else {
+			rewardWindows [x].SetActive (true);
+		}
 	}
 
 	public void GiveReward(int x){
@@ -327,6 +341,45 @@ public class GameController : MonoBehaviour {
 //		PlayerPrefs.SetInt ("round",1);
 //		PlayerPrefs.SetInt ("playerCharges",0);
 //		PlayerPrefs.SetInt ("enemyCharges",0);
+	}
+
+	public void IncrementLeaderBoard(int x){
+		int tempScore = 0;
+		LeaderList = LeaderBoard.ToListHighToLow ();
+		for (int i = 0; i < LeaderList.Count; i++) {
+			if (LeaderList [i].playerName == PlayerPrefs.GetString ("PlayerName")) {
+				if (x >= 0) {
+					LeaderBoard.AddScore (LeaderList [i].playerName, LeaderList [i].score + x);
+				} else {
+					tempScore = LeaderList [i].score + x;
+					LeaderBoard.RemoveScore (LeaderList [i].playerName);
+					LeaderBoard.AddScore (PlayerPrefs.GetString("PlayerName"), tempScore);
+				}
+			}
+		}
+	}
+
+	public void CheckPlayerPos(){
+		int lastpos = PlayerPrefs.GetInt ("LastPos");
+		int actualpos = 0;
+		LeaderList = LeaderBoard.ToListHighToLow ();
+		for (int i = 0; i < LeaderList.Count; i++) {
+			if (LeaderList [i].playerName == PlayerPrefs.GetString ("PlayerName")) {
+				actualpos = i+1;
+			}
+		}
+		rewardWindows [1].GetComponent<RewardWindow> ().RankingPos.text = actualpos.ToString();
+		if (actualpos > lastpos) {
+			rewardWindows [1].GetComponent<RewardWindow> ().RankingStatus.sprite = rewardWindows [1].GetComponent<RewardWindow> ().RankingStatusImages [1];
+		}
+		if (actualpos < lastpos) {
+			rewardWindows [1].GetComponent<RewardWindow> ().RankingStatus.sprite = rewardWindows [1].GetComponent<RewardWindow> ().RankingStatusImages [2];
+		}
+		if (actualpos == lastpos) {
+			rewardWindows [1].GetComponent<RewardWindow> ().RankingStatus.sprite = rewardWindows [1].GetComponent<RewardWindow> ().RankingStatusImages [0];
+		}
+		PlayerPrefs.SetInt ("LastPos", actualpos);
+
 	}
 
 	public void CallScene(string scene){

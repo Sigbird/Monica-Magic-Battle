@@ -51,6 +51,7 @@ public class SceneHelper : MonoBehaviour {
 
 		if (PlayerPrefs.GetInt ("Lesson") == 7) {
 			TutorialPanels [0].SetActive (true);
+			EarnCard (20);
 			PlayerPrefs.SetInt ("Lesson", 8);
 		}
 	}
@@ -117,8 +118,71 @@ public class SceneHelper : MonoBehaviour {
 //		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
 	}
 
-	public void OpenRanking(){
+	public void EarnCard(int cardID){
+				int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+
+				List<int> iList = new List<int> ();
+
+				for (int i = 0; i < original.Length; i++) {
+					iList.Add (original [i]);
+				}
+
+				iList.Add (cardID);
+
+				int[] finalArray = new int[iList.Count];
+
+				int x = 0;
+				foreach (int i in iList) {
+					finalArray [x] = i;
+					x++;
+				}
+
+
+				//		int[] finalArray = new  int[original.Length + 1 ];
+				//
+				//		for(int i = 0; i < original.Length; i ++ ) {
+				//			finalArray[i] = original[i];
+				//		}
+				//
+				//		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
+
+
+				//ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
+				PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
+
+				if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15) {
+				ActiveCard (cardID);
+				}
+	}
+
+	public void ActiveCard(int cardID){
 		
+		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+
+		List<int> iList = new List<int>();
+
+		for(int i = 0; i < original.Length; i ++ ) {
+			iList.Add (original [i]);
+		}
+
+		iList.Add (cardID);
+
+		int[] finalArray = new int[iList.Count];
+
+		int x = 0;
+		foreach (int i in iList) {
+			finalArray [x] = i;
+			x++;
+		}
+
+		//		int[] finalArray = new  int[original.Length + 1 ];
+		//
+		//		for(int i = 0; i < original.Length; i ++ ) {
+		//			finalArray[i] = original[i];
+		//		}
+
+		//		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
 	}
 
 }

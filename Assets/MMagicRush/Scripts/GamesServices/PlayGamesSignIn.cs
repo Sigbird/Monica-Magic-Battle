@@ -30,6 +30,7 @@ public class PlayGamesSignIn : MonoBehaviour {
 
             PlayerInfo.Instance.DisplayName = PlayGamesPlatform.Instance.GetUserDisplayName();
             PlayerInfo.Instance.Username    = Social.localUser.userName;
+			PlayerPrefs.SetString ("PlayerName", Social.localUser.userName);
 			//Social.ReportScore (100, "CgkI4e_Ei7AREAIQBg",OnReport);
 			LeaderBoard.AddScore (Social.localUser.userName, 100);
             if (OnLogin != null) {
