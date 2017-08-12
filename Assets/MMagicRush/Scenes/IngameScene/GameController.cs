@@ -96,8 +96,9 @@ public class GameController : MonoBehaviour {
 			heroPortrait.sprite = portraits [0];
 			break;
 		}
-
-		LeaderBoard.LoadScores ();
+		if (LeaderBoard != null) {
+			LeaderBoard.LoadScores ();
+		}
 		//StartCoroutine (EnemyAI ());
 	}
 	
@@ -300,23 +301,31 @@ public class GameController : MonoBehaviour {
 		if (PlayerPrefs.GetInt ("Ranked") == 1) {
 			rewardWindows [1].SetActive (true);
 			if (x == 5) {
-				IncrementLeaderBoard (-50);
+				StartCoroutine (IncrementRanking (Random.Range(-25,-50)));
+				//IncrementLeaderBoard (-50);
 			} else {
-				IncrementLeaderBoard (50);
+				StartCoroutine (IncrementRanking (Random.Range(25,50)));
+				//IncrementLeaderBoard (50);
 			}
-			CheckPlayerPos ();
+			//CheckPlayerPos ();
 		} else {
 			rewardWindows [x].SetActive (true);
 		}
 	}
 
+	IEnumerator IncrementRanking(int x){
+		IncrementLeaderBoard (x);
+		yield return new WaitForSeconds (0.1f);
+		CheckPlayerPos ();
+	}
+
 	public void GiveReward(int x){
 		switch (x) {
 		case 1:
-			PlayerPrefs.SetInt ("PlayerCoins", 1000);
+			PlayerPrefs.SetInt ("PlayerCoins", PlayerPrefs.GetInt("PlayerCoins")+1000);
 			break;
 		case 2:
-			PlayerPrefs.SetInt ("PlayerCoins", 25);
+			PlayerPrefs.SetInt ("PlayerCoins", PlayerPrefs.GetInt("PlayerCoins")+25);
 			break;
 		case 3:
 			break;
@@ -367,6 +376,9 @@ public class GameController : MonoBehaviour {
 			if (LeaderList [i].playerName == PlayerPrefs.GetString ("PlayerName")) {
 				actualpos = i+1;
 			}
+		}
+		if (actualpos <= 0) {
+			actualpos = 1;
 		}
 		rewardWindows [1].GetComponent<RewardWindow> ().RankingPos.text = actualpos.ToString();
 		if (actualpos > lastpos) {
