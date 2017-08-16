@@ -54,6 +54,7 @@ public class GameController : MonoBehaviour {
 	public Image enemyPortrait;
 
 	public GameObject[] rewardWindows;
+	public GameObject loadingPosObj;
 
 	public dreamloLeaderBoard LeaderBoard;
 	public List<dreamloLeaderBoard.Score> LeaderList;
@@ -315,8 +316,9 @@ public class GameController : MonoBehaviour {
 
 	IEnumerator IncrementRanking(int x){
 		IncrementLeaderBoard (x);
-		yield return new WaitForSeconds (0.1f);
+		yield return new WaitForSeconds (1);
 		CheckPlayerPos ();
+		loadingPosObj.SetActive (false);
 	}
 
 	public void GiveReward(int x){
@@ -388,6 +390,9 @@ public class GameController : MonoBehaviour {
 			rewardWindows [1].GetComponent<RewardWindow> ().RankingStatus.sprite = rewardWindows [1].GetComponent<RewardWindow> ().RankingStatusImages [2];
 		}
 		if (actualpos == lastpos) {
+			rewardWindows [1].GetComponent<RewardWindow> ().RankingStatus.sprite = rewardWindows [1].GetComponent<RewardWindow> ().RankingStatusImages [0];
+		}
+		if (lastpos == null) {
 			rewardWindows [1].GetComponent<RewardWindow> ().RankingStatus.sprite = rewardWindows [1].GetComponent<RewardWindow> ().RankingStatusImages [0];
 		}
 		PlayerPrefs.SetInt ("LastPos", actualpos);
