@@ -5,8 +5,6 @@ using YupiPlay.MMB.Lockstep;
 using YupiPlay;
 
 public class NetGameController : MonoBehaviour {
-    public GameObject PlayerHero;
-    public GameObject ClickFeeback;
     public PlayerController PlayerController;
     public EnemyRemoteController EnemyController;
     public ProtoGameUI GameUI;
