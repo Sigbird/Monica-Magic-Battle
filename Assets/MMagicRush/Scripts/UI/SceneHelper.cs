@@ -10,7 +10,9 @@ public class SceneHelper : MonoBehaviour {
 	public int[] temp;
 	public int[] empty;
 	public Text coinsText;
+	public Text premiumcoinsText;
 	public int coinsPurchasing;
+	public int premiumcoinsPurchasing;
 	public dreamloLeaderBoard LeaderBoard;
 	public GameObject ExitConfirmation;
 
@@ -61,10 +63,16 @@ public class SceneHelper : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (PlayerPrefs.GetInt ("PlayerCoins") > 0) {
+		if (PlayerPrefs.GetInt ("PlayerCoinsPremium") > 0) {
 			coinsText.text = PlayerPrefs.GetInt ("PlayerCoins").ToString ();
 		} else {
 			coinsText.text = "0";
+		}
+
+		if (PlayerPrefs.GetInt ("PlayerCoinsPremium") > 0) {
+			premiumcoinsText.text = PlayerPrefs.GetInt ("PlayerCoinsPremium").ToString ();
+		} else {
+			premiumcoinsText.text = "0";
 		}
 
 		if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length >= 12 && tutorial == true) {
@@ -78,13 +86,31 @@ public class SceneHelper : MonoBehaviour {
 
 	}
 
+	public void OpenCoinsShop(){
+		this.coinsPurchasing = 0;
+		this.premiumcoinsPurchasing = 0;
+	}
+
 	public void SetCoinsPurchasing(int x){
 		this.coinsPurchasing = x;
 	}
 
+	public void SetPremiumCoinsPurchasing(int x){
+		this.premiumcoinsPurchasing = x;
+	}
+
 	public void CoinPurchase() {
 		int c = PlayerPrefs.GetInt ("PlayerCoins");
+		int pc = PlayerPrefs.GetInt ("PlayerCoinsPremiun");
+		if(pc > (coinsPurchasing/2)){
+		PlayerPrefs.SetInt ("PlayerCoinsPremiun", pc - (coinsPurchasing/2));
 		PlayerPrefs.SetInt ("PlayerCoins", c + coinsPurchasing);
+		}
+	}
+
+	public void PremiumCoinPurchase() {
+		int pc = PlayerPrefs.GetInt ("PlayerCoinsPremiun");
+		PlayerPrefs.SetInt ("PlayerCoinsPremiun", pc + premiumcoinsPurchasing);
 	}
 
 	public void LoadScene(string scene) {
