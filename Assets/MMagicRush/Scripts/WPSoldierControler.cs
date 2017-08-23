@@ -286,6 +286,7 @@ public class WPSoldierControler : MonoBehaviour {
 				Destroy (o.gameObject);
 			}
 			StartCoroutine (Respawning ());
+			Camera.main.gameObject.GetComponent<CameraShake> ().ShakeCamera ();
 			audioManager.PlayAudio ("death");
 		} else if(this.vida <= 0) {
 			audioManager.PlayAudio ("death");
@@ -1138,6 +1139,7 @@ public class WPSoldierControler : MonoBehaviour {
 
 		if (this.team == 1 && heroUnity == true) {
 			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
+
 		}
 
 	}

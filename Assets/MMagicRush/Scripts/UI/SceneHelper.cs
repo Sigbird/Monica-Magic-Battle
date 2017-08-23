@@ -12,6 +12,7 @@ public class SceneHelper : MonoBehaviour {
 	public Text coinsText;
 	public int coinsPurchasing;
 	public dreamloLeaderBoard LeaderBoard;
+	public GameObject ExitConfirmation;
 
 
 
@@ -70,6 +71,10 @@ public class SceneHelper : MonoBehaviour {
 			TutorialPanels [1].SetActive (false);
 			TutorialPanels [2].SetActive (true);
  		}
+
+		if (Input.GetKey (KeyCode.Escape)) {
+			ExitConfirmation.SetActive (true);
+		}
 
 	}
 

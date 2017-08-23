@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour {
 	private bool tutorialending = false;
 	public bool tutorial;
 	public float gempertime;	
+	private float gempertimeprogress;
+	private int gempertimeMaxValue;
 
 	public int playerCharges;
 	public static float playerXp;
@@ -52,6 +54,7 @@ public class GameController : MonoBehaviour {
 	public Sprite[] portraits;
 	public Image heroPortrait;
 	public Image enemyPortrait;
+	public GameObject ExitPanel;
 
 	public GameObject[] rewardWindows;
 	public GameObject loadingPosObj;
@@ -62,6 +65,8 @@ public class GameController : MonoBehaviour {
 	void Awake() {
 		EnemyDiamonds = 0;
 		Diamonds = 0;
+		gempertimeprogress = 0;
+		gempertimeMaxValue = 1;
 		enemyCharges = PlayerPrefs.GetInt ("enemyCharges");
 		Debug.Log ("Enemy " + enemyCharges);
 		playerCharges = PlayerPrefs.GetInt ("playerCharges");
@@ -119,10 +124,20 @@ public class GameController : MonoBehaviour {
 
 		if (gempertime >= 2 && tutorial == false) {
 			gempertime = 0;
-			Diamonds += 1;
-			EnemyDiamonds += 1;
+			Diamonds += gempertimeMaxValue;
+			EnemyDiamonds += gempertimeMaxValue;
+			gempertimeprogress += 1;
 		} else {
 			gempertime += Time.deltaTime;
+		}
+
+		if (gempertimeprogress >= 5) {
+			gempertimeprogress = 0;
+			gempertimeMaxValue += 1;
+		}
+
+		if (Input.GetKey (KeyCode.Escape)) {
+			ExitPanel.SetActive (true);
 		}
 
 		if (GameObject.Find ("Diamonds") != null)
@@ -348,10 +363,12 @@ public class GameController : MonoBehaviour {
 	}
 
 
-	public void ClearGame(){
-//		PlayerPrefs.SetInt ("round",1);
-//		PlayerPrefs.SetInt ("playerCharges",0);
-//		PlayerPrefs.SetInt ("enemyCharges",0);
+
+
+	public void ClearThisGame(){
+		PlayerPrefs.SetInt ("round",1);
+		PlayerPrefs.SetInt ("playerCharges",0);
+		PlayerPrefs.SetInt ("enemyCharges",0);
 	}
 
 	public void IncrementLeaderBoard(int x){
