@@ -11,5 +11,18 @@ public class EnemyRemoteController : BasePlayerController {
         watch.Stop();
         UnityEngine.Debug.Log("EIL: " + watch.ElapsedMilliseconds);
         watch.Reset();
-    }    
+    }
+
+    /*
+    protected new void OnCollisionEnter2D(Collision2D collision) {
+        if (rb.velocity == Vector2.zero) {
+            var playerPreviousVelocity = collision.gameObject.GetComponent<PlayerController>().PreviousVelocity;
+            rb.velocity = playerPreviousVelocity;            
+        } else {
+            rb.velocity = -PreviousVelocity;
+        }        
+        
+        stopAfterCollision = StartCoroutine(StopAfterCollision());
+    }
+    */
 }

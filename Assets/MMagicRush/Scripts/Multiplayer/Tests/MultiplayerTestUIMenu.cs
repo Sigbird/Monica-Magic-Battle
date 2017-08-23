@@ -19,8 +19,11 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            NetworkSessionManager.Instance.LeaveRoom();
+            SceneTestHelper.LoadMenu();
+        }
+    }
 
     public void OnQuickGameClick() {
         QuickGameText.text = "Searching...";
@@ -48,13 +51,20 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
         SetOpponentName(NetworkSessionManager.Instance.Match.Opponent.DisplayName);
     }
 
+    public void OnRoomConnectFailure() {
+        NetworkSessionManager.Instance.LeaveRoom();
+        QuickGame.interactable = true;
+    }
+
     public void OnEnable() {
         PlayGamesSignIn.OnLogin += OnLogin;
         NetworkSessionManager.RoomConnectedSuccessEvent += OnRoomConnected;
+        NetworkSessionManager.RoomConnectedFailureEvent += OnRoomConnectFailure;
     }
 
     public void OnDisable() {
         PlayGamesSignIn.OnLogin -= OnLogin;
         NetworkSessionManager.RoomConnectedSuccessEvent -= OnRoomConnected;
+        NetworkSessionManager.RoomConnectedFailureEvent -= OnRoomConnectFailure;
     }
 }

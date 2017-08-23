@@ -7,6 +7,7 @@ public class BasePlayerController : MonoBehaviour {
     protected Vector2 target;
 
     protected Coroutine stopAfterCollision;
+    public Vector2 PreviousVelocity;
 
     // Use this for initialization
     protected void Start () {        
@@ -29,14 +30,10 @@ public class BasePlayerController : MonoBehaviour {
 
         var direction = position - (Vector2)transform.position;
         rb.velocity = direction.normalized;
+        PreviousVelocity = rb.velocity;
     }
 
-    protected void OnCollisionEnter2D(Collision2D collision) {        
-        if (target != Vector2.zero) {
-            Vector2 invertedDirection = -target;
-            rb.velocity = invertedDirection.normalized;
-        }
-
+    protected void OnCollisionEnter2D(Collision2D collision) {      
         stopAfterCollision = StartCoroutine(StopAfterCollision());
     }
 

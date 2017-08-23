@@ -127,7 +127,7 @@ namespace YupiPlay {
 
             if (State == States.INGAME && cmd.GetTurn() > 0) {
                 CommandBuffer.Instance.InsertListToInput(cmds);
-                //NetClock.Instance.UpdateRemoteTurn(cmd.GetTurn());
+                NetClock.Instance.UpdateRemoteTurn(cmd.GetTurn());
                 //NetClock.Instance.CalculateRemoteLatency(cmd.GetTurn());
 
                 return;

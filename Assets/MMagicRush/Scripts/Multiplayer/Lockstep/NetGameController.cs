@@ -68,17 +68,17 @@ public class NetGameController : MonoBehaviour {
         StartCoroutine(StartUITimer());
     }
 
-    private IEnumerator StartUITimer() {
+    private IEnumerator StartUITimer() {        
+        yield return new WaitForSeconds(2);
         GameUI.ShowStart();
         yield return new WaitForSeconds(2);
-
         GameUI.HideStart();
         hasGameStarted = true;
     }
 
     public void EndGame() {
-        hasGameStarted = false;
-        CommandController.End();
+        hasGameStarted = false;  
+        CommandController.End();        
     }
 
     public bool HasGameStarted() {

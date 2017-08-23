@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using YupiPlay;
+using YupiPlay.MMB.Lockstep;
 
 public class PlayerManager : MonoBehaviour {
     public int Lives = 3;
@@ -21,14 +22,21 @@ public class PlayerManager : MonoBehaviour {
             GameUI.ShowEnd();
             NetGameController.Instance.EndGame();
 
-
             StartCoroutine(BackToMenuOnEnd());
         }
     }
 
     private IEnumerator BackToMenuOnEnd() {
         yield return new WaitForSeconds(3);
+        NetClock.Instance.StopClock();
         NetworkSessionManager.Instance.LeaveRoom();
         SceneTestHelper.LoadMenu();
+    }
+
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            NetworkSessionManager.Instance.LeaveRoom();
+            SceneTestHelper.LoadMenu();
+        }
     }
 }
