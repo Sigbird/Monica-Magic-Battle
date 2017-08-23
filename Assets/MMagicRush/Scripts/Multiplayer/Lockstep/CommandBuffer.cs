@@ -56,6 +56,10 @@ namespace YupiPlay.MMB.Lockstep {
             //Debug.Log("in count: " + InBuffer.Count);
         }
 
+        public void RemoveFromOutput(ulong turn) {
+            OutputBuffer.RemoveAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
+        }
+
         public void Reset() {
             OutputBuffer = new List<NetCommand>();
             InputBuffer  = new List<NetCommand>();

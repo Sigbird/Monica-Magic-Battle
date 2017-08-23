@@ -73,6 +73,7 @@ namespace YupiPlay {
         public void OnParticipantLeft(Participant participant) {
 			ParticipantInfo part = new ParticipantInfo(participant.ParticipantId, participant.DisplayName);
 			netSM.ParticipantLeft(part);
+            DebugHelper.Instance.Append("Participant left");
         }
 
         public void OnPeersConnected(string[] participantIds) {
@@ -81,6 +82,7 @@ namespace YupiPlay {
 
         public void OnPeersDisconnected(string[] participantIds) {
 			netSM.PeersDisconnected(participantIds);
+            DebugHelper.Instance.Append("Peer DC");
         }
 
         public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {

@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace YupiPlay.MMB.Lockstep {
 
     public class NetClock : MonoBehaviour {
-        public const float TurnTime = 0.2f;
+        public const float TurnTime = 0.1f;
 
         public static NetClock Instance = null;
 
@@ -41,23 +41,44 @@ namespace YupiPlay.MMB.Lockstep {
                 }
             #endif
                 Turn++;
-
-                //REDO
-                /*if (LastReceivedTurn > 2) {
-                    if (CurrentOpponentTurn - 2 > LastPlayedOpponentTurn) {
-                        PlayOpponentTurn(CurrentOpponentTurn - 2);
-                    }                    
-                }
-                if (LastReceivedTurn > CurrentOpponentTurn) {
-                    CurrentOpponentTurn++;
-                }*/
-                //REDO            
+              
         }        
+
+        private IEnumerator TurnTimer(ulong turn) {
+            yield return new WaitForSecondsRealtime(TurnTime);
+
+            AddTurnToCmdBuffer(turn);
+            SendTurn(turn);
+
+            //Turn++;
+        }
+
+        private IEnumerator TurnUpdate() {
+            while (IsClockRunning) {
+                yield return new WaitForSecondsRealtime(TurnTime);
+                                
+                AddTurnToCmdBuffer(Turn);
+                SendTurn(Turn);
+                Turn++;
+
+                if (Turn > 2) {
+                    if (PlayTurn(LastTurnPlayed + 1)) {
+                        ProtoGameUI.Instance.ClearLagMsg();
+                        LastTurnPlayed++;                       
+                    } else {
+                        ProtoGameUI.Instance.PrintLagMsg("Lag " + Turn);
+                        yield return new WaitForSecondsRealtime(TurnTime);
+                        //CommandBuffer.Instance.RemoveFromOutput(Turn);
+                    }
+                }         
+            }
+        }
 
         public void StartClock() {
             watch = new Stopwatch();
             Buffer = CommandBuffer.Instance;
-            ClockCoroutine = StartCoroutine(TurnTimer());
+            IsClockRunning = true;
+            ClockCoroutine = StartCoroutine(TurnUpdate());
         }
 
         public void StopClock() {
@@ -75,7 +96,7 @@ namespace YupiPlay.MMB.Lockstep {
         }
         
         //retorna se o turno foi executado com sucesso;
-        private void PlayMyTurn(ulong turn) {                                               
+        private bool PlayMyTurn(ulong turn) {                                               
             List<NetCommand> playerCmds = Buffer.GetOutputForTurn(turn);            
 
             bool ignoreRecv = false;
@@ -87,8 +108,12 @@ namespace YupiPlay.MMB.Lockstep {
             if (ignoreRecv || playerCmds.Count > 0) {                
                 foreach (NetCommand cmd in playerCmds) {
                     NetGameController.Instance.PlayerCommandListener(cmd);
-                }                               
-            }          
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         private bool PlayOpponentTurn(ulong turn) {
@@ -100,9 +125,7 @@ namespace YupiPlay.MMB.Lockstep {
                 }                
 
                 return true;
-            }
-
-            //ProtoGameUI.Instance.PrintLag(turn);           
+            }            
 
             return false;
         }
@@ -136,16 +159,47 @@ namespace YupiPlay.MMB.Lockstep {
                 if (turn > 2) {
                     var turnToPlay = LastReceivedTurn - 2;
 
-                    PlayMyTurn(turnToPlay);
-                    PlayOpponentTurn(turnToPlay);
+                    if (PlayTurn(turn)) {
+                        LastTurnPlayed = turnToPlay;
+                    }
+                    
                 }
 
                 LastReceivedTurn++;
+                //Turn++;
                 StartCoroutine(TurnTimer());                
             } else {
-                ProtoGameUI.Instance.PrintLag(turn);
+                ProtoGameUI.Instance.PrintLagMsg("diff: " + (turn - LastReceivedTurn));
             }
             
+        }
+
+        public bool PlayTurn(ulong turn) {
+            List<NetCommand> playerCmds = Buffer.GetOutputForTurn(turn);
+            List<NetCommand> enemyCmds  = Buffer.GetInputForTurn(turn);
+
+            if (playerCmds.Count > 0 && enemyCmds.Count > 0) {
+                foreach (NetCommand cmd in playerCmds) {
+                    NetGameController.Instance.PlayerCommandListener(cmd);
+                }
+                foreach (NetCommand cmd in enemyCmds) {
+                    NetGameController.Instance.EnemyCommandListener(cmd);
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool HasTurnData(ulong turn) {
+            List<NetCommand> playerCmds = Buffer.GetOutputForTurn(turn);
+            List<NetCommand> enemyCmds  = Buffer.GetInputForTurn(turn);
+
+            if (playerCmds.Count > 0 && enemyCmds.Count > 0) {
+                return true;
+            }
+            return false;
         }
 
         public bool IsRunning() {

@@ -62,4 +62,12 @@ public class ProtoGameUI : MonoBehaviour {
     public void PrintLag(ulong turn) {
         LagIndicator.text = "lag turn " + turn;
     }
+
+    public void PrintLagMsg(string msg) {
+        LagIndicator.text = msg;
+    }
+
+    public void ClearLagMsg() {
+        LagIndicator.text = "";
+    }
 }

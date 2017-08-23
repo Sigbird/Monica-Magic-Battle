@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using YupiPlay;
 
 public class PlayerManager : MonoBehaviour {
     public int Lives = 3;
@@ -20,13 +21,14 @@ public class PlayerManager : MonoBehaviour {
             GameUI.ShowEnd();
             NetGameController.Instance.EndGame();
 
+
             StartCoroutine(BackToMenuOnEnd());
         }
     }
 
     private IEnumerator BackToMenuOnEnd() {
         yield return new WaitForSeconds(3);
-
+        NetworkSessionManager.Instance.LeaveRoom();
         SceneTestHelper.LoadMenu();
     }
 }

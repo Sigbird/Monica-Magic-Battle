@@ -21,8 +21,7 @@ namespace YupiPlay {
 
 		}
 
-		private void ShowOpponentInfo(ParticipantInfo opponent) {
-			NetworkSessionManager.DebugScr("printing opponent info");
+		private void ShowOpponentInfo(ParticipantInfo opponent) {			
 			DisplayName.text = opponent.DisplayName;
             ParticipantId.text = opponent.ParticipantId;
 			Rating.text = opponent.Rating.ToString();

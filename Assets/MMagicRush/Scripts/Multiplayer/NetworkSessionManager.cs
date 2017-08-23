@@ -93,8 +93,7 @@ namespace YupiPlay {
 		public void LeftRoom() {
 			state = States.PLAYERLEFT;
 
-			if (LeftRoomEvent != null) LeftRoomEvent();
-			DebugScr("Session finished");
+			if (LeftRoomEvent != null) LeftRoomEvent();			
 		}
 
 		public void ParticipantLeft(ParticipantInfo participant)  {
@@ -106,20 +105,16 @@ namespace YupiPlay {
 		public void PeersConnected(string[] participantIds) {
 			state = States.PARTICIPANTCONNECTED;
 
-			if (PeersConnectedEvent != null) PeersConnectedEvent(participantIds);
-            DebugScr("Peer Connected");
+			if (PeersConnectedEvent != null) PeersConnectedEvent(participantIds);            
 		}
 
 		public void PeersDisconnected(string[] participantIds) {
 			state = States.PARTICIPANTDISCONNECTED;
 
-			if (PeersDisconnectedEvent != null) PeersDisconnectedEvent(participantIds);
-            DebugScr("Peer disconnected");
+			if (PeersDisconnectedEvent != null) PeersDisconnectedEvent(participantIds);            
 		}
 
-		public void RealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {
-			DebugScr("received data size " + data.Length);
-
+		public void RealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {			
             string json = Encoding.UTF8.GetString(data);
 
             if (ProtoGameUI.Instance != null) {
@@ -132,7 +127,7 @@ namespace YupiPlay {
 
             if (State == States.INGAME && cmd.GetTurn() > 0) {
                 CommandBuffer.Instance.InsertListToInput(cmds);
-                NetClock.Instance.UpdateRemoteTurn(cmd.GetTurn());
+                //NetClock.Instance.UpdateRemoteTurn(cmd.GetTurn());
                 //NetClock.Instance.CalculateRemoteLatency(cmd.GetTurn());
 
                 return;
@@ -170,13 +165,7 @@ namespace YupiPlay {
 
 		public void SetMatch(ParticipantInfo player, ParticipantInfo opponent) {			
 				Match = new MatchInfo(player, opponent);
-		}			
-
-		public static void DebugScr(string message) {
-			if (OnNetPrint != null) {
-				OnNetPrint(message);
-			}
-		}
+		}					
 
         public void SendMessage(List<NetCommand> commands) {
             var jsonString = NetSerializer.Serialize(commands);
@@ -196,18 +185,23 @@ namespace YupiPlay {
         public void SendHello() {
             var cmds = NetCommand.CreateList(new HelloCommand(Match.Player.SelectedHero, Match.Player.Rating));                        
             SendMessage(cmds);
+
+            DebugHelper.Instance.Append("Sent Hello");
         }
 
         public void SendReady() {
             var cmds = NetCommand.CreateList(new ReadyCommand());
             SendMessage(cmds);
+            ProtoGameUI.Instance.PrintLagMsg("Ready");
 
             State = States.READY;
         }
 
         public void SendStart() {
             var cmds = NetCommand.CreateList(new StartCommand());                                   
-            SendMessage(cmds);            
+            SendMessage(cmds);
+
+            ProtoGameUI.Instance.PrintLagMsg("Start");
         }
         
         public void EndGame() {
@@ -225,6 +219,12 @@ namespace YupiPlay {
             if (OnOpponentInfo != null) {
                 OnOpponentInfo(Match.Opponent);
             }
+        }
+
+        public void LeaveRoom() {
+#if UNITY_ANDROID
+            GoogleMultiplayer.Quit();
+#endif
         }
 
 	}
