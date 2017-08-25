@@ -53,7 +53,7 @@ public class EnemyAIController : MonoBehaviour {
 
     private IEnumerator RunEnemyClock() {
         while (true) {
-            yield return new WaitForSecondsRealtime(NetClock.TurnTime);
+            yield return new WaitForSecondsRealtime(NetClock.Instance.TurnTime);
 
             CommandBuffer.Instance.InsertToInput(new NetCommand(Turn));
             var inputList = outputBuffer.FindAll((NetCommand cmd) => { return cmd.GetTurn() == Turn; });

@@ -4,24 +4,30 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace YupiPlay.MMB.Lockstep {
-
     public class NetClock : MonoBehaviour {
-        public const float TurnTime = 0.2f;
+        public float TurnTime = 0.2f;
+        public INetGameController NetGameControllerInstance;
 
         public static NetClock Instance = null;
 
         private bool IsClockRunning = false;
-        private bool isDelayed = false;
+        private bool isDelayed      = false;
 
         private ulong Turn = 1;
-        private ulong LastTurnSent = 0;
-        private ulong LastTurnPlayed = 0;        
+        private ulong LastTurnSent     = 0;
+        private ulong LastTurnPlayed   = 0;        
         private ulong LastReceivedTurn = 0;                
 
         private Coroutine ClockCoroutine = null;        
         private CommandBuffer Buffer = null;
 
-        private Stopwatch watch;        
+        private Stopwatch watch;
+
+        public delegate void ClearLagMsg();
+        public static event ClearLagMsg ClearLagMsgEvent;
+
+        public delegate void PrintLagMsg(string msg);
+        public static event PrintLagMsg PrintLagMsgEvent;
 
         private void Awake() {
             if (Instance == null) {
@@ -29,7 +35,11 @@ namespace YupiPlay.MMB.Lockstep {
             } else {
                 Destroy(this.gameObject);
             }
-        }                      
+        }              
+        
+        public void SetNetGameControllerInstance(INetGameController netGameController) {
+            NetGameControllerInstance = netGameController;
+        }
        
         private IEnumerator TurnUpdate() {
             while (IsClockRunning) {
@@ -42,14 +52,17 @@ namespace YupiPlay.MMB.Lockstep {
                 if (Turn > 2) {
                     if (PlayTurn(LastTurnPlayed + 1)) {
                         Time.timeScale = 1;
-                        isDelayed = false;
-                        ProtoGameUI.Instance.ClearLagMsg();                        
-                        LastTurnPlayed++;                                      
+                        isDelayed = false;                        
+                        LastTurnPlayed++;
+
+                        if (ClearLagMsgEvent != null) ClearLagMsgEvent();
                     } else {
-                        if (Turn > 2) {
-                            ProtoGameUI.Instance.PrintLagMsg("Lag " + Turn);
+                        if (Turn > 2) {                            
                             isDelayed = true;
                             Time.timeScale = 0;
+
+                            if (PrintLagMsgEvent != null) PrintLagMsgEvent("Lag " + Turn);
+
                             yield return new WaitForSecondsRealtime(TurnTime);
                         }                        
                     }
@@ -107,29 +120,26 @@ namespace YupiPlay.MMB.Lockstep {
             List<NetCommand> playerCmds = Buffer.GetOutputForTurn(turn);
             List<NetCommand> enemyCmds  = Buffer.GetInputForTurn(turn);
 
-            if (playerCmds.Count > 0 && enemyCmds.Count > 0) {
+            var hasPlayerCmds = playerCmds.Count > 0;
+            var hasEnemyCmds = enemyCmds.Count > 0;
+
+            #if UNITY_EDITOR
+                hasEnemyCmds = true;
+            #endif
+
+            if (hasPlayerCmds && hasEnemyCmds) {
                 foreach (NetCommand cmd in playerCmds) {
-                    NetGameController.Instance.PlayerCommandListener(cmd);
+                    NetGameControllerInstance.PlayerCommandListener(cmd);
                 }
                 foreach (NetCommand cmd in enemyCmds) {
-                    NetGameController.Instance.EnemyCommandListener(cmd);
+                    NetGameControllerInstance.EnemyCommandListener(cmd);
                 }
 
                 return true;
             }
 
             return false;
-        }
-
-        public bool HasTurnData(ulong turn) {
-            List<NetCommand> playerCmds = Buffer.GetOutputForTurn(turn);
-            List<NetCommand> enemyCmds  = Buffer.GetInputForTurn(turn);
-
-            if (playerCmds.Count > 0 && enemyCmds.Count > 0) {
-                return true;
-            }
-            return false;
-        }
+        }        
 
         public void UpdateRemoteTurn(ulong turn) {
             LastReceivedTurn = turn;
@@ -145,9 +155,7 @@ namespace YupiPlay.MMB.Lockstep {
 
         // Use this for initialization
         void Start() {
-#if UNITY_EDITOR
-            StartClock();
-#endif
+
         }       
     }
 }

@@ -21,10 +21,10 @@ public class DebugMultiplayer : MonoBehaviour {
 	}
 
 	void OnEnable() {
-		NetworkSessionManager.OnNetPrint += NetPrint;
+		NetworkSessionManager.NetPrintEvent += NetPrint;
 	}
 
 	void OnDisable() {
-		NetworkSessionManager.OnNetPrint -= NetPrint;
+		NetworkSessionManager.NetPrintEvent -= NetPrint;
 	}
 }

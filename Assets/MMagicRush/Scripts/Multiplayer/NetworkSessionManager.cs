@@ -1,9 +1,11 @@
 ﻿using YupiPlay.MMB.Lockstep;
 using System.Text;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace YupiPlay {
-	public class NetworkSessionManager {
+	public class NetworkSessionManager : MonoBehaviour {
 		public enum States {
 			IDLE, MATCHMAKING, CONNECTING, CONNECTED, ERRORCONNECTED, DATAEXCHANGE, LOADING, READY, WAITINGSTART,
 			INGAME, GAMEEND, PARTICIPANTLEFT, PLAYERLEFT, PARTICIPANTDISCONNECTED, PARTICIPANTCONNECTED, LOSTCONNECTION
@@ -21,16 +23,11 @@ namespace YupiPlay {
 		private States state = States.IDLE;
 
 		public static NetworkSessionManager Instance {
-			get {
-				if (instance == null) {
-					instance = new NetworkSessionManager();
-				}
+			get {				
 				return instance;
 			}
-			private set {
-				if (instance == null) {
-					instance = value;
-				}
+			private set {				
+				instance = value;				
 			}
 		}
 		private static NetworkSessionManager instance = null;
@@ -41,6 +38,7 @@ namespace YupiPlay {
 		public static event RoomConnection RoomConnectedSuccessEvent;
 		public static event RoomConnection RoomConnectedFailureEvent;
 		public static event RoomConnection LeftRoomEvent;
+        public static event RoomConnection LoadingEvent;
 
 		public delegate void RoomSetupProgress(float progress);
 		public static event RoomSetupProgress SetupProgressEvent;
@@ -53,17 +51,21 @@ namespace YupiPlay {
 		public static event PeerConnection PeersDisconnectedEvent;
 
 		public delegate void NetworkPrint(string message);
-		public static event NetworkPrint OnNetPrint;
-		public delegate void ShowOpponentInfo(ParticipantInfo opponent);
+		public static event NetworkPrint NetPrintEvent;
+        public static event NetworkPrint NetPrintInputEvent;
+        public static event NetworkPrint NetPrintOutputEvent;
+        public delegate void ShowOpponentInfo(ParticipantInfo opponent);
 		public static event ShowOpponentInfo OnOpponentInfo;
-						
+
+        public string GameSceneToLoad;
 		public MatchInfo Match;        
 
-		private NetworkSessionManager() {
+        void Awake() {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
 
-		}
-
-		public void MatchmakingStarted() {
+        public void MatchmakingStarted() {
 			state = States.MATCHMAKING;
 
 			if (MatchmakingStartedEvent != null) MatchmakingStartedEvent();
@@ -117,9 +119,7 @@ namespace YupiPlay {
 		public void RealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {			
             string json = Encoding.UTF8.GetString(data);
 
-            if (ProtoGameUI.Instance != null) {
-               ProtoGameUI.Instance.PrintEnemy(json);
-            }
+            if (NetPrintInputEvent != null) NetPrintInputEvent(json);
 
             var cmds = NetSerializer.Deserialize(json);
 
@@ -155,7 +155,8 @@ namespace YupiPlay {
 		public void LoadGame() {
 			state = States.LOADING;
 
-            SceneTestHelper.LoadTestGame();            
+            if (LoadingEvent != null) LoadingEvent();
+            SceneManager.LoadSceneAsync(GameSceneToLoad);
 		}
 
 		public void Reset() {
@@ -170,9 +171,7 @@ namespace YupiPlay {
         public void SendMessage(List<NetCommand> commands) {
             var jsonString = NetSerializer.Serialize(commands);
 
-            if (ProtoGameUI.Instance != null) {
-                ProtoGameUI.Instance.PrintPlayer(jsonString);
-            }            
+            if (NetPrintOutputEvent != null) NetPrintOutputEvent(jsonString);
 
             byte[] data = Encoding.UTF8.GetBytes(jsonString);
 
@@ -186,13 +185,14 @@ namespace YupiPlay {
             var cmds = NetCommand.CreateList(new HelloCommand(Match.Player.SelectedHero, Match.Player.Rating));                        
             SendMessage(cmds);
 
-            DebugHelper.Instance.Append("Sent Hello");
+            if (NetPrintEvent != null) NetPrintEvent("Sent Hello");
         }
 
         public void SendReady() {
             var cmds = NetCommand.CreateList(new ReadyCommand());
             SendMessage(cmds);
-            ProtoGameUI.Instance.PrintLagMsg("Ready");
+
+            if (NetPrintEvent != null) NetPrintEvent("Ready");
 
             State = States.READY;
         }
@@ -201,7 +201,7 @@ namespace YupiPlay {
             var cmds = NetCommand.CreateList(new StartCommand());                                   
             SendMessage(cmds);
 
-            ProtoGameUI.Instance.PrintLagMsg("Start");
+            if (NetPrintEvent != null) NetPrintEvent("Start");
         }
         
         public void EndGame() {

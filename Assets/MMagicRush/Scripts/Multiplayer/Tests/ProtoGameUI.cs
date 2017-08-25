@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using YupiPlay;
+using YupiPlay.MMB.Lockstep;
 
 public class ProtoGameUI : MonoBehaviour {
     public Text Player;
@@ -69,5 +70,19 @@ public class ProtoGameUI : MonoBehaviour {
 
     public void ClearLagMsg() {
         LagIndicator.text = "";
+    }
+
+    void OnEnable() {
+        NetClock.ClearLagMsgEvent += ClearLagMsg;
+        NetClock.PrintLagMsgEvent += PrintLagMsg;
+        NetworkSessionManager.NetPrintInputEvent += PrintEnemy;
+        NetworkSessionManager.NetPrintOutputEvent += PrintPlayer;
+    }
+
+    void OnDisable() {
+        NetClock.ClearLagMsgEvent -= ClearLagMsg;
+        NetClock.PrintLagMsgEvent -= PrintLagMsg;
+        NetworkSessionManager.NetPrintInputEvent -= PrintEnemy;
+        NetworkSessionManager.NetPrintOutputEvent -= PrintPlayer;
     }
 }

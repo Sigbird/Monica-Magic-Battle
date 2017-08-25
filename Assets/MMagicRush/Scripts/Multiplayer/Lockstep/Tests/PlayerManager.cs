@@ -8,6 +8,7 @@ public class PlayerManager : MonoBehaviour {
     public int Lives = 3;
     private int livesCounter;
     public ProtoGameUI GameUI;
+
 	// Use this for initialization
 	void Start () {
         livesCounter = Lives;
@@ -29,7 +30,9 @@ public class PlayerManager : MonoBehaviour {
     private IEnumerator BackToMenuOnEnd() {
         yield return new WaitForSeconds(3);
         NetClock.Instance.StopClock();
+        #if !UNITY_EDITOR
         NetworkSessionManager.Instance.LeaveRoom();
+        #endif
         SceneTestHelper.LoadMenu();
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using YupiPlay.MMB.Lockstep;
 using YupiPlay;
 
-public class NetGameController : MonoBehaviour {
+public class NetGameController : MonoBehaviour, INetGameController {
     public PlayerController PlayerController;
     public EnemyRemoteController EnemyController;
     public ProtoGameUI GameUI;
@@ -20,12 +20,13 @@ public class NetGameController : MonoBehaviour {
     void Awake() {
         if (instance == null) {
             instance = this;
+            NetClock.Instance.SetNetGameControllerInstance(this);
         } else {
             Destroy(this.gameObject);
         }
     }
     
-    void Start () {
+    void Start () {        
         NetworkSessionManager.Instance.SendReady();
 #if UNITY_EDITOR
         StartGame();
