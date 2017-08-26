@@ -1,11 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-public class GridGeneratorEditor : MonoBehaviour {
+[CustomEditor(typeof(GameGridGenerator))]
+public class GridGeneratorEditor : Editor {
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
 
-	// Use this for initialization
-	void Start () {
+        GameGridGenerator myScript = (GameGridGenerator) target;
+        if (GUILayout.Button("Create Grid")) {
+            myScript.GenerateGrid();
+        }
+    }
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
