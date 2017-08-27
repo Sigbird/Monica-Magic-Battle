@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace YupiPlay.MMB.Lockstep {
     public class NetClock : MonoBehaviour {
-        public float TurnTime = 0.2f;
+        public float TurnTime = 0.1f;
         public INetGameController NetGameControllerInstance;
 
         public static NetClock Instance = null;
