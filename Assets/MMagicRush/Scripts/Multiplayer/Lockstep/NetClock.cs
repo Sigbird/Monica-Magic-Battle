@@ -6,6 +6,7 @@ using System.Diagnostics;
 namespace YupiPlay.MMB.Lockstep {
     public class NetClock : MonoBehaviour {
         public float TurnTime = 0.1f;
+        public float NumLagLimit = 20;
         public INetGameController NetGameControllerInstance;
 
         public static NetClock Instance = null;
@@ -17,7 +18,8 @@ namespace YupiPlay.MMB.Lockstep {
         private ulong Turn = 1;
         private ulong LastTurnSent     = 0;
         private ulong LastTurnPlayed   = 0;        
-        private ulong LastReceivedTurn = 0;                
+        private ulong LastReceivedTurn = 0;
+        private int nLagTurns = 0;
 
         private Coroutine ClockCoroutine = null;        
         private CommandBuffer Buffer = null;
@@ -29,6 +31,9 @@ namespace YupiPlay.MMB.Lockstep {
 
         public delegate void PrintLagMsg(string msg);
         public static event PrintLagMsg PrintLagMsgEvent;
+
+        public delegate void LagDisconnectAction(ulong turn);
+        public static event LagDisconnectAction LagDisconnectEvent;
 
         private void Awake() {
             if (Instance == null) {
@@ -55,6 +60,7 @@ namespace YupiPlay.MMB.Lockstep {
                     if (isDisconnected) turnToPlay = Turn - 2;
 
                     if (PlayTurn(turnToPlay)) {
+                        nLagTurns = 0;
                         Time.timeScale = 1;
                         isDelayed = false;                        
                         LastTurnPlayed++;
@@ -62,7 +68,14 @@ namespace YupiPlay.MMB.Lockstep {
 
                         if (ClearLagMsgEvent != null && !isDisconnected) ClearLagMsgEvent();
                     } else {
-                        if (Turn > 2) {                            
+                        if (Turn > 2) {
+                            if (nLagTurns >= NumLagLimit) {
+                                isDisconnected = true;
+                                if (PrintLagMsgEvent != null) PrintLagMsgEvent("Disconnected");
+                                if (LagDisconnectEvent != null) LagDisconnectEvent(Turn);
+                            }
+
+                            nLagTurns++;
                             isDelayed = true;
                             Time.timeScale = 0;
 

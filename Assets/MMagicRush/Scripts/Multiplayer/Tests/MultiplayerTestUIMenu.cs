@@ -56,15 +56,22 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
         QuickGame.interactable = true;
     }
 
+    public void OnParticipantLeft(ParticipantInfo part) {
+        NetworkSessionManager.Instance.LeaveRoom();
+        QuickGame.interactable = true;
+    }
+
     public void OnEnable() {
         PlayGamesSignIn.OnLogin += OnLogin;
         NetworkSessionManager.RoomConnectedSuccessEvent += OnRoomConnected;
         NetworkSessionManager.RoomConnectedFailureEvent += OnRoomConnectFailure;
+        NetworkSessionManager.ParticipantLeftRoomEvent  += OnParticipantLeft;
     }
 
     public void OnDisable() {
         PlayGamesSignIn.OnLogin -= OnLogin;
         NetworkSessionManager.RoomConnectedSuccessEvent -= OnRoomConnected;
         NetworkSessionManager.RoomConnectedFailureEvent -= OnRoomConnectFailure;
+        NetworkSessionManager.ParticipantLeftRoomEvent  -= OnParticipantLeft;
     }
 }
