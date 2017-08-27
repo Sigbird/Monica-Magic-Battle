@@ -12,6 +12,7 @@ namespace YupiPlay.MMB.Lockstep {
 
         private bool IsClockRunning = false;
         private bool isDelayed      = false;
+        private bool isDisconnected = false;
 
         private ulong Turn = 1;
         private ulong LastTurnSent     = 0;
@@ -50,12 +51,15 @@ namespace YupiPlay.MMB.Lockstep {
                 Turn++;
 
                 if (Turn > 2) {
-                    if (PlayTurn(LastTurnPlayed + 1)) {
+                    var turnToPlay = LastTurnPlayed + 1;
+                    if (isDisconnected) turnToPlay = Turn - 2;
+
+                    if (PlayTurn(turnToPlay)) {
                         Time.timeScale = 1;
                         isDelayed = false;                        
                         LastTurnPlayed++;
 
-                        if (ClearLagMsgEvent != null) ClearLagMsgEvent();
+                        if (ClearLagMsgEvent != null && !isDisconnected) ClearLagMsgEvent();
                     } else {
                         if (Turn > 2) {                            
                             isDelayed = true;
@@ -122,10 +126,12 @@ namespace YupiPlay.MMB.Lockstep {
 
             var hasPlayerCmds = playerCmds.Count > 0;
             var hasEnemyCmds = enemyCmds.Count > 0;
-
+            
             #if UNITY_EDITOR
                 hasEnemyCmds = true;
-            #endif
+#endif
+            if (isDisconnected) hasEnemyCmds = true;
+
 
             if (hasPlayerCmds && hasEnemyCmds) {
                 foreach (NetCommand cmd in playerCmds) {
@@ -153,10 +159,24 @@ namespace YupiPlay.MMB.Lockstep {
             return isDelayed;
         }
 
-        // Use this for initialization
-        void Start() {
+        void OnDisconnect() {
+            isDisconnected = true;
+            if (PrintLagMsgEvent != null) PrintLagMsgEvent("Disconnected");
+        }
 
-        }       
+        void PeerDisconnect(string[] participantIds) {
+            OnDisconnect();
+        }
+
+        void OnEnable() {
+            NetworkSessionManager.PlayerLeftRoomEvent += OnDisconnect;
+            NetworkSessionManager.PeersDisconnectedEvent += PeerDisconnect;
+        }
+
+        void OnDisable() {
+            NetworkSessionManager.PlayerLeftRoomEvent -= OnDisconnect;
+            NetworkSessionManager.PeersDisconnectedEvent += PeerDisconnect;
+        }
     }
 }
 

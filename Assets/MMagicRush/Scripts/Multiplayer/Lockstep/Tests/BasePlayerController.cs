@@ -15,8 +15,8 @@ public class BasePlayerController : MonoBehaviour {
     }		
 
     protected void FixedUpdate() {
-        var distance = Vector2.Distance(target, transform.position);
-        if (distance < 0.01f) {
+        var distance = Vector2.Distance(target, transform.localPosition);
+        if (distance < 0.05f) {
             rb.velocity = Vector2.zero;
         }
     }
@@ -28,7 +28,7 @@ public class BasePlayerController : MonoBehaviour {
 
         target = position;
 
-        var direction = position - (Vector2)transform.position;
+        var direction = position - (Vector2)transform.localPosition;
         rb.velocity = direction.normalized;
         PreviousVelocity = rb.velocity;
     }

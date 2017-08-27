@@ -12,15 +12,19 @@ public class GridInputSnap : MonoBehaviour {
         return mouseUpGridPos;
     }
 
+    public delegate void OnGridMouseUpAction(Vector2 mousePos);
+    public static event OnGridMouseUpAction OnGridMouseUpEvent;
+
     void OnMouseDown() {
         isMouseDown = true;    
-    }
-    
-    private void OnMouseOver() {        
+    }        
+
+    void OnMouseOver() {        
         if (isMouseDown) {
+            mouseUpGridPos = transform.localPosition;
             sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 1f);
         } else {
-            sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, .2f);
+            sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 0);
         }        
     }    
 
@@ -30,12 +34,16 @@ public class GridInputSnap : MonoBehaviour {
 
     private void OnMouseUp() {
         isMouseDown = false;
-        sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 0);
-        mouseUpGridPos = transform.localPosition;
+        sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 0);        
+
+        if (OnGridMouseUpEvent != null) OnGridMouseUpEvent(mouseUpGridPos);
     }
     // Use this for initialization
     void Start () {
         sprite = GetComponent<SpriteRenderer>();
+
+        sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 0);
+        isMouseDown = false;        
 	}
 	
 	// Update is called once per frame

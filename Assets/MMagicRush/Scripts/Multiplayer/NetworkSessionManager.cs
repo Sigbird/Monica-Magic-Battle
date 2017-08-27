@@ -37,7 +37,7 @@ namespace YupiPlay {
 		public static event RoomConnection MatchmakingStartedEvent;
 		public static event RoomConnection RoomConnectedSuccessEvent;
 		public static event RoomConnection RoomConnectedFailureEvent;
-		public static event RoomConnection LeftRoomEvent;
+		public static event RoomConnection PlayerLeftRoomEvent;
         public static event RoomConnection LoadingEvent;
 
 		public delegate void RoomSetupProgress(float progress);
@@ -92,10 +92,10 @@ namespace YupiPlay {
 			if (RoomConnectedFailureEvent != null) RoomConnectedFailureEvent();
 		}
 
-		public void LeftRoom() {
+		public void PlayerLeftRoom() {
 			state = States.PLAYERLEFT;
 
-			if (LeftRoomEvent != null) LeftRoomEvent();			
+			if (PlayerLeftRoomEvent != null) PlayerLeftRoomEvent();			
 		}
 
 		public void ParticipantLeft(ParticipantInfo participant)  {

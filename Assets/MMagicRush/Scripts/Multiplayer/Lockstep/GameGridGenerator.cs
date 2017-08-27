@@ -14,8 +14,11 @@ public class GameGridGenerator : MonoBehaviour {
 	}
 	
     public void GenerateGrid() {
-        var grid = new GameObject();
-        grid.name = "GameGrid";
+        var grid = new GameObject("GameGrid");        
+        var tiles = new GameObject("Tiles");
+
+        tiles.transform.parent = grid.transform;
+        
 
         for (int i = -HorizontalSize; i <= HorizontalSize; i++) {
             for (int j = -VerticalSize; j <= VerticalSize; j++) {
@@ -23,7 +26,7 @@ public class GameGridGenerator : MonoBehaviour {
                 var y = j * CellSize;
 
                 var pos = new Vector2(x, y);
-                var gridTile = Instantiate(GridUnit, pos, this.transform.rotation, grid.transform);
+                var gridTile = Instantiate(GridUnit, pos, this.transform.rotation, tiles.transform);
                 gridTile.name = "Tile " + i + " " + j;                
             }
         }

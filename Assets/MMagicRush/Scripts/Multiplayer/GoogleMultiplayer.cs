@@ -67,7 +67,7 @@ namespace YupiPlay {
         }
 
         public void OnLeftRoom() {            
-			netSM.LeftRoom();
+			netSM.PlayerLeftRoom();
         }
 
         public void OnParticipantLeft(Participant participant) {

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,8 @@ public class GameController : MonoBehaviour {
 	private bool tutorialending = false;
 	public bool tutorial;
 	public float gempertime;	
+	private float gempertimeprogress;
+	private int gempertimeMaxValue;
 
 	public int playerCharges;
 	public static float playerXp;
@@ -51,12 +54,19 @@ public class GameController : MonoBehaviour {
 	public Sprite[] portraits;
 	public Image heroPortrait;
 	public Image enemyPortrait;
+	public GameObject ExitPanel;
 
 	public GameObject[] rewardWindows;
+	public GameObject loadingPosObj;
+
+	public dreamloLeaderBoard LeaderBoard;
+	public List<dreamloLeaderBoard.Score> LeaderList;
 	// Use this for initialization
 	void Awake() {
 		EnemyDiamonds = 0;
 		Diamonds = 0;
+		gempertimeprogress = 0;
+		gempertimeMaxValue = 1;
 		enemyCharges = PlayerPrefs.GetInt ("enemyCharges");
 		Debug.Log ("Enemy " + enemyCharges);
 		playerCharges = PlayerPrefs.GetInt ("playerCharges");
@@ -92,7 +102,9 @@ public class GameController : MonoBehaviour {
 			heroPortrait.sprite = portraits [0];
 			break;
 		}
-
+		if (LeaderBoard != null) {
+			LeaderBoard.LoadScores ();
+		}
 		//StartCoroutine (EnemyAI ());
 	}
 	
@@ -112,10 +124,20 @@ public class GameController : MonoBehaviour {
 
 		if (gempertime >= 2 && tutorial == false) {
 			gempertime = 0;
-			Diamonds += 1;
-			EnemyDiamonds += 1;
+			Diamonds += gempertimeMaxValue;
+			EnemyDiamonds += gempertimeMaxValue;
+			gempertimeprogress += 1;
 		} else {
 			gempertime += Time.deltaTime;
+		}
+
+		if (gempertimeprogress >= 5) {
+			gempertimeprogress = 0;
+			gempertimeMaxValue += 1;
+		}
+
+		if (Input.GetKey (KeyCode.Escape)) {
+			ExitPanel.SetActive (true);
 		}
 
 		if (GameObject.Find ("Diamonds") != null)
@@ -292,17 +314,35 @@ public class GameController : MonoBehaviour {
 		foreach(GameObject o in GameObject.FindGameObjectsWithTag("herowaypoint")){
 			Destroy (o.gameObject);
 		}
+		if (PlayerPrefs.GetInt ("Ranked") == 1) {
+			rewardWindows [1].SetActive (true);
+			if (x == 5) {
+				StartCoroutine (IncrementRanking (Random.Range(-25,-50)));
+				//IncrementLeaderBoard (-50);
+			} else {
+				StartCoroutine (IncrementRanking (Random.Range(25,50)));
+				//IncrementLeaderBoard (50);
+			}
+			//CheckPlayerPos ();
+		} else {
+			rewardWindows [x].SetActive (true);
+		}
+	}
 
-		rewardWindows [x].SetActive (true);
+	IEnumerator IncrementRanking(int x){
+		IncrementLeaderBoard (x);
+		yield return new WaitForSeconds (1);
+		CheckPlayerPos ();
+		loadingPosObj.SetActive (false);
 	}
 
 	public void GiveReward(int x){
 		switch (x) {
 		case 1:
-			PlayerPrefs.SetInt ("PlayerCoins", 1000);
+			PlayerPrefs.SetInt ("PlayerCoins", PlayerPrefs.GetInt("PlayerCoins")+1000);
 			break;
 		case 2:
-			PlayerPrefs.SetInt ("PlayerCoins", 25);
+			PlayerPrefs.SetInt ("PlayerCoins", PlayerPrefs.GetInt("PlayerCoins")+25);
 			break;
 		case 3:
 			break;
@@ -323,10 +363,57 @@ public class GameController : MonoBehaviour {
 	}
 
 
-	public void ClearGame(){
-//		PlayerPrefs.SetInt ("round",1);
-//		PlayerPrefs.SetInt ("playerCharges",0);
-//		PlayerPrefs.SetInt ("enemyCharges",0);
+
+
+	public void ClearThisGame(){
+		PlayerPrefs.SetInt ("round",1);
+		PlayerPrefs.SetInt ("playerCharges",0);
+		PlayerPrefs.SetInt ("enemyCharges",0);
+	}
+
+	public void IncrementLeaderBoard(int x){
+		int tempScore = 0;
+		LeaderList = LeaderBoard.ToListHighToLow ();
+		for (int i = 0; i < LeaderList.Count; i++) {
+			if (LeaderList [i].playerName == PlayerPrefs.GetString ("PlayerName")) {
+				if (x >= 0) {
+					LeaderBoard.AddScore (LeaderList [i].playerName, LeaderList [i].score + x);
+				} else {
+					tempScore = LeaderList [i].score + x;
+					LeaderBoard.RemoveScore (LeaderList [i].playerName);
+					LeaderBoard.AddScore (PlayerPrefs.GetString("PlayerName"), tempScore);
+				}
+			}
+		}
+	}
+
+	public void CheckPlayerPos(){
+		int lastpos = PlayerPrefs.GetInt ("LastPos");
+		int actualpos = 0;
+		LeaderList = LeaderBoard.ToListHighToLow ();
+		for (int i = 0; i < LeaderList.Count; i++) {
+			if (LeaderList [i].playerName == PlayerPrefs.GetString ("PlayerName")) {
+				actualpos = i+1;
+			}
+		}
+		if (actualpos <= 0) {
+			actualpos = 1;
+		}
+		rewardWindows [1].GetComponent<RewardWindow> ().RankingPos.text = actualpos.ToString();
+		if (actualpos > lastpos) {
+			rewardWindows [1].GetComponent<RewardWindow> ().RankingStatus.sprite = rewardWindows [1].GetComponent<RewardWindow> ().RankingStatusImages [1];
+		}
+		if (actualpos < lastpos) {
+			rewardWindows [1].GetComponent<RewardWindow> ().RankingStatus.sprite = rewardWindows [1].GetComponent<RewardWindow> ().RankingStatusImages [2];
+		}
+		if (actualpos == lastpos) {
+			rewardWindows [1].GetComponent<RewardWindow> ().RankingStatus.sprite = rewardWindows [1].GetComponent<RewardWindow> ().RankingStatusImages [0];
+		}
+		if (lastpos == null) {
+			rewardWindows [1].GetComponent<RewardWindow> ().RankingStatus.sprite = rewardWindows [1].GetComponent<RewardWindow> ().RankingStatusImages [0];
+		}
+		PlayerPrefs.SetInt ("LastPos", actualpos);
+
 	}
 
 	public void CallScene(string scene){

@@ -105,6 +105,22 @@ public class dreamloLeaderBoard : MonoBehaviour {
 
 		StartCoroutine(AddScoreWithPipe(playerName, totalScore, totalSeconds, shortText));
 	}
+
+	public void RemoveScore(string playerName)
+	{
+		if (TooManyRequests()) return;
+
+		StartCoroutine(RemoveScoreWithPipe(playerName));
+	}
+
+	IEnumerator RemoveScoreWithPipe(string playerName)
+	{
+		//playerName = Clean(playerName);
+
+		WWW www = new WWW(dreamloWebserviceURL + privateCode + "/delete/" + WWW.EscapeURL(playerName));
+		yield return www;
+		highScores = www.text;
+	}
 	
 	// This function saves a trip to the server. Adds the score and retrieves results in one trip.
 	IEnumerator AddScoreWithPipe(string playerName, int totalScore)

@@ -60,4 +60,12 @@ public class SearchingMatchScript : MonoBehaviour {
 		}
 	}
 
+	public void RankedMatch(){
+		PlayerPrefs.SetInt ("Ranked", 1);
+	}
+
+	public void UnRankedMatch(){
+		PlayerPrefs.SetInt ("Ranked", 0);
+	}
+
 }

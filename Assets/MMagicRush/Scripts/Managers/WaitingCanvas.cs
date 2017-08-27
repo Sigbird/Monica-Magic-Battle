@@ -81,7 +81,7 @@ namespace YupiPlay {
             NetworkSessionManager.RoomConnectedFailureEvent += OnRoomConnectedFailure;
 			NetworkSessionManager.ParticipantLeftRoomEvent += OnParticipantLeft;    
             NetworkSessionManager.PeersDisconnectedEvent += OnPeerDisconnected;
-            NetworkSessionManager.LeftRoomEvent += OnLeftRoom;
+            NetworkSessionManager.PlayerLeftRoomEvent += OnLeftRoom;
         }
 
         void OnDisable() {            
@@ -91,7 +91,7 @@ namespace YupiPlay {
 			NetworkSessionManager.RoomConnectedFailureEvent -= OnRoomConnectedFailure;
 			NetworkSessionManager.ParticipantLeftRoomEvent -= OnParticipantLeft;            
             NetworkSessionManager.PeersDisconnectedEvent -= OnPeerDisconnected;    
-            NetworkSessionManager.LeftRoomEvent -= OnLeftRoom;
+            NetworkSessionManager.PlayerLeftRoomEvent -= OnLeftRoom;
         }
     }
 

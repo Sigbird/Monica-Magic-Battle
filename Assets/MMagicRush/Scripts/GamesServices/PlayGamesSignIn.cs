@@ -2,11 +2,13 @@
 using YupiPlay.MMB;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
+using UnityEngine.UI;
 
 public class PlayGamesSignIn : MonoBehaviour {
 
     public delegate void OnLoginAction(string displayname, string username);
     public static event OnLoginAction OnLogin;
+	//public Button bt_vsJogador;
 
 	//public dreamloLeaderBoard LeaderBoard;
 
@@ -32,12 +34,13 @@ public class PlayGamesSignIn : MonoBehaviour {
             PlayerInfo.Instance.DisplayName = PlayGamesPlatform.Instance.GetUserDisplayName();
             PlayerInfo.Instance.Username    = Social.localUser.userName;
             
-            //Social.ReportScore (100, "CgkI4e_Ei7AREAIQBg",OnReport);
-            //LeaderBoard.AddScore (Social.localUser.userName, 100);
+			PlayerPrefs.SetString ("PlayerName", Social.localUser.userName);            			          			
+			//bt_vsJogador.interactable = true;
 
             if (OnLogin != null) {
                 DebugHelper.Instance.Append(PlayerInfo.Instance.DisplayName + " " + PlayerInfo.Instance.Username);
                 OnLogin(PlayerInfo.Instance.DisplayName, PlayerInfo.Instance.Username);
+	
             }
 
         } else {

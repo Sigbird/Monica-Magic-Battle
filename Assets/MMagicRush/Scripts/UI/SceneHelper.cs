@@ -10,8 +10,12 @@ public class SceneHelper : MonoBehaviour {
 	public int[] temp;
 	public int[] empty;
 	public Text coinsText;
+	public Text premiumcoinsText;
 	public int coinsPurchasing;
+	public int premiumcoinsPurchasing;
 	public dreamloLeaderBoard LeaderBoard;
+	public GameObject ExitConfirmation;
+
 
 
 	public GameObject[] TutorialPanels;
@@ -51,6 +55,7 @@ public class SceneHelper : MonoBehaviour {
 
 		if (PlayerPrefs.GetInt ("Lesson") == 7) {
 			TutorialPanels [0].SetActive (true);
+			EarnCard (20);
 			PlayerPrefs.SetInt ("Lesson", 8);
 		}
 	}
@@ -58,10 +63,16 @@ public class SceneHelper : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (PlayerPrefs.GetInt ("PlayerCoins") > 0) {
+		if (PlayerPrefs.GetInt ("PlayerCoinsPremium") > 0) {
 			coinsText.text = PlayerPrefs.GetInt ("PlayerCoins").ToString ();
 		} else {
 			coinsText.text = "0";
+		}
+
+		if (PlayerPrefs.GetInt ("PlayerCoinsPremium") > 0) {
+			premiumcoinsText.text = PlayerPrefs.GetInt ("PlayerCoinsPremium").ToString ();
+		} else {
+			premiumcoinsText.text = "0";
 		}
 
 		if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length >= 12 && tutorial == true) {
@@ -69,15 +80,37 @@ public class SceneHelper : MonoBehaviour {
 			TutorialPanels [2].SetActive (true);
  		}
 
+		if (Input.GetKey (KeyCode.Escape)) {
+			ExitConfirmation.SetActive (true);
+		}
+
+	}
+
+	public void OpenCoinsShop(){
+		this.coinsPurchasing = 0;
+		this.premiumcoinsPurchasing = 0;
 	}
 
 	public void SetCoinsPurchasing(int x){
 		this.coinsPurchasing = x;
 	}
 
+	public void SetPremiumCoinsPurchasing(int x){
+		this.premiumcoinsPurchasing = x;
+	}
+
 	public void CoinPurchase() {
 		int c = PlayerPrefs.GetInt ("PlayerCoins");
+		int pc = PlayerPrefs.GetInt ("PlayerCoinsPremiun");
+		if(pc > (coinsPurchasing/2)){
+		PlayerPrefs.SetInt ("PlayerCoinsPremiun", pc - (coinsPurchasing/2));
 		PlayerPrefs.SetInt ("PlayerCoins", c + coinsPurchasing);
+		}
+	}
+
+	public void PremiumCoinPurchase() {
+		int pc = PlayerPrefs.GetInt ("PlayerCoinsPremiun");
+		PlayerPrefs.SetInt ("PlayerCoinsPremiun", pc + premiumcoinsPurchasing);
 	}
 
 	public void LoadScene(string scene) {
@@ -117,8 +150,71 @@ public class SceneHelper : MonoBehaviour {
 //		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
 	}
 
-	public void OpenRanking(){
+	public void EarnCard(int cardID){
+				int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+
+				List<int> iList = new List<int> ();
+
+				for (int i = 0; i < original.Length; i++) {
+					iList.Add (original [i]);
+				}
+
+				iList.Add (cardID);
+
+				int[] finalArray = new int[iList.Count];
+
+				int x = 0;
+				foreach (int i in iList) {
+					finalArray [x] = i;
+					x++;
+				}
+
+
+				//		int[] finalArray = new  int[original.Length + 1 ];
+				//
+				//		for(int i = 0; i < original.Length; i ++ ) {
+				//			finalArray[i] = original[i];
+				//		}
+				//
+				//		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
+
+
+				//ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
+				PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
+
+				if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15) {
+				ActiveCard (cardID);
+				}
+	}
+
+	public void ActiveCard(int cardID){
 		
+		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+
+		List<int> iList = new List<int>();
+
+		for(int i = 0; i < original.Length; i ++ ) {
+			iList.Add (original [i]);
+		}
+
+		iList.Add (cardID);
+
+		int[] finalArray = new int[iList.Count];
+
+		int x = 0;
+		foreach (int i in iList) {
+			finalArray [x] = i;
+			x++;
+		}
+
+		//		int[] finalArray = new  int[original.Length + 1 ];
+		//
+		//		for(int i = 0; i < original.Length; i ++ ) {
+		//			finalArray[i] = original[i];
+		//		}
+
+		//		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
 	}
 
 }

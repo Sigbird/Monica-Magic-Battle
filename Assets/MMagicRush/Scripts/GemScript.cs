@@ -246,6 +246,7 @@ public class GemScript : MonoBehaviour {
 	}
 
 	IEnumerator Begin(){
+		yield return new WaitForSeconds (0.1f);
 		heroProgressObj.SetActive (false);
 		enemyProgressObj.SetActive (false);
 		this.enabled = false;
@@ -280,6 +281,7 @@ public class GemScript : MonoBehaviour {
 	}
 
 	public void GemReset(){
+		
 			heroProgressObj.SetActive (false);
 			enemyProgressObj.SetActive (false);
 			this.enabled = false;
