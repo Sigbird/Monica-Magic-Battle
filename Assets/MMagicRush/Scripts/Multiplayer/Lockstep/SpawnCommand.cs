@@ -53,7 +53,7 @@ namespace YupiPlay.MMB.Lockstep {
             }            
 
             if (hasPosition) {
-                dict["pos"] = NetSerializer.ToDicionary(Position);
+                dict["pos"] = NetSerializer.ToDicionaryInt(Position);
             }
 
             return dict;

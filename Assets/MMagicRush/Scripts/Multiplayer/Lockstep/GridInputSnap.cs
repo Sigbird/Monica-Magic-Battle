@@ -22,7 +22,7 @@ public class GridInputSnap : MonoBehaviour {
     void OnMouseOver() {        
         if (isMouseDown) {
             mouseUpGridPos = transform.localPosition;
-            sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 1f);
+            sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, .5f);
         } else {
             sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 0);
         }        

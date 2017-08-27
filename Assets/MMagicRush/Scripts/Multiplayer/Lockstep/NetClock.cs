@@ -58,6 +58,7 @@ namespace YupiPlay.MMB.Lockstep {
                         Time.timeScale = 1;
                         isDelayed = false;                        
                         LastTurnPlayed++;
+                        RemoveTurn(turnToPlay);
 
                         if (ClearLagMsgEvent != null && !isDisconnected) ClearLagMsgEvent();
                     } else {
@@ -131,7 +132,6 @@ namespace YupiPlay.MMB.Lockstep {
                 hasEnemyCmds = true;
 #endif
             if (isDisconnected) hasEnemyCmds = true;
-
 
             if (hasPlayerCmds && hasEnemyCmds) {
                 foreach (NetCommand cmd in playerCmds) {

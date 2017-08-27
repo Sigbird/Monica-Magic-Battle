@@ -19,7 +19,7 @@ namespace YupiPlay.MMB.Lockstep {
         public override Dictionary<string, object> ToDictionary() {
             var dict = new Dictionary<string, object>();
             dict["cmd"] = MOVE;
-            dict["pos"] = NetSerializer.ToDicionary(Position);
+            dict["pos"] = NetSerializer.ToDicionaryInt(Position);
 
             return dict;
         }

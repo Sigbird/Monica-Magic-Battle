@@ -89,7 +89,16 @@ namespace YupiPlay.MMB.Lockstep {
             dict["y"] = position.y.ToString(floatPrecision);
 
             return dict;
-        }          
+        }
+
+        public static Dictionary<string, object> ToDicionaryInt(Vector2 position) {
+            var dict = new Dictionary<string, object>();
+
+            dict["x"] = ((int) position.x).ToString();
+            dict["y"] = ((int) position.y).ToString();
+
+            return dict;
+        }
 
         public static Vector2 ToVector2(Dictionary<string, object> pos) {
             float x = float.Parse(pos["x"] as string);
