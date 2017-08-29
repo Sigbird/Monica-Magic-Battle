@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace YupiPlay.MMB.Lockstep {
     public class NetClock : MonoBehaviour {
-        public float TurnTime = 0.1f;
+        public float TurnTime = 0.2f;
         public float NumLagLimit = 20;
         public INetGameController NetGameControllerInstance;
 
@@ -41,6 +41,10 @@ namespace YupiPlay.MMB.Lockstep {
             } else {
                 Destroy(this.gameObject);
             }
+
+            #if UNITY_EDITOR
+            isDisconnected = true;
+            #endif
         }              
         
         public void SetNetGameControllerInstance(INetGameController netGameController) {
@@ -52,10 +56,20 @@ namespace YupiPlay.MMB.Lockstep {
                 yield return new WaitForSecondsRealtime(TurnTime);
                                 
                 AddTurnToCmdBuffer(Turn);
-                SendTurn(Turn);
-                Turn++;
+                if (!isDisconnected) {
+                    if (Turn <= 3) {
+                        SendTurn(Turn);
+                        Turn++;
+                    }
+                }                                
 
-                if (Turn > 2) {
+                if (isDisconnected) {                    
+                    SendTurn(Turn);
+                    Turn++;
+                    LastReceivedTurn = Turn;
+                }                                
+
+                if (LastReceivedTurn > 2) {
                     var turnToPlay = LastTurnPlayed + 1;
                     if (isDisconnected) turnToPlay = Turn - 2;
 
@@ -66,23 +80,29 @@ namespace YupiPlay.MMB.Lockstep {
                         LastTurnPlayed++;
                         RemoveTurn(turnToPlay);
 
+                        if (!isDisconnected) {
+                            SendTurn(Turn);
+                            Turn++;
+                        }
+
                         if (ClearLagMsgEvent != null && !isDisconnected) ClearLagMsgEvent();
                     } else {
-                        if (Turn > 2) {
-                            if (nLagTurns >= NumLagLimit) {
-                                isDisconnected = true;
-                                if (PrintLagMsgEvent != null) PrintLagMsgEvent("Disconnected");
-                                if (LagDisconnectEvent != null) LagDisconnectEvent(Turn);
-                            }
+                        nLagTurns++;
+                        isDelayed = true;
 
-                            nLagTurns++;
-                            isDelayed = true;
-                            Time.timeScale = 0;
+                        if (PrintLagMsgEvent != null) {
+                            PrintLagMsgEvent("LagTurn " + turnToPlay + " delay " + TurnTime * 1000 * nLagTurns);
+                        }
 
-                            if (PrintLagMsgEvent != null) PrintLagMsgEvent("Lag " + Turn);
+                        if (nLagTurns >= NumLagLimit) {
+                            isDisconnected = true;
+                            if (PrintLagMsgEvent != null) PrintLagMsgEvent("Disconnected");
+                            if (LagDisconnectEvent != null) LagDisconnectEvent(Turn);
+                        }
+                        
+                        //Time.timeScale = 0;                        
 
-                            yield return new WaitForSecondsRealtime(TurnTime);
-                        }                        
+                        yield return new WaitForSecondsRealtime(TurnTime);                        
                     }
                 }         
             }
@@ -110,7 +130,7 @@ namespace YupiPlay.MMB.Lockstep {
             Buffer.InsertToOutput(new NetCommand(turn));
         }               
 
-        private void SendTurn(ulong turn) {
+        private void SendTurn(ulong turn) {            
             List<NetCommand> cmds = Buffer.GetOutputForTurn(turn);
             NetworkSessionManager.Instance.SendMessage(cmds);
             LastTurnSent = turn;
@@ -141,18 +161,17 @@ namespace YupiPlay.MMB.Lockstep {
             var hasPlayerCmds = playerCmds.Count > 0;
             var hasEnemyCmds = enemyCmds.Count > 0;
             
-            #if UNITY_EDITOR
+             if (isDisconnected) {
                 hasEnemyCmds = true;
-#endif
-            if (isDisconnected) hasEnemyCmds = true;
+            }                            
 
             if (hasPlayerCmds && hasEnemyCmds) {
                 foreach (NetCommand cmd in playerCmds) {
                     NetGameControllerInstance.PlayerCommandListener(cmd);
-                }
-                foreach (NetCommand cmd in enemyCmds) {
-                    NetGameControllerInstance.EnemyCommandListener(cmd);
-                }
+                }                
+               foreach (NetCommand cmd in enemyCmds) {
+                    NetGameControllerInstance.EnemyCommandListener(cmd);                    
+                }                
 
                 return true;
             }

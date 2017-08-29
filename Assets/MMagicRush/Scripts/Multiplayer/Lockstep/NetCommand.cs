@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System;
 
 namespace YupiPlay.MMB.Lockstep {
     public class NetCommand {
+        public const string TimestampFormat = "yyyy-MM-dd HH:mm:ss.fff";
+
         //turno vazio
         public const string TURN = "TURN";        
 
@@ -28,19 +31,40 @@ namespace YupiPlay.MMB.Lockstep {
 
         //manda mensagem
         public const string MSG = "MSG";
+        //ping
+        public const string PING = "PING";
+        public const string ACK = "ACK";
 
         protected string Command = TURN;
         protected ulong Turn     = 1;
+        protected string Timestamp;
 
         public NetCommand(ulong turn) {
+            Turn = turn;            
+        }
+        
+        public NetCommand(ulong turn, string timestamp) {
             Turn = turn;
+            Timestamp = timestamp;
         }        
+
+        public NetCommand() {
+
+        }
 
         public string GetCommand() {
             return Command;
         }
         public ulong GetTurn() {
             return Turn;
+        }
+
+        public string GetTimestamp() {
+            return Timestamp;
+        }
+
+        public void SetTimestamp(string timestamp) {
+            Timestamp = timestamp;
         }
 
         override public string ToString() {

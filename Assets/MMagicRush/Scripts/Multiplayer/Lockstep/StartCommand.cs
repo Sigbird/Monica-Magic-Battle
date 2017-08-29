@@ -10,7 +10,7 @@ namespace YupiPlay.MMB.Lockstep {
 
         public override Dictionary<string, object> ToDictionary() {
             var dict = new Dictionary<string, object>();
-            dict["cmd"] = START;
+            dict["cmd"] = Command;
             return dict;
         }
     }

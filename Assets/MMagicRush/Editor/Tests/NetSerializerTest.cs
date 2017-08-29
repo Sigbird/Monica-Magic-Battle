@@ -11,15 +11,16 @@ public class NetSerializerTest {
 
 	[Test]
 	public void TestTurnCommand() {
-        var cmds = NetCommand.CreateList(new NetCommand(1));        
+        var timestamp = DateTime.Now.ToString(NetCommand.TimestampFormat);
+        var cmds = NetCommand.CreateList(new NetCommand(1, timestamp));        
 
-        var json = NetSerializer.Serialize(cmds);
-        var newCmds = NetSerializer.Deserialize(json);
+        var json = NetSerializer.Serialize(cmds);        
+        var newCmds = NetSerializer.ParseDictionary(NetSerializer.DeserializeToDictionary(json));
 
         Assert.AreEqual(1, newCmds.Count);
         Assert.AreEqual(1, newCmds[0].GetTurn());
         Assert.AreEqual(NetCommand.TURN, newCmds[0].GetCommand());
-
+        Assert.AreEqual(timestamp, newCmds[0].GetTimestamp());
         // Use the Assert class to test conditions.
     }
 
@@ -27,8 +28,8 @@ public class NetSerializerTest {
     public void TestMoveCommand() {        
         var x = 1.2433f;
         var y = 2.4321f;
-        var expectedX = 1.243f;
-        var expectedY = 2.432f;
+        var expectedX = 1.0f;
+        var expectedY = 2.0f;
 
         var cmds = NetCommand.CreateList(
             new NetCommand(1), 
@@ -36,7 +37,7 @@ public class NetSerializerTest {
         );        
 
         var json = NetSerializer.Serialize(cmds);
-        var newCmds = NetSerializer.Deserialize(json);
+        var newCmds = NetSerializer.ParseDictionary(NetSerializer.DeserializeToDictionary(json));
 
         Assert.AreEqual(1, newCmds.Count);
         Assert.AreEqual(1, newCmds[0].GetTurn());
@@ -60,7 +61,7 @@ public class NetSerializerTest {
         );
 
         var json = NetSerializer.Serialize(cmds);
-        var newCmds = NetSerializer.Deserialize(json);
+        var newCmds = NetSerializer.ParseDictionary(NetSerializer.DeserializeToDictionary(json));
 
         var hello = newCmds[0] as HelloCommand;
         Assert.AreEqual("Monica", hello.GetHero());
@@ -72,7 +73,7 @@ public class NetSerializerTest {
         var cmds = NetCommand.CreateList(new ReadyCommand());
 
         var json = NetSerializer.Serialize(cmds);
-        var newCmds = NetSerializer.Deserialize(json);
+        var newCmds = NetSerializer.ParseDictionary(NetSerializer.DeserializeToDictionary(json));
 
         var start = newCmds[0] as ReadyCommand;
 
@@ -85,7 +86,7 @@ public class NetSerializerTest {
         var cmds = NetCommand.CreateList(new StartCommand());        
 
         var json = NetSerializer.Serialize(cmds);
-        var newCmds = NetSerializer.Deserialize(json);
+        var newCmds = NetSerializer.ParseDictionary(NetSerializer.DeserializeToDictionary(json));
 
         var start = newCmds[0] as StartCommand;
 
@@ -101,7 +102,7 @@ public class NetSerializerTest {
         );                
 
         var json = NetSerializer.Serialize(cmds);
-        var newCmds = NetSerializer.Deserialize(json);
+        var newCmds = NetSerializer.ParseDictionary(NetSerializer.DeserializeToDictionary(json));
 
         var end = newCmds[0] as EndCommand;
 
@@ -122,7 +123,7 @@ public class NetSerializerTest {
         );                
 
         var json = NetSerializer.Serialize(cmds);
-        var newCmds = NetSerializer.Deserialize(json);
+        var newCmds = NetSerializer.ParseDictionary(NetSerializer.DeserializeToDictionary(json));
 
         Assert.AreEqual(3, newCmds.Count);
         Assert.AreEqual("H", (newCmds[0] as AttackCommand).GetTargetId() );
@@ -133,8 +134,8 @@ public class NetSerializerTest {
     [Test]
     public void TestSpawnCommandUnit() {        
         var guid = Guid.NewGuid().ToString();
-        var expectedX = 3.457f;
-        var expectedY = 4.099f;
+        var expectedX = 3.0f;
+        var expectedY = 4.0f;
 
         var cmds = NetCommand.CreateList(
             new NetCommand(3),
@@ -142,7 +143,7 @@ public class NetSerializerTest {
         );        
 
         var json = NetSerializer.Serialize(cmds);
-        var newCmds = NetSerializer.Deserialize(json);
+        var newCmds = NetSerializer.ParseDictionary(NetSerializer.DeserializeToDictionary(json));
 
         Assert.AreEqual(1, newCmds.Count);
 
@@ -164,7 +165,7 @@ public class NetSerializerTest {
         );        
 
         var json = NetSerializer.Serialize(cmds);
-        var newCmds = NetSerializer.Deserialize(json);
+        var newCmds = NetSerializer.ParseDictionary(NetSerializer.DeserializeToDictionary(json));
 
         var cmd = newCmds[0] as SpawnCommand;
 
@@ -181,15 +182,15 @@ public class NetSerializerTest {
         );        
 
         var json = NetSerializer.Serialize(cmds);
-        var newCmds = NetSerializer.Deserialize(json);
+        var newCmds = NetSerializer.ParseDictionary(NetSerializer.DeserializeToDictionary(json));
 
         var cmd = newCmds[0] as SpawnCommand;
 
         Assert.AreEqual(5, cmd.GetTurn());
         Assert.AreEqual("flechas", cmd.GetCard());
         Assert.AreEqual(true, cmd.HasPosition());
-        Assert.AreEqual(3.123f, cmd.GetPosition().x);
-        Assert.AreEqual(3.124f, cmd.GetPosition().y);
+        Assert.AreEqual(3.0f, cmd.GetPosition().x);
+        Assert.AreEqual(3.0f, cmd.GetPosition().y);
     }
 
     [Test]
@@ -201,12 +202,38 @@ public class NetSerializerTest {
         );        
 
         var json = NetSerializer.Serialize(cmds);
-        var newCmds = NetSerializer.Deserialize(json);
+        var newCmds = NetSerializer.ParseDictionary(NetSerializer.DeserializeToDictionary(json));
 
         var cmd = newCmds[0] as MessageCommand;
 
         Assert.AreEqual(6, cmd.GetTurn());
         Assert.AreEqual("msg1", cmd.GetMessageId());
+    }
+
+    [Test]
+    public void TestPingCommand() {
+        var datetime = DateTime.Now;
+        var datestring = datetime.ToString(PingCommand.TimestampFormat);
+        var cmd = new PingCommand(1, datestring);
+        Debug.Log(datestring);
+
+        var pingstring = NetSerializer.SerializePing(cmd);
+        Debug.Log(pingstring);
+        var newCmd = NetSerializer.ParsePing(NetSerializer.DeserializeToDictionary(pingstring));
+
+        Assert.AreEqual(datestring, newCmd.GetTimestamp());        
+        Assert.AreEqual(1, newCmd.GetTurn());
+        Assert.AreEqual(NetCommand.PING, newCmd.GetCommand());       
+    }
+
+    [Test]
+    public void TestAckCommand() {
+        var turnCmd = new NetCommand(1);
+
+        var ack = new AckCommand(turnCmd);
+        string ackstring = NetSerializer.SerializeAck(ack);
+        
+        Debug.Log(ackstring);
     }
 
 }

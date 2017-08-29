@@ -28,7 +28,7 @@ public class PlayerController : BasePlayerController {
     }
 
     void OnPlayerMouseUp(Vector2 mousePos) {
-        if (NetGameController.Instance.HasGameStarted() && !NetClock.Instance.IsDelayed()) {
+        if (NetGameController.Instance.HasGameStarted()) {
 
             //moveTo = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             moveTo = mousePos;
@@ -42,7 +42,7 @@ public class PlayerController : BasePlayerController {
     }
 
     new protected void FixedUpdate() {
-        var distance = Vector2.Distance(target, transform.localPosition);        
+        /*var distance = Vector2.Distance(target, transform.localPosition);        
         if (distance < 0.05f) {
             rb.velocity = Vector2.zero;            
         }
@@ -53,7 +53,21 @@ public class PlayerController : BasePlayerController {
             if (distanceToGo < 0.05f) {
                 ClickFeedback.SetActive(false);
             }
-        }        
+        } */        
+
+        if (target != (Vector2)transform.localPosition) {
+            transform.localPosition = Vector2.MoveTowards(transform.localPosition, target, 0.01f * SpeedFactor);
+            ClickFeedback.SetActive(true);
+        }
+        if ((Vector2) transform.localPosition ==  target && (Vector2) transform.localPosition != previousPos) {
+            previousPos = transform.localPosition;
+            ClickFeedback.SetActive(false);
+            Debug.Log(transform.localPosition.x);
+            Debug.Log(transform.localPosition.y);
+            Debug.Log(transform.position.x);
+            Debug.Log(transform.position.x);
+        }
+       
     }
 
     void OnEnable() {

@@ -17,6 +17,8 @@ public class ProtoGameUI : MonoBehaviour {
     public Text EnemyDebug;
 
     public Text LagIndicator;
+    public Text ReliableLatency;
+    public Text UnreliableLatency;
 
     public static ProtoGameUI Instance;
 
@@ -72,11 +74,23 @@ public class ProtoGameUI : MonoBehaviour {
         LagIndicator.text = "";
     }
 
+    public void PrintReliableLatency(int rtt) {
+        var ping = (int) rtt / 2;
+        ReliableLatency.text = "Rel rtt: " + rtt + " ping: " + ping;
+    }
+
+    public void PrintUnreliableLatency(int rtt) {
+        var ping = (int)rtt / 2;
+        UnreliableLatency.text = "Unr rtt: " + rtt + " ping: " + ping;
+    }
+
     void OnEnable() {
         NetClock.ClearLagMsgEvent += ClearLagMsg;
         NetClock.PrintLagMsgEvent += PrintLagMsg;
         NetworkSessionManager.NetPrintInputEvent += PrintEnemy;
         NetworkSessionManager.NetPrintOutputEvent += PrintPlayer;
+        NetworkSessionManager.ReliableLatencyEvent += PrintReliableLatency;
+        NetworkSessionManager.UnreliableLatencyEvent += PrintUnreliableLatency;
     }
 
     void OnDisable() {
@@ -84,5 +98,7 @@ public class ProtoGameUI : MonoBehaviour {
         NetClock.PrintLagMsgEvent -= PrintLagMsg;
         NetworkSessionManager.NetPrintInputEvent -= PrintEnemy;
         NetworkSessionManager.NetPrintOutputEvent -= PrintPlayer;
+        NetworkSessionManager.ReliableLatencyEvent -= PrintReliableLatency;
+        NetworkSessionManager.UnreliableLatencyEvent -= PrintUnreliableLatency;
     }
 }

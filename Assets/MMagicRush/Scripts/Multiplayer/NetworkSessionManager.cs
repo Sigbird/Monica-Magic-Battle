@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 namespace YupiPlay {
 	public class NetworkSessionManager : MonoBehaviour {
@@ -57,11 +58,17 @@ namespace YupiPlay {
         public delegate void ShowOpponentInfo(ParticipantInfo opponent);
 		public static event ShowOpponentInfo OnOpponentInfo;
 
+        public delegate void LatencyAction(int rtt);
+        public static event LatencyAction ReliableLatencyEvent;
+        public static event LatencyAction UnreliableLatencyEvent;
+
         public string GameSceneToLoad;
 		public MatchInfo Match;        
 
         void Awake() {
-            Instance = this;
+            if (Instance == null) {
+                Instance = this;
+            }            
             DontDestroyOnLoad(this.gameObject);
         }
 
@@ -116,24 +123,36 @@ namespace YupiPlay {
 			if (PeersDisconnectedEvent != null) PeersDisconnectedEvent(participantIds);            
 		}
 
-		public void RealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {			
+		public void OnReliableMessage(string senderId, byte[] data) {			
             string json = Encoding.UTF8.GetString(data);
+            var mainDict = NetSerializer.DeserializeToDictionary(json);
 
-            if (NetPrintInputEvent != null) NetPrintInputEvent(json);
-
-            var cmds = NetSerializer.Deserialize(json);
-
+            if (mainDict.ContainsKey("cmd") && (string) mainDict["cmd"] == NetCommand.ACK) {
+                ProcessAck(mainDict);
+            }
+           
+            var cmds = NetSerializer.ParseDictionary(mainDict);
+            if (cmds != null) {
+                if (NetPrintInputEvent != null && cmds[0].GetCommand() != NetCommand.ACK) {
+                    NetPrintInputEvent(json);
+                }
+                ProcessGameCommands(cmds);
+            }
+		}
+        
+        public void ProcessGameCommands(List<NetCommand> cmds) {            
             var cmd = cmds[0];
 
             if (State == States.INGAME && cmd.GetTurn() > 0) {
                 CommandBuffer.Instance.InsertListToInput(cmds);
                 NetClock.Instance.UpdateRemoteTurn(cmd.GetTurn());
-                //NetClock.Instance.CalculateRemoteLatency(cmd.GetTurn());
+
+                if (cmd.GetCommand() != NetCommand.ACK) SendAck(cmd);
 
                 return;
             }
 
-            if (cmd.GetCommand() == NetCommand.HELLO) {                
+            if (cmd.GetCommand() == NetCommand.HELLO) {
                 SetAdditionalOpponentInfo(cmd as HelloCommand);
                 LoadGame();
                 return;
@@ -148,9 +167,9 @@ namespace YupiPlay {
                 if (NetGameController.Instance != null) {
                     NetGameController.Instance.StartGame();
                     State = States.INGAME;
-                }                
-            }                               
-		}									
+                }
+            }
+        }
 			
 		public void LoadGame() {
 			state = States.LOADING;
@@ -227,6 +246,37 @@ namespace YupiPlay {
 #endif
         }
 
-	}
+        public void SendAck(NetCommand cmd) {
+            var ack = new AckCommand(cmd);
+            var ackstring = NetSerializer.SerializeAck(ack);
+
+            byte[] data = Encoding.UTF8.GetBytes(ackstring);
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+            GoogleMultiplayer.SendMessageToAll(data);
+            GoogleMultiplayer.SendUnreliableMessageToAll(data);
+#endif
+        }
+
+        public void ProcessAck(Dictionary<string, object> dict) {
+            var ack = AckCommand.ToCommand(dict);
+            var sent = DateTime.Parse(ack.GetTimestamp());            
+            var rtt = (DateTime.Now - sent).Milliseconds;
+
+            if (ReliableLatencyEvent != null) ReliableLatencyEvent(rtt);
+        }
+
+        public void OnUnreliableMessage(string senderId, byte[] data) {
+            string json = Encoding.UTF8.GetString(data);
+            var dict = NetSerializer.DeserializeToDictionary(json);
+
+            var ack = AckCommand.ToCommand(dict);
+            var sent = DateTime.Parse(ack.GetTimestamp());
+            var rtt = (DateTime.Now - sent).Milliseconds;
+
+            if (UnreliableLatencyEvent != null) UnreliableLatencyEvent(rtt);
+        }
+
+    }
 }
 
