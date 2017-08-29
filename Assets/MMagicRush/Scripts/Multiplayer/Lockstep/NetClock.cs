@@ -61,13 +61,11 @@ namespace YupiPlay.MMB.Lockstep {
                         SendTurn(Turn);
                         Turn++;
                     }
-                }                                
-
-                if (isDisconnected) {                    
+                } else {
                     SendTurn(Turn);
                     Turn++;
                     LastReceivedTurn = Turn;
-                }                                
+                }                                                                            
 
                 if (LastReceivedTurn > 2) {
                     var turnToPlay = LastTurnPlayed + 1;
