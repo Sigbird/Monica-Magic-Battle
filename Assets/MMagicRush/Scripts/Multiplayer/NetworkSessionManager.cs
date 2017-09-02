@@ -165,7 +165,7 @@ namespace YupiPlay {
             }
             if (cmd.GetCommand() == NetCommand.START) {
                 if (NetGameController.Instance != null) {
-                    NetGameController.Instance.StartGame();
+                    NetGameController.Instance.StartClock();
                     State = States.INGAME;
                 }
             }

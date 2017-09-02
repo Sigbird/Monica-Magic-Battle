@@ -6,7 +6,7 @@ namespace YupiPlay.MMB.Lockstep {
         void PlayerCommandListener(NetCommand cmd);
         void EnemyCommandListener(NetCommand cmd);
 
-        void StartGame();
+        void StartClock();
         void EndGame();
         bool HasGameStarted();
     }

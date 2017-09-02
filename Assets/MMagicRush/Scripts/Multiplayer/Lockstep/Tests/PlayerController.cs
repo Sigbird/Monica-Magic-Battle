@@ -28,7 +28,7 @@ public class PlayerController : BasePlayerController {
     }
 
     void OnPlayerMouseUp(Vector2 mousePos) {
-        if (NetGameController.Instance.HasGameStarted()) {
+        if (NetGameController.Instance.HasGameStarted() && !NetClock.Instance.IsDelayed()) {
 
             //moveTo = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             moveTo = mousePos;

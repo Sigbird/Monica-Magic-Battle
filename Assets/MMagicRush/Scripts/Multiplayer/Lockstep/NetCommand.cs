@@ -36,17 +36,30 @@ namespace YupiPlay.MMB.Lockstep {
         public const string ACK = "ACK";
 
         protected string Command = TURN;
-        protected ulong Turn     = 1;
+        protected long Turn = 1;
         protected string Timestamp;
+        protected short SubTurn = 0;
 
-        public NetCommand(ulong turn) {
-            Turn = turn;            
+        public NetCommand(long turn) {
+            Turn = turn;
+            SubTurn = 0;
+        }
+
+        public NetCommand(long turn, short subTurn) {
+            Turn = turn;
+            SubTurn = subTurn;
         }
         
-        public NetCommand(ulong turn, string timestamp) {
+        public NetCommand(long turn, string timestamp) {
             Turn = turn;
             Timestamp = timestamp;
         }        
+
+        public NetCommand(long turn, short subTurn, string timestamp) {
+            Turn = turn;
+            SubTurn = subTurn;
+            Timestamp = timestamp;
+        }
 
         public NetCommand() {
 
@@ -55,8 +68,12 @@ namespace YupiPlay.MMB.Lockstep {
         public string GetCommand() {
             return Command;
         }
-        public ulong GetTurn() {
+        public long GetTurn() {
             return Turn;
+        }
+
+        public short GetSubTurn() {
+            return SubTurn;
         }
 
         public string GetTimestamp() {

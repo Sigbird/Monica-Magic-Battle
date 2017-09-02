@@ -41,22 +41,22 @@ namespace YupiPlay.MMB.Lockstep {
             InputBuffer.Remove(command);
         }
 
-        public List<NetCommand> GetOutputForTurn(ulong turn) {
+        public List<NetCommand> GetOutputForTurn(long turn) {
             return OutputBuffer.FindAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });            
         }
 
-        public List<NetCommand> GetInputForTurn(ulong turn) {
+        public List<NetCommand> GetInputForTurn(long turn) {
             return InputBuffer.FindAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
         }
 
-        public void RemoveAllForTurn(ulong turn) {            
+        public void RemoveAllForTurn(long turn) {            
             OutputBuffer.RemoveAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
             InputBuffer.RemoveAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
             //Debug.Log("out count: " + OutBuffer.Count);
             //Debug.Log("in count: " + InBuffer.Count);
         }
 
-        public void RemoveFromOutput(ulong turn) {
+        public void RemoveFromOutput(long turn) {
             OutputBuffer.RemoveAll((NetCommand cmd) => { return cmd.GetTurn() == turn; });
         }
 

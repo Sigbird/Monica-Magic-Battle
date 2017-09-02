@@ -5,7 +5,7 @@ namespace YupiPlay.MMB.Lockstep {
 
         public static void Move(Vector2 position) {          
             CommandBuffer.Instance.InsertToOutput(
-                new MoveCommand(NetClock.Instance.GetTurn(), position)
+                new MoveCommand(NetClock.Instance.GetTurn(), NetClock.Instance.GetSubTurn(), position)
             );
         }
 

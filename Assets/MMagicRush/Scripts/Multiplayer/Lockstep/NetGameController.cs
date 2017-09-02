@@ -29,7 +29,7 @@ public class NetGameController : MonoBehaviour, INetGameController {
     void Start () {        
         NetworkSessionManager.Instance.SendReady();
 #if UNITY_EDITOR
-        StartGame();
+        StartClock();
 #endif
     }
 		
@@ -62,13 +62,15 @@ public class NetGameController : MonoBehaviour, INetGameController {
         }
     }
 
+    public void StartClock() {
+        NetClock.Instance.StartClock();        
+    }
+
     public void StartGame() {
-        NetClock.Instance.StartClock();
         StartCoroutine(StartUITimer());
     }
 
-    private IEnumerator StartUITimer() {        
-        yield return new WaitForSeconds(2);
+    private IEnumerator StartUITimer() {                
         GameUI.ShowStart();
         yield return new WaitForSeconds(2);
         GameUI.HideStart();

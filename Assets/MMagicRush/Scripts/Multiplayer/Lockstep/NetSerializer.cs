@@ -38,12 +38,12 @@ namespace YupiPlay.MMB.Lockstep {
             var cmds = new List<NetCommand>();                                    
 
             if (dict.ContainsKey("turn")) {
-                ulong turn = (ulong)(long)dict["turn"];
-                string timestamp = (string)dict["time"];
+                var turn = (long) dict["turn"];
+                var timestamp = (string)dict["time"];
 
                 if (dict.ContainsKey("cmds")) {
                     foreach (Dictionary<string, object> cmddict in dict["cmds"] as List<object>) {
-                        string command = cmddict["cmd"] as string;
+                        string command = cmddict["cmd"] as string;                        
                         NetCommand cmd = null;
 
                         switch (command) {
@@ -66,7 +66,7 @@ namespace YupiPlay.MMB.Lockstep {
                                 cmd = MoveCommand.ToCommand(cmddict, turn);
                                 break;
                             case NetCommand.ATK:
-                                cmd = new AttackCommand(turn, cmddict["target"] as string);
+                                cmd = AttackCommand.ToCommand(cmddict, turn);
                                 break;
                             case NetCommand.SPAWN:
                                 cmd = SpawnCommand.ToCommand(cmddict, turn);
@@ -111,19 +111,7 @@ namespace YupiPlay.MMB.Lockstep {
             float y = float.Parse(pos["y"] as string);
 
             return new Vector2(x, y);
-        } 
-        
-        public static string SerializePing(PingCommand ping) {            
-            return Json.Serialize(ping.ToDictionary());
-        }
-
-        public static PingCommand ParsePing(Dictionary<string,object> dict) {            
-            if (dict.ContainsKey("seq")) {
-                return PingCommand.ToCommand(dict);
-            }
-
-            return null;
-        }
+        }                
 
         public static string SerializeAck(AckCommand ack) {
             return Json.Serialize(ack.ToDictionary());

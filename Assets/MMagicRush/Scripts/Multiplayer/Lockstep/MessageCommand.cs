@@ -7,7 +7,7 @@ namespace YupiPlay.MMB.Lockstep {
     public class MessageCommand : NetCommand {
         private string MessageId;
         
-        public MessageCommand(ulong turn, string messageId) : base(turn) {
+        public MessageCommand(long turn, string messageId) : base(turn) {
             Command = MSG;
             MessageId = messageId;
         }

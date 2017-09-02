@@ -7,7 +7,7 @@ using System.Diagnostics;
 public class EnemyAIController : MonoBehaviour {
     public GameObject InputFeedback;
 
-    private ulong Turn = 1;
+    private long Turn = 1;
 
     private Vector2[] positions = {
         new Vector2(1.69f, 1.33f),

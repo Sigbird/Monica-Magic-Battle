@@ -11,7 +11,7 @@ namespace YupiPlay.MMB.Lockstep {
             CommandToAck = cmd;
         }        
 
-        public AckCommand(ulong turn, string timestamp) {
+        public AckCommand(long turn, string timestamp) {
             Command = ACK;
             Turn = turn;
             Timestamp = timestamp;
@@ -27,7 +27,7 @@ namespace YupiPlay.MMB.Lockstep {
         }
 
         new public static AckCommand ToCommand(Dictionary<string,object> dict) {
-            var turn = (ulong)(long)dict["ack"];            
+            var turn = (long) dict["ack"];            
             var timestamp = (string) dict["time"];            
 
             return new AckCommand(turn, timestamp);

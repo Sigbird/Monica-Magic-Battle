@@ -11,18 +11,18 @@ namespace YupiPlay.MMB.Lockstep {
         private bool hasPosition = false;
 
         //Cria unidade
-        public SpawnCommand(ulong turn, string card, string id, Vector2 position) : this(turn, card, position) {            
+        public SpawnCommand(long turn, string card, string id, Vector2 position) : this(turn, card, position) {            
             Id = id;
         }
 
         //Lança feitiço localizado
-        public SpawnCommand(ulong turn, string card, Vector2 position) : this(turn, card)  {
+        public SpawnCommand(long turn, string card, Vector2 position) : this(turn, card)  {
             Position = position;
             hasPosition = true;
         }
 
         //Lança feitiço global
-        public SpawnCommand(ulong turn, string card) : base(turn) {
+        public SpawnCommand(long turn, string card) : base(turn) {
             Command = SPAWN;
             Card = card;           
         }
@@ -59,7 +59,7 @@ namespace YupiPlay.MMB.Lockstep {
             return dict;
         }
 
-        public static SpawnCommand ToCommand(Dictionary<string, object> dict, ulong turn) {
+        public static SpawnCommand ToCommand(Dictionary<string, object> dict, long turn) {
             string card = dict["card"] as string;
             string id = null;
             Dictionary<string, object> pos;
