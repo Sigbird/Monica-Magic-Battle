@@ -14,11 +14,7 @@ namespace YupiPlay.MMB.Lockstep {
         public AttackCommand(long turn, string targetId) : base(turn) {
             Command = ATK;
             TargetId = targetId;
-        }
-
-        public AttackCommand(long turn, short subturn, string targetId) : this(turn, targetId) {
-            SubTurn = subturn;
-        }
+        }        
 
         public string GetTargetId() {
             return TargetId;
@@ -30,16 +26,14 @@ namespace YupiPlay.MMB.Lockstep {
 
         public override Dictionary<string, object> ToDictionary() {
             var dict = new Dictionary<string, object>();
-            dict["cmd"] = ATK;
-            dict["subt"] = SubTurn;
+            dict["cmd"] = ATK;            
             dict["target"] = TargetId;
 
             return dict;
         }
 
-        public static AttackCommand ToCommand(Dictionary<string,object> dict, long turn) {
-            var subt = (short)(long)dict["subt"];
-            return new AttackCommand(turn, subt, dict["target"] as string);
+        public static AttackCommand ToCommand(Dictionary<string,object> dict, long turn) {            
+            return new AttackCommand(turn, dict["target"] as string);
         }
     }
 }

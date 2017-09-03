@@ -6,10 +6,10 @@ using System.Diagnostics;
 namespace YupiPlay.MMB.Lockstep {
     public class NetClock : MonoBehaviour {
         public float TurnTime = 0.2f;
-        public float NumLagLimit = 20;
-        public float SubTurnTime = 0.05f;        
-        public short BufferSize = 2;
-        public long StartGameAtTurn = 10;
+        public float NumLagLimit = 20;            
+        public short PlayAfterTurn = 2;
+        public long StartGameAtTurn = 10;        
+
         public INetGameController NetGameControllerInstance;
 
         public static NetClock Instance = null;
@@ -18,9 +18,7 @@ namespace YupiPlay.MMB.Lockstep {
         private bool isDelayed      = false;
         private bool isDisconnected = false;
         
-        private long Turn = 1;
-        private short NumSubTurns;
-        private short SubTurn = 0;
+        private long Turn = 1;       
 
         private long LastTurnSent     = 0;
         private long LastTurnPlayed   = 0;        
@@ -47,12 +45,7 @@ namespace YupiPlay.MMB.Lockstep {
                 Instance = this;
             } else {
                 Destroy(this.gameObject);
-            }
-
-            NumSubTurns = (short) (TurnTime / SubTurnTime);
-            if (NumSubTurns * SubTurnTime != TurnTime) {
-                throw new System.Exception("TurnTime must be an integer multiple of SubTurnTime");
-            }
+            }           
 
             #if UNITY_EDITOR
             isDisconnected = true;
@@ -70,19 +63,19 @@ namespace YupiPlay.MMB.Lockstep {
                 AddTurnToCmdBuffer(Turn);
 
                 if (!isDisconnected) {
-                    if (Turn <= BufferSize + 1) {
+                    if (Turn <= PlayAfterTurn + 1) {
                         SendTurn(Turn);
                         Turn++;
                     }
                 } else {
-                    SendTurn(Turn);
+                    //SendTurn(Turn);
                     Turn++;
                     LastReceivedTurn = Turn;
                 }                                                                            
 
-                if (LastReceivedTurn > BufferSize) {
+                if (LastReceivedTurn > PlayAfterTurn) {
                     var turnToPlay = LastTurnPlayed + 1;
-                    if (isDisconnected) turnToPlay = Turn - BufferSize;
+                    if (isDisconnected) turnToPlay = Turn - PlayAfterTurn;
 
                     if (PlayTurn(turnToPlay)) {
                         nLagTurns = 0;
@@ -118,32 +111,14 @@ namespace YupiPlay.MMB.Lockstep {
                 }         
             }
         }
-        
-        private IEnumerator SubTurnUpdate() {
-            var myTurn = 1;
-            while (IsClockRunning) {
-                yield return new WaitForSecondsRealtime(SubTurnTime);
-                UnityEngine.Debug.Log("Turn " + myTurn + " Sub " + SubTurn.ToString());
-
-                if (SubTurn == NumSubTurns - 1) {
-                    UnityEngine.Debug.Log("sending " + myTurn);
-                    SubTurn = 0;
-                    myTurn++;
-                    
-                } else {
-                    SubTurn++;
-                }                
                 
-            }
-        }
-
         public void StartClock() {
             watch = new Stopwatch();
             Buffer = CommandBuffer.Instance;
             Buffer.Reset();
             IsClockRunning = true;
-            ClockCoroutine = StartCoroutine(TurnUpdate());
-            //StartCoroutine(SubTurnUpdate());
+           
+            ClockCoroutine = StartCoroutine(TurnUpdate());                                   
         }
 
         public void StopClock() {
@@ -154,11 +129,7 @@ namespace YupiPlay.MMB.Lockstep {
 
         public long GetTurn() {
             return Turn;
-        }
-
-        public short GetSubTurn() {
-            return SubTurn;
-        }
+        }        
 
         private void AddTurnToCmdBuffer(long turn) {          
             Buffer.InsertToOutput(new NetCommand(turn));

@@ -10,11 +10,7 @@ namespace YupiPlay.MMB.Lockstep {
         public MoveCommand(long turn, Vector2 position) : base(turn) {
             Command = MOVE;
             Position = position;
-        }
-
-        public MoveCommand(long turn, short subturn, Vector2 position) : this(turn, position) {
-            SubTurn = subturn;
-        }
+        }       
 
         public Vector2 GetPosition() {
             return Position;
@@ -22,8 +18,7 @@ namespace YupiPlay.MMB.Lockstep {
 
         public override Dictionary<string, object> ToDictionary() {
             var dict = new Dictionary<string, object>();
-            dict["cmd"] = MOVE;
-            dict["subt"] = SubTurn;
+            dict["cmd"] = MOVE;            
             dict["pos"] = NetSerializer.ToDicionaryInt(Position);
 
             return dict;
@@ -31,10 +26,9 @@ namespace YupiPlay.MMB.Lockstep {
 
         public static MoveCommand ToCommand(Dictionary<string, object> dict, long turn) {
             var posdict = dict["pos"] as Dictionary<string, object>;
-            var position = NetSerializer.ToVector2(posdict);
-            var subt = (short) (long) dict["subt"] ;
+            var position = NetSerializer.ToVector2(posdict);            
 
-            return new MoveCommand(turn, subt, position);
+            return new MoveCommand(turn, position);
         }
     }
 }

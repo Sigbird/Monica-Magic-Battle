@@ -12,14 +12,13 @@ public class NetSerializerTest {
 	[Test]
 	public void TestTurnCommand() {
         var timestamp = DateTime.Now.ToString(NetCommand.TimestampFormat);
-        var cmds = NetCommand.CreateList(new NetCommand(1, 1, timestamp));        
+        var cmds = NetCommand.CreateList(new NetCommand(1, timestamp));        
 
         var json = NetSerializer.Serialize(cmds);        
         var newCmds = NetSerializer.ParseDictionary(NetSerializer.DeserializeToDictionary(json));
 
         Assert.AreEqual(1, newCmds.Count);
-        Assert.AreEqual(1, newCmds[0].GetTurn());
-        Assert.AreEqual(0, newCmds[0].GetSubTurn());
+        Assert.AreEqual(1, newCmds[0].GetTurn());        
         Assert.AreEqual(NetCommand.TURN, newCmds[0].GetCommand());
         Assert.AreEqual(timestamp, newCmds[0].GetTimestamp());
         // Use the Assert class to test conditions.
@@ -34,15 +33,14 @@ public class NetSerializerTest {
 
         var cmds = NetCommand.CreateList(
             new NetCommand(1), 
-            new MoveCommand(1, 1, new Vector2(x, y))
+            new MoveCommand(1, new Vector2(x, y))
         );        
 
         var json = NetSerializer.Serialize(cmds);
         var newCmds = NetSerializer.ParseDictionary(NetSerializer.DeserializeToDictionary(json));
 
         Assert.AreEqual(1, newCmds.Count);
-        Assert.AreEqual(1, newCmds[0].GetTurn());
-        Assert.AreEqual(1, newCmds[0].GetSubTurn());
+        Assert.AreEqual(1, newCmds[0].GetTurn());        
         Assert.AreEqual(NetCommand.MOVE, newCmds[0].GetCommand());
 
         var move = newCmds[0] as MoveCommand;
@@ -119,21 +117,18 @@ public class NetSerializerTest {
 
         var cmds = NetCommand.CreateList(
             new NetCommand(2),
-            new AttackCommand(2, 1, AttackCommand.EnemyHero),
-            new AttackCommand(2, 2, AttackCommand.EnemyFort),
-            new AttackCommand(2, 3, guid)
+            new AttackCommand(2, AttackCommand.EnemyHero),
+            new AttackCommand(2, AttackCommand.EnemyFort),
+            new AttackCommand(2, guid)
         );                
 
         var json = NetSerializer.Serialize(cmds);
         var newCmds = NetSerializer.ParseDictionary(NetSerializer.DeserializeToDictionary(json));
 
         Assert.AreEqual(3, newCmds.Count);
-        Assert.AreEqual("H", (newCmds[0] as AttackCommand).GetTargetId() );
-        Assert.AreEqual(1, (newCmds[0] as AttackCommand).GetSubTurn());        
-        Assert.AreEqual("F", (newCmds[1] as AttackCommand).GetTargetId() );
-        Assert.AreEqual(2, (newCmds[1] as AttackCommand).GetSubTurn());
-        Assert.AreEqual(guid, (newCmds[2] as AttackCommand).GetTargetId());
-        Assert.AreEqual(3, (newCmds[2] as AttackCommand).GetSubTurn());
+        Assert.AreEqual("H", (newCmds[0] as AttackCommand).GetTargetId() );          
+        Assert.AreEqual("F", (newCmds[1] as AttackCommand).GetTargetId() );        
+        Assert.AreEqual(guid, (newCmds[2] as AttackCommand).GetTargetId());        
     }
 
     [Test]
