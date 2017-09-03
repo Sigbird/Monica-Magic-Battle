@@ -214,7 +214,7 @@ public class NetSerializerTest {
     public void TestAckCommand() {
         var turnCmd = new NetCommand(1);
 
-        var ack = new AckCommand(turnCmd);
+        var ack = new AckCommand(turnCmd.GetTurn(), turnCmd.GetTimestamp());
         string ackstring = NetSerializer.SerializeAck(ack);
         
         Debug.Log(ackstring);

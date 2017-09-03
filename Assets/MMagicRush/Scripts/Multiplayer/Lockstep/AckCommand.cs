@@ -3,13 +3,7 @@ using System.Collections.Generic;
 using System;
 
 namespace YupiPlay.MMB.Lockstep {
-    public class AckCommand : NetCommand {
-        NetCommand CommandToAck;
-
-        public AckCommand(NetCommand cmd) : base(0) {
-            Command = ACK;
-            CommandToAck = cmd;
-        }        
+    public class AckCommand : NetCommand {                 
 
         public AckCommand(long turn, string timestamp) {
             Command = ACK;
@@ -19,9 +13,9 @@ namespace YupiPlay.MMB.Lockstep {
      
         public override Dictionary<string, object> ToDictionary() {
             var dict = new Dictionary<string, object>();
-            dict["ack"] = CommandToAck.GetTurn();
+            dict["ack"] = Turn;
             dict["cmd"] = Command;            
-            dict["time"] = CommandToAck.GetTimestamp();
+            dict["time"] = Timestamp;
 
             return dict;
         }

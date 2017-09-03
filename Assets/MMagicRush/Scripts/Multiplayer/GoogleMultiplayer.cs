@@ -94,7 +94,7 @@ namespace YupiPlay {
 			
         }
 
-        public static void SendMessageToAll(byte[] data) {
+        public static void SendReliableMessageToAll(byte[] data) {
             PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, data);
         }
 
