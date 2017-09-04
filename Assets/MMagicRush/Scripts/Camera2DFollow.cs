@@ -58,11 +58,12 @@ public class Camera2DFollow : MonoBehaviour {
 
 		lastTargetPosition = target.position;
 
-		if(GameObject.FindGameObjectsWithTag("trees").Length > 0 )
-			foreach (GameObject anim in GameObject.FindGameObjectsWithTag("trees")) {
+		if (GameObject.FindGameObjectsWithTag ("trees").Length > 0)
+		foreach (GameObject anim in GameObject.FindGameObjectsWithTag("trees")) {
 				anim.GetComponent<Animator>().SetFloat ("Blend",newPos.x * 2);
 				anim.GetComponent<Animator>().SetFloat ("BlendY",newPos.y * 2);
 		}
+		
 
 	}
 

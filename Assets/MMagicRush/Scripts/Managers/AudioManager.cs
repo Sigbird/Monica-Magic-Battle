@@ -13,7 +13,8 @@ public class AudioManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (PlayerPrefs.HasKey ("GameVolume"))
+			source.volume = PlayerPrefs.GetFloat ("GameVolume");
 	}
 
 	public void StopAudio(){
@@ -61,7 +62,7 @@ public class AudioManager : MonoBehaviour {
 		if (track == "ingame") {
 			source.loop = true;
 			source.clip = audios [10];
-			source.volume = 0.08f;
+			source.volume = source.volume - 0.2f;
 			source.Play ();
 		}
 

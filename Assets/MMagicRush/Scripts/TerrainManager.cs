@@ -10,7 +10,7 @@ public class TerrainManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Sr = this.GetComponent<SpriteRenderer> ();
-		rand = Random.Range (0, TerrainImages.Length+1);
+		rand = Random.Range (0, TerrainImages.Length);
 
 		Sr.sprite = TerrainImages [rand];
 		Trees [rand].SetActive (true);
