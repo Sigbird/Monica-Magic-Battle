@@ -282,11 +282,11 @@ public class GemScript : MonoBehaviour {
 
 	public void GemReset(){
 		
-			heroProgressObj.SetActive (false);
-			enemyProgressObj.SetActive (false);
+//			heroProgressObj.SetActive (false);
+//			enemyProgressObj.SetActive (false);
 			this.enabled = false;
 			//ActualGem = AvaiaBleGems [3];
-			ActualGem.SetActive (false);
+//			ActualGem.SetActive (false);
 			//SRender.SetActive (false);
 			heroProgress = 0;
 			enemyProgress = 0;

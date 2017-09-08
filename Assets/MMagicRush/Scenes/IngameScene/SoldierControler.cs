@@ -498,11 +498,11 @@ public class SoldierControler : MonoBehaviour {
 				//transform.position = Vector2.MoveTowards (transform.position, RightExit [2].transform.position, Time.deltaTime * speed);
 			}
 			transform.position = Vector2.MoveTowards (transform.position, t.position, Time.deltaTime * speed);
-		}			
+		}		
 
-		// PROCURANDO ALVO
+		//		// PROCURANDO ALVO NOVO
 
-		if (cdSeek >= 1) {
+		if (seeking && cdSeek >= 1) {
 			this.targetEnemy = SeekEnemyTarget ();
 			if (this.targetEnemy != null) {
 				seeking = false;
@@ -512,95 +512,123 @@ public class SoldierControler : MonoBehaviour {
 			cdSeek += Time.deltaTime;
 		}
 
-		//PERSEGUINDO E ATACANDO ALVO/WAYPOINT
 
-		if (targetEnemy == null ) {//CONFIRMA SE ALVO VIVE
-			seeking = true;
-		} else if(seeking == false ) {
 
-			if (this.team == 2 && this.vida <= 1) {
-				//inimigo recua
-			}
+		// PERSEGUINDO E ATACANDO ALVO ENCONTRADO
 
-				//DESLOCAMENTO ATE INIMIGO
-				if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
-					anim.SetTrigger ("Walk");
-					//SpendingEnergy ();
-					//transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
-					targetEnemy = null;	
-				}else if(targetEnemy.tag == "waypoint" && this.tag == "enemysoldier2"){
-					if (Progress == 2 && gameEnded == false) {
-							//EVENTO QUANDO TROPA CHEGA NA BASE
-//							StartCoroutine (Respawning ());
-//							heroBase.GetComponent<ChargesScript> ().charges ++;
-//							gameEnded = true;
-//							GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
-						//Destroy(this.gameObject);
-					} else if(Progress < 2) {
-						Progress++;
-						targetEnemy = null;
-					}
-				} else if(targetEnemy != null) { //ATACA ALVO
+		if (seeking == false && this.targetEnemy != null) { 
+
+			//DESLOCAMENTO ATE INIMIGO
+			if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
+				//anim.SetTrigger ("Walk");
+				//SpendingEnergy ();
+				//transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
+
+			} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
+//				if (targetEnemy.transform.position.x < transform.position.x) {
+//					GetComponent<SpriteRenderer> ().flipX = true;
+//				} else if (targetEnemy.transform.position.x > transform.position.x) {
+//					GetComponent<SpriteRenderer> ().flipX = false;
+//				}
+
+				if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
+					danoCD = 0;
 					anim.SetTrigger ("Attack");
-					if (danoCD > damageSpeed ) { //TEMPO ENTRE ATAQUES
-						if (targetEnemy.GetComponent<WPSoldierControler> () != null) {//ALVO HEROI
-							//targetEnemy.GetComponent<WPSoldierControler> ().vida -= damage;
-							//targetEnemy.GetComponent<WPSoldierControler> ().UpdateLife();
-							targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
-							if(this.range>1)
-							TrowArrow ();
-							if (targetEnemy.GetComponent<WPSoldierControler> ().vida <= -1)
-							this.targetEnemy = null;
-						}else if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO IA
-							//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
-							//targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife();
-							targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
-							if(this.range>1)
-								TrowArrow ();
-							if (targetEnemy.GetComponent<WPIASoldierControler> ().vida <= -1)
-							this.targetEnemy = null;
-					} else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
-						//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
-						//targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
-						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
-						if(this.range>1)
-							TrowArrow ();
-						if (targetEnemy.GetComponent<SoldierControler> ().vida <= -1)
-							this.targetEnemy = null;
+					StartCoroutine (DealDamage ());
+				} else {
+					//					if (tutorial) {
+					//						danoCD += Time.deltaTime * 20;
+					//					} else {
+					//						danoCD += Time.deltaTime * 10;
+					//					}
+				}
+			} 
+		} else if(this.targetEnemy == null)  {
+			seeking = true;
+		}
 
-						}
-						danoCD = 0;
-						if (this.range > 1) {
-							audioManager.PlayAudio ("shot");
-						} else {
-							audioManager.PlayAudio ("atack");
-						}
-					} else {
-						danoCD += Time.deltaTime;
-					}
-				} 
-			}
+		danoCD += Time.deltaTime * 5;
 
-					//ANIMACAODE TIRO DE PROJETEIS
-//					if (inCombat == true && arrowSlot != null && this.Tipo == TipoSoldado.Lanceiro && targetEnemy != null) {
-//						if (Vector3.Distance (arrowSlot.transform.position, targetEnemy.transform.position) > 0.1f && targetEnemy != null) {
-//							arrowSlot.transform.position = Vector3.MoveTowards (arrowSlot.transform.position, targetEnemy.transform.position, Time.deltaTime * 5);
-//							Vector3 moveDirection = arrowSlot.transform.position - targetEnemy.transform.position; 
-//							if (moveDirection != Vector3.zero) {
-//								float angle = Mathf.Atan2 (moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-//								arrowSlot.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
-//							}
-//						} else {
-//							//arrowSlot.GetComponent<ArrowScript> ().DestroyArrow ();
-//							//arrowSlot = null;
+//		// PROCURANDO ALVO
+//
+//		if (cdSeek >= 1) {
+//			this.targetEnemy = SeekEnemyTarget ();
+//			if (this.targetEnemy != null) {
+//				seeking = false;
+//			}
+//			cdSeek = 0;
+//		} else {
+//			cdSeek += Time.deltaTime;
+//		}
+//
+//		//PERSEGUINDO E ATACANDO ALVO/WAYPOINT
+//
+//		if (targetEnemy == null ) {//CONFIRMA SE ALVO VIVE
+//			seeking = true;
+//		} else if(seeking == false ) {
+//
+//			if (this.team == 2 && this.vida <= 1) {
+//				//inimigo recua
+//			}
+//
+//				//DESLOCAMENTO ATE INIMIGO
+//				if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
+//					anim.SetTrigger ("Walk");
+//					//SpendingEnergy ();
+//					//transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
+//					targetEnemy = null;	
+//				}else if(targetEnemy.tag == "waypoint" && this.tag == "enemysoldier2"){
+//					if (Progress == 2 && gameEnded == false) {
+//							//EVENTO QUANDO TROPA CHEGA NA BASE
+////							StartCoroutine (Respawning ());
+////							heroBase.GetComponent<ChargesScript> ().charges ++;
+////							gameEnded = true;
+////							GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
+//						//Destroy(this.gameObject);
+//					} else if(Progress < 2) {
+//						Progress++;
+//						targetEnemy = null;
+//					}
+//				} else if(targetEnemy != null) { //ATACA ALVO
+//					anim.SetTrigger ("Attack");
+//					if (danoCD > damageSpeed ) { //TEMPO ENTRE ATAQUES
+//						if (targetEnemy.GetComponent<WPSoldierControler> () != null) {//ALVO HEROI
+//							//targetEnemy.GetComponent<WPSoldierControler> ().vida -= damage;
+//							//targetEnemy.GetComponent<WPSoldierControler> ().UpdateLife();
+//							targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
+//							if(this.range>1)
+//							TrowArrow ();
+//							if (targetEnemy.GetComponent<WPSoldierControler> ().vida <= -1)
+//							this.targetEnemy = null;
+//						}else if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO IA
+//							//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
+//							//targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife();
+//							targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
+//							if(this.range>1)
+//								TrowArrow ();
+//							if (targetEnemy.GetComponent<WPIASoldierControler> ().vida <= -1)
+//							this.targetEnemy = null;
+//					} else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
+//						//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
+//						//targetEnemy.GetComponent<SoldierControler> ().UpdateLife();
+//						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
+//						if(this.range>1)
+//							TrowArrow ();
+//						if (targetEnemy.GetComponent<SoldierControler> ().vida <= -1)
+//							this.targetEnemy = null;
+//
 //						}
+//						danoCD = 0;
+//						if (this.range > 1) {
+//							audioManager.PlayAudio ("shot");
+//						} else {
+//							audioManager.PlayAudio ("atack");
+//						}
+//					} else {
+//						danoCD += Time.deltaTime;
 //					}
-
-					//FIM DO COMBATE
-//					if (targetEnemy.GetComponent<SoldierControler> ().vida <= 0 || targetEnemy.GetComponent<SoldierControler>() == null) {
-//						inCombat = false;
-//					}
-//	
+//				} 
+//			}
 
 			
 	}
@@ -1048,6 +1076,7 @@ public class SoldierControler : MonoBehaviour {
 		if (this.tag == "enemysoldier1") { //Procura de Jogador 1
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null ) {//PROCURA TROPA
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
+
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
 					if (dist <= reach) {
 						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
@@ -1073,10 +1102,21 @@ public class SoldierControler : MonoBehaviour {
 						}
 					}
 				}
-			}
-			if(Emin == null) {
-				//return ActualLane [Progress];
-			}
+			} 
+			if (GameObject.FindGameObjectsWithTag ("enemytower2") != null) {//PROCURA BASE
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower2")) {
+					float dist = Vector3.Distance (transform.position, obj.transform.position);
+					if (dist <= reach) {
+						if (dist < minDis) {
+							if (obj.GetComponent<ChargesScript> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+								Emin = obj;
+								minDis = dist;
+							}
+						}
+					}
+				}
+			} 
+
 
 		} else if (this.tag == "enemysoldier2") { //Procura de Jogador 2
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//PROCURA TROPA
@@ -1107,11 +1147,86 @@ public class SoldierControler : MonoBehaviour {
 					}
 				}
 			}
-			if(Emin == null) {
-				return ActualLane [Progress];
+
+			if (GameObject.FindGameObjectsWithTag ("enemytower1") != null) {//PROCURA BASE
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower1")) {
+					float dist = Vector3.Distance (transform.position, obj.transform.position);
+					if (dist <= reach) {
+						if (dist < minDis) {
+							if (obj.GetComponent<ChargesScript> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+								Emin = obj;
+								minDis = dist;
+							}
+						}
+					}
+				}
 			}
+
 		}
 		return Emin;
+	}
+
+	IEnumerator DealDamage(){
+		danoCD = 0;
+		yield return new WaitForSeconds (0.5f);
+		if (targetEnemy != null) {
+			if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO HEROI
+				//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
+				//targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife ();
+				targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
+				if (this.range > 1)
+					TrowArrow ();
+				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
+					this.targetEnemy = null;
+					//lockedTarget = false;
+				}
+			} else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
+				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
+				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
+				targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
+				if (this.range > 1)
+					TrowArrow ();
+				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
+					this.targetEnemy = null;
+					//lockedTarget = false;
+				}
+			} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//ALVO TROPA
+				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
+				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
+				targetEnemy.GetComponent<ChargesScript> ().progress += 0.3f;
+				if (this.range > 1)
+					TrowArrow ();
+				//				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
+				//					this.targetEnemy = null;
+				//					lockedTarget = false;
+				//				}
+				//ALVO BASE
+				//							if(targetEnemy.tag == "waypoint"){
+				//								if (Progress == 2) {
+				//									if (heroUnity) {
+				//										heroBase.GetComponent<ChargesScript> ().charges++;
+				//										GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
+				//										//StartCoroutine (Respawning ());
+				//									}
+				//								} else {
+				//									Progress++;
+				//									targetEnemy = null;
+				//								}
+				//							}
+				if (heroUnity) {
+					//								heroBase.GetComponent<ChargesScript> ().charges += 1;
+					//								StartCoroutine (Respawning ());
+					//								GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
+
+				}
+			}
+
+			if (this.range > 1) {
+				audioManager.PlayAudio ("shot");
+			} else {
+				audioManager.PlayAudio ("atack");
+			}
+		}
 	}
 
 	public void ReceiveDamage(int x){

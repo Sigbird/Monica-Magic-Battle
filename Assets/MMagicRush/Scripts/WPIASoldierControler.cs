@@ -19,7 +19,8 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	public bool heroUnity;
 
-	public int troopId;
+	public int heroID;
+
 
 	public float topPreference;
 	public float midPreference;
@@ -204,7 +205,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		if (heroUnity) {// CONFIGURAÇÃO DE HEROIS
 			SetupHero();
 		} else {//CONFIGURAÇÃO DE TROPAS
-			SetupTroop(troopId);
+			SetupTroop(heroID);
 		}
 
 		//CONFIGURAÇÃO EM COMUM 
@@ -580,6 +581,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			} 
 		} else if(this.targetEnemy == null)  {
 			Twist (0);
+			seeking = true;
 		}
 
 		danoCD += Time.deltaTime * 5;

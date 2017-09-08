@@ -132,7 +132,7 @@ public class GameController : MonoBehaviour {
 			gempertime += Time.deltaTime;
 		}
 
-		if (gempertimeprogress >= 5) {
+		if (gempertimeprogress >= 20) {
 			gempertimeprogress = 0;
 			gempertimeMaxValue += 1;
 		}
