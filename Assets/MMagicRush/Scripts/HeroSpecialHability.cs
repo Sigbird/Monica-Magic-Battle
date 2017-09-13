@@ -94,6 +94,7 @@ public class HeroSpecialHability : MonoBehaviour {
 		yield return new WaitForSeconds (effectDuration);
 		GetComponent<SpriteRenderer>().enabled = true;
 		transform.FindChild ("Platform").gameObject.SetActive (true);
+		transform.FindChild ("HealtBarSoldier").gameObject.SetActive (true);
 		SpecialHabilityZone [effect].SetActive (false);
 		StartCoroutine (ApplyEffect ());
 	}
