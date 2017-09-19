@@ -6,7 +6,7 @@ using YupiPlay;
 
 public class NetGameController : MonoBehaviour, INetGameController {
     public PlayerController PlayerController;
-    public EnemyRemoteController EnemyController;
+    public EnemyRemoteController EnemyController;    
     public ProtoGameUI GameUI;
 
     private Vector2 targetPosition;    

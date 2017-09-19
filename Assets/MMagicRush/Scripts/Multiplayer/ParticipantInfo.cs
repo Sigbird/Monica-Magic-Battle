@@ -13,23 +13,12 @@ namespace YupiPlay
         public string SelectedHero;
         public bool Ready = false;
 
-        private int rating;
+        private int rating;        		
 
-        public ParticipantInfo(string participantId, string displayName, int rating) : this(participantId, displayName) {
-            Rating = rating;
-        }
-
-		public ParticipantInfo(string displayName, int rating) : this(displayName) {
-            Rating = rating;
-        }
-
-        public ParticipantInfo(string participantId, string displayName) : this(displayName) {
-            ParticipantId = participantId;            
-        }
-
-		public ParticipantInfo(string displayName) {
-			DisplayName = displayName;
-		}		        
+        public ParticipantInfo(string participantId, string displayName) {
+            ParticipantId = participantId;
+            DisplayName = displayName;
+        }        
 
         public ParticipantInfo() { }
         
@@ -37,9 +26,11 @@ namespace YupiPlay
             var part = new ParticipantInfo();
 
 #if UNITY_ANDROID
-            var partGoogle = GoogleMultiplayerHelper.GetPlayer();
-            part.ParticipantId = partGoogle.ParticipantId;
-            part.DisplayName = partGoogle.DisplayName;
+            if (Social.localUser.authenticated) {
+                var partGoogle = GoogleMultiplayerHelper.GetPlayer();
+                part.ParticipantId = partGoogle.ParticipantId;
+                part.DisplayName = partGoogle.DisplayName;
+            }            
 #endif
 
             part.SelectedHero = "Monica";

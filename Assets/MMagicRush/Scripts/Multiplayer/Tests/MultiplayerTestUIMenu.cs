@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 using YupiPlay;
@@ -73,5 +72,11 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
         NetworkSessionManager.RoomConnectedSuccessEvent -= OnRoomConnected;
         NetworkSessionManager.RoomConnectedFailureEvent -= OnRoomConnectFailure;
         NetworkSessionManager.ParticipantLeftRoomEvent  -= OnParticipantLeft;
+    }
+
+    public void PlayAgainsAI() {
+        var opponent = new ParticipantInfo((new Guid()).ToString(), "AIOpponentPlayer");
+        NetworkSessionManager.Instance.SetAIMatch(ParticipantInfo.GetPlayer(), opponent, true);
+        SceneTestHelper.LoadTestGame();
     }
 }

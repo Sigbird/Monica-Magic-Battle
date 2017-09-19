@@ -26,11 +26,11 @@ public class ProtoGameUI : MonoBehaviour {
         Instance = this;
     }
 
-    void Start () {
-#if !UNITY_EDITOR
-        Player.text = NetworkSessionManager.Instance.Match.Player.DisplayName;
-        Enemy.text  = NetworkSessionManager.Instance.Match.Opponent.DisplayName;
-#endif
+    void Start () {        
+        if (NetworkSessionManager.Instance.Match != null) {            
+            Player.text = NetworkSessionManager.Instance.Match.Player.DisplayName;
+            Enemy.text = NetworkSessionManager.Instance.Match.Opponent.DisplayName;
+        }
     }
 	
 	// Update is called once per frame

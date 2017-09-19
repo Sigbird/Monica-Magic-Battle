@@ -61,9 +61,15 @@ namespace YupiPlay {
         public delegate void LatencyAction(int rtt);
         public static event LatencyAction ReliableLatencyEvent;
         public static event LatencyAction UnreliableLatencyEvent;
+        
+        public MatchInfo Match {
+            get { return match; }
+            set { }
+        }
+
+        private MatchInfo match;
 
         public string GameSceneToLoad;
-		public MatchInfo Match;        
 
         void Awake() {
             if (Instance == null) {
@@ -164,7 +170,7 @@ namespace YupiPlay {
                 return;
             }
             if (cmd.GetCommand() == NetCommand.READY) {
-                Match.Opponent.Ready = true;
+                match.Opponent.Ready = true;
                 SendStart();
 
                 State = States.WAITINGSTART;
@@ -187,12 +193,16 @@ namespace YupiPlay {
 
 		public void Reset() {
 			state = States.IDLE;
-			Match = null;
+			match = null;
 		}
 
 		public void SetMatch(ParticipantInfo player, ParticipantInfo opponent) {			
-				Match = new MatchInfo(player, opponent);
-		}					
+			match = new MatchInfo(player, opponent);
+		}
+        
+        public void SetAIMatch(ParticipantInfo player, ParticipantInfo opponent, bool againstAI) {
+            match = new MatchInfo(player, opponent, againstAI);
+        }
 
         public void SendMessage(List<NetCommand> commands) {
             var jsonString = NetSerializer.Serialize(commands);
@@ -238,8 +248,8 @@ namespace YupiPlay {
         }
 
         private void SetAdditionalOpponentInfo(HelloCommand hello) {
-            Match.Opponent.SelectedHero = hello.GetHero();
-            Match.Opponent.Rating = hello.GetRating();
+            match.Opponent.SelectedHero = hello.GetHero();
+            match.Opponent.Rating = hello.GetRating();
 
             DebugHelper.Instance.Append(Match.Opponent.SelectedHero + " " + Match.Opponent.Rating);
 

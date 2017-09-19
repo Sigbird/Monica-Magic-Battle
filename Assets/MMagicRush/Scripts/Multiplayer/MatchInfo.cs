@@ -4,12 +4,18 @@
 	{		
 		public ParticipantInfo Player;
 		public ParticipantInfo Opponent;
+        public bool AgainstAI = false;        
 
 		public MatchInfo() {
 			
 		}
 
-		public MatchInfo (ParticipantInfo player, ParticipantInfo opponent)
+        public MatchInfo(ParticipantInfo player, ParticipantInfo opponent, bool againstAI) 
+            : this(player, opponent) {
+            AgainstAI = againstAI;
+        }
+
+		public MatchInfo(ParticipantInfo player, ParticipantInfo opponent)
 		{						
 			Player = player;
 			Opponent = opponent;
