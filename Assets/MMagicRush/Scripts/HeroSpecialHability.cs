@@ -76,8 +76,8 @@ public class HeroSpecialHability : MonoBehaviour {
 				break;
 		case 1://CEBOLINHA INVISIVEl
 			GetComponent<SpriteRenderer> ().enabled = false;
-			transform.FindChild ("Platform").gameObject.SetActive (false);
-			transform.FindChild ("HealtBarSoldier").gameObject.SetActive (false);
+			transform.Find ("Platform").gameObject.SetActive (false);
+			transform.Find ("HealtBarSoldier").gameObject.SetActive (false);
 				break;
 			case 2://AREA DE CURA MAGALI
 				SpecialHabilityZone [effect].SetActive (true);
@@ -93,8 +93,8 @@ public class HeroSpecialHability : MonoBehaviour {
 			}
 		yield return new WaitForSeconds (effectDuration);
 		GetComponent<SpriteRenderer>().enabled = true;
-		transform.FindChild ("Platform").gameObject.SetActive (true);
-		transform.FindChild ("HealtBarSoldier").gameObject.SetActive (true);
+		transform.Find ("Platform").gameObject.SetActive (true);
+		transform.Find ("HealtBarSoldier").gameObject.SetActive (true);
 		SpecialHabilityZone [effect].SetActive (false);
 		StartCoroutine (ApplyEffect ());
 	}
