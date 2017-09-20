@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 
 namespace YupiPlay
 {
@@ -52,6 +53,15 @@ namespace YupiPlay
 #endif           
 
             return part;
+        }
+
+        public static ParticipantInfo GetPlayerAgainstAI() {            
+            if (Social.localUser.authenticated) {
+                var displayName = Social.localUser.userName;
+                return new ParticipantInfo((new Guid()).ToString(), displayName);
+            }
+
+            return null;
         }
     }
 }
