@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour {
 	public static float enemyXp;
 
 	public CardInfoScript cardInfo;
+	public GameObject CardInfoWindow;
 
 	public int enemySpawnedGems = 0;
 	public int heroSpawnedGems = 0;
@@ -131,7 +132,7 @@ public class GameController : MonoBehaviour {
 			gempertime += Time.deltaTime;
 		}
 
-		if (gempertimeprogress >= 5) {
+		if (gempertimeprogress >= 20) {
 			gempertimeprogress = 0;
 			gempertimeMaxValue += 1;
 		}
@@ -252,7 +253,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	IEnumerator endGame(){
-		
+		CardInfoWindow.SetActive (false);
 		yield return new WaitForSeconds (1);
 
 		if (playerCharges == 1 && enemyCharges <= 0) {//3 2

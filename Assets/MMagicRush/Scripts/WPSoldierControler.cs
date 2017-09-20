@@ -18,6 +18,7 @@ public class WPSoldierControler : MonoBehaviour {
 	public bool heroUnity;
 
 	public int troopId;
+	public int heroID;
 
 	public float topPreference;
 	public float midPreference;
@@ -502,6 +503,7 @@ public class WPSoldierControler : MonoBehaviour {
 				if (GameObject.Find ("MovementMarker(Clone)").GetComponent<MovementMarkerScript> ().herobase == false)
 					Destroy (GameObject.Find ("MovementMarker(Clone)").gameObject);
 			}
+			seeking = true;
 		} 
 		danoCD += Time.deltaTime * 2;
 		//ANIMACAODE TIRO DE PROJETEIS
@@ -532,12 +534,12 @@ public class WPSoldierControler : MonoBehaviour {
 		//CONFIGURAÇÃO DE TIPO DE HEROI
 		int id;
 		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1) {
-			id =	PlayerPrefs.GetInt ("SelectedCharacter");
+			heroID =	PlayerPrefs.GetInt ("SelectedCharacter");
 		} else {
-			id = 1;
+			heroID = 1;
 		}
 //		Debug.Log ("id: " + id);
-		switch (id) {
+		switch (heroID) {
 		case(0): 
 			this.vidaMax = 6;
 			this.vida = 6;
@@ -776,15 +778,12 @@ public class WPSoldierControler : MonoBehaviour {
 	}
 
 
-	public void ChangeState(){
-
-		//		if (this.state == STATE.RETREAT) {
-		//			this.state = STATE.DEFAULT;
-		//		}else if (this.state == STATE.DEFAULT) {
-		//			this.state = STATE.RETREAT;
-		//		}
-
-	}
+//	public void TriggerSpecial(){
+//		HeroSpecialHability special = GetComponent<HeroSpecialHability>();
+//		if (special != null) {
+//			special.StartEffect (heroID);
+//		}
+//	}
 
 	public void UpdateLife(){
 		this.healtbarSoldier.GetComponent<HealtBar> ().Life = this.vida;

@@ -15,7 +15,7 @@ public class SceneHelper : MonoBehaviour {
 	public int premiumcoinsPurchasing;
 	public dreamloLeaderBoard LeaderBoard;
 	public GameObject ExitConfirmation;
-
+	public Slider audioSlider;
 
 
 	public GameObject[] TutorialPanels;
@@ -30,6 +30,12 @@ public class SceneHelper : MonoBehaviour {
 		Camera.main.gameObject.GetComponent<AudioSource> ().loop = true;
 		Camera.main.gameObject.GetComponent<AudioSource> ().clip = bgMusic;
 		Camera.main.gameObject.GetComponent<AudioSource> ().Play ();
+
+		if (PlayerPrefs.HasKey ("GameVolume") == false) {
+			PlayerPrefs.SetFloat ("GameVolume",1);
+		}
+
+		audioSlider.value = PlayerPrefs.GetFloat ("GameVolume");
 
 //		for (int i = 0; i < 10; i++) {
 //			temp[i] = Random.Range(1,22);
@@ -62,6 +68,9 @@ public class SceneHelper : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		Camera.main.gameObject.GetComponent<AudioSource> ().volume = PlayerPrefs.GetFloat ("GameVolume");
+
 
 		if (PlayerPrefs.GetInt ("PlayerCoinsPremium") > 0) {
 			coinsText.text = PlayerPrefs.GetInt ("PlayerCoins").ToString ();
@@ -142,6 +151,10 @@ public class SceneHelper : MonoBehaviour {
 		PlayerPrefs.SetString ("ResetCards", "false");
 		PlayerPrefs.SetInt ("Lesson", 1);
 		SceneManager.LoadScene ("TutorialScene");
+	}
+
+	public void SetVolume(){
+		PlayerPrefs.SetFloat ("GameVolume", audioSlider.value);
 	}
 
 	void OnApplicationQuit(){
