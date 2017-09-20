@@ -28,7 +28,7 @@ public class ProtoGameUI : MonoBehaviour {
 
     void Start () {        
         if (NetworkSessionManager.Instance.Match != null) {            
-            Player.text = NetworkSessionManager.Instance.Match.Player.DisplayName;
+            Player.text = NetworkSessionManager.Instance.Match.Player.DisplayName;                                    
             Enemy.text = NetworkSessionManager.Instance.Match.Opponent.DisplayName;
         }
     }

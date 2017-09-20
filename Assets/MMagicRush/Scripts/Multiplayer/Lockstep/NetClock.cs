@@ -52,7 +52,7 @@ namespace YupiPlay.MMB.Lockstep {
             #endif
             if (NetworkSessionManager.Instance.Match != null 
                 && NetworkSessionManager.Instance.Match.AgainstAI) {
-                isDisconnected = true;
+                isDisconnected = true;                
             }
         }              
         

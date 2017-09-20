@@ -55,13 +55,15 @@ namespace YupiPlay
             return part;
         }
 
-        public static ParticipantInfo GetPlayerAgainstAI() {            
+        public static ParticipantInfo GetPlayerAgainstAI() {
+            var guid = (new Guid()).ToString();
+
             if (Social.localUser.authenticated) {
                 var displayName = Social.localUser.userName;
-                return new ParticipantInfo((new Guid()).ToString(), displayName);
+                return new ParticipantInfo(guid, displayName);
             }
 
-            return null;
+            return new ParticipantInfo(guid, "Player");
         }
     }
 }

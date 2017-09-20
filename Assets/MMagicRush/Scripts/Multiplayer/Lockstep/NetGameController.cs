@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using YupiPlay.MMB.Lockstep;
 using YupiPlay;
@@ -30,12 +29,15 @@ public class NetGameController : MonoBehaviour, INetGameController {
     
     void Start () {
 #if UNITY_EDITOR
-        StartClock();
-#else
-          NetworkSessionManager.Instance.SendReady();
+        StartClock();         
 #endif
-
         input = PlayerController.GetComponent<CommandController>();
+
+        if (NetworkSessionManager.Instance.Match.AgainstAI) {
+            StartClock();
+        } else {
+            NetworkSessionManager.Instance.SendReady();
+        }      
     }			
 
     public void PlayerCommandListener(NetCommand cmd) {
