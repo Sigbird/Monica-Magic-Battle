@@ -3,95 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using YupiPlay.MMB.Lockstep;
 using System.Diagnostics;
+using YupiPlay;
 
-public class EnemyAIController : MonoBehaviour {
-    public GameObject InputFeedback;
+public class EnemyAIController : MonoBehaviour {   
+    private Stopwatch watch;
 
-    private long Turn = 1;
-
-    private Vector2[] positions = {
-        new Vector2(1.69f, 1.33f),
-        new Vector2(-0.06f, 0.58f),
-        new Vector2(-1.58f, 1.72f),
-        new Vector2(0.09f, 3.24f)
-    };
-
-    private int cmdIndex = 0;
-
-    private List<NetCommand> outputBuffer;
-
-    private Stopwatch watch;    
-
-    private Vector2 targetPosition;
-    private Rigidbody2D rb;
+    private CommandController input;
 
     void Awake() {
         
     }
 
     // Use this for initialization
-    void Start () {
-        rb = GetComponent<Rigidbody2D>();
-        watch = new Stopwatch();
-        outputBuffer = new List<NetCommand>();
-               
-        StartCoroutine(RunEnemyClock());
-        StartCoroutine(RunMoveCommands());
-    }
-	
-	// Update is called once per frame
-	void Update () {
-        
-    }
-
-    private void FixedUpdate() {
-        var enemyDistance = Vector2.Distance(targetPosition, transform.position);
-        if (enemyDistance < 0.001f) {
-            rb.velocity = new Vector2();
+    void Start () {        
+        watch = new Stopwatch();        
+                
+        if (NetworkSessionManager.Instance.Match != null 
+            && NetworkSessionManager.Instance.Match.AgainstAI) {
+            input = GetComponent<CommandController>();
+            StartCoroutine(Play());
         }
     }
-
-    private IEnumerator RunEnemyClock() {
+	
+    private IEnumerator Play() {
         while (true) {
-            yield return new WaitForSecondsRealtime(NetClock.Instance.TurnTime);
+            yield return new WaitForSeconds(1);
 
-            CommandBuffer.Instance.InsertToInput(new NetCommand(Turn));
-            var inputList = outputBuffer.FindAll((NetCommand cmd) => { return cmd.GetTurn() == Turn; });
-            CommandBuffer.Instance.InsertListToInput(inputList);
-
-            if (Turn > 2) {                
-                outputBuffer.RemoveAll((NetCommand cmd) => { return cmd.GetTurn() == Turn - 2; });
-            }
-
-            Turn++;            
-        }        
-    }
-
-    private IEnumerator RunMoveCommands() {
-        while (true) {
-            yield return new WaitForSeconds(Random.Range(2f, 3f));
-
-            targetPosition = positions[cmdIndex];
-                        
-            outputBuffer.Add(new MoveCommand(Turn, targetPosition));
-            InputFeedback.SetActive(true);
-            InputFeedback.transform.position = targetPosition;
-
-            watch.Start();
-
-            cmdIndex++;
-            if (cmdIndex > 3) cmdIndex = 0;
-        }        
+            if (NetGameController.Instance.HasGameStarted() && !NetClock.Instance.IsDelayed()) {                
+                var pos = new Vector2(Random.Range(-9f, 9f), Random.Range(-15f, 15f));
+                input.Move(pos);                
+            }            
+        }
     }
 
     public void GetEnemyInputLatency() {
         watch.Stop();
         UnityEngine.Debug.Log("EIL: " + watch.ElapsedMilliseconds);
         watch.Reset();
-    }
-
-    public void MoveTo(Vector2 position) {
-        var direction = position - (Vector2) transform.position;
-        rb.velocity = direction.normalized;
-    }
+    }    
 }

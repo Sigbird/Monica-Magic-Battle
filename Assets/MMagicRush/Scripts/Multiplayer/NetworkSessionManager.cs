@@ -211,7 +211,7 @@ namespace YupiPlay {
 
             byte[] data = Encoding.UTF8.GetBytes(jsonString);
 
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if UNITY_ANDROID 
             GoogleMultiplayer.SendReliableMessageToAll(data);
             GoogleMultiplayer.SendUnreliableMessageToAll(data);
 #endif

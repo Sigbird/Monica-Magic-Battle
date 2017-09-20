@@ -7,7 +7,14 @@ using System;
 public class PlayerController : BasePlayerController {
     public GameObject ClickFeedback;
 
+    private CommandController input;
     private Vector2 moveTo;
+
+    new void Start() {
+        base.Start();
+
+        input = GetComponent<CommandController>();
+    }
 
 	// Update is called once per frame
 	void Update () {
@@ -32,7 +39,7 @@ public class PlayerController : BasePlayerController {
 
             //moveTo = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             moveTo = mousePos;
-            CommandController.Move(moveTo);
+            input.Move(moveTo);
 
             ClickFeedback.transform.localPosition = moveTo;
             ClickFeedback.SetActive(true);

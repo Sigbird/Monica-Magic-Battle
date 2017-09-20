@@ -75,7 +75,7 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
     }
 
     public void PlayAgainsAI() {
-        var opponent = new ParticipantInfo((new Guid()).ToString(), "AIOpponentPlayer");
+        var opponent = new ParticipantInfo((new Guid()).ToString(), "AIOpponent");
         NetworkSessionManager.Instance.SetAIMatch(ParticipantInfo.GetPlayer(), opponent, true);
         SceneTestHelper.LoadTestGame();
     }

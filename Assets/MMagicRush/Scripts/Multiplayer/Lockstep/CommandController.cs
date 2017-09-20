@@ -1,64 +1,51 @@
 ﻿using UnityEngine;
 
 namespace YupiPlay.MMB.Lockstep {
-    public class CommandController {
+    public class CommandController : MonoBehaviour {
+        public bool InputFromAI = false;     
 
-        public static void Move(Vector2 position) {          
-            CommandBuffer.Instance.InsertToOutput(
-                new MoveCommand(NetClock.Instance.GetTurn(), position)
-            );
+        private void Insert(NetCommand cmd) {
+            if (InputFromAI) {
+                CommandBuffer.Instance.InsertToInput(cmd);
+            } else {
+                CommandBuffer.Instance.InsertToOutput(cmd);
+            }
         }
 
-        public static void Start() {
-            NetworkSessionManager.Instance.SendStart();
+        public void Move(Vector2 position) {            
+            Insert(new MoveCommand(NetClock.Instance.GetTurn(), position));
+        }        
+
+        public void End() {
+            Insert(new EndCommand(NetClock.Instance.GetTurn() + 1));            
         }
 
-        public static void End() {
-            CommandBuffer.Instance.InsertToOutput(
-                new EndCommand(NetClock.Instance.GetTurn() + 1)
-            );
+        public void Attack(string targetId) {
+            Insert(new AttackCommand(NetClock.Instance.GetTurn(), targetId));            
         }
 
-        public static void Attack(string targetId) {
-            CommandBuffer.Instance.InsertToOutput(
-                new AttackCommand(NetClock.Instance.GetTurn(), targetId)
-            );
+        public void AttackEnemyHero() {
+            Insert(new AttackCommand(NetClock.Instance.GetTurn(), AttackCommand.EnemyHero));            
         }
 
-        public static void AttackEnemyHero() {
-            CommandBuffer.Instance.InsertToOutput(
-                new AttackCommand(NetClock.Instance.GetTurn(), AttackCommand.EnemyHero)
-            );
+        public void AttackEnemyFort() {
+            Insert(new AttackCommand(NetClock.Instance.GetTurn(), AttackCommand.EnemyFort));            
         }
 
-        public static void AttackEnemyFort() {
-            CommandBuffer.Instance.InsertToOutput(
-                new AttackCommand(NetClock.Instance.GetTurn(), AttackCommand.EnemyFort)
-            );
+        public void SpawnUnit(string card, string id, Vector2 position) {
+            Insert(new SpawnCommand(NetClock.Instance.GetTurn(), card, id, position));            
         }
 
-        public static void SpawnUnit(string card, string id, Vector2 position) {
-            CommandBuffer.Instance.InsertToOutput(
-                new SpawnCommand(NetClock.Instance.GetTurn(), card, id, position)
-            );
+        public void SpawnGlobal(string card) {
+            Insert(new SpawnCommand(NetClock.Instance.GetTurn(), card));            
         }
 
-        public static void SpawnGlobal(string card) {
-            CommandBuffer.Instance.InsertToOutput(
-                new SpawnCommand(NetClock.Instance.GetTurn(), card)
-            );
+        public void SpawnShoot(string card, Vector2 position) {
+            Insert(new SpawnCommand(NetClock.Instance.GetTurn(), card, position));            
         }
 
-        public static void SpawnShoot(string card, Vector2 position) {
-            CommandBuffer.Instance.InsertToOutput(
-                new SpawnCommand(NetClock.Instance.GetTurn(), card, position)
-            );
-        }
-
-        public static void SendMessageId(string messageId) {
-            CommandBuffer.Instance.InsertToOutput(
-                new MessageCommand(NetClock.Instance.GetTurn(), messageId)    
-            );
+        public void SendMessageId(string messageId) {
+            Insert(new MessageCommand(NetClock.Instance.GetTurn(), messageId));            
         }
     }
 

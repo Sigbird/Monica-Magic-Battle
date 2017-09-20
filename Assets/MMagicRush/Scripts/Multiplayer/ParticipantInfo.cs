@@ -30,7 +30,10 @@ namespace YupiPlay
                 var partGoogle = GoogleMultiplayerHelper.GetPlayer();
                 part.ParticipantId = partGoogle.ParticipantId;
                 part.DisplayName = partGoogle.DisplayName;
-            }            
+            }
+#endif
+#if UNITY_EDITOR            
+            part.DisplayName = "Player";
 #endif
 
             part.SelectedHero = "Monica";

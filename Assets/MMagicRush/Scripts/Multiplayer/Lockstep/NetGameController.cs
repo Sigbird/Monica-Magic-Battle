@@ -17,6 +17,8 @@ public class NetGameController : MonoBehaviour, INetGameController {
 
     private bool hasGameStarted = false;
 
+    private CommandController input;
+
     void Awake() {
         if (instance == null) {
             instance = this;
@@ -26,15 +28,15 @@ public class NetGameController : MonoBehaviour, INetGameController {
         }
     }
     
-    void Start () {        
-        NetworkSessionManager.Instance.SendReady();
+    void Start () {
 #if UNITY_EDITOR
         StartClock();
+#else
+          NetworkSessionManager.Instance.SendReady();
 #endif
-    }
-		
-	void Update () {		
-	}     
+
+        input = PlayerController.GetComponent<CommandController>();
+    }			
 
     public void PlayerCommandListener(NetCommand cmd) {
         Selector(false, cmd);
@@ -79,7 +81,7 @@ public class NetGameController : MonoBehaviour, INetGameController {
 
     public void EndGame() {
         hasGameStarted = false;  
-        CommandController.End();        
+        input.End();        
     }
 
     public bool HasGameStarted() {

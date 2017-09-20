@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BasePlayerController : MonoBehaviour {
@@ -8,8 +7,7 @@ public class BasePlayerController : MonoBehaviour {
     protected Vector2 target;
     protected Vector2 previousPos;
 
-    protected Coroutine stopAfterCollision;
-    public Vector2 PreviousVelocity;    
+    protected Coroutine stopAfterCollision;    
 
     // Use this for initialization
     protected void Start () {        

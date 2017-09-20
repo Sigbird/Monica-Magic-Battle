@@ -50,6 +50,10 @@ namespace YupiPlay.MMB.Lockstep {
             #if UNITY_EDITOR
             isDisconnected = true;
             #endif
+            if (NetworkSessionManager.Instance.Match != null 
+                && NetworkSessionManager.Instance.Match.AgainstAI) {
+                isDisconnected = true;
+            }
         }              
         
         public void SetNetGameControllerInstance(INetGameController netGameController) {
