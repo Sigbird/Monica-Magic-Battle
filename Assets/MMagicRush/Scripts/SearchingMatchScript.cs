@@ -11,6 +11,8 @@ public class SearchingMatchScript : MonoBehaviour {
 
 	public Image AdvImage;
 
+	public Image HeroImage;
+
 	public GameObject LoadingAnim;
 
 	public Sprite Image;
@@ -19,9 +21,15 @@ public class SearchingMatchScript : MonoBehaviour {
 
 	public int[] selectedCardsIDs;
 
-	void OnEnable() {
-		StartCoroutine ("Finding");
+	public Sprite[] HeroPortraits;
 
+	public bool cancelBattle;
+
+	void OnEnable() {
+		cancelBattle = false;
+		StartCoroutine ("Finding");
+		this.SelectedCharacterID = PlayerPrefs.GetInt ("SelectedCharacter");
+		HeroImage.sprite = HeroPortraits [SelectedCharacterID + 1];
 	}
 
 	// Use this for initialization
@@ -34,13 +42,19 @@ public class SearchingMatchScript : MonoBehaviour {
 
 	}
 
+	public void CancelSearch(){
+		cancelBattle = true;
+	}
+
 	IEnumerator Finding() {
 		yield return new WaitForSeconds(2);
 		print(Time.time);
 		AdvImage.sprite = Image;
 		LoadingAnim.SetActive (false);
 		yield return new WaitForSeconds(1);
-		CallToBattle ();
+		if (cancelBattle == false) {
+			CallToBattle ();
+		}
 	}
 
 	public void SetCharacterID(int x){
