@@ -8,6 +8,7 @@ namespace YupiPlay.MMB.Lockstep {
             if (InputFromAI) {
                 CommandBuffer.Instance.InsertToInput(cmd);
             } else {
+                NetClock.Instance.RegisterInputTime(cmd.GetTurn());               
                 CommandBuffer.Instance.InsertToOutput(cmd);
             }
         }

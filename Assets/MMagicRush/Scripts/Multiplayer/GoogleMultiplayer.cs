@@ -58,10 +58,10 @@ namespace YupiPlay {
 
         public void OnRoomConnected(bool success) {
             if (success) {
-                DebugHelper.Instance.Append("Room Connected");
+                if (DebugHelper.Instance != null) DebugHelper.Instance.Append("Room Connected");
                 netSM.RoomConnectedSuccess();
             } else {
-                DebugHelper.Instance.Append("MM Failed");
+                if (DebugHelper.Instance != null) DebugHelper.Instance.Append("MM Failed");
                 netSM.RoomConnectedFailure();
             }
         }
@@ -73,7 +73,7 @@ namespace YupiPlay {
         public void OnParticipantLeft(Participant participant) {
 			ParticipantInfo part = new ParticipantInfo(participant.ParticipantId, participant.DisplayName);
 			netSM.ParticipantLeft(part);
-            DebugHelper.Instance.Append("Participant left");
+            if (DebugHelper.Instance != null) DebugHelper.Instance.Append("Participant left");
         }
 
         public void OnPeersConnected(string[] participantIds) {
@@ -82,24 +82,20 @@ namespace YupiPlay {
 
         public void OnPeersDisconnected(string[] participantIds) {
 			netSM.PeersDisconnected(participantIds);
-            DebugHelper.Instance.Append("Peer DC");
+            if (DebugHelper.Instance != null) DebugHelper.Instance.Append("Peer DC");
         }
 
         public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {
+            netSM.OnMessage(isReliable, data);
             if (isReliable) {
                 netSM.OnReliableMessage(senderId, data);
             } else {
                 netSM.OnUnreliableMessage(senderId, data);
-            }
-			
-        }
+            }			
+        }       
 
-        public static void SendReliableMessageToAll(byte[] data) {
-            PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, data);
-        }
-
-        public static void SendUnreliableMessageToAll(byte[] data) {
-            PlayGamesPlatform.Instance.RealTime.SendMessageToAll(false, data);
+        public static void SendMessage(bool reliable, byte[] data) {
+            PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, data);
         }
     }
 }

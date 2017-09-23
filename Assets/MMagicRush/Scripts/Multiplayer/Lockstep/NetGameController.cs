@@ -18,6 +18,9 @@ public class NetGameController : MonoBehaviour, INetGameController {
 
     private CommandController input;
 
+    public delegate void ShowInputLag(int miliseconds);
+    public static event ShowInputLag OnInputLag;
+
     void Awake() {
         if (instance == null) {
             instance = this;
@@ -28,16 +31,17 @@ public class NetGameController : MonoBehaviour, INetGameController {
     }
     
     void Start () {
-#if UNITY_EDITOR
-        StartClock();         
-#endif
         input = PlayerController.GetComponent<CommandController>();
 
-        if (NetworkSessionManager.Instance.Match.AgainstAI) {
+        if (NetworkSessionManager.Instance.Match != null && NetworkSessionManager.Instance.Match.AgainstAI) {
             StartClock();
         } else {
+#if UNITY_EDITOR
+            StartClock();
+#else
             NetworkSessionManager.Instance.SendReady();
-        }      
+#endif
+        }
     }			
 
     public void PlayerCommandListener(NetCommand cmd) {
@@ -54,10 +58,10 @@ public class NetGameController : MonoBehaviour, INetGameController {
 
             if (isInput) {
                 EnemyController.MoveTo(MirrorPosition(position));
-                //EnemyController.GetEnemyInputLatency();
             } else {
-                PlayerController.MoveTo(position);
-               // NetClock.Instance.GetInputLatency();
+                var inputlag = NetClock.Instance.GetInputLag(cmd.GetTurn());
+                if (OnInputLag != null) { OnInputLag(inputlag); }
+                PlayerController.MoveTo(position);               
             }            
         }
 

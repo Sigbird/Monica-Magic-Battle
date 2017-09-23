@@ -35,16 +35,13 @@ public class PlayerController : BasePlayerController {
     }
 
     void OnPlayerMouseUp(Vector2 mousePos) {
-        if (NetGameController.Instance.HasGameStarted() && !NetClock.Instance.IsDelayed()) {
-
+        if (NetGameController.Instance.HasGameStarted() && !NetClock.Instance.IsDelayed()) {       
             //moveTo = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             moveTo = mousePos;
             input.Move(moveTo);
 
             ClickFeedback.transform.localPosition = moveTo;
-            ClickFeedback.SetActive(true);
-
-            NetClock.Instance.RegisterInputTime();            
+            ClickFeedback.SetActive(true);            
         }
     }
 
@@ -68,11 +65,7 @@ public class PlayerController : BasePlayerController {
         }
         if ((Vector2) transform.localPosition ==  target && (Vector2) transform.localPosition != previousPos) {
             previousPos = transform.localPosition;
-            ClickFeedback.SetActive(false);
-            Debug.Log(transform.localPosition.x);
-            Debug.Log(transform.localPosition.y);
-            Debug.Log(transform.position.x);
-            Debug.Log(transform.position.x);
+            ClickFeedback.SetActive(false);            
         }
        
     }

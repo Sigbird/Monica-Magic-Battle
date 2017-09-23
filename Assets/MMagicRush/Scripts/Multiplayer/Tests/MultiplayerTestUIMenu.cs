@@ -10,10 +10,11 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
 
     public Button QuickGame;
     public Text QuickGameText;
+    public Text SendModeText;
 
 	// Use this for initialization
 	void Start () {
-		
+        UpdateSendModeButton();
 	}
 	
 	// Update is called once per frame
@@ -76,7 +77,21 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
 
     public void PlayAgainsAI() {
         var opponent = new ParticipantInfo((new Guid()).ToString(), "AIOpponent");
+        NetworkSessionManager.Instance.Reset();
         NetworkSessionManager.Instance.SetAIMatch(ParticipantInfo.GetPlayerAgainstAI(), opponent, true);
         SceneTestHelper.LoadTestGame();
     }
+
+    public void ToggleSendMode() {
+        NetworkSessionManager.Instance.Reliable = !NetworkSessionManager.Instance.Reliable;
+        UpdateSendModeButton();
+    }
+
+    public void UpdateSendModeButton() {
+        if (NetworkSessionManager.Instance.Reliable) {
+            SendModeText.text = "Reliable";
+        } else {
+            SendModeText.text = "Unreliable";
+        }
+    }    
 }

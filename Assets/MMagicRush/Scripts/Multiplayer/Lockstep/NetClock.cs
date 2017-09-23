@@ -1,13 +1,16 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System;
 
 namespace YupiPlay.MMB.Lockstep {
     public class NetClock : MonoBehaviour {
         public float TurnTime = 0.2f;
-        public float NumLagLimit = 20;            
+        public float NumLagLimit = 20;
+
+        [Range(1,2)]
         public short PlayAfterTurn = 2;
+
         public long StartGameAtTurn = 10;        
 
         public INetGameController NetGameControllerInstance;
@@ -27,20 +30,21 @@ namespace YupiPlay.MMB.Lockstep {
         private int nLagTurns = 0;
 
         private Coroutine ClockCoroutine = null;        
-        private CommandBuffer Buffer = null;
-
-        private Stopwatch watch;
+        private CommandBuffer Buffer = null;        
 
         public delegate void ClearLagMsg();
         public static event ClearLagMsg ClearLagMsgEvent;
 
         public delegate void PrintLagMsg(string msg);
         public static event PrintLagMsg PrintLagMsgEvent;
+        public static event PrintLagMsg PrintMsg;
 
         public delegate void LagDisconnectAction(long turn);
         public static event LagDisconnectAction LagDisconnectEvent;
 
-        private void Awake() {
+        private Dictionary<int, DateTime> inputLagBuffer;
+
+        void Awake() {
             if (Instance == null) {
                 Instance = this;
             } else {
@@ -49,19 +53,23 @@ namespace YupiPlay.MMB.Lockstep {
 
             #if UNITY_EDITOR
             isDisconnected = true;
-            #endif
-            if (NetworkSessionManager.Instance.Match != null 
+            #endif            
+        }
+
+        void Start() {
+            if (NetworkSessionManager.Instance.Match != null
                 && NetworkSessionManager.Instance.Match.AgainstAI) {
-                isDisconnected = true;                
+                isDisconnected = true;
+                Debug.Log("NetClock Start Match AI");
             }
-        }              
-        
+        }
+
         public void SetNetGameControllerInstance(INetGameController netGameController) {
             NetGameControllerInstance = netGameController;
         }
        
         private IEnumerator TurnUpdate() {
-            while (IsClockRunning) {
+            while (IsClockRunning) {                
                 yield return new WaitForSecondsRealtime(TurnTime);
                                 
                 AddTurnToCmdBuffer(Turn);
@@ -79,7 +87,7 @@ namespace YupiPlay.MMB.Lockstep {
 
                 if (LastReceivedTurn > PlayAfterTurn) {
                     var turnToPlay = LastTurnPlayed + 1;
-                    if (isDisconnected) turnToPlay = Turn - PlayAfterTurn;
+                    if (isDisconnected) turnToPlay = Turn - PlayAfterTurn;                    
 
                     if (PlayTurn(turnToPlay)) {
                         nLagTurns = 0;
@@ -117,7 +125,7 @@ namespace YupiPlay.MMB.Lockstep {
         }
                 
         public void StartClock() {
-            watch = new Stopwatch();
+            inputLagBuffer = new Dictionary<int, DateTime>();
             Buffer = CommandBuffer.Instance;
             Buffer.Reset();
             IsClockRunning = true;
@@ -147,21 +155,7 @@ namespace YupiPlay.MMB.Lockstep {
 
         private void RemoveTurn(long turn) {            
             CommandBuffer.Instance.RemoveAllForTurn(turn);
-        }            
-
-        public void RegisterInputTime() {
-            watch.Start();
-        }
-
-        public void GetInputLatency() {
-            watch.Stop();
-            UnityEngine.Debug.Log("PIL: " + watch.ElapsedMilliseconds);
-            watch.Reset();
-        }
-
-        public void CalculateRemoteLatency(ulong turn) {
-
-        }        
+        }                            
 
         public bool PlayTurn(long turn) {
             List<NetCommand> playerCmds = Buffer.GetOutputForTurn(turn);
@@ -193,7 +187,11 @@ namespace YupiPlay.MMB.Lockstep {
         }        
 
         public void UpdateRemoteTurn(long turn) {
-            LastReceivedTurn = turn;
+            if (turn == LastReceivedTurn + 1) {
+                LastReceivedTurn = turn;
+                Debug.Log("last received " + turn);
+                if (PrintMsg != null) PrintMsg("order " + turn);
+            }            
         }
 
         public bool IsRunning() {
@@ -221,6 +219,22 @@ namespace YupiPlay.MMB.Lockstep {
         void OnDisable() {
             NetworkSessionManager.PlayerLeftRoomEvent -= OnDisconnect;
             NetworkSessionManager.PeersDisconnectedEvent += PeerDisconnect;
+        }
+
+        public void RegisterInputTime(long turn) {
+            inputLagBuffer[(int)turn] = DateTime.Now;
+        }
+
+        public int GetInputLag(long turn) {
+            if (inputLagBuffer.ContainsKey((int) turn)) {
+                var previousTime = inputLagBuffer[(int)turn];
+
+                var inputLag = (DateTime.Now - previousTime).Milliseconds;                
+                //inputLagBuffer.Remove((int)turn - 1);
+                return inputLag;
+            }
+                        
+            return 0;
         }
     }
 }

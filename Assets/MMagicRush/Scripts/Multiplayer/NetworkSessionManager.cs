@@ -70,12 +70,16 @@ namespace YupiPlay {
         private MatchInfo match;
 
         public string GameSceneToLoad;
+        public bool Reliable;
 
         void Awake() {
             if (Instance == null) {
                 Instance = this;
-            }            
-            DontDestroyOnLoad(this.gameObject);
+                DontDestroyOnLoad(this.gameObject);
+            } else {
+                Destroy(this.gameObject);
+            }
+            
         }
 
         public void MatchmakingStarted() {
@@ -129,15 +133,32 @@ namespace YupiPlay {
 			if (PeersDisconnectedEvent != null) PeersDisconnectedEvent(participantIds);            
 		}
 
-		public void OnReliableMessage(string senderId, byte[] data) {			
+        public void OnMessage(bool reliable, byte[] data) {
             string json = Encoding.UTF8.GetString(data);
             var mainDict = NetSerializer.DeserializeToDictionary(json);
 
             if (mainDict.ContainsKey("ack")) {
                 var rtt = GetAckRtt(mainDict);
-                if (ReliableLatencyEvent != null) ReliableLatencyEvent(rtt);
+                if (UnreliableLatencyEvent != null) UnreliableLatencyEvent(rtt);
                 return;
-            }            
+            }
+
+            var cmds = NetSerializer.ParseDictionary(mainDict);
+
+            if (cmds != null) {
+                if (NetPrintInputEvent != null && cmds[0].GetCommand() != NetCommand.ACK) {
+                    NetPrintInputEvent(json);
+                }
+                
+                ProcessControlCommands(cmds);                               
+                ProcessGameCommands(cmds);
+            }
+        }
+
+		public void OnReliableMessage(string senderId, byte[] data) {		
+            /*
+            string json = Encoding.UTF8.GetString(data);
+            var mainDict = NetSerializer.DeserializeToDictionary(json);                       
 
             var cmds = NetSerializer.ParseDictionary(mainDict);
             
@@ -145,26 +166,37 @@ namespace YupiPlay {
                 if (NetPrintInputEvent != null && cmds[0].GetCommand() != NetCommand.ACK) {
                     NetPrintInputEvent(json);
                 }
-                ProcessGameCommands(cmds);
+                ProcessControlCommands(cmds);                
             }
+            */
 		}
-        
-        public void ProcessGameCommands(List<NetCommand> cmds) {            
-            var cmd = cmds[0];
-            
-            if (cmd.GetCommand() != NetCommand.ACK) {
-                SendAck(cmd.GetTurn(), cmd.GetTimestamp(), true);
-            }            
 
-            if (State == States.INGAME && cmd.GetTurn() > 0) {
-                CommandBuffer.Instance.InsertListToInput(cmds);
-                NetClock.Instance.UpdateRemoteTurn(cmd.GetTurn());
-                
+        public void OnUnreliableMessage(string senderId, byte[] data) {
+            /*string json = Encoding.UTF8.GetString(data);
+            var mainDict = NetSerializer.DeserializeToDictionary(json);            
+
+            if (mainDict.ContainsKey("ack")) {
+                var rtt = GetAckRtt(mainDict);
+                if (UnreliableLatencyEvent != null) UnreliableLatencyEvent(rtt);
                 return;
             }
 
+            var cmds = NetSerializer.ParseDictionary(mainDict);
+
+            if (cmds != null) {
+                if (NetPrintInputEvent != null && cmds[0].GetCommand() != NetCommand.ACK) {
+                    NetPrintInputEvent(json);
+                }
+                ProcessGameCommands(cmds);
+            }
+            */
+        }
+
+        public void ProcessControlCommands(List<NetCommand> cmds) {
+            var cmd = cmds[0];
+
             if (cmd.GetCommand() == NetCommand.HELLO) {
-                DebugHelper.Instance.Append("Recv Hello");
+                if (DebugHelper.Instance != null) DebugHelper.Instance.Append("Recv Hello");
                 SetAdditionalOpponentInfo(cmd as HelloCommand);
                 LoadGame();
                 return;
@@ -182,6 +214,22 @@ namespace YupiPlay {
                     State = States.INGAME;
                 }
             }
+        }
+
+        public void ProcessGameCommands(List<NetCommand> cmds) {            
+            var cmd = cmds[0];
+            
+            if (cmd.GetCommand() != NetCommand.ACK) {
+                SendAck(cmd.GetTurn(), cmd.GetTimestamp(), false);
+            }            
+
+            if (State == States.INGAME && cmd.GetTurn() > 0) {
+                CommandBuffer.Instance.InsertListToInput(cmds);
+                Debug.Log("received " + cmd.GetTurn());                
+                NetClock.Instance.UpdateRemoteTurn(cmd.GetTurn());
+                
+                return;
+            }            
         }
 			
 		public void LoadGame() {
@@ -205,24 +253,37 @@ namespace YupiPlay {
         }
 
         public void SendMessage(List<NetCommand> commands) {
-            var jsonString = NetSerializer.Serialize(commands);
-            
-            if (NetPrintOutputEvent != null) NetPrintOutputEvent(jsonString);
+            if (commands.Count > 0) {
+                var cmd = commands[0];
+                string type = cmd.GetCommand();
+                Debug.Log("sent " + cmd.GetTurn());
 
-            byte[] data = Encoding.UTF8.GetBytes(jsonString);
+                var jsonString = NetSerializer.Serialize(commands);
 
-#if UNITY_ANDROID 
-            GoogleMultiplayer.SendReliableMessageToAll(data);
-            GoogleMultiplayer.SendUnreliableMessageToAll(data);
+                if (NetPrintOutputEvent != null) NetPrintOutputEvent(jsonString);
+
+                byte[] data = Encoding.UTF8.GetBytes(jsonString);
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+                if (type == NetCommand.HELLO || type == NetCommand.READY || type ==  NetCommand.START || type == NetCommand.END) {                
+                    GoogleMultiplayer.SendMessage(true, data);
+                    return;
+                }
+
+                if (Reliable) {
+                    GoogleMultiplayer.SendMessage(true, data);
+                } else {
+                    GoogleMultiplayer.SendMessage(false, data);
+                }                
 #endif
-
+            }
         }
 
         public void SendHello() {
             var cmds = NetCommand.CreateList(new HelloCommand(Match.Player.SelectedHero, Match.Player.Rating));                        
             SendMessage(cmds);
 
-            DebugHelper.Instance.Append("Sent Hello");
+            if (DebugHelper.Instance != null) DebugHelper.Instance.Append("Sent Hello");
         }
 
         public void SendReady() {
@@ -272,9 +333,9 @@ namespace YupiPlay {
 
 #if UNITY_ANDROID && !UNITY_EDITOR
             if (reliable) {
-                GoogleMultiplayer.SendReliableMessageToAll(data);
+                GoogleMultiplayer.SendMessage(true, data);
             } else {
-                GoogleMultiplayer.SendUnreliableMessageToAll(data);
+                GoogleMultiplayer.SendMessage(false, data);
             }            
 #endif
         }
@@ -287,23 +348,7 @@ namespace YupiPlay {
             return rtt;            
         }       
 
-        public void OnUnreliableMessage(string senderId, byte[] data) {
-            string json = Encoding.UTF8.GetString(data);
-            var dict = NetSerializer.DeserializeToDictionary(json);                
-
-            if (dict.ContainsKey("turn")) {
-                var turn = (long) dict["turn"];
-                var timestamp = (string) dict["time"];
-                SendAck(turn, timestamp, false);
-                
-                return;
-            }            
-
-            if (dict.ContainsKey("ack")) {
-                var rtt = GetAckRtt(dict);
-                if (UnreliableLatencyEvent != null) UnreliableLatencyEvent(rtt);
-            }            
-        }
+       
 
     }
 }

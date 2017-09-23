@@ -5,13 +5,7 @@ using YupiPlay.MMB.Lockstep;
 using System.Diagnostics;
 
 public class EnemyRemoteController : BasePlayerController {                
-    private Stopwatch watch;            
-
-    public void GetEnemyInputLatency() {
-        watch.Stop();
-        UnityEngine.Debug.Log("EIL: " + watch.ElapsedMilliseconds);
-        watch.Reset();
-    }
+    private Stopwatch watch;                
 
     /*
     protected new void OnCollisionEnter2D(Collision2D collision) {

@@ -38,7 +38,9 @@ public class PlayerManager : MonoBehaviour {
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Escape)) {
+#if !UNITY_EDITOR
             NetworkSessionManager.Instance.LeaveRoom();
+#endif
             SceneTestHelper.LoadMenu();
         }
     }
