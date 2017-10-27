@@ -24,6 +24,9 @@ public class SceneHelper : MonoBehaviour {
 		//PlayerPrefs.SetInt ("Lesson", 6);
 		Time.timeScale = 1;
 
+//		PlayerPrefs.SetInt ("PlayerCoinsPremium", 0);
+//		PlayerPrefs.SetInt ("PlayerCoins", 0);
+
 		//PlayerPrefs.SetInt ("PlayerCoins", 200);
 
 		temp = new int[10];
@@ -72,7 +75,7 @@ public class SceneHelper : MonoBehaviour {
 		Camera.main.gameObject.GetComponent<AudioSource> ().volume = PlayerPrefs.GetFloat ("GameVolume");
 
 
-		if (PlayerPrefs.GetInt ("PlayerCoinsPremium") > 0) {
+		if (PlayerPrefs.GetInt ("PlayerCoins") > 0) {
 			coinsText.text = PlayerPrefs.GetInt ("PlayerCoins").ToString ();
 		} else {
 			coinsText.text = "0";
@@ -110,16 +113,16 @@ public class SceneHelper : MonoBehaviour {
 
 	public void CoinPurchase() {
 		int c = PlayerPrefs.GetInt ("PlayerCoins");
-		int pc = PlayerPrefs.GetInt ("PlayerCoinsPremiun");
+		int pc = PlayerPrefs.GetInt ("PlayerCoinsPremium");
 		if(pc > (coinsPurchasing/2)){
-		PlayerPrefs.SetInt ("PlayerCoinsPremiun", pc - (coinsPurchasing/2));
+		PlayerPrefs.SetInt ("PlayerCoinsPremium", (pc - (coinsPurchasing/2)));
 		PlayerPrefs.SetInt ("PlayerCoins", c + coinsPurchasing);
 		}
 	}
 
 	public void PremiumCoinPurchase() {
-		int pc = PlayerPrefs.GetInt ("PlayerCoinsPremiun");
-		PlayerPrefs.SetInt ("PlayerCoinsPremiun", pc + premiumcoinsPurchasing);
+		int pc = PlayerPrefs.GetInt ("PlayerCoinsPremium");
+		PlayerPrefs.SetInt ("PlayerCoinsPremium", pc + premiumcoinsPurchasing);
 	}
 
 	public void LoadScene(string scene) {

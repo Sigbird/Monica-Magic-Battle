@@ -270,6 +270,8 @@ public class GameController : MonoBehaviour {
 			this.GetComponent<AudioManager> ().StopAudio ();
 			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("defeat");
+			GameObject.Find ("Chest2").GetComponent<Button> ().interactable = false;
+			GameObject.Find ("Chest2").transform.Find ("Cloed").GetComponent<Image> ().color = Color.gray;
 			endGamePanel [1].SetActive (true);
 		} else { // EMPATE
 			Debug.Log ("EMPATE");
@@ -340,7 +342,7 @@ public class GameController : MonoBehaviour {
 	public void GiveReward(int x){
 		switch (x) {
 		case 1:
-			PlayerPrefs.SetInt ("PlayerCoins", PlayerPrefs.GetInt("PlayerCoins")+1000);
+			PlayerPrefs.SetInt ("PlayerCoins", PlayerPrefs.GetInt("PlayerCoins")+100);
 			break;
 		case 2:
 			PlayerPrefs.SetInt ("PlayerCoins", PlayerPrefs.GetInt("PlayerCoins")+25);
