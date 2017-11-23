@@ -38,6 +38,7 @@ public class SceneHelper : MonoBehaviour {
 			PlayerPrefs.SetFloat ("GameVolume",1);
 		}
 
+		if(PlayerPrefs.GetFloat ("GameVolume") != null)
 		audioSlider.value = PlayerPrefs.GetFloat ("GameVolume");
 
 //		for (int i = 0; i < 10; i++) {

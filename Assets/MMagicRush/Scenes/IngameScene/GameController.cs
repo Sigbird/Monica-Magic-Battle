@@ -317,7 +317,7 @@ public class GameController : MonoBehaviour {
 		foreach(GameObject o in GameObject.FindGameObjectsWithTag("herowaypoint")){
 			Destroy (o.gameObject);
 		}
-		if (PlayerPrefs.GetInt ("Ranked") == 1) {
+		if (PlayerPrefs.GetInt ("Ranked") == 1 && tutorial==false) {
 			rewardWindows [1].SetActive (true);
 			if (x == 5) {
 				StartCoroutine (IncrementRanking (Random.Range(-25,-50)));
