@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HeroSpecialHability : MonoBehaviour {
 	public GameObject sansãoProjectile;
+	public PassiveUI uiTrigger;
 	public int team;
 	public int effectDuration;
 	public int effect;
@@ -18,6 +19,7 @@ public class HeroSpecialHability : MonoBehaviour {
 			effect = this.gameObject.GetComponent<WPIASoldierControler> ().heroID;
 		}
 
+		uiTrigger.hero = effect;
 
 		switch (effect) {
 		case 0:
@@ -29,7 +31,7 @@ public class HeroSpecialHability : MonoBehaviour {
 			effectDuration = 3;
 			break;
 		case 2:
-			effectCD = 10;
+			effectCD = 6;//10
 			effectDuration = 4;
 			break;
 		case 3:
@@ -54,6 +56,7 @@ public class HeroSpecialHability : MonoBehaviour {
 
 
 	IEnumerator ApplyEffect(){
+		uiTrigger.StartCooldown = true;
 		yield return new WaitForSeconds (effectCD);
 			GameObject target;
 			switch (effect) {
@@ -73,11 +76,16 @@ public class HeroSpecialHability : MonoBehaviour {
 						target.GetComponent<WPSoldierControler> ().ReceiveDamage (1);
 					}
 				}
+			yield return new WaitForSeconds (effectDuration);
 				break;
 		case 1://CEBOLINHA INVISIVEl
 			GetComponent<SpriteRenderer> ().enabled = false;
 			transform.FindChild ("Platform").gameObject.SetActive (false);
 			transform.FindChild ("HealtBarSoldier").gameObject.SetActive (false);
+			yield return new WaitForSeconds (effectDuration);
+			GetComponent<SpriteRenderer>().enabled = true;
+			transform.FindChild ("Platform").gameObject.SetActive (true);
+			transform.FindChild ("HealtBarSoldier").gameObject.SetActive (true);
 				break;
 			case 2://AREA DE CURA MAGALI
 				SpecialHabilityZone [effect].SetActive (true);
@@ -91,10 +99,7 @@ public class HeroSpecialHability : MonoBehaviour {
 			default:
 				break;
 			}
-		yield return new WaitForSeconds (effectDuration);
-		GetComponent<SpriteRenderer>().enabled = true;
-		transform.FindChild ("Platform").gameObject.SetActive (true);
-		transform.FindChild ("HealtBarSoldier").gameObject.SetActive (true);
+
 		SpecialHabilityZone [effect].SetActive (false);
 		StartCoroutine (ApplyEffect ());
 	}
