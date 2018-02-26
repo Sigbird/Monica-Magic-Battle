@@ -29,8 +29,10 @@ public class SearchingMatchScript : MonoBehaviour {
 		cancelBattle = false;
 		StartCoroutine ("Finding");
 		this.SelectedCharacterID = PlayerPrefs.GetInt ("SelectedCharacter");
-		HeroImage.sprite = HeroPortraits [SelectedCharacterID + 1];
+
 	}
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -47,6 +49,8 @@ public class SearchingMatchScript : MonoBehaviour {
 	}
 
 	IEnumerator Finding() {
+		yield return new WaitForSeconds(0.5f);
+		//HeroImage.sprite = HeroPortraits [SelectedCharacterID + 1];
 		yield return new WaitForSeconds(2);
 		print(Time.time);
 		AdvImage.sprite = Image;
@@ -58,7 +62,8 @@ public class SearchingMatchScript : MonoBehaviour {
 	}
 
 	public void SetCharacterID(int x){
-		this.SelectedCharacterID = x;
+		PlayerPrefs.SetInt ("SelectedCharacter", x);
+		//this.SelectedCharacterID = x;
 	}
 
 	public void CallToBattle(){

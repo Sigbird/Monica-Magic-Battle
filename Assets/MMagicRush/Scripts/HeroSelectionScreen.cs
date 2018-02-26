@@ -25,23 +25,23 @@ public class HeroSelectionScreen : MonoBehaviour {
 //			cebolinha.interactable = false;
 //		}
 
-		if (PlayerPrefs.GetInt ("magali") == 1) {
-			magali.interactable = true;
-		} else {
-			magali.interactable = false;
-		}
+//		if (PlayerPrefs.GetInt ("magali") == 1) {
+//			magali.interactable = true;
+//		} else {
+//			magali.interactable = false;
+//		}
+//
+//		if (PlayerPrefs.GetInt ("cascao") == 1) {
+//			cascao.interactable = true;
+//		} else {
+//			cascao.interactable = false;
+//		}
 
-		if (PlayerPrefs.GetInt ("cascao") == 1) {
-			cascao.interactable = true;
-		} else {
-			cascao.interactable = false;
-		}
-
-		if (PlayerPrefs.GetInt ("chico") == 1) {
-			chico.interactable = true;
-		} else {
-			chico.interactable = false;
-		}
+//		if (PlayerPrefs.GetInt ("chico") == 1) {
+//			chico.interactable = true;
+//		} else {
+//			chico.interactable = false;
+//		}
 	}
 	
 	// Update is called once per frame

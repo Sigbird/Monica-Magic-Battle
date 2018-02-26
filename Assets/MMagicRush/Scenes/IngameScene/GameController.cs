@@ -83,26 +83,28 @@ public class GameController : MonoBehaviour {
 			GameController.enemyXp = PlayerPrefs.GetFloat("EnemyXP");
 		}
 
-		switch (PlayerPrefs.GetInt ("SelectedCharacter")) {
-		case 0:
-			heroPortrait.sprite = portraits [0];
-			break;
-		case 1:
-			heroPortrait.sprite = portraits [1];
-			break;
-		case 2:
-			heroPortrait.sprite = portraits [2];
-			break;
-		case 3:
-			heroPortrait.sprite = portraits [3];
-			break;
-		case 4:
-			heroPortrait.sprite = portraits [4];
-			break;
-		default:
-			heroPortrait.sprite = portraits [0];
-			break;
-		}
+		heroPortrait.sprite = portraits [PlayerPrefs.GetInt ("SelectedCharacter")];
+
+//		switch (PlayerPrefs.GetInt ("SelectedCharacter")) {
+//		case 0:
+//			heroPortrait.sprite = portraits [0];
+//			break;
+//		case 1:
+//			heroPortrait.sprite = portraits [1];
+//			break;
+//		case 2:
+//			heroPortrait.sprite = portraits [2];
+//			break;
+//		case 3:
+//			heroPortrait.sprite = portraits [3];
+//			break;
+//		case 4:
+//			heroPortrait.sprite = portraits [4];
+//			break;
+//		default:
+//			heroPortrait.sprite = portraits [0];
+//			break;
+//		}
 		if (LeaderBoard != null) {
 			LeaderBoard.LoadScores ();
 		}

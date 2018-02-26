@@ -7,8 +7,12 @@ public class PassiveUI : MonoBehaviour {
 
 	public int hero;
 	public float counter;
-	public Sprite[] imagesMonica;
-	public Sprite[] imagesCebola;
+	public Sprite[] imagesCooldown;
+	public Sprite imageMonica;
+	public Sprite imageCebola;
+	public Sprite imageMagali;
+	public Sprite imageCascao;
+	public Sprite imageChico;
 	public bool StartCooldown;
 
 	// Use this for initialization
@@ -30,47 +34,41 @@ public class PassiveUI : MonoBehaviour {
 
 	public void PassiveCooldown(){
 		
-		if (counter >= 1 && counter <= 2) { // primeira imagem
-			if(hero == 0 && imagesMonica.Length > 0)
-				GetComponent<Image> ().sprite = imagesMonica [0];
-
-			if(hero == 1 && imagesCebola.Length > 0)
-				GetComponent<Image> ().sprite = imagesCebola [0];
+		if (counter >= 1 && counter <= 3) { // primeira imagem
+			if(imagesCooldown.Length > 0)
+				GetComponent<Image> ().sprite = imagesCooldown [0];
 		}
-		if (counter > 2 && counter <= 3) { // segunda imagem
-			if(hero == 0 && imagesMonica.Length > 0)
-				GetComponent<Image> ().sprite = imagesMonica [1];
-
-			if(hero == 1 && imagesCebola.Length > 0)
-				GetComponent<Image> ().sprite = imagesCebola [1];
+		if (counter > 3 && counter <= 4) { // segunda imagem
+			if(imagesCooldown.Length > 0)
+				GetComponent<Image> ().sprite = imagesCooldown [1];
 		}
-		if (counter > 3 && counter <= 4) { // terceira imagem
-			if(hero == 0 && imagesMonica.Length > 0)
-				GetComponent<Image> ().sprite = imagesMonica [2];
-
-			if(hero == 1 && imagesCebola.Length > 0)
-				GetComponent<Image> ().sprite = imagesCebola [2];
+		if (counter > 4 && counter <= 5) { // terceira imagem
+			if(imagesCooldown.Length > 0)
+				GetComponent<Image> ().sprite = imagesCooldown [2];
 		}
-		if (counter > 4 && counter <= 5) { // quarta image
-			if(hero == 0 && imagesMonica.Length > 0)
-				GetComponent<Image> ().sprite = imagesMonica [3];
-
-			if(hero == 1 && imagesCebola.Length > 0)
-				GetComponent<Image> ().sprite = imagesCebola [3];
+		if (counter > 5 && counter <= 6) { // quarta image
+			if(imagesCooldown.Length > 0)
+				GetComponent<Image> ().sprite = imagesCooldown [3];
 		}
-		if (counter > 5 && counter <= 6) { // quinta imagem
-			if(hero == 0 && imagesMonica.Length > 0)
-				GetComponent<Image> ().sprite = imagesMonica [4];
+		if (counter > 6 && counter <= 7) { // quinta imagem
+			if(hero == 0 && imageMonica != null)
+				GetComponent<Image> ().sprite = imageMonica;
 
-			if(hero == 1 && imagesCebola.Length > 0)
-				GetComponent<Image> ().sprite = imagesCebola [4];
+			if(hero == 1 && imageCebola != null)
+				GetComponent<Image> ().sprite = imageCebola;
+
+			if(hero == 2 && imageCebola != null)
+				GetComponent<Image> ().sprite = imageMagali;
+
+			if(hero == 3 && imageCebola != null)
+				GetComponent<Image> ().sprite = imageCascao;
+
+			if(hero == 4 && imageCebola != null)
+				GetComponent<Image> ().sprite = imageChico;
 		}
-		if (counter >6) { // reset
-			if(hero == 0 && imagesMonica.Length > 0)
-				GetComponent<Image> ().sprite = imagesMonica [0];
+		if (counter >7) { // reset
+			
 
-			if(hero == 1 && imagesCebola.Length > 0)
-				GetComponent<Image> ().sprite = imagesCebola [0];
 			StartCooldown = false;
 		}
 

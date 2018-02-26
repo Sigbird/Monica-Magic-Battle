@@ -10,11 +10,14 @@ public class HeroSpecialHability : MonoBehaviour {
 	public int effect;
 	public float effectCD;
 	public GameObject[] SpecialHabilityZone;
+	public GameObject MeiaCascao;
+
 	// Use this for initialization
 	void Start () {
 
 		if (team == 0) {
-			effect = this.gameObject.GetComponent<WPSoldierControler> ().heroID;
+			effect = PlayerPrefs.GetInt ("SelectedCharacter");
+			//effect = this.gameObject.GetComponent<WPSoldierControler> ().heroID;
 		} else {
 			effect = this.gameObject.GetComponent<WPIASoldierControler> ().heroID;
 		}
@@ -79,19 +82,28 @@ public class HeroSpecialHability : MonoBehaviour {
 			yield return new WaitForSeconds (effectDuration);
 				break;
 		case 1://CEBOLINHA INVISIVEl
-			GetComponent<SpriteRenderer> ().enabled = false;
+			GetComponent<SpriteRenderer> ().color = new Color(1f,1f,1f,.5f) ;
 			transform.FindChild ("Platform").gameObject.SetActive (false);
 			transform.FindChild ("HealtBarSoldier").gameObject.SetActive (false);
 			yield return new WaitForSeconds (effectDuration);
-			GetComponent<SpriteRenderer>().enabled = true;
+			GetComponent<SpriteRenderer> ().color = new Color(1f,1f,1f,1f) ;
 			transform.FindChild ("Platform").gameObject.SetActive (true);
 			transform.FindChild ("HealtBarSoldier").gameObject.SetActive (true);
 				break;
-			case 2://AREA DE CURA MAGALI
-				SpecialHabilityZone [effect].SetActive (true);
+		case 2://AREA DE CURA MAGALI
+			SpecialHabilityZone [effect].SetActive (true);
+			if (this.gameObject.GetComponent<WPSoldierControler> ().vida < this.gameObject.GetComponent<WPSoldierControler> ().vidaMax) {
+				this.gameObject.GetComponent<WPSoldierControler> ().vida++;
+				this.gameObject.GetComponent<WPSoldierControler> ().UpdateLife ();
+			}
+				yield return new WaitForSeconds (effectDuration);
+				SpecialHabilityZone [effect].SetActive (false);
 				break;
 			case 3://AREA DE FEDOR CASCAO
-				SpecialHabilityZone [effect].SetActive (true);
+			Instantiate(MeiaCascao,this.transform.position,Quaternion.identity);
+				//SpecialHabilityZone [effect].SetActive (true);
+				yield return new WaitForSeconds (effectDuration);
+				//SpecialHabilityZone [effect].SetActive (false);
 				break;
 			case 4://AREA DE DANO CHICO
 				SpecialHabilityZone [effect].SetActive (true);
