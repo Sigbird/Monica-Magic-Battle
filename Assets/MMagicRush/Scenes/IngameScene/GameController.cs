@@ -272,13 +272,13 @@ public class GameController : MonoBehaviour {
 			this.GetComponent<AudioManager> ().StopAudio ();
 			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("defeat");
-			GameObject.Find ("Chest2").GetComponent<Button> ().interactable = false;
-			GameObject.Find ("Chest2").transform.Find ("Cloed").GetComponent<Image> ().color = Color.gray;
+			//GameObject.Find ("Chest2").GetComponent<Button> ().interactable = false;
+			//GameObject.Find ("Chest2").transform.Find ("Closed").GetComponent<Image> ().color = Color.gray;
 			endGamePanel [1].SetActive (true);
 		} else { // EMPATE
 			Debug.Log ("EMPATE");
 			this.GetComponent<AudioManager> ().StopAudio ();
-
+			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
 			endGamePanel [0].SetActive (true);
 		}
