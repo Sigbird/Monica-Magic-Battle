@@ -7,6 +7,7 @@ using YupiPlay;
 public class MultiplayerTestUIMenu : MonoBehaviour {
     public Text DisplayName;
     public Text Username;
+	public Text UsernameBatalha;
     public Text Opponent;
 
     public Button QuickGame;
@@ -28,15 +29,19 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
     }
 
     public void SetDisplayName(string displayname) {
-        DisplayName.text = "DisplayName: " + displayname;
+       // DisplayName.text = "DisplayName: " + displayname;
+		DisplayName.text = displayname;
     }
 
     public void SetUserName(string username) {
-        Username.text = "Username: " + username;
+       // Username.text = "Username: " + username;
+		Username.text = username;
+		UsernameBatalha.text = username;
     }
 
     public void SetOpponentName(string opponent) {
-        Opponent.text = "Opponent: " + opponent;
+      //  Opponent.text = "Opponent: " + opponent;
+		Opponent.text = opponent;
     }
 
     public void OnLogin(string displayname, string username) {

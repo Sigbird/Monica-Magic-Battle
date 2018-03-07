@@ -14,6 +14,6 @@ public class FilterAnimation : MonoBehaviour {
 	}
 
 	public void CloseFilters(){
-		this.gameObject.SetActive (false);
+		//this.gameObject.SetActive (false);
 	}
 }
