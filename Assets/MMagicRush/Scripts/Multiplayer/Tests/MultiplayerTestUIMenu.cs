@@ -25,7 +25,7 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
 
     public void OnQuickGameClick() {
         QuickGameText.text = "Searching...";
-        QuickGame.interactable = false;
+        //QuickGame.interactable = false;
     }
 
     public void SetDisplayName(string displayname) {
