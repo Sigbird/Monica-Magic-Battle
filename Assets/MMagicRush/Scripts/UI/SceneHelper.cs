@@ -34,12 +34,21 @@ public class SceneHelper : MonoBehaviour {
 		Camera.main.gameObject.GetComponent<AudioSource> ().clip = bgMusic;
 		Camera.main.gameObject.GetComponent<AudioSource> ().Play ();
 
-		if (PlayerPrefs.HasKey ("GameVolume") == false) {
+//		if (PlayerPrefs.HasKey ("GameVolume") == false) {
+//			PlayerPrefs.SetFloat ("GameVolume",1);
+//		}
+
+		if (PlayerPrefs.GetFloat ("GameVolume") != null) {
+			audioSlider.value = PlayerPrefs.GetFloat ("GameVolume");
+		} else {
 			PlayerPrefs.SetFloat ("GameVolume",1);
 		}
 
-		if(PlayerPrefs.GetFloat ("GameVolume") != null)
-		audioSlider.value = PlayerPrefs.GetFloat ("GameVolume");
+		if (PlayerPrefs.GetFloat ("GameVolumeEffects") != null) {
+			audioSlider.value = PlayerPrefs.GetFloat ("GameEffects");
+		} else {
+			PlayerPrefs.SetFloat ("GameVolumeEffects",1);
+		}
 
 //		for (int i = 0; i < 10; i++) {
 //			temp[i] = Random.Range(1,22);
@@ -159,6 +168,22 @@ public class SceneHelper : MonoBehaviour {
 
 	public void SetVolume(){
 		PlayerPrefs.SetFloat ("GameVolume", audioSlider.value);
+	}
+
+	public void ToggleMusicOn(bool toggle){
+		if (toggle == true) {
+			PlayerPrefs.SetFloat ("GameVolume", 1);
+		} else {
+			PlayerPrefs.SetFloat ("GameVolume", 0);
+		}
+	}
+
+	public void ToggleEffect(bool toggle){
+		if (toggle == true) {
+			PlayerPrefs.SetFloat ("GameVolumeEffects", 1);
+		} else {
+			PlayerPrefs.SetFloat ("GameVolumeEffects", 0);
+		}
 	}
 
 	void OnApplicationQuit(){
