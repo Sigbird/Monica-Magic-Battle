@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class SceneHelper : MonoBehaviour {
 	public bool tutorial;
-	public AudioClip bgMusic;
+	//public AudioClip bgMusic;
 	public int[] temp;
 	public int[] empty;
 	public Text coinsText;
@@ -15,7 +15,6 @@ public class SceneHelper : MonoBehaviour {
 	public int premiumcoinsPurchasing;
 	public dreamloLeaderBoard LeaderBoard;
 	public GameObject ExitConfirmation;
-	public Slider audioSlider;
 
 
 	public GameObject[] TutorialPanels;
@@ -30,25 +29,25 @@ public class SceneHelper : MonoBehaviour {
 		//PlayerPrefs.SetInt ("PlayerCoins", 200);
 
 		temp = new int[10];
-		Camera.main.gameObject.GetComponent<AudioSource> ().loop = true;
-		Camera.main.gameObject.GetComponent<AudioSource> ().clip = bgMusic;
-		Camera.main.gameObject.GetComponent<AudioSource> ().Play ();
+//		Camera.main.gameObject.GetComponent<AudioSource> ().loop = true;
+//		Camera.main.gameObject.GetComponent<AudioSource> ().clip = bgMusic;
+//		Camera.main.gameObject.GetComponent<AudioSource> ().Play ();
 
 //		if (PlayerPrefs.HasKey ("GameVolume") == false) {
 //			PlayerPrefs.SetFloat ("GameVolume",1);
 //		}
 
-		if (PlayerPrefs.GetFloat ("GameVolume") != null) {
-			audioSlider.value = PlayerPrefs.GetFloat ("GameVolume");
-		} else {
-			PlayerPrefs.SetFloat ("GameVolume",1);
-		}
-
-		if (PlayerPrefs.GetFloat ("GameVolumeEffects") != null) {
-			audioSlider.value = PlayerPrefs.GetFloat ("GameEffects");
-		} else {
-			PlayerPrefs.SetFloat ("GameVolumeEffects",1);
-		}
+//		if (PlayerPrefs.GetFloat ("GameVolume") != null) {
+//			audioSlider.value = PlayerPrefs.GetFloat ("GameVolume");
+//		} else {
+//			PlayerPrefs.SetFloat ("GameVolume",1);
+//		}
+//
+//		if (PlayerPrefs.GetFloat ("GameVolumeEffects") != null) {
+//			audioSlider.value = PlayerPrefs.GetFloat ("GameEffects");
+//		} else {
+//			PlayerPrefs.SetFloat ("GameVolumeEffects",1);
+//		}
 
 //		for (int i = 0; i < 10; i++) {
 //			temp[i] = Random.Range(1,22);
@@ -82,7 +81,7 @@ public class SceneHelper : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		Camera.main.gameObject.GetComponent<AudioSource> ().volume = PlayerPrefs.GetFloat ("GameVolume");
+
 
 
 		if (PlayerPrefs.GetInt ("PlayerCoins") > 0) {
@@ -164,10 +163,6 @@ public class SceneHelper : MonoBehaviour {
 		PlayerPrefs.SetString ("ResetCards", "false");
 		PlayerPrefs.SetInt ("Lesson", 1);
 		SceneManager.LoadScene ("TutorialScene");
-	}
-
-	public void SetVolume(){
-		PlayerPrefs.SetFloat ("GameVolume", audioSlider.value);
 	}
 
 	public void ToggleMusicOn(bool toggle){

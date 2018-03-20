@@ -73,9 +73,9 @@ public class SearchingMatchScript : MonoBehaviour {
 		PlayerPrefs.SetInt ("playerCharges",0);
 		PlayerPrefs.SetInt ("enemyCharges",0);
 		if (noLoading) {
-			SceneManager.LoadScene ("Jogo");
+			SceneManager.LoadScene ("JogoMulti");
 		} else {
-			SceneLoadingManager.LoadScene ("Jogo");
+			SceneLoadingManager.LoadScene ("JogoMulti");
 		}
 	}
 
