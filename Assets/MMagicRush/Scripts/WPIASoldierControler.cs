@@ -248,6 +248,12 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	void Update () {
 
+		if(tutorial == false)
+		if (StaticController.instance.GameController.GameOver == true) {
+			this.speed = 0;
+			this.targetEnemy = null;
+		}
+
 		// VELOCIDADE
 		if (previous.x < transform.position.x) {
 			GetComponent<SpriteRenderer> ().flipX = false;
@@ -1257,6 +1263,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			chooser = x;
 		}
 		Debug.Log (chooser);
+	
 			switch(chooser) {
 		case 1://IDLE
 			StartCoroutine (WaitForTwist ());

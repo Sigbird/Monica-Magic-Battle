@@ -138,33 +138,35 @@ public class CardSlotScript : MonoBehaviour {
 
 	//INICIO DO ARRASTO
 	void OnMouseDrag() {
-		if (cardID == 1) {
-			UIilustrationAnim.gameObject.SetActive (true);
-			UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill1", true);
-		}
-		if (cardID == 3) {
-			UIilustrationAnim.gameObject.SetActive (true);
-			UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill2", true);
-		}
-		if (cardID == 7) {
-			UIilustrationAnim.gameObject.SetActive (true);
-			UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill3", true);
-		}
-		GameObject.Find ("EnemyArea").GetComponent<Image> ().enabled = true;
-		Debug.Log (cardID);
-		this.released = false;
-		beeingDraged = true;
-		if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-			if (projectileCreated == false) {
-				projectileCreated = true;
-				Movable = (GameObject)Instantiate (Spark, new Vector2 (0, 0), Quaternion.identity);
-				Movable.transform.SetParent (GameObject.Find ("Canvas").transform);
-				Movable.GetComponent<sparkScript> ().CardSlot = this.gameObject.GetComponent<CardSlotScript> ();
+		if (StaticController.instance.GameController.GameOver == false) {
+			if (cardID == 1) {
+				UIilustrationAnim.gameObject.SetActive (true);
+				UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill1", true);
 			}
-			if (Movable != null)
-				Movable.transform.position = Vector2.MoveTowards (Movable.transform.position, Camera.main.ScreenToWorldPoint (Input.mousePosition), 5);
+			if (cardID == 3) {
+				UIilustrationAnim.gameObject.SetActive (true);
+				UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill2", true);
+			}
+			if (cardID == 7) {
+				UIilustrationAnim.gameObject.SetActive (true);
+				UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill3", true);
+			}
+			GameObject.Find ("EnemyArea").GetComponent<Image> ().enabled = true;
+			Debug.Log (cardID);
+			this.released = false;
+			beeingDraged = true;
+			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+				if (projectileCreated == false) {
+					projectileCreated = true;
+					Movable = (GameObject)Instantiate (Spark, new Vector2 (0, 0), Quaternion.identity);
+					Movable.transform.SetParent (GameObject.Find ("Canvas").transform);
+					Movable.GetComponent<sparkScript> ().CardSlot = this.gameObject.GetComponent<CardSlotScript> ();
+				}
+				if (Movable != null)
+					Movable.transform.position = Vector2.MoveTowards (Movable.transform.position, Camera.main.ScreenToWorldPoint (Input.mousePosition), 5);
+			}
+			holdCounter += Time.deltaTime;
 		}
-		holdCounter += Time.deltaTime;
 	}
 
 	//FIM DO ARRASTO

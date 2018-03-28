@@ -15,6 +15,7 @@ public class WPSoldierControler : MonoBehaviour {
 
 	//public TipoSoldado Tipo;
 
+	public bool tutorial;
 	public bool heroUnity;
 
 	public int troopId;
@@ -226,6 +227,11 @@ public class WPSoldierControler : MonoBehaviour {
 	}
 
 	void Update () {
+		if(tutorial == false)
+		if (StaticController.instance.GameController.GameOver == true) {
+			this.speed = 0;
+			this.targetEnemy = null;
+		}
 
 		// VELOCIDADE
 		if (previous.x < transform.position.x) {

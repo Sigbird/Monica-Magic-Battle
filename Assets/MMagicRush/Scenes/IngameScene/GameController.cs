@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
+	public bool GameOver = false;
 	private bool tutorialending = false;
 	public bool tutorial;
 	public float gempertime;	
@@ -125,7 +126,7 @@ public class GameController : MonoBehaviour {
 			tutorialending = true;
 		}
 
-		if (gempertime >= 2 && tutorial == false) {
+		if (gempertime >= 2 && tutorial == false && GameOver == false) {
 			gempertime = 0;
 			Diamonds += gempertimeMaxValue;
 			EnemyDiamonds += gempertimeMaxValue;
@@ -282,6 +283,7 @@ public class GameController : MonoBehaviour {
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
 			endGamePanel [0].SetActive (true);
 		}
+		GameOver = true;
 		Time.timeScale = 0;
 	}
 

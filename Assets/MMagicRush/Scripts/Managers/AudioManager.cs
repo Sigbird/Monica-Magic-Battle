@@ -63,9 +63,6 @@ public class AudioManager : MonoBehaviour {
 			if (track == "death") { //ok
 				source.PlayOneShot (audios [1]);
 			}
-			if (track == "defeat") { //ok
-				source.PlayOneShot (audios [2]);
-			}
 			if (track == "shot") { //ok
 				source.PlayOneShot (audios [3]);
 			}
@@ -78,20 +75,27 @@ public class AudioManager : MonoBehaviour {
 			if (track == "tower") { //ok
 				source.PlayOneShot (audios [6]);
 			}
-			if (track == "victory") { //ok
-				source.PlayOneShot (audios [7]);
-			}
 			if (track == "button") {
 				source.PlayOneShot (audios [8]);
 			}
 		}
 		if (MusicVolume > 0) {
+			if (track == "victory") { //ok
+				source.Stop();
+				source.PlayOneShot (audios [7]);
+			}
+			if (track == "defeat") { //ok
+				source.Stop();
+				source.loop = true;
+				source.clip = audios [2];
+				source.Play ();
+			}
 			if (track == "menu") {
 				source.loop = true;
 				source.clip = audios [9];
 				source.Play ();
 			}
-			if (track == "ingame") {
+			if (track == "ingame" && StaticController.instance.GameController.GameOver == false) {
 				source.loop = true;
 				if (SceneManager.GetActiveScene ().name == "Main") {
 					source.clip = audios [9];
