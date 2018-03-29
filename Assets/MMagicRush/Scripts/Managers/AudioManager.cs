@@ -95,11 +95,12 @@ public class AudioManager : MonoBehaviour {
 				source.clip = audios [9];
 				source.Play ();
 			}
-			if (track == "ingame" && StaticController.instance.GameController.GameOver == false) {
+
+			if (track == "ingame") {
 				source.loop = true;
-				if (SceneManager.GetActiveScene ().name == "Main") {
+				if (SceneManager.GetActiveScene ().name == "Main" || SceneManager.GetActiveScene ().name == "TutorialScene") {
 					source.clip = audios [9];
-				} else {
+				} else if(StaticController.instance.GameController.GameOver == false) {
 					source.clip = audios [10];
 				}
 				source.Play ();
