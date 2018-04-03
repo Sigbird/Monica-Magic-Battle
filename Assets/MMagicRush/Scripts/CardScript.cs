@@ -12,6 +12,7 @@ public class CardScript : MonoBehaviour {
 	public Sprite activeTrue;
 	public Sprite activeFalse;
 
+
 	public string efeito;
 	public string personagem;
 
