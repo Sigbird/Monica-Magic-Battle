@@ -552,7 +552,9 @@ public class SoldierControler : MonoBehaviour {
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [4];
+			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [4];
+			Instantiate (animations [5], transform);
+			this.haveAnimation = true;
 			break;
 		case(6): //PENADINHO
 			this.vidaMax = 3;
@@ -565,8 +567,10 @@ public class SoldierControler : MonoBehaviour {
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = true;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [5];
-			this.GetComponent<SpriteRenderer> ().flipX = true;
+			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [5];
+			//this.GetComponent<SpriteRenderer> ().flipX = true;
+			Instantiate (animations [6], transform);
+			this.haveAnimation = true;
 			break;
 		case(7): //MAURICIO
 			this.vidaMax = 10;
