@@ -9,6 +9,7 @@ public class ConfigOptions : MonoBehaviour {
 	public Toggle EffectToggle;
 	public AudioManager manager;
 
+
 	// Use this for initialization
 	void Start () {
 		if (PlayerPrefs.HasKey ("GameVolume") && PlayerPrefs.GetFloat ("GameVolume") == 1) {
@@ -26,6 +27,8 @@ public class ConfigOptions : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+
 		if (MusicToggle.isOn) {
 			PlayerPrefs.SetFloat ("GameVolume", 1);
 			//manager.source.Play();
@@ -40,6 +43,10 @@ public class ConfigOptions : MonoBehaviour {
 			PlayerPrefs.SetFloat ("GameVolumeEffects", 0);
 		}
 
+	}
+
+	public void OpenUI(bool x){
+		WPScript.UIopen = x;
 	}
 		
 }

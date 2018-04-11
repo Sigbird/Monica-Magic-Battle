@@ -61,8 +61,8 @@ public class CardInfoScript : MonoBehaviour {
 			Debug.Log (o.GetComponent<CardScript> ().CardID);
 			foreach (int x in PlayerPrefsX.GetIntArray ("PlayerCardsIDs")) {
 				if (x == o.GetComponent<CardScript> ().CardID) {
-					cardPurchasedButton.SetActive (true);
-					purchaseButton.interactable = false;
+//					cardPurchasedButton.SetActive (true);
+//					purchaseButton.interactable = false;
 				}
 			}
 		}
@@ -84,7 +84,7 @@ public class CardInfoScript : MonoBehaviour {
 			cardPurchasedButton.SetActive (false);
 			foreach (int x in PlayerPrefsX.GetIntArray ("PlayerCardsIDs")) {
 				if (x == cardID) {
-					cardPurchasedButton.SetActive (true);
+					//cardPurchasedButton.SetActive (true);
 				}
 			}
 		}

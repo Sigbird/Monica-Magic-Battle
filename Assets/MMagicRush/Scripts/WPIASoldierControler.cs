@@ -1016,7 +1016,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		this.skill1.gameObject.SetActive (false);
 		this.skill2.gameObject.SetActive (false);
 		this.vida = this.vidaMax;
-		UpdateLife ();
+//		UpdateLife ();
 //		if(heroUnity)
 //			this.energy = this.energyMax;
 		this.seeking = false;
@@ -1028,6 +1028,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
 		this.healtbarSoldier.SetActive (true);
+//		UpdateLife ();
 //		if (heroUnity)
 //			this.energybarSoldier.SetActive (true);
 		this.targetEnemy = null;

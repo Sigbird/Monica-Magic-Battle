@@ -566,7 +566,7 @@ public class SoldierControler : MonoBehaviour {
 			this.speed = 2;
 			this.energyMax = 1;
 			this.energy = 200;
-			this.summon = true;
+			this.summon = false;
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [5];
 			//this.GetComponent<SpriteRenderer> ().flipX = true;
 			Instantiate (animations [6], transform);

@@ -36,6 +36,8 @@ public class CardSlotScript : MonoBehaviour {
 
 	public int[] cards;
 
+	public GameObject[] effectsAnimation;
+
 	public float holdCounter;
 
 	[HideInInspector]
@@ -413,6 +415,7 @@ public class CardSlotScript : MonoBehaviour {
 			case 1:// ESTALO MAGICO -> NEVASCA
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {//NEVASCA
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+/*Effect*/		Instantiate (effectsAnimation [1], new Vector3 (0, 0, 0), Quaternion.identity);
 				GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Frozen");
 				//				if (target.GetComponent<SoldierControler> ().team == 2) {
 				//					target.GetComponent<SoldierControler> ().ReceiveEffect ("slow");
@@ -437,10 +440,14 @@ public class CardSlotScript : MonoBehaviour {
 				//				}
 
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
-					if (obj.GetComponent<SoldierControler>() != null) 
-						obj.GetComponent<SoldierControler> ().ReceiveEffect ("damage");
+//					if (obj.GetComponent<SoldierControler>() != null) 
+//						Instantiate (effectsAnimation [2], obj.transform);
+//						obj.GetComponent<SoldierControler> ().ReceiveEffect ("damage");
 					if (obj.GetComponent<WPIASoldierControler>() != null) 
+						Instantiate (effectsAnimation [2], obj.transform);
 						obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("damage");
+
+/*Effect*/					
 				}
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 				Destroy (this.gameObject);
@@ -450,6 +457,7 @@ public class CardSlotScript : MonoBehaviour {
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//CANJA
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 				//				target.GetComponent<SoldierControler> ().ReceiveEffect ("extraHealing");
+/*Effect*/				Instantiate (effectsAnimation [3], new Vector3 (0, 0, 0), Quaternion.identity);
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
 					if (obj.GetComponent<SoldierControler>() != null) 
 						obj.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
@@ -469,6 +477,7 @@ public class CardSlotScript : MonoBehaviour {
 					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 						if (obj.GetComponent<SoldierControler>() != null) 
 						obj.GetComponent<SoldierControler> ().ReceiveEffect ("extraDamage");
+/*Effect*/				Instantiate (effectsAnimation [1], obj.transform.position, Quaternion.identity);
 					}
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 				Destroy (this.gameObject);
@@ -480,6 +489,7 @@ public class CardSlotScript : MonoBehaviour {
 	//				if (target.GetComponent<SoldierControler> ().team == 2) {
 	//					target.GetComponent<SoldierControler> ().ReceiveEffect ("extraSlow");
 	//				}
+/*Effect*/		Instantiate (effectsAnimation [5], new Vector3 (0, 0, 0), Quaternion.identity);
 					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 					if (obj.GetComponent<SoldierControler> () != null) {
 						obj.GetComponent<SoldierControler> ().ReceiveEffect ("extraSlow");
@@ -497,6 +507,7 @@ public class CardSlotScript : MonoBehaviour {
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 //				target.GetComponent<SoldierControler> ().ReceiveEffect ("sleep");
+/*Effect*/		Instantiate (effectsAnimation [6], new Vector3 (0, 0, 0), Quaternion.identity);
 					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 						if (obj.GetComponent<SoldierControler>() != null) 
 						obj.GetComponent<SoldierControler> ().ReceiveEffect ("sleep");
@@ -517,6 +528,7 @@ public class CardSlotScript : MonoBehaviour {
 //							obj.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
 //					}
 					if (obj.GetComponent<WPSoldierControler> () != null) {
+/*Effect*/					Instantiate (effectsAnimation [7], new Vector3 (0, 0, 0), Quaternion.identity);
 							obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("healing");
 					}
 				}
@@ -529,10 +541,12 @@ public class CardSlotScript : MonoBehaviour {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 //				target.GetComponent<SoldierControler> ().ReceiveEffect ("shield");
 					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
-						if (obj.GetComponent<SoldierControler> () != null) {
-								obj.GetComponent<SoldierControler> ().ReceiveEffect ("extraHealing");
-						}
+//						if (obj.GetComponent<SoldierControler> () != null) {
+//								Instantiate (effectsAnimation [8], obj.transform);
+//								obj.GetComponent<SoldierControler> ().ReceiveEffect ("extraHealing");
+//						}
 						if (obj.GetComponent<WPSoldierControler> () != null) {
+/*Effect*/						Instantiate (effectsAnimation [8], obj.transform);
 								obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("extraHealing");
 						}
 					}
@@ -546,6 +560,7 @@ public class CardSlotScript : MonoBehaviour {
 //				target.GetComponent<SoldierControler> ().ReceiveEffect ("warShout");
 					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
 						if (obj.GetComponent<SoldierControler>() != null) 
+/*Effect*/				Instantiate (effectsAnimation [9], obj.transform);
 						obj.GetComponent<SoldierControler> ().ReceiveEffect ("warShout");
 					}
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
@@ -557,6 +572,7 @@ public class CardSlotScript : MonoBehaviour {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 				//target.GetComponent<TroopController> ().ReceiveEffect ("lowAmmo");
 				GameObject.Find("HeroBaseEnemy").GetComponent<BaseDefense>().haveAmmo = false;
+/*Effect*/		Instantiate (effectsAnimation [10], GameObject.Find("HeroBaseEnemy").transform);
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 				Destroy (this.gameObject);
 			}
