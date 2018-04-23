@@ -434,4 +434,20 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+
+	public void OpenUI(){
+		WPScript.UIopen = true;
+	}
+
+	public void CloseUI(){
+		//WPScript.UIopen = false;
+		StartCoroutine (DelayUI (false));
+	}
+
+	IEnumerator DelayUI(bool x){
+
+		yield return new WaitForSeconds (0.3f);
+		WPScript.UIopen = x;
+	}
+
 }

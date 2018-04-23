@@ -112,10 +112,17 @@ public class WPScript : MonoBehaviour {
 			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
 			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
 			WaypointMarker.GetComponent<SpriteRenderer> ().sprite = MovementIcon;
-			Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity).gameObject.name = "Waypoint"+progress;
+			StartCoroutine (CreateWaypoint (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y)));
+			//Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity).gameObject.name = "Waypoint"+progress;
 			progress++;
 		}
 			
+	}
+		
+	IEnumerator CreateWaypoint(Vector2 pos){
+		yield return new WaitForSeconds (0.1f);
+		Instantiate(WaypointMarker, pos, Quaternion.identity).gameObject.name = "Waypoint"+progress;
+	
 	}
 
 	public int MovementCounter(){

@@ -345,10 +345,15 @@ public class WPIASoldierControler : MonoBehaviour {
 				gameObject.SetActive (false);
 			}
 			audioManager.PlayAudio ("death");
-		} else if(this.vida <= 0) {
-			audioManager.PlayAudio ("death");
-			Destroy (this.gameObject);
-		}
+		} 
+//		else if(this.vida <= 0) {
+//			this.speed = 0;
+//			Instantiate (deathAngel, this.transform.position, Quaternion.identity).transform.parent = this.transform;
+//			audioManager.PlayAudio ("death");
+//			transform.position = new Vector2 (200, 200);
+//			gameObject.SetActive (false);
+//			//Destroy (this.gameObject);
+//		}
 		if (this.vida > this.vidaMax) {
 			this.vida = this.vidaMax;
 		}

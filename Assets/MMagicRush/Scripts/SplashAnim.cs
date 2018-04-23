@@ -9,6 +9,9 @@ public class SplashAnim : MonoBehaviour {
 	public string firstscene;
 	// Use this for initialization
 	void Start () {
+		PlayerPrefs.SetFloat ("GameVolume", 1);
+		PlayerPrefs.SetFloat ("GameVolumeEffects", 1);
+
 		PlayerPrefs.SetInt ("Lesson", 1);
 	}
 	

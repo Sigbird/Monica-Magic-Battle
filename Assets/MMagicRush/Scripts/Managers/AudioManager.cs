@@ -57,7 +57,7 @@ public class AudioManager : MonoBehaviour {
 	public void PlayAudio(string track){
 
 		if (EffectVolume > 0) {
-			if (track == "magic") { 
+			if (track == "cabrum") { 
 				source.PlayOneShot (audios [0]);
 			}
 			if (track == "death") { //ok
@@ -78,6 +78,28 @@ public class AudioManager : MonoBehaviour {
 			if (track == "button") {
 				source.PlayOneShot (audios [8]);
 			}
+			if (track == "chuva2") {
+				source.PlayOneShot (audios [11]);
+			}
+			if (track == "tadan") {
+				source.PlayOneShot (audios [12]);
+			}
+			if (track == "terremoto") {
+				source.PlayOneShot (audios [13]);
+			}
+			if (track == "nervosa") {
+				source.PlayOneShot (audios [14]);
+			}
+			if (track == "nao") {
+				source.PlayOneShot (audios [15]);
+			}
+			if (track == "alivio") {
+				source.PlayOneShot (audios [16]);
+			}
+			if (track == "suspiro") {
+				source.PlayOneShot (audios [17]);
+			}
+
 		}
 		if (MusicVolume > 0) {
 			if (track == "victory") { //ok

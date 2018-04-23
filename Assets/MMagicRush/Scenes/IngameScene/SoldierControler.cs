@@ -360,8 +360,8 @@ public class SoldierControler : MonoBehaviour {
 
 		if (summonCounter >= 9 && this.summon == true) {
 			summonCounter = 0;
-			GameObject t = troop;
-			t.GetComponent<SoldierControler> ().troopId = 11;
+			GameObject t =  troop;
+			t.GetComponent<SoldierControler> ().troopId = 3;
 			t.GetComponent<SoldierControler> ().step = this.step;
 			t.GetComponent<SoldierControler> ().summon = false;
 			Instantiate (t, new Vector2(this.transform.position.x - 0.5f, this.transform.position.y), Quaternion.identity);
@@ -417,9 +417,9 @@ public class SoldierControler : MonoBehaviour {
 				//transform.position = Vector2.MoveTowards (transform.position, RightExit [2].transform.position, Time.deltaTime * speed);
 			}
 			if (t.position.x > transform.position.x) {
-				transform.eulerAngles = new Vector3 (0, 180, 0);
-			} else {
 				transform.eulerAngles = new Vector3 (0, 0, 0);
+			} else {
+				transform.eulerAngles = new Vector3 (0, 180, 0);
 			}
 			transform.position = Vector2.MoveTowards (transform.position, t.position, Time.deltaTime * speed);
 			if (haveAnimation)
@@ -513,7 +513,7 @@ public class SoldierControler : MonoBehaviour {
 			Instantiate (animations [2], transform);
 			this.haveAnimation = true;
 			break;
-		case(3): //ANJINHO
+		case(3): //ANJINHO -> Cranicola
 			this.vidaMax = 2;
 			this.vida = 2;
 			this.reach = 2;
@@ -524,7 +524,9 @@ public class SoldierControler : MonoBehaviour {
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [2];
+			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [2];
+			Instantiate (animations [3], transform);
+			this.haveAnimation = true;
 			break;
 		case(4): //JOTALHÃO
 			this.vidaMax = 2;
@@ -559,20 +561,20 @@ public class SoldierControler : MonoBehaviour {
 		case(6): //PENADINHO
 			this.vidaMax = 3;
 			this.vida = 3;
-			this.reach = 3;
+			this.reach = 2;
 			this.damage = 2;
 			this.damageSpeed = 3;
 			this.range = 3;
 			this.speed = 2;
 			this.energyMax = 1;
 			this.energy = 200;
-			this.summon = false;
+			this.summon = true;
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [5];
 			//this.GetComponent<SpriteRenderer> ().flipX = true;
 			Instantiate (animations [6], transform);
 			this.haveAnimation = true;
 			break;
-		case(7): //MAURICIO
+		case(7): //MAURICIO ->
 			this.vidaMax = 10;
 			this.vida = 10;
 			this.reach = 0.5f;
@@ -588,36 +590,40 @@ public class SoldierControler : MonoBehaviour {
 		case(8): //SANSAO
 			this.vidaMax = 6;
 			this.vida = 6;
-			this.reach = 2;
+			this.reach = 1;
 			this.damage = 3;
 			this.damageSpeed = 3;
-			this.range = 2;
+			this.range = 1;
 			this.speed = 4;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [7];
+			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [7];
+			Instantiate (animations [8], transform);
+			this.haveAnimation = true;
 			break;
 		case(9): //MINGAU
 			this.vidaMax = 6;
 			this.vida = 6;
-			this.reach = 6;
+			this.reach = 1;
 			this.damage = 5;
 			this.damageSpeed = 3;
-			this.range = 6;
+			this.range = 1;
 			this.speed = 4;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [8];
+			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [8];
+			Instantiate (animations [9], transform);
+			this.haveAnimation = true;
 			break;
 		case(10): //ALFREDO
 			this.vidaMax = 9;
 			this.vida = 9;
-			this.reach = 5;
+			this.reach = 2;
 			this.damage = 5;
 			this.damageSpeed = 5;
-			this.range = 5;
+			this.range = 2;
 			this.speed = 3;
 			this.energyMax = 1;
 			this.energy = 200;

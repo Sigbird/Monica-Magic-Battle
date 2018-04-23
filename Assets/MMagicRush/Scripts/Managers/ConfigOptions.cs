@@ -9,9 +9,10 @@ public class ConfigOptions : MonoBehaviour {
 	public Toggle EffectToggle;
 	public AudioManager manager;
 
-
 	// Use this for initialization
 	void Start () {
+
+
 		if (PlayerPrefs.HasKey ("GameVolume") && PlayerPrefs.GetFloat ("GameVolume") == 1) {
 			MusicToggle.isOn = true;
 		}else{
@@ -45,8 +46,6 @@ public class ConfigOptions : MonoBehaviour {
 
 	}
 
-	public void OpenUI(bool x){
-		WPScript.UIopen = x;
-	}
+
 		
 }

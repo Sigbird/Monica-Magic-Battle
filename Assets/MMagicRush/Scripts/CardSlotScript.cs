@@ -63,6 +63,8 @@ public class CardSlotScript : MonoBehaviour {
 
 	public bool beeingDraged;
 
+	public AudioManager audioManager;
+
 
 	//SPARKOBJECT
 	public GameObject Spark;
@@ -100,6 +102,7 @@ public class CardSlotScript : MonoBehaviour {
 		defaultUUIribbon = UIribbon.color;
 		defaultUIgems = UIgems.color;
 
+		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		cardInfo = GameObject.Find ("GameController").GetComponent<GameController> ().cardInfo;
 		//Pegar lista de cartas via playerprefs
 //		cardlistIngame = PlayerPrefsX.GetIntArray ("CardsList");
@@ -416,6 +419,7 @@ public class CardSlotScript : MonoBehaviour {
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {//NEVASCA
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 /*Effect*/		Instantiate (effectsAnimation [1], new Vector3 (0, 0, 0), Quaternion.identity);
+				audioManager.PlayAudio ("chuva2");
 				GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Frozen");
 				//				if (target.GetComponent<SoldierControler> ().team == 2) {
 				//					target.GetComponent<SoldierControler> ().ReceiveEffect ("slow");
@@ -443,11 +447,11 @@ public class CardSlotScript : MonoBehaviour {
 //					if (obj.GetComponent<SoldierControler>() != null) 
 //						Instantiate (effectsAnimation [2], obj.transform);
 //						obj.GetComponent<SoldierControler> ().ReceiveEffect ("damage");
-					if (obj.GetComponent<WPIASoldierControler>() != null) 
+					if (obj.GetComponent<WPIASoldierControler> () != null) {
 						Instantiate (effectsAnimation [2], obj.transform);
-						obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("damage");
-
-/*Effect*/					
+/*Effect*/				obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("damage");
+						audioManager.PlayAudio ("shot");
+					}
 				}
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 				Destroy (this.gameObject);
@@ -457,7 +461,8 @@ public class CardSlotScript : MonoBehaviour {
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//CANJA
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 				//				target.GetComponent<SoldierControler> ().ReceiveEffect ("extraHealing");
-/*Effect*/				Instantiate (effectsAnimation [3], new Vector3 (0, 0, 0), Quaternion.identity);
+/*Effect*/		Instantiate (effectsAnimation [3], new Vector3 (0, 0, 0), Quaternion.identity);
+				audioManager.PlayAudio ("alivio");
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
 					if (obj.GetComponent<SoldierControler>() != null) 
 						obj.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
@@ -475,10 +480,16 @@ public class CardSlotScript : MonoBehaviour {
 //					target.GetComponent<SoldierControler> ().ReceiveEffect ("extraDamage");
 //				}
 					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
-						if (obj.GetComponent<SoldierControler>() != null) 
-						obj.GetComponent<SoldierControler> ().ReceiveEffect ("extraDamage");
-/*Effect*/				Instantiate (effectsAnimation [1], obj.transform.position, Quaternion.identity);
+					if (obj.GetComponent<WPIASoldierControler> () != null) {
+						obj.GetComponent<WPIASoldierControler> ().ReceiveEffect ("damage");
 					}
+					if (obj.GetComponent<SoldierControler> () != null) {
+						obj.GetComponent<SoldierControler> ().ReceiveEffect ("damage");
+							}
+					}
+/*Effect*/		Instantiate (effectsAnimation [4], new Vector3 (0, 0, 0), Quaternion.identity);
+				audioManager.PlayAudio ("cabrum");
+				Camera.main.gameObject.GetComponent<CameraShake> ().ShakeCamera ();
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 				Destroy (this.gameObject);
 			}
@@ -490,6 +501,8 @@ public class CardSlotScript : MonoBehaviour {
 	//					target.GetComponent<SoldierControler> ().ReceiveEffect ("extraSlow");
 	//				}
 /*Effect*/		Instantiate (effectsAnimation [5], new Vector3 (0, 0, 0), Quaternion.identity);
+				audioManager.PlayAudio ("terremoto");
+				Camera.main.gameObject.GetComponent<CameraShake> ().ShakeCamera ();
 					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 					if (obj.GetComponent<SoldierControler> () != null) {
 						obj.GetComponent<SoldierControler> ().ReceiveEffect ("extraSlow");
@@ -508,6 +521,7 @@ public class CardSlotScript : MonoBehaviour {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 //				target.GetComponent<SoldierControler> ().ReceiveEffect ("sleep");
 /*Effect*/		Instantiate (effectsAnimation [6], new Vector3 (0, 0, 0), Quaternion.identity);
+				audioManager.PlayAudio ("suspiro");
 					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 						if (obj.GetComponent<SoldierControler>() != null) 
 						obj.GetComponent<SoldierControler> ().ReceiveEffect ("sleep");
@@ -529,6 +543,7 @@ public class CardSlotScript : MonoBehaviour {
 //					}
 					if (obj.GetComponent<WPSoldierControler> () != null) {
 /*Effect*/					Instantiate (effectsAnimation [7], new Vector3 (0, 0, 0), Quaternion.identity);
+							audioManager.PlayAudio ("alivio");
 							obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("healing");
 					}
 				}
@@ -547,6 +562,7 @@ public class CardSlotScript : MonoBehaviour {
 //						}
 						if (obj.GetComponent<WPSoldierControler> () != null) {
 /*Effect*/						Instantiate (effectsAnimation [8], obj.transform);
+								audioManager.PlayAudio ("tadan");
 								obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("extraHealing");
 						}
 					}
@@ -561,6 +577,7 @@ public class CardSlotScript : MonoBehaviour {
 					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
 						if (obj.GetComponent<SoldierControler>() != null) 
 /*Effect*/				Instantiate (effectsAnimation [9], obj.transform);
+						audioManager.PlayAudio ("nervosa");
 						obj.GetComponent<SoldierControler> ().ReceiveEffect ("warShout");
 					}
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
@@ -573,6 +590,7 @@ public class CardSlotScript : MonoBehaviour {
 				//target.GetComponent<TroopController> ().ReceiveEffect ("lowAmmo");
 				GameObject.Find("HeroBaseEnemy").GetComponent<BaseDefense>().haveAmmo = false;
 /*Effect*/		Instantiate (effectsAnimation [10], GameObject.Find("HeroBaseEnemy").transform);
+				audioManager.PlayAudio ("nao");
 				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 				Destroy (this.gameObject);
 			}

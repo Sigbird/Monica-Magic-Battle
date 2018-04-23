@@ -165,7 +165,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 4:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
-				g.GetComponent<CardScript> ().CardID = 3;
+				g.GetComponent<CardScript> ().CardID = 4;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Explosão Mágica";
@@ -184,7 +184,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 5:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
-				g.GetComponent<CardScript> ().CardID = 3;
+				g.GetComponent<CardScript> ().CardID = 5;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Terremoto";
@@ -203,7 +203,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 6:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
-				g.GetComponent<CardScript> ().CardID = 3;
+				g.GetComponent<CardScript> ().CardID = 6;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Hora da Soneca";
@@ -222,7 +222,7 @@ public class FilterScript : MonoBehaviour {
 				break;
 			case 7:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
-				g.GetComponent<CardScript> ().CardID = 3;
+				g.GetComponent<CardScript> ().CardID = 7;
 				g.GetComponent<CardScript> ().efeito = "Magia";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Remédio";
@@ -643,12 +643,12 @@ public class FilterScript : MonoBehaviour {
 				break;
 			}
 			if (CardShop == false) {
-				foreach (int enab in enableds) {
-					if (enab == cardID) {
-						g.GetComponent<CardScript> ().activebutton.sprite = g.GetComponent<CardScript> ().activeTrue;
-						g.GetComponent<CardScript> ().isactivebutton = true;
-					}
-				}
+//				foreach (int enab in enableds) {
+//					if (enab == cardID) {
+//						g.GetComponent<CardScript> ().activebutton.sprite = g.GetComponent<CardScript> ().activeTrue;
+//						g.GetComponent<CardScript> ().isactivebutton = true;
+//					}
+//				}
 			}
 
 //			if (minimun <= 15 && CardShop == false) {
