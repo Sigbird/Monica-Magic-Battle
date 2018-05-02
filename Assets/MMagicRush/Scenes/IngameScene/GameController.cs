@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour {
 	public bool GameOver = false;
 	private bool tutorialending = false;
 	public bool tutorial;
+	public bool multiplayer;
 	public float gempertime;	
 	private float gempertimeprogress;
 	private int gempertimeMaxValue;
@@ -65,6 +66,10 @@ public class GameController : MonoBehaviour {
 	public List<dreamloLeaderBoard.Score> LeaderList;
 	// Use this for initialization
 	void Awake() {
+
+		if (PlayerPrefs.GetString ("Multiplayer") == "True") {
+			multiplayer = true;
+		}
 		EnemyDiamonds = 0;
 		Diamonds = 0;
 		gempertimeprogress = 0;
@@ -436,10 +441,16 @@ public class GameController : MonoBehaviour {
 
 
 	public void OpenUI(){
+		if (multiplayer == false) {
+			Time.timeScale = 0;
+		}
 		WPScript.UIopen = true;
 	}
 
 	public void CloseUI(){
+		if (multiplayer == false) {
+			Time.timeScale = 1;
+		}
 		//WPScript.UIopen = false;
 		StartCoroutine (DelayUI (false));
 	}

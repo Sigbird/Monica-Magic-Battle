@@ -25,7 +25,14 @@ public class SearchingMatchScript : MonoBehaviour {
 
 	public bool cancelBattle;
 
+	public bool multiplayer;
+
 	void OnEnable() {
+		if (multiplayer == false) {
+			PlayerPrefs.SetString ("Multiplayer", "False");
+		} else {
+			PlayerPrefs.SetString ("Multiplayer", "True");
+		}
 		cancelBattle = false;
 		StartCoroutine ("Finding");
 		this.SelectedCharacterID = PlayerPrefs.GetInt ("SelectedCharacter");
