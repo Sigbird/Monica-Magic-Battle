@@ -40,4 +40,11 @@ public class MultiplayerMenu : MonoBehaviour {
 		GoogleMultiplayer.Quit();
 		#endif
 	}
+
+	IEnumerator TimeLimit(){
+
+		yield return new WaitForSeconds (3);
+		GameObject.Find ("MenuBatalha").SetActive (true);
+		GameObject.Find ("MenuBatalha(Multi)").SetActive (false);
+	}
 }

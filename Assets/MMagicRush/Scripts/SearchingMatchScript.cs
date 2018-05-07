@@ -28,11 +28,11 @@ public class SearchingMatchScript : MonoBehaviour {
 	public bool multiplayer;
 
 	void OnEnable() {
-		if (multiplayer == false) {
+//		if (multiplayer == false) {
 			PlayerPrefs.SetString ("Multiplayer", "False");
-		} else {
-			PlayerPrefs.SetString ("Multiplayer", "True");
-		}
+//		} else {
+//			PlayerPrefs.SetString ("Multiplayer", "True");
+//		}
 		cancelBattle = false;
 		StartCoroutine ("Finding");
 		this.SelectedCharacterID = PlayerPrefs.GetInt ("SelectedCharacter");

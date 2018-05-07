@@ -13,6 +13,8 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
     public Button QuickGame;
     public Text QuickGameText;
 
+	public GameObject VsIAPannel;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -25,6 +27,7 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
 
     public void OnQuickGameClick() {
         QuickGameText.text = "Searching...";
+		//StartCoroutine (TimeLimit());
         //QuickGame.interactable = false;
     }
 
@@ -62,4 +65,10 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
         PlayGamesSignIn.OnLogin -= OnLogin;
         NetworkSessionManager.RoomConnectedSuccessEvent -= OnRoomConnected;
     }
+
+	IEnumerator TimeLimit(){
+
+		yield return new WaitForSeconds (3);
+		VsIAPannel.SetActive (true);
+	}
 }
