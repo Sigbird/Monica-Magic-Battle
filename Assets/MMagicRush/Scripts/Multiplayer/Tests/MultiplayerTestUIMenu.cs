@@ -8,6 +8,7 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
     public Text DisplayName;
     public Text Username;
 	public Text UsernameBatalha;
+	public Text UsernameBatalhaMulti;
     public Text Opponent;
 
     public Button QuickGame;
@@ -40,6 +41,7 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
        // Username.text = "Username: " + username;
 		Username.text = username;
 		UsernameBatalha.text = username;
+		UsernameBatalhaMulti.text = username;
     }
 
     public void SetOpponentName(string opponent) {

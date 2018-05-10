@@ -68,10 +68,10 @@ public class NetGameController : MonoBehaviour {
     }
 
     private IEnumerator StartUITimer() {
-        GameUI.ShowStart();
+        //GameUI.ShowStart();
         yield return new WaitForSeconds(2);
 
-        GameUI.HideStart();
+        //GameUI.HideStart();
         hasGameStarted = true;
     }
 

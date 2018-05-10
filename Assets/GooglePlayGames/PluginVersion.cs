@@ -43,7 +43,7 @@ namespace GooglePlayGames
     public const int MinGmsCoreVersionCode = 8487000;
 
     // used to get the right version of dependencies.
-    public const string PlayServicesVersionConstraint = "9+";
+	public const string PlayServicesVersionConstraint = "11.0.4";
   }
 }
 #endif

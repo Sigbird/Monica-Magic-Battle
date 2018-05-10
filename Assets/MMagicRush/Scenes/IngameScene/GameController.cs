@@ -64,11 +64,34 @@ public class GameController : MonoBehaviour {
 
 	public dreamloLeaderBoard LeaderBoard;
 	public List<dreamloLeaderBoard.Score> LeaderList;
+
+	public GameObject EnemyGameObject;
+	public GameObject HeroGameObject;
+	public GameObject NetClock;
+	public GameObject NetGameController;
+
 	// Use this for initialization
 	void Awake() {
 
 		if (PlayerPrefs.GetString ("Multiplayer") == "True") {
 			multiplayer = true;
+			NetGameController.SetActive (true);
+			NetClock.SetActive (true);
+
+			EnemyGameObject.GetComponent<WPIASoldierControler> ().enabled = false;
+			EnemyGameObject.GetComponent<EnemyRemoteController> ().enabled = true;
+
+			HeroGameObject.GetComponent<WPSoldierControler> ().enabled = false;
+			HeroGameObject.GetComponent<PlayerController> ().enabled = true;
+		} else {
+			NetGameController.SetActive (false);
+			NetClock.SetActive (false);
+
+			EnemyGameObject.GetComponent<WPIASoldierControler> ().enabled = true;
+			EnemyGameObject.GetComponent<EnemyRemoteController> ().enabled = false;
+
+			HeroGameObject.GetComponent<WPSoldierControler> ().enabled = true;
+			HeroGameObject.GetComponent<PlayerController> ().enabled = false;
 		}
 		EnemyDiamonds = 0;
 		Diamonds = 0;
