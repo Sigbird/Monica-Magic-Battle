@@ -313,15 +313,15 @@ public class WPIASoldierControler : MonoBehaviour {
 //		} else 
 		if (GameObject.Find ("HeroBaseEnemy").GetComponent<ChargesScript> ().inCombat == true) {
 			retreatChance = 90;
-		} else if (GameObject.Find ("Hero").GetComponent<SpriteRenderer> ().enabled == true && GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().vida == 1) {
+		} else if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive== true && GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().vida == 1) {
 			heroHarassChance = 75;
-		} else if (GameObject.Find ("Hero").GetComponent<SpriteRenderer> ().enabled == true && GameObject.Find ("Hero").transform.position.y > 0) {
+		} else if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == true && GameObject.Find ("Hero").transform.position.y > 0) {
 			heroHarassChance = 60;
 		} else {
 			heroHarassChance = 0;
 		}
 
-		if (GameObject.Find ("Hero").GetComponent<SpriteRenderer> ().enabled == false) {
+		if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == false) {
 			pushHatChance = 95;
 		} else {
 			pushHatChance = 0;
@@ -568,11 +568,11 @@ public class WPIASoldierControler : MonoBehaviour {
 				//SpendingEnergy ();
 				transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
 
-			} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
+			} else if (targetEnemy != null && this.anim.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
 				if (targetEnemy.transform.position.x < transform.position.x) {
-					GetComponent<SpriteRenderer> ().flipX = true;
+					anim.GetComponent<SpriteRenderer> ().flipX = true;
 				} else if (targetEnemy.transform.position.x > transform.position.x) {
-					GetComponent<SpriteRenderer> ().flipX = false;
+					anim.GetComponent<SpriteRenderer> ().flipX = false;
 				}
 
 				if (targetEnemy.transform.Find ("MovementMarker(Clone)"))

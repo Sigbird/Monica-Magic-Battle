@@ -74,6 +74,8 @@ public class WPSoldierControler : MonoBehaviour {
 
 	//FLAGS
 
+	public bool alive;
+
 	private bool gameEnded = false;
 
 	public bool inCombat;
@@ -205,9 +207,9 @@ public class WPSoldierControler : MonoBehaviour {
 			this.xp = GameController.enemyXp;
 		}
 
-		if (GetComponent<Animator> () != null) {
-			anim = GetComponent<Animator> ();
-		}
+//		if (GetComponent<Animator> () != null) {
+//			anim = GetComponent<Animator> ();
+//		}
 		respawningTimer = 0;
 		StartCoroutine (Respawning ());
 
@@ -439,6 +441,11 @@ public class WPSoldierControler : MonoBehaviour {
 				transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
 			} else if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f && WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == false) {
 				//anim.SetTrigger ("Walk");
+				if (WaypointMark.transform.position.x < transform.position.x) {
+					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = true;
+				} else if (WaypointMark.transform.position.x > transform.position.x) {
+					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = false;
+				}
 				transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
 			} else {
 				if (WaypointMark.GetComponent<MovementMarkerScript> ().capture == true && WaypointMark.GetComponent<MovementMarkerScript> ().enabled == true) {
@@ -489,9 +496,9 @@ public class WPSoldierControler : MonoBehaviour {
 			} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
 
 				if (targetEnemy.transform.position.x < transform.position.x) {
-					GetComponent<SpriteRenderer> ().flipX = true;
+					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = true;
 				} else if (targetEnemy.transform.position.x > transform.position.x) {
-					GetComponent<SpriteRenderer> ().flipX = false;
+					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = false;
 				}
 
 				//if (targetEnemy.transform.Find ("MovementMarker(Clone)"))
@@ -540,7 +547,7 @@ public class WPSoldierControler : MonoBehaviour {
 		//CONFIGURAÇÃO DE TIPO DE HEROI
 		int id;
 		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1) {
-			heroID =	PlayerPrefs.GetInt ("SelectedCharacter");
+			heroID = 0;//PlayerPrefs.GetInt ("SelectedCharacter");
 		} else {
 			heroID = 1;
 		}
@@ -558,6 +565,10 @@ public class WPSoldierControler : MonoBehaviour {
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim.SetInteger ("Char", 0);
+			this.anim.GetComponent<SpriteRenderer> ().enabled = false;
+			this.gameObject.GetComponent<Animator> ().enabled = false;
+			this.anim = transform.Find ("MonicaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+			this.anim.GetComponent<SpriteRenderer>().enabled = true;
 			Debug.Log ("Monica");
 			break;
 		case(1):
@@ -945,7 +956,9 @@ public class WPSoldierControler : MonoBehaviour {
 	IEnumerator Respawning(){
 		GameObject.Find ("RespawnTimerHero").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
 		yield return new WaitForSeconds (0.01f);
-		this.gameObject.GetComponent<SpriteRenderer> ().enabled = false;
+		alive = false;
+		//this.gameObject.GetComponent<SpriteRenderer> ().enabled = false;
+		this.anim.GetComponent<SpriteRenderer>().enabled = false;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
 		this.healtbarSoldier.SetActive (false);
 		//this.energybarSoldier.SetActive (false);
@@ -960,7 +973,8 @@ public class WPSoldierControler : MonoBehaviour {
 
 		if(heroUnity)
 			transform.position = heroBase.transform.position;
-		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+		//this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+		this.anim.GetComponent<SpriteRenderer>().enabled = true;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
 		this.healtbarSoldier.SetActive (true);
 //		if (heroUnity)
@@ -973,6 +987,7 @@ public class WPSoldierControler : MonoBehaviour {
 		//this.targetEnemy = SeekEnemyTarget();
 		respawningTimer = 12;
 		Arrival.Play ();
+		alive = true;
 	}
 
 	public GameObject SeekEnemyTarget (){
