@@ -41,6 +41,7 @@ public class TutorialController : MonoBehaviour {
 	public GameObject tutorialArrows;
 
 	void Awake() {
+		GetComponent<GameController> ().enabled = true;
 		//PlayerPrefs.SetInt ("Lesson", 5);
 		//PlayerPrefs.SetString ("TutorialCoins", "false");
 		Time.timeScale = 1;
@@ -218,6 +219,7 @@ public class TutorialController : MonoBehaviour {
 	}
 
 	public void StartTutorialEnding(){
+		GetComponent<GameController> ().enabled = true;
 		HeroEnemy.SetActive (true);
 		DeckPile.SetActive (true);
 		StartCoroutine (Lesson6 ());

@@ -12,17 +12,17 @@ public class PlayerManager : MonoBehaviour {
         GameUI.SetLives(livesCounter);
 	}		
 
-    private void OnCollisionEnter2D(Collision2D collision) {
-        livesCounter--;
-        GameUI.SetLives(livesCounter);
-
-        if (livesCounter == 0) {
-            GameUI.ShowEnd();
-            NetGameController.Instance.EndGame();
-
-            StartCoroutine(BackToMenuOnEnd());
-        }
-    }
+//    private void OnCollisionEnter2D(Collision2D collision) {
+//       livesCounter--;
+//        GameUI.SetLives(livesCounter);
+//
+//        if (livesCounter == 0) {
+//            GameUI.ShowEnd();
+//            NetGameController.Instance.EndGame();
+//
+//            StartCoroutine(BackToMenuOnEnd());
+//        }
+//    }
 
     private IEnumerator BackToMenuOnEnd() {
         yield return new WaitForSeconds(3);

@@ -492,6 +492,12 @@ public class WPSoldierControler : MonoBehaviour {
 				anim.SetTrigger ("Walk");
 				//SpendingEnergy ();
 				//transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
+				if (targetEnemy.transform.position.x < transform.position.x) {
+					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = true;
+				} else if (targetEnemy.transform.position.x > transform.position.x) {
+					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = false;
+				}
+
 
 			} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
 
@@ -547,7 +553,7 @@ public class WPSoldierControler : MonoBehaviour {
 		//CONFIGURAÇÃO DE TIPO DE HEROI
 		int id;
 		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1) {
-			heroID = 0;//PlayerPrefs.GetInt ("SelectedCharacter");
+			heroID = PlayerPrefs.GetInt ("SelectedCharacter");
 		} else {
 			heroID = 1;
 		}
@@ -564,9 +570,9 @@ public class WPSoldierControler : MonoBehaviour {
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
-			this.anim.SetInteger ("Char", 0);
-			this.anim.GetComponent<SpriteRenderer> ().enabled = false;
-			this.gameObject.GetComponent<Animator> ().enabled = false;
+			//	this.anim.SetInteger ("Char", 0);
+			//this.anim.GetComponent<SpriteRenderer> ().enabled = false;
+			//this.gameObject.GetComponent<Animator> ().enabled = false;
 			this.anim = transform.Find ("MonicaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
 			this.anim.GetComponent<SpriteRenderer>().enabled = true;
 			Debug.Log ("Monica");
@@ -582,7 +588,9 @@ public class WPSoldierControler : MonoBehaviour {
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
-			this.anim.SetInteger ("Char", 1);
+			//this.anim.SetInteger ("Char", 1);
+			this.anim = transform.Find ("CebolinhaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+			this.anim.GetComponent<SpriteRenderer>().enabled = true;
 			Debug.Log ("Cebolinha");
 			break;
 		case(2):
@@ -595,7 +603,9 @@ public class WPSoldierControler : MonoBehaviour {
 			this.speed = 12;
 			this.energyMax = 4;
 			this.energy = 4;
-			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			this.anim = transform.Find ("MagaliAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+			this.anim.GetComponent<SpriteRenderer>().enabled = true;
 			Debug.Log ("Magali");
 			break;
 		case(3):
@@ -608,7 +618,9 @@ public class WPSoldierControler : MonoBehaviour {
 			this.speed = 13;
 			this.energyMax = 4;
 			this.energy = 4;
-			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			this.anim = transform.Find ("CascãoAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+			this.anim.GetComponent<SpriteRenderer>().enabled = true;
 			Debug.Log ("Cascao");
 			break;
 		case(4):
@@ -621,7 +633,9 @@ public class WPSoldierControler : MonoBehaviour {
 			this.speed = 13;
 			this.energyMax = 4;
 			this.energy = 4;
-			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			this.anim = transform.Find ("ChicoAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+			this.anim.GetComponent<SpriteRenderer>().enabled = true;
 			Debug.Log ("Chico");
 			break;
 		default:
@@ -634,7 +648,9 @@ public class WPSoldierControler : MonoBehaviour {
 			this.speed = 13;
 			this.energyMax = 4;
 			this.energy = 4;
-			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			this.anim = transform.Find ("MonicaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+			this.anim.GetComponent<SpriteRenderer>().enabled = true;
 			Debug.Log ("Monica");
 			break;
 
@@ -957,7 +973,7 @@ public class WPSoldierControler : MonoBehaviour {
 		GameObject.Find ("RespawnTimerHero").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
 		yield return new WaitForSeconds (0.01f);
 		alive = false;
-		//this.gameObject.GetComponent<SpriteRenderer> ().enabled = false;
+		this.gameObject.GetComponent<SpriteRenderer> ().enabled = false;
 		this.anim.GetComponent<SpriteRenderer>().enabled = false;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
 		this.healtbarSoldier.SetActive (false);
@@ -973,7 +989,7 @@ public class WPSoldierControler : MonoBehaviour {
 
 		if(heroUnity)
 			transform.position = heroBase.transform.position;
-		//this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		this.anim.GetComponent<SpriteRenderer>().enabled = true;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
 		this.healtbarSoldier.SetActive (true);

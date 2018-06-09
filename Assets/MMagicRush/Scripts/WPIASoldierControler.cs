@@ -223,9 +223,9 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.xp = GameController.enemyXp;
 		}
 
-		if (GetComponent<Animator> () != null) {
-			anim = GetComponent<Animator> ();
-		}
+//		if (GetComponent<Animator> () != null) {
+//			anim = GetComponent<Animator> ();
+//		}
 		respawningTimer = 0.5f;
 		StartCoroutine (Respawning ());
 
@@ -256,9 +256,9 @@ public class WPIASoldierControler : MonoBehaviour {
 
 		// VELOCIDADE
 		if (previous.x < transform.position.x) {
-			GetComponent<SpriteRenderer> ().flipX = false;
+			this.anim.GetComponent<SpriteRenderer> ().flipX = false;
 		} else if (previous.x > transform.position.x) {
-			GetComponent<SpriteRenderer> ().flipX = true;
+			this.anim.GetComponent<SpriteRenderer> ().flipX = true;
 		}
 
 		velocity = ((transform.position - previous).magnitude) / Time.deltaTime;
@@ -550,7 +550,7 @@ public class WPIASoldierControler : MonoBehaviour {
 
 		// PERSEGUINDO E ATACANDO ALVO ENCONTRADO
 
-		if (seeking == false && this.targetEnemy != null) { 
+		if (seeking == false && this.targetEnemy != null ) { 
 
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag("enemywaypoint")) {
 				Destroy (o.gameObject);
@@ -569,25 +569,29 @@ public class WPIASoldierControler : MonoBehaviour {
 				transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
 
 			} else if (targetEnemy != null && this.anim.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
-				if (targetEnemy.transform.position.x < transform.position.x) {
-					anim.GetComponent<SpriteRenderer> ().flipX = true;
-				} else if (targetEnemy.transform.position.x > transform.position.x) {
-					anim.GetComponent<SpriteRenderer> ().flipX = false;
-				}
+				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled = true) {
+					if (targetEnemy.transform.position.x < transform.position.x) {
+						anim.GetComponent<SpriteRenderer> ().flipX = true;
+					} else if (targetEnemy.transform.position.x > transform.position.x) {
+						anim.GetComponent<SpriteRenderer> ().flipX = false;
+					}
 
-				if (targetEnemy.transform.Find ("MovementMarker(Clone)"))
-					Destroy (targetEnemy.transform.Find ("MovementMarker(Clone)").gameObject);
+					if (targetEnemy.transform.Find ("MovementMarker(Clone)"))
+						Destroy (targetEnemy.transform.Find ("MovementMarker(Clone)").gameObject);
 				
-				if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
-					danoCD = 0;
-					anim.SetTrigger ("Attack");
-					StartCoroutine (DealDamage ());
-				} else {
+					if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
+						danoCD = 0;
+						anim.SetTrigger ("Attack");
+						StartCoroutine (DealDamage ());
+					} else {
 //					if (tutorial) {
 //						danoCD += Time.deltaTime * 20;
 //					} else {
 //						danoCD += Time.deltaTime * 10;
 //					}
+					}
+				} else {
+					targetEnemy = null;
 				}
 			} 
 		} else if(this.targetEnemy == null)  {
@@ -638,6 +642,8 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim.SetInteger ("Char", 0);
+			this.anim = transform.Find ("MonicaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+			this.anim.GetComponent<SpriteRenderer>().enabled = true;
 			if (team == 1)
 				GameObject.Find ("HeroPortrait").GetComponent<Image> ().sprite = heroPortraits [0];
 			Debug.Log ("Monica");
@@ -654,6 +660,8 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim.SetInteger ("Char", 1);
+			this.anim = transform.Find ("CebolinhaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+			this.anim.GetComponent<SpriteRenderer>().enabled = true;
 			if (team == 1)
 				GameObject.Find ("HeroPortrait").GetComponent<Image> ().sprite = heroPortraits [1];
 			Debug.Log ("Cebolinha");
@@ -669,6 +677,8 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.energyMax = 4;
 			this.energy = 4;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			this.anim = transform.Find ("MagaliAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+			this.anim.GetComponent<SpriteRenderer>().enabled = true;
 			Debug.Log ("Magali");
 			break;
 		case(3):
@@ -682,6 +692,8 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.energyMax = 4;
 			this.energy = 4;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			this.anim = transform.Find ("CascãoAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+			this.anim.GetComponent<SpriteRenderer>().enabled = true;
 			break;
 		default:
 			this.vidaMax = 6;
@@ -915,7 +927,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		}
 		if (effect == "slow") {
 			GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Frozen");
-			this.GetComponent<SpriteRenderer> ().color = new Color (0.5f, 0.5f, 1f);
+			this.anim.GetComponent<SpriteRenderer> ().color = new Color (0.5f, 0.5f, 1f);
 			this.speed = speed / 2;
 		}
 		if (effect == "extraSlow") {
@@ -962,7 +974,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.reach -= 2;
 		}
 		if (effects == "slow") {
-			this.GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f);
+			this.anim.GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f);
 			GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Unfrozen");
 			this.speed = maxSpeed;
 		}
@@ -1014,7 +1026,7 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	IEnumerator Respawning(){
 		yield return new WaitForSeconds (0.01f);
-		this.gameObject.GetComponent<SpriteRenderer> ().enabled = false;
+		this.anim.GetComponent<SpriteRenderer> ().enabled = false;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
 		this.healtbarSoldier.SetActive (false);
 		//this.energybarSoldier.SetActive (false);
@@ -1030,7 +1042,7 @@ public class WPIASoldierControler : MonoBehaviour {
 
 		if(heroUnity)
 			transform.position = heroBase.transform.position;
-		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+		this.anim.GetComponent<SpriteRenderer>().enabled = true;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
 		this.healtbarSoldier.SetActive (true);
 //		UpdateLife ();

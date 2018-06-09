@@ -68,13 +68,15 @@ public class ChargesScript : MonoBehaviour {
 			}
 		} else {
 			if (this.tag == "enemytower1") {
-				if (progress >= 1 && endgame == false) {
-					VictoryScreen.SetActive (true);
-					Time.timeScale = 0;
-					endgame = true;
+				if (tutorial == false) {
+					if (progress >= 1 && endgame == false) {
+						VictoryScreen.SetActive (true);
+						Time.timeScale = 0;
+						endgame = true;
+					}
+					PlayerPrefs.SetInt ("playerCharges", charges);
+					gc.playerCharges = this.charges;
 				}
-				PlayerPrefs.SetInt ("playerCharges", charges);
-				gc.playerCharges = this.charges;
 			} else {
 				if (progress >= 1 && endgame == false) {
 					VictoryScreen.SetActive (true);

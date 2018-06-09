@@ -84,11 +84,11 @@ public class HeroSpecialHability : MonoBehaviour {
 					yield return new WaitForSeconds (effectDuration);
 					break;
 				case 1://CEBOLINHA INVISIVEl
-					GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, .5f);
+					transform.FindChild("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, .5f);  
 					transform.FindChild ("Platform").gameObject.SetActive (false);
 					//transform.FindChild ("HealtBarSoldier").gameObject.SetActive (false);
 					yield return new WaitForSeconds (effectDuration);
-					GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
+					transform.Find("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
 					transform.FindChild ("Platform").gameObject.SetActive (true);
 					//transform.FindChild ("HealtBarSoldier").gameObject.SetActive (true);
 					break;
