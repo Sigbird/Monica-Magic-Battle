@@ -15,7 +15,7 @@ public class PlayGamesSignIn : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Social.localUser.Authenticate(OnAuth);  
-//		LeaderBoard.LoadScores ();
+		LeaderBoard.LoadScores ();
 	}
 
 	private void OnReport(bool success) {

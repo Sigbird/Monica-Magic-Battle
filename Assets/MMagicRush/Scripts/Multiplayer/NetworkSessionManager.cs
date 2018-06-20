@@ -156,7 +156,8 @@ namespace YupiPlay {
 		public void LoadGame() {
 			state = States.LOADING;
 
-            SceneTestHelper.LoadTestGame();
+			SceneTestHelper.LoadGame();
+            //SceneTestHelper.LoadTestGame();
             //Carrega jogo            
 		}
 

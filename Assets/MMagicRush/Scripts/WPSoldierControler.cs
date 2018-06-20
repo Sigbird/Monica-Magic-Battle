@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using YupiPlay.MMB.Lockstep;
+using System;
 
 public class WPSoldierControler : MonoBehaviour {
 
@@ -16,6 +18,7 @@ public class WPSoldierControler : MonoBehaviour {
 	//public TipoSoldado Tipo;
 
 	public bool tutorial;
+	public bool multiplayer;
 	public bool heroUnity;
 
 	public int troopId;
@@ -188,9 +191,7 @@ public class WPSoldierControler : MonoBehaviour {
 
 		if (heroUnity) {// CONFIGURAÇÃO DE HEROIS
 			SetupHero();
-		} else {//CONFIGURAÇÃO DE TROPAS
-			SetupTroop(troopId);
-		}
+		} 
 
 		//CONFIGURAÇÃO EM COMUM 
 		UpdateLife ();
@@ -306,9 +307,9 @@ public class WPSoldierControler : MonoBehaviour {
 		}
 
 		//	
-		//FLAGS PARA HEALING
+		//FLAGS PARA HEALING E XP
 		//
-		if (this.team == 1 && this.gameObject.GetComponent<SpriteRenderer> ().enabled == true) {
+		if (this.team == 1 && this.alive ==  true) {
 //			if (this.transform.position.y < -1) {
 //				this.healing = true;
 //			} else {
@@ -322,7 +323,7 @@ public class WPSoldierControler : MonoBehaviour {
 			}
 		} 
 
-		if (this.team == 2 && this.gameObject.GetComponent<SpriteRenderer> ().enabled == true) {
+		if (this.team == 2 && this.alive ==  true) {
 //			if (this.transform.position.y > 1) {
 //				this.healing = true;
 //			} else {
@@ -412,7 +413,6 @@ public class WPSoldierControler : MonoBehaviour {
 		if (XpBar != null)
 			XpBar.SetFloat ("Blend", xp / xpMax);
 
-		//Debug.Log ("xp: " + xp / xpMax);
 
 		//
 		//COOLDOWN DE EFEITOS
@@ -432,7 +432,7 @@ public class WPSoldierControler : MonoBehaviour {
 
 		//SEGUINDO OS MARCADORES DE MOVIMENTO
 
-		if (GetNewWaypoint () != null) {
+		if (GetNewWaypoint () != null && multiplayer == false) {
 			lockedTarget = false;
 			seeking = false;
 			WaypointMark = GetNewWaypoint ();
@@ -479,9 +479,6 @@ public class WPSoldierControler : MonoBehaviour {
 				}
 			
 
-//		if (targetEnemy == null ) {//CONFIRMA SE ALVO VIVE
-//			seeking = true;
-//		} else 
 
 		// PERSEGUINDO E ATACANDO ALVO ENCONTRADO
 
@@ -506,9 +503,7 @@ public class WPSoldierControler : MonoBehaviour {
 				} else if (targetEnemy.transform.position.x > transform.position.x) {
 					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = false;
 				}
-
-				//if (targetEnemy.transform.Find ("MovementMarker(Clone)"))
-				//Destroy (targetEnemy.transform.Find ("MovementMarker(Clone)").gameObject);
+					
 
 				if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
 					anim.SetTrigger ("Attack");
@@ -525,26 +520,6 @@ public class WPSoldierControler : MonoBehaviour {
 			seeking = true;
 		} 
 		danoCD += Time.deltaTime * 2;
-		//ANIMACAODE TIRO DE PROJETEIS
-		//					if (inCombat == true && arrowSlot != null && this.Tipo == TipoSoldado.Lanceiro && targetEnemy != null) {
-		//						if (Vector3.Distance (arrowSlot.transform.position, targetEnemy.transform.position) > 0.1f && targetEnemy != null) {
-		//							arrowSlot.transform.position = Vector3.MoveTowards (arrowSlot.transform.position, targetEnemy.transform.position, Time.deltaTime * 5);
-		//							Vector3 moveDirection = arrowSlot.transform.position - targetEnemy.transform.position; 
-		//							if (moveDirection != Vector3.zero) {
-		//								float angle = Mathf.Atan2 (moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-		//								arrowSlot.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
-		//							}
-		//						} else {
-		//							//arrowSlot.GetComponent<ArrowScript> ().DestroyArrow ();
-		//							//arrowSlot = null;
-		//						}
-		//					}
-
-		//FIM DO COMBATE
-		//					if (targetEnemy.GetComponent<WPIASoldierControler> ().vida <= 0 || targetEnemy.GetComponent<WPIASoldierControler>() == null) {
-		//						inCombat = false;
-		//					}
-		//	
 
 
 	}
@@ -667,199 +642,14 @@ public class WPSoldierControler : MonoBehaviour {
 		}
 
 	}
-
-	public void SetupTroop(int id){
-
-		switch (id) {
-		case(1): // BIDU
-			this.vidaMax = 2;
-			this.vida = 2;
-			this.reach = 2;
-			this.damage = 1;
-			this.damageSpeed = 3;
-			this.range = 2;
-			this.speed = 4;
-			this.energyMax = 1;
-			this.energy = 200;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites[0];
-			break;
-		case(2): // ASTRONAUTA
-			this.vidaMax = 2;
-			this.vida = 2;
-			this.reach = 4;
-			this.damage = 1;
-			this.damageSpeed = 3;
-			this.range = 4;
-			this.speed = 5;
-			this.energyMax = 1;
-			this.energy = 200;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [1];
-			this.GetComponent<SpriteRenderer> ().flipX = true;
-			break;
-		case(3): //ANJINHO
-			this.vidaMax = 2;
-			this.vida = 2;
-			this.reach = 3;
-			this.damage = 1;
-			this.damageSpeed = 3;
-			this.range = 3;
-			this.speed = 4;
-			this.energyMax = 1;
-			this.energy = 200;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [2];
-			break;
-		case(4): //JOTALHÃO
-			this.vidaMax = 2;
-			this.vida = 2;
-			this.reach = 2;
-			this.damage = 1;
-			this.damageSpeed = 3;
-			this.range = 2;
-			this.speed = 2;
-			this.energyMax = 1;
-			this.energy = 200;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [3];
-			break;
-		case(5): //PITECO
-			this.vidaMax = 2;
-			this.vida = 2;
-			this.reach = 2;
-			this.damage = 1;
-			this.damageSpeed = 3;
-			this.range = 2;
-			this.speed = 4;
-			this.energyMax = 1;
-			this.energy = 200;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [4];
-			break;
-		case(6): //PENADINHO
-			this.vidaMax = 2;
-			this.vida = 2;
-			this.reach = 5;
-			this.damage = 1;
-			this.damageSpeed = 3;
-			this.range = 5;
-			this.speed = 4;
-			this.energyMax = 1;
-			this.energy = 200;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [5];
-			this.GetComponent<SpriteRenderer> ().flipX = true;
-			break;
-		case(7): //MAURICIO
-			this.vidaMax = 10;
-			this.vida = 10;
-			this.reach = 0.5f;
-			this.damage = 5;
-			this.damageSpeed = 3;
-			this.range = 2;
-			this.speed = 3;
-			this.energyMax = 1;
-			this.energy = 200;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [6];
-			break;
-		case(8): //SANSAO
-			this.vidaMax = 6;
-			this.vida = 6;
-			this.reach = 2;
-			this.damage = 3;
-			this.damageSpeed = 3;
-			this.range = 2;
-			this.speed = 4;
-			this.energyMax = 1;
-			this.energy = 200;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [7];
-			break;
-		case(9): //MINGAU
-			this.vidaMax = 6;
-			this.vida = 6;
-			this.reach = 6;
-			this.damage = 5;
-			this.damageSpeed = 3;
-			this.range = 6;
-			this.speed = 4;
-			this.energyMax = 1;
-			this.energy = 200;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [8];
-			break;
-		case(10): //ALFREDO
-			this.vidaMax = 12;
-			this.vida = 12;
-			this.reach = 8;
-			this.damage = 20;
-			this.damageSpeed = 3;
-			this.range = 8;
-			this.speed = 5;
-			this.energyMax = 1;
-			this.energy = 200;
-			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [9];
-			break;
-		default:
-			Debug.LogWarning ("TroopOutofRange");
-			break;
-
-		}
-
-		// CONFIGURAÇÃO DE EQUIPE
-		if (this.team == 1) {
-			this.tag = "enemysoldier1";
-		} else {
-			this.tag = "enemysoldier2";
-			this.GetComponent<SpriteRenderer>().flipX = true;
-			platform.GetComponent<SpriteRenderer> ().color = Color.red;
-
-		}
-	}
-
-
-//	public void TriggerSpecial(){
-//		HeroSpecialHability special = GetComponent<HeroSpecialHability>();
-//		if (special != null) {
-//			special.StartEffect (heroID);
-//		}
-//	}
+		
 
 	public void UpdateLife(){
 		this.healtbarSoldier.GetComponent<HealtBar> ().Life = this.vida;
 		this.healtbarSoldier.GetComponent<HealtBar> ().MaxLife = this.vidaMax;
 		this.healtbarSoldier.GetComponent<HealtBar> ().UpdateHealtbars();
 	}
-
-//	public void UpdateEnergy(){
-//		this.energybarSoldier.GetComponent<HealtBar> ().Life = this.energy;
-//		this.energybarSoldier.GetComponent<HealtBar> ().MaxLife = this.energyMax;
-//		this.energybarSoldier.GetComponent<HealtBar> ().UpdateHealtbars();
-//	}
-
-//	public void SpendingEnergy(){
-//		energyCounter += Time.deltaTime;
-//		if (energyCounter > 2 && resting == false) {
-//			this.energy--;
-//			UpdateEnergy ();
-//			energyCounter = 0;
-//		}
-//
-//		if (energyCounter > 2 && resting == true) {
-//			this.energy++;
-//			UpdateEnergy ();
-//			energyCounter = 0;
-//		}
-//
-//		if (this.energy >= this.energyMax) {
-//			resting = false;
-//			//this.speed = maxSpeed;
-//			tired = false;
-//		}
-//
-//		if (this.energy <= 0) {
-//			resting = true;
-//
-//			if (tired == false) {
-//				tired = true;
-//				//this.speed = speed / 2;
-//			}
-//		}
-//
-//	}
+		
 
 	public void ReceiveEffect(string effect){
 		effects = effect;
@@ -1107,27 +897,47 @@ public class WPSoldierControler : MonoBehaviour {
 		danoCD = 0;
 		yield return new WaitForSeconds (0.5f);
 		if (targetEnemy != null) {
-			if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO HEROI
-				//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
-				//targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife ();
-				targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
-				if (this.range > 1)
-					TrowArrow ();
-				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
+			if(multiplayer == true){ //ALVO HEROI MULTIPLAYER
+				if (targetEnemy.GetComponent<EnemyRemoteController> ().alive == false) {
 					this.targetEnemy = null;
 					lockedTarget = false;
+				} else {
+					if (NetGameController.Instance.HasGameStarted()) {
+						CommandController.AttackEnemyHero ();
+						NetClock.Instance.RegisterInputTime();
+					} 
+					if (this.range > 1)
+						TrowArrow ();
+				}
+			}else if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO HEROI IA
+				//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
+				//targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife ();
+				//targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
+//				if (this.range > 1)
+//					TrowArrow ();
+				if (targetEnemy.GetComponent<WPIASoldierControler> ().alive == false) { // ALVO MORREU
+					this.targetEnemy = null;
+					lockedTarget = false;
+				} else {
+					targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
+					if (this.range > 1)
+						TrowArrow ();
 				}
 			} else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-				targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
-				if (this.range > 1)
-					TrowArrow ();
+//				targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
+//				if (this.range > 1)
+//					TrowArrow ();
 				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
 					this.targetEnemy = null;
 					lockedTarget = false;
+				} else {
+					targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
+					if (this.range > 1)
+						TrowArrow ();
 				}
-			} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//ALVO TROPA
+			} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//ALVO TORRE
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<ChargesScript> ().progress += 0.3f;
@@ -1137,25 +947,7 @@ public class WPSoldierControler : MonoBehaviour {
 //					this.targetEnemy = null;
 //					lockedTarget = false;
 //				}
-				//ALVO BASE
-				//							if(targetEnemy.tag == "waypoint"){
-				//								if (Progress == 2) {
-				//									if (heroUnity) {
-				//										heroBase.GetComponent<ChargesScript> ().charges++;
-				//										GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
-				//										//StartCoroutine (Respawning ());
-				//									}
-				//								} else {
-				//									Progress++;
-				//									targetEnemy = null;
-				//								}
-				//							}
-				if (heroUnity) {
-					//								heroBase.GetComponent<ChargesScript> ().charges += 1;
-					//								StartCoroutine (Respawning ());
-					//								GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
 
-				}
 			}
 
 			if (this.range > 1) {

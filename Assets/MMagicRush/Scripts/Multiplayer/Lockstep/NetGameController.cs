@@ -46,6 +46,8 @@ public class NetGameController : MonoBehaviour {
     }
 
     private void Selector(bool isInput, NetCommand cmd) {
+
+		//Leitura de Comandos de Movimento
         if (cmd.GetCommand() == NetCommand.MOVE) {            
             var position = (cmd as MoveCommand).GetPosition();
 
@@ -58,6 +60,20 @@ public class NetGameController : MonoBehaviour {
             }            
         }
 
+		//Leitura de Comandos de Ataque a Heroi
+		if (cmd.GetCommand() == NetCommand.ATK) {            
+			var position = (cmd as MoveCommand).GetPosition();
+
+			if (isInput) {
+				EnemyController.gameObject.GetComponent<WPIASoldierControler> ().ReceiveDamage (1);
+				EnemyController.GetEnemyInputLatency();
+			} else {
+				PlayerController.gameObject.GetComponent<WPSoldierControler> ().ReceiveDamage (1);
+				NetClock.Instance.GetInputLatency();
+			}            
+		}
+
+		//Leitura de Comandos de Fim do Jogo
         if (isInput && cmd.GetCommand() == NetCommand.END) {
             NetClock.Instance.StopClock();
         }

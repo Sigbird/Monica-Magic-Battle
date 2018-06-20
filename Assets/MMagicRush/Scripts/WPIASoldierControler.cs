@@ -17,6 +17,8 @@ public class WPIASoldierControler : MonoBehaviour {
 	//public TipoSoldado Tipo;
 	public bool tutorial;
 
+	public bool multiplayer;
+
 	public bool heroUnity;
 
 	public int heroID;
@@ -105,6 +107,8 @@ public class WPIASoldierControler : MonoBehaviour {
 	public float cdSeek;
 
 	public float respawningTimer;
+
+	public bool alive;
 
 	//STATUS
 
@@ -498,7 +502,7 @@ public class WPIASoldierControler : MonoBehaviour {
 //				twisting = false;
 //				WaypointMark = GetNewWaypoint ();
 //			}
-		if (GetNewWaypoint () != null) {
+		if (GetNewWaypoint () != null && multiplayer == false) {
 			//lockedTarget = false;
 			//seeking = false;
 			WaypointMark = GetNewWaypoint ();
@@ -1026,6 +1030,8 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	IEnumerator Respawning(){
 		yield return new WaitForSeconds (0.01f);
+		this.alive = false;
+		this.GetComponent<SpriteRenderer> ().enabled = false;
 		this.anim.GetComponent<SpriteRenderer> ().enabled = false;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
 		this.healtbarSoldier.SetActive (false);
@@ -1040,9 +1046,11 @@ public class WPIASoldierControler : MonoBehaviour {
 
 		yield return new WaitForSeconds (respawningTimer);
 
+		this.alive = true;
 		if(heroUnity)
 			transform.position = heroBase.transform.position;
 		this.anim.GetComponent<SpriteRenderer>().enabled = true;
+		this.GetComponent<SpriteRenderer> ().enabled = true;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
 		this.healtbarSoldier.SetActive (true);
 //		UpdateLife ();

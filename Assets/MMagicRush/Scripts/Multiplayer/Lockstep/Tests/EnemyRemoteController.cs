@@ -5,7 +5,9 @@ using YupiPlay.MMB.Lockstep;
 using System.Diagnostics;
 
 public class EnemyRemoteController : BasePlayerController {                
-    private Stopwatch watch;            
+    private Stopwatch watch;
+
+	public bool alive;
 
     public void GetEnemyInputLatency() {
         watch.Stop();

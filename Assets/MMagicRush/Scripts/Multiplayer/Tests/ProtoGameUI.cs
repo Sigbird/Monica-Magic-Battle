@@ -6,6 +6,7 @@ using YupiPlay;
 
 public class ProtoGameUI : MonoBehaviour {
     public Text Player;
+	public Text PlayerUI;
     public Text Enemy;
     public Text StartText;
     public Text EndText;
@@ -15,7 +16,8 @@ public class ProtoGameUI : MonoBehaviour {
     void Start () {
 #if !UNITY_EDITOR
         Player.text = NetworkSessionManager.Instance.Match.Player.DisplayName;
-        Player.text = NetworkSessionManager.Instance.Match.Opponent.DisplayName;
+		PlayerUI.text = NetworkSessionManager.Instance.Match.Player.DisplayName;
+		//Enemy.text = NetworkSessionManager.Instance.Match.Opponent.DisplayName;
 #endif
     }
 	
@@ -25,18 +27,18 @@ public class ProtoGameUI : MonoBehaviour {
 	}
 
     public void ShowStart() {
-        StartText.gameObject.SetActive(true);
+       // StartText.gameObject.SetActive(true);
     }
 
     public void HideStart() {
-        StartText.gameObject.SetActive(false);
+       // StartText.gameObject.SetActive(false);
     }
 
     public void ShowEnd() {
-        EndText.gameObject.SetActive(true);
+       // EndText.gameObject.SetActive(true);
     }
 
     public void SetLives(int lives) {
-        LivesCounter.text = "Lives: " + lives.ToString();
+       // LivesCounter.text = "Lives: " + lives.ToString();
     }
 }

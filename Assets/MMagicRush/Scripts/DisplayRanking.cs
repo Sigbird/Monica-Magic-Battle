@@ -20,7 +20,7 @@ public class DisplayRanking : MonoBehaviour {
 	}
 
 	public void ShowScores(){
-		Debug.Log ("PlayerName: " + PlayerPrefs.GetString ("PlayerName"));
+		Debug.Log ("PlayerName: " + PlayerPrefs.GetString ("PlayerName") + LeaderList.Count);
 		for (int i = 0; i < LeaderList.Count; i++) {
 			if (LeaderList [i].playerName == PlayerPrefs.GetString ("PlayerName")) {
 				ScoreElementPlayer.GetComponent<ElementInfo> ().UIname.text = LeaderList [i].playerName;

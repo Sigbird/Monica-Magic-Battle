@@ -79,7 +79,10 @@ public class GameController : MonoBehaviour {
 				NetGameController.SetActive (true);
 				NetClock.SetActive (true);
 				EnemyGameObject.GetComponent<EnemyRemoteController> ().enabled = true;
+				EnemyGameObject.GetComponent<WPIASoldierControler> ().multiplayer = true;
 				HeroGameObject.GetComponent<PlayerController> ().enabled = true;
+				HeroGameObject.GetComponent<WPSoldierControler> ().multiplayer = true;
+
 			}
 
 			EnemyGameObject.GetComponent<WPIASoldierControler> ().enabled = false;
@@ -92,7 +95,9 @@ public class GameController : MonoBehaviour {
 				NetClock.SetActive (false);
 
 				EnemyGameObject.GetComponent<EnemyRemoteController> ().enabled = false;
+				EnemyGameObject.GetComponent<WPIASoldierControler> ().multiplayer = false;
 				HeroGameObject.GetComponent<PlayerController> ().enabled = false;
+				HeroGameObject.GetComponent<WPSoldierControler> ().multiplayer = false;
 			}
 
 			EnemyGameObject.GetComponent<WPIASoldierControler> ().enabled = true;
@@ -356,7 +361,7 @@ public class GameController : MonoBehaviour {
 		foreach(GameObject o in GameObject.FindGameObjectsWithTag("herowaypoint")){
 			Destroy (o.gameObject);
 		}
-		if (PlayerPrefs.GetInt ("Ranked") == 1 && tutorial==false) {
+		if (multiplayer == true && tutorial==false && multiplayer == true) {
 			rewardWindows [1].SetActive (true);
 			if (x == 5) {
 				StartCoroutine (IncrementRanking (Random.Range(-25,-50)));
@@ -367,7 +372,7 @@ public class GameController : MonoBehaviour {
 			}
 			//CheckPlayerPos ();
 		} else {
-			rewardWindows [x].SetActive (true);
+			rewardWindows [0].SetActive (true);
 		}
 	}
 
