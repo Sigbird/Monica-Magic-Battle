@@ -16,7 +16,7 @@ public class SceneTestHelper : MonoBehaviour {
 	}
 
 	public static void LoadGame() {
-		SceneManager.LoadSceneAsync("JogoMulti");
+		SceneManager.LoadSceneAsync("JogoMulti");//JogoMulti or ProtoGame
 	}
 
     public static void LoadTestGame() {

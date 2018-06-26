@@ -14,7 +14,8 @@ public class PlayGamesSignIn : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Social.localUser.Authenticate(OnAuth);  
+		//Social.localUser.Authenticate(OnAuth); 
+		Login();
 		LeaderBoard.LoadScores ();
 	}
 
@@ -26,7 +27,22 @@ public class PlayGamesSignIn : MonoBehaviour {
 		}
 	}
 
-	private void OnAuth(bool success) {
+	public static void Login()
+	{
+		if(Social.Active == null)
+		{
+			Debug.LogError("plataforma inativa");
+			return;
+		}
+		if (Social.localUser.authenticated)
+		{
+			return; // verificando se já está logado
+		}
+		Social.localUser.Authenticate(OnAuth);
+	}
+
+
+	public static void OnAuth(bool success) {
 		if (success) {
 			Debug.Log("Auth OK");
 			if (Social.localUser.authenticated) {
