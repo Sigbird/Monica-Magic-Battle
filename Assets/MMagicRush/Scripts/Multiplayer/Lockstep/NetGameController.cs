@@ -73,10 +73,20 @@ public class NetGameController : MonoBehaviour {
 			}            
 		}
 
+		if (cmd.GetCommand() == NetCommand.END) {
+			if (isInput) {//venceu
+				GameObject.Find ("GameController").GetComponent<GameController> ().EndGameMulti (0);
+				NetClock.Instance.StopClock ();
+			} else {//perdeu
+				GameObject.Find ("GameController").GetComponent<GameController> ().EndGameMulti (1);
+				NetClock.Instance.StopClock ();
+			}
+		}
+
 		//Leitura de Comandos de Fim do Jogo
-        if (isInput && cmd.GetCommand() == NetCommand.END) {
-            NetClock.Instance.StopClock();
-        }
+//        if (isInput && cmd.GetCommand() == NetCommand.END) {
+//            NetClock.Instance.StopClock();
+//        }
     }
 
     public void StartGame() {

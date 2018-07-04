@@ -295,6 +295,7 @@ public class GameController : MonoBehaviour {
 
 	}
 
+
 	IEnumerator endGame(){
 		CardInfoWindow.SetActive (false);
 		yield return new WaitForSeconds (1);
@@ -310,6 +311,42 @@ public class GameController : MonoBehaviour {
 				GetComponent<TutorialController> ().tutorialPanels [2].SetActive (false);
 			}
 		} else if (enemyCharges == 1 && playerCharges <= 0) {//3 2
+			this.GetComponent<AudioManager> ().StopAudio ();
+			this.GetComponent<AudioManager> ().SetVolume (1);
+			this.GetComponent<AudioManager> ().PlayAudio ("defeat");
+			//GameObject.Find ("Chest2").GetComponent<Button> ().interactable = false;
+			//GameObject.Find ("Chest2").transform.Find ("Closed").GetComponent<Image> ().color = Color.gray;
+			endGamePanel [1].SetActive (true);
+		} else { // EMPATE
+			Debug.Log ("EMPATE");
+			this.GetComponent<AudioManager> ().StopAudio ();
+			this.GetComponent<AudioManager> ().SetVolume (1);
+			this.GetComponent<AudioManager> ().PlayAudio ("victory");
+			endGamePanel [0].SetActive (true);
+		}
+		GameOver = true;
+		Time.timeScale = 0;
+	}
+
+	public void EndGameMulti(int x){
+		StartCoroutine (endGameMulti (x));
+	}
+
+	IEnumerator endGameMulti(int x){
+		CardInfoWindow.SetActive (false);
+		yield return new WaitForSeconds (1);
+
+		if (x==0) {//3 2
+			this.GetComponent<AudioManager> ().StopAudio ();
+			this.GetComponent<AudioManager> ().SetVolume (1);
+			this.GetComponent<AudioManager> ().PlayAudio ("victory");
+			endGamePanel [0].SetActive (true);
+			if (tutorial == true) {
+				GetComponent<TutorialController> ().tutorialPanels [0].SetActive (false);
+				GetComponent<TutorialController> ().tutorialPanels [1].SetActive (false);
+				GetComponent<TutorialController> ().tutorialPanels [2].SetActive (false);
+			}
+		} else if (x==1) {//3 2
 			this.GetComponent<AudioManager> ().StopAudio ();
 			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("defeat");

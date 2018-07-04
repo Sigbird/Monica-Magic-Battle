@@ -19,6 +19,12 @@ namespace YupiPlay.MMB.Lockstep {
             );
         }
 
+		public static void EndVictory() {
+			CommandBuffer.Instance.InsertToOutput(
+				new EndCommand(NetClock.Instance.GetTurn() + 1)
+			);
+		}
+
         public static void Attack(string targetId) {
             CommandBuffer.Instance.InsertToOutput(
                 new AttackCommand(NetClock.Instance.GetTurn(), targetId)
