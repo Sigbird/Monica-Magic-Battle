@@ -48,6 +48,10 @@ public class ChargesScript : MonoBehaviour {
 	void Update () {
 		scoreText.text = this.charges.ToString ();
 
+		if (endgame == true) {
+			NetGameController.Instance.EndGame ();
+		}
+
 		if (tutorial == false) {
 			if (this.tag == "enemytower1") {
 				if (progress >= 1 && endgame == false) {

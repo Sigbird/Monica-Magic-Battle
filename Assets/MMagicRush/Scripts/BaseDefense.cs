@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using YupiPlay.MMB.Lockstep;
+using System;
 
 public class BaseDefense : MonoBehaviour {
 
@@ -72,7 +76,19 @@ public class BaseDefense : MonoBehaviour {
 
 				if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
 					//anim.SetTrigger ("Attack");
-					if (targetEnemy.GetComponent<WPIASoldierControler> () != null && targetEnemy.GetComponent<SpriteRenderer> ().enabled == true) {//ALVO HEROI
+					if(targetEnemy.GetComponent<EnemyRemoteController> () != null){
+						if (targetEnemy.GetComponent<EnemyRemoteController> ().alive == false) {
+							this.targetEnemy = null;
+							lockedTarget = false;
+						} else {
+							if (NetGameController.Instance.HasGameStarted()) {
+								CommandController.AttackEnemyHero ();
+								NetClock.Instance.RegisterInputTime();
+							} 
+							if (this.reach > 1)
+								TrowArrow ();
+						}
+					}else if (targetEnemy.GetComponent<WPIASoldierControler> () != null && targetEnemy.GetComponent<SpriteRenderer> ().enabled == true) {//ALVO HEROI
 						//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
 						//targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife ();
 						targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
@@ -112,13 +128,13 @@ public class BaseDefense : MonoBehaviour {
 						}
 					}
 				} else {
-					danoCD += Time.deltaTime * 2;
+					//danoCD += Time.deltaTime * 2;
 				}
 			} 
 		} else {
 			seeking = true;
 		}
-
+		danoCD += Time.deltaTime * 2;
 
 	}
 
@@ -174,6 +190,9 @@ public class BaseDefense : MonoBehaviour {
 						if (dist <= reach) {
 							if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
 								if (obj.GetComponent<WPIASoldierControler> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+									Emin = obj;
+									minDis = dist;
+								} else if (obj.GetComponent<EnemyRemoteController> () != null) {
 									Emin = obj;
 									minDis = dist;
 								}

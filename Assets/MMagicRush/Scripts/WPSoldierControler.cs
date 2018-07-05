@@ -824,6 +824,9 @@ public class WPSoldierControler : MonoBehaviour {
 								if (obj.GetComponent<WPIASoldierControler> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
 									Emin = obj;
 									minDis = dist;
+								}else if (obj.GetComponent<EnemyRemoteController> () != null) {
+									Emin = obj;
+									minDis = dist;
 								}
 							}
 						}
