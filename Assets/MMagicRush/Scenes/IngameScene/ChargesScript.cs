@@ -74,6 +74,8 @@ public class ChargesScript : MonoBehaviour {
 			if (this.tag == "enemytower1") {
 				if (tutorial == false) {
 					if (progress >= 1 && endgame == false) {
+						if (GameObject.Find ("TutorialPanels") != null)
+							GameObject.Find ("TutorialPanels").transform.gameObject.SetActive (false);
 						VictoryScreen.SetActive (true);
 						Time.timeScale = 0;
 						endgame = true;
@@ -83,6 +85,8 @@ public class ChargesScript : MonoBehaviour {
 				}
 			} else {
 				if (progress >= 1 && endgame == false) {
+					if (GameObject.Find ("TutorialPanels") != null)
+						GameObject.Find ("TutorialPanels").transform.gameObject.SetActive (false);
 					VictoryScreen.SetActive (true);
 					Time.timeScale = 0;
 					endgame = true;

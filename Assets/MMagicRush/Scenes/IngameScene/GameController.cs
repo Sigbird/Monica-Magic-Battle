@@ -398,7 +398,7 @@ public class GameController : MonoBehaviour {
 		foreach(GameObject o in GameObject.FindGameObjectsWithTag("herowaypoint")){
 			Destroy (o.gameObject);
 		}
-		if (multiplayer == true && tutorial==false && multiplayer == true) {
+		if (multiplayer == true && tutorial==false) {
 			rewardWindows [1].SetActive (true);
 			if (x == 5) {
 				StartCoroutine (IncrementRanking (Random.Range(-25,-50)));
@@ -408,6 +408,8 @@ public class GameController : MonoBehaviour {
 				//IncrementLeaderBoard (50);
 			}
 			//CheckPlayerPos ();
+		} else if (tutorial == true) {
+			rewardWindows [x].SetActive (true);
 		} else {
 			rewardWindows [0].SetActive (true);
 		}

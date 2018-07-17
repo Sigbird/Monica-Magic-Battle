@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CardScript : MonoBehaviour {
 
 	public int CardID;
+	public bool tutorial;
 
 	public bool isactivebutton = false;
 	public Image activebutton;
@@ -44,6 +45,9 @@ public class CardScript : MonoBehaviour {
 	}
 
 	public void OpenCardInfo(){
+		if (tutorial == true) {
+			GameObject.Find ("TutorialController").GetComponent<TutorialMain> ().ClickOnCard ();
+		}
 		if(GameObject.Find ("TutorialHandP2") != null)
 			GameObject.Find ("TutorialHandP2").SetActive (false);
 		

@@ -143,11 +143,11 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	public float danoCD = 0;
 
-	[HideInInspector]
+	//[HideInInspector]
 	public float speed;
 
-	[HideInInspector]
-	private float maxSpeed;
+	//[HideInInspector]
+	public float maxSpeed;
 
 	[HideInInspector]
 	public int energyMax;

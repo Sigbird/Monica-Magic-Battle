@@ -34,12 +34,12 @@ public class ArrowScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (target != null) {
-			if (Vector3.Distance (this.transform.position, target.transform.position) < 1f || target.GetComponent<ChargesScript> () != null || target.GetComponent<SpriteRenderer> ().enabled == false) {
-				Instantiate (HitAnimationObject, target.transform);				
-				Destroy (gameObject);
-			}
-		}
+//		if (target != null) {
+//			if (Vector3.Distance (this.transform.position, target.transform.position) < 1f || target.GetComponent<ChargesScript> () != null || target.GetComponent<SpriteRenderer> ().enabled == false) {
+//				Instantiate (HitAnimationObject, target.transform);				
+//				Destroy (gameObject);
+//			}
+//		}
 		if (target != null) {
 			Vector3 relativePos = transform.position - target.transform.position;
 
@@ -47,8 +47,8 @@ public class ArrowScript : MonoBehaviour {
 			Quaternion q = Quaternion.AngleAxis (angle, Vector3.forward);
 			transform.rotation = q;
 
-			if (Vector3.Distance (this.transform.position, target.transform.position) < 0.5f || target.GetComponent<ChargesScript> () != null || target.GetComponent<SpriteRenderer> ().enabled == false) {
-				Destroy (gameObject);
+			if (Vector3.Distance (this.transform.position, target.transform.position) < 0.5f || target.GetComponent<SpriteRenderer> ().enabled == false) {
+				Destroy (this.gameObject);
 			} else {
 				this.transform.position = Vector3.MoveTowards (this.transform.position,target.transform.position, Time.deltaTime * 5);		
 				if(leftcurve == false)

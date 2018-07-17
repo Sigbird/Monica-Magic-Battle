@@ -75,10 +75,10 @@ public class NetGameController : MonoBehaviour {
 
 		if (cmd.GetCommand() == NetCommand.END) {
 			if (isInput) {//venceu
-				GameObject.Find ("GameController").GetComponent<GameController> ().EndGameMulti (0);
+				//GameObject.Find ("GameController").GetComponent<GameController> ().EndGameMulti (0);
 				NetClock.Instance.StopClock ();
 			} else {//perdeu
-				GameObject.Find ("GameController").GetComponent<GameController> ().EndGameMulti (1);
+				//GameObject.Find ("GameController").GetComponent<GameController> ().EndGameMulti (1);
 				NetClock.Instance.StopClock ();
 			}
 		}

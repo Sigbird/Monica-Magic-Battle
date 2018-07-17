@@ -42,7 +42,7 @@ public class TutorialController : MonoBehaviour {
 
 	void Awake() {
 		GetComponent<GameController> ().enabled = true;
-		//PlayerPrefs.SetInt ("Lesson", 5);
+		//PlayerPrefs.SetInt ("Lesson",2);
 		//PlayerPrefs.SetString ("TutorialCoins", "false");
 		Time.timeScale = 1;
 		EnemyDiamonds = 0;
@@ -180,6 +180,7 @@ public class TutorialController : MonoBehaviour {
 	IEnumerator Lesson2(){
 		HeroEnemy.SetActive (true);
 		yield return new WaitForSeconds (0.1f);
+		HeroEnemy.GetComponent<WPIASoldierControler> ().maxSpeed = 0;
 		HeroEnemy.GetComponent<WPIASoldierControler> ().vida = 3;
 		HeroEnemy.GetComponent<WPIASoldierControler> ().UpdateLife();
 		yield return new WaitForSeconds (1);
