@@ -6,9 +6,12 @@ public class Character : MonoBehaviour
     public bool IsMoving { get; private set; }
 
     public Pin CurrentPin { get; private set; }
-    private Pin _targetPin;
+	public Pin _targetPin;
     private MapManager _mapManager;
 
+	public GameObject[] CharacterAnimators;
+	public GameObject ActualAnimator;
+	public Pin NextPinTest;
 
     public void Initialise(MapManager mapManager, Pin startPin)
     {
@@ -16,12 +19,23 @@ public class Character : MonoBehaviour
         SetCurrentPin(startPin);
     }
     
+	public void Start(){
+		if (PlayerPrefs.GetInt ("Character") == null) {
+			PlayerPrefs.SetInt ("Character", 1);
+		}
+
+		ActualAnimator = CharacterAnimators [PlayerPrefs.GetInt ("Character")];
+		ActualAnimator.GetComponent<SpriteRenderer> ().enabled = true;
+
+	}
     
     /// <summary>
     /// This runs once a frame
     /// </summary>
     private void Update()
     {
+
+		NextPinTest = NextPin ();
         if (_targetPin == null) return;
 
         // Get the characters current position and the targets position
@@ -50,6 +64,23 @@ public class Character : MonoBehaviour
                 SetCurrentPin(_targetPin);
             }
         }
+
+		if (IsMoving) {
+			ActualAnimator.GetComponent<Animator> ().SetBool ("Idle", false);
+			ActualAnimator.GetComponent<Animator> ().SetBool ("Walk", true);
+
+			if (_targetPin.transform.position.x < this.transform.position.x) {
+				ActualAnimator.GetComponent<SpriteRenderer> ().flipX = true;
+			} else {
+				ActualAnimator.GetComponent<SpriteRenderer> ().flipX = false;
+			}
+		} else {
+			ActualAnimator.GetComponent<Animator> ().SetBool ("Walk", false);
+			ActualAnimator.GetComponent<Animator> ().SetBool ("Idle", true);
+
+		}
+
+
 
 	
     }

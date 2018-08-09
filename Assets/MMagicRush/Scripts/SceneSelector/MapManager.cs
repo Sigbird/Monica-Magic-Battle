@@ -1,18 +1,31 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MapManager : MonoBehaviour
 {
 	public Character Character;
 	public Pin StartPin;
 	public Text SelectedLevelText;
+	public GameObject[] Maps;
+	public GameObject[] WaypointsMapForest;
+	public GameObject[] WaypointsMapIce;
+	public GameObject[] WaypointsMapCastle;
+	public GameObject[] WaypointsAll;
+	public int actualMap;
+	public GameObject[] NextButton;
+	public GameObject[] FirstPins;
+	public GameObject[] SecondPins;
 	
 	/// <summary>
 	/// Use this for initialization
 	/// </summary>
-	private void Start ()
+	public void Start ()
 	{
+		actualMap = 0;
+		//PlayerPrefs.SetInt ("ClearedLevels", 0);
 		// Pass a ref and default the player Starting Pin
+		UpdateLevels();
 		Character.Initialise(this, StartPin);
 	}
 
@@ -37,8 +50,11 @@ public class MapManager : MonoBehaviour
 	{
 		if (Input.GetMouseButtonUp (0)) {
 			if (Character.NextPin () != null) {
-				if (Vector2.Distance (Camera.main.ScreenToWorldPoint (Input.mousePosition), Character.NextPin ().gameObject.transform.position) < 1) {
-					Character.TrySetDirection (Direction.Up);
+				if (Character.NextPin ().ActualStatus != PinStatus.Locked) {
+					if (Vector2.Distance (Camera.main.ScreenToWorldPoint (Input.mousePosition), Character.NextPin ().gameObject.transform.position) < 1) {
+						Character.TrySetDirection (Direction.Up);
+						GameObject.Find ("Main Camera").GetComponent<AudioManager> ().PlayAudio ("passos");
+					}
 				}
 			}
 
@@ -74,5 +90,64 @@ public class MapManager : MonoBehaviour
 	public void UpdateGui()
 	{
 		SelectedLevelText.text = string.Format("Current Level: {0}", Character.CurrentPin.SceneToLoad);
+	}
+
+	public void UpdateLevels()
+	{
+		int cleared = PlayerPrefs.GetInt ("ClearedLevels");
+		for(int x = 0 ; x<=11 ; x++){
+			if (x < cleared) {//Cleareds
+				WaypointsAll[x].GetComponent<Pin>().ActualStatus = PinStatus.Cleared;
+			} else if (x == cleared) {//Unlocked
+				WaypointsAll[x].GetComponent<Pin>().ActualStatus = PinStatus.Unlocked;
+			} else {//Locked
+				WaypointsAll[x].GetComponent<Pin>().ActualStatus = PinStatus.Locked;
+			}
+		}
+	}
+
+	public void ChangeMap(string x){
+	
+		if (x == "Next") {
+			if (actualMap < 2) {
+				Maps [actualMap].SetActive (false);
+				actualMap++;
+				Maps [actualMap].SetActive (true);
+				Character.transform.position = FirstPins [actualMap].transform.position; //new Vector3 (FirstPins [x].transform.position.x, FirstPins [x].transform.position.y, FirstPins [x].transform.position.z);
+				StartPin = FirstPins [actualMap].GetComponent<Pin>();
+				Character.SetCurrentPin(FirstPins[actualMap].GetComponent<Pin>());
+			} 
+			if (actualMap == 2) {
+				NextButton [0].SetActive (false);
+			}
+			if (actualMap > 0) {
+				NextButton [1].SetActive (true);
+			}
+		}
+
+		if (x == "Previous") {
+			if(actualMap>0){
+				Maps [actualMap].SetActive (false);
+				actualMap--;
+				Maps [actualMap].SetActive (true);
+				Character.transform.position = FirstPins [actualMap].transform.position;
+				StartPin = FirstPins [actualMap].GetComponent<Pin>();
+				Character.SetCurrentPin(FirstPins[actualMap].GetComponent<Pin>());
+			}
+
+			if (actualMap == 0) {
+				NextButton [1].SetActive (false);
+			}
+			if (actualMap < 2) {
+				NextButton [0].SetActive (true);
+			}
+		}
+
+	}
+
+	public void CallScene(string scene){
+	
+		SceneManager.LoadScene (scene);
+	
 	}
 }

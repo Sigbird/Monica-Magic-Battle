@@ -11,8 +11,12 @@ public class HeroSelectionScreen : MonoBehaviour {
 	public Button cascao;
 	public Button chico;
 
+	public void Start(){
+		
+	}
+
 	// Use this for initialization
-	void Start () {
+	void Enable () {
 //		if (PlayerPrefs.GetInt ("monica") == 1) {
 //			monica.interactable = true;
 //		} else {
@@ -24,7 +28,7 @@ public class HeroSelectionScreen : MonoBehaviour {
 //		} else {
 //			cebolinha.interactable = false;
 //		}
-
+//
 //		if (PlayerPrefs.GetInt ("magali") == 1) {
 //			magali.interactable = true;
 //		} else {
@@ -36,7 +40,7 @@ public class HeroSelectionScreen : MonoBehaviour {
 //		} else {
 //			cascao.interactable = false;
 //		}
-
+//
 //		if (PlayerPrefs.GetInt ("chico") == 1) {
 //			chico.interactable = true;
 //		} else {

@@ -513,6 +513,15 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	public void NextLevel(){
+		int x = PlayerPrefs.GetInt ("ClearedLevels");
+		if (x < 11) {
+			PlayerPrefs.SetInt ("ClearedLevels", x++);
+		}
+		SceneManager.LoadScene("Level Select");
+	
+	}
+
 
 	public void OpenUI(){
 		if (multiplayer == false) {

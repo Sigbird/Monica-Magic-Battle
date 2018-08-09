@@ -35,28 +35,28 @@ public class HeroShopInfo : MonoBehaviour {
 			break;
 		case 3: 
 			if (PlayerPrefs.GetInt ("magali") == 1) {
-				purchaseButton.interactable = false;
+				purchaseButton.interactable = true;
 				purchasedImage.SetActive (true);
 			} else {
-				purchaseButton.interactable = true;
+				purchaseButton.interactable = false;
 				purchasedImage.SetActive (false);
 			}
 			break;
 		case 4: 
 			if (PlayerPrefs.GetInt ("cascao") == 1) {
-				purchaseButton.interactable = false;
+				purchaseButton.interactable = true;
 				purchasedImage.SetActive (true);
 			} else {
-				purchaseButton.interactable = true;
+				purchaseButton.interactable = false;
 				purchasedImage.SetActive (false);
 			}
 			break;
 		case 5:
 			if (PlayerPrefs.GetInt ("chico") == 1) {
-				purchaseButton.interactable = false;
+				purchaseButton.interactable = true;
 				purchasedImage.SetActive (true);
 			} else {
-				purchaseButton.interactable = true;
+				purchaseButton.interactable = false;
 				purchasedImage.SetActive (false);
 			}
 			break;

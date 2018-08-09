@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum Direction
 {
@@ -11,12 +12,24 @@ public enum Direction
 	Right
 }
 
+public enum PinStatus
+{
+	Locked,
+	Unlocked,
+	Cleared
+}
+
 public class Pin : MonoBehaviour
 {
+
+
+
 	[Header("Options")] //
 	public bool IsAutomatic;
 	public bool HideIcon;
 	public string SceneToLoad;
+	public string Enemy;
+
 	
 	[Header("Pins")] //
 	public Pin UpPin;
@@ -27,8 +40,11 @@ public class Pin : MonoBehaviour
 	public Pin UnhidenDown;
 
 	private Dictionary<Direction, Pin> _pinDirections; 
+
+	public PinStatus ActualStatus;
+	public GameObject[] StatusImages;
 	
-	
+
 	/// <summary>
 	/// Use this for initialisation
 	/// </summary>
@@ -47,6 +63,46 @@ public class Pin : MonoBehaviour
 		if (HideIcon)
 		{
 			GetComponent<SpriteRenderer>().enabled = false;
+		}
+	}
+
+	public void Update(){
+	
+		if (Input.GetMouseButtonUp (0)) {
+			if (Vector2.Distance (Camera.main.ScreenToWorldPoint (Input.mousePosition), this.transform.position) <= 1){
+				if (Vector2.Distance (GameObject.Find ("Character").transform.position, this.transform.position) <= 1) {
+					if (this.ActualStatus != PinStatus.Locked) {
+						PlayerPrefs.SetString ("TerrainType", SceneToLoad);
+						PlayerPrefs.SetString ("Enemy", Enemy);
+
+						PlayerPrefs.SetInt ("SelectedCharacter", PlayerPrefs.GetInt ("Character"));
+						PlayerPrefs.SetInt ("round", 1);
+						PlayerPrefs.SetInt ("playerCharges", 0);
+						PlayerPrefs.SetInt ("enemyCharges", 0);
+						SceneManager.LoadScene ("JogoMulti");
+
+						Debug.Log ("Chamando cena: " + SceneToLoad);
+					}
+				}
+			}
+		}
+
+		if (IsAutomatic == false) {
+			if (ActualStatus == PinStatus.Cleared) {
+				StatusImages [0].SetActive (true);
+				StatusImages [1].SetActive (false);
+				StatusImages [2].SetActive (false);
+			}
+			if (ActualStatus == PinStatus.Locked) {
+				StatusImages [0].SetActive (false);
+				StatusImages [1].SetActive (true);
+				StatusImages [2].SetActive (false);
+			}
+			if (ActualStatus == PinStatus.Unlocked) {
+				StatusImages [0].SetActive (false);
+				StatusImages [1].SetActive (false);
+				StatusImages [2].SetActive (true);
+			}
 		}
 	}
 	
@@ -123,5 +179,14 @@ public class Pin : MonoBehaviour
 	{   
 		Gizmos.color = Color.blue;
 		Gizmos.DrawLine(transform.position, pin.transform.position);
+	}
+
+	public void TryToCallScene(){
+		Debug.Log ("apertou");
+
+		if (Vector2.Distance (GameObject.Find ("Character").transform.position, this.transform.position) <= 1) {
+			SceneManager.LoadScene (SceneToLoad);
+		}
+
 	}
 }

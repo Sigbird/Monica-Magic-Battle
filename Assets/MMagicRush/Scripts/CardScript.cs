@@ -7,11 +7,15 @@ public class CardScript : MonoBehaviour {
 
 	public int CardID;
 	public bool tutorial;
+	public bool cardshop;
 
 	public bool isactivebutton = false;
 	public Image activebutton;
 	public Sprite activeTrue;
 	public Sprite activeFalse;
+
+	public GameObject PriceTag;
+	public Text PricetagValue;
 
 
 	public string efeito;
@@ -45,11 +49,22 @@ public class CardScript : MonoBehaviour {
 	}
 
 	public void OpenCardInfo(){
-		if (tutorial == true) {
+		
+		if (tutorial == true && activebutton.isActiveAndEnabled == false) {
+			if(GameObject.Find ("Hand") != null)
+				GameObject.Find ("Hand").SetActive (false);
+			
+		}else if (tutorial == true) {
 			GameObject.Find ("TutorialController").GetComponent<TutorialMain> ().ClickOnCard ();
+
+			if(GameObject.Find ("TutorialHandP2") != null)
+				GameObject.Find ("TutorialHandP2").SetActive (false);
+
+			if (GameObject.Find ("CardShop") != null)
+				GameObject.Find ("CardShop").GetComponent<Button> ().interactable = true;
 		}
-		if(GameObject.Find ("TutorialHandP2") != null)
-			GameObject.Find ("TutorialHandP2").SetActive (false);
+			
+
 		
 		cardInfo.SetActive (true);
 		cardInfo.GetComponent<CardInfoScript> ().SendCard (this.gameObject);

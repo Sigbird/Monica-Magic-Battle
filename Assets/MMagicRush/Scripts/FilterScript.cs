@@ -115,13 +115,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().Gemcost = "25";
 				g.GetComponent<CardScript> ().cost = "50";
 				g.GetComponent<CardScript> ().damage = "2";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [0];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "50";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 
 				break;
@@ -140,8 +143,11 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().peson = Persons [0];
 				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "25";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 3:
@@ -154,13 +160,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().cost = "100";
 				g.GetComponent<CardScript> ().Gemcost = "75";
 				g.GetComponent<CardScript> ().damage = "0";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [0];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 4:
@@ -173,13 +182,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().cost = "10";
 				g.GetComponent<CardScript> ().Gemcost = "2";
 				g.GetComponent<CardScript> ().damage = "1";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [0];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "10";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 5:
@@ -192,13 +204,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().cost = "50";
 				g.GetComponent<CardScript> ().Gemcost = "10";
 				g.GetComponent<CardScript> ().damage = "3";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [0];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "50";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 6:
@@ -211,13 +226,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().cost = "75";
 				g.GetComponent<CardScript> ().Gemcost = "25";
 				g.GetComponent<CardScript> ().damage = "0";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [0];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "75";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 7:
@@ -230,13 +248,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().cost = "5";
 				g.GetComponent<CardScript> ().Gemcost = "15";
 				g.GetComponent<CardScript> ().damage = "0";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [0];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "5";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 8:
@@ -248,13 +269,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Parotege suas Tropas em 3 pontos";
 				g.GetComponent<CardScript> ().cost = "25";
 				g.GetComponent<CardScript> ().damage = "50";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [0];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "25";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 9:
@@ -266,13 +290,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Fortalece suas tropas";
 				g.GetComponent<CardScript> ().cost = "10";
 				g.GetComponent<CardScript> ().damage = "0";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [0];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "10";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 10:
@@ -284,13 +311,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Paralisa torres inimigas";
 				g.GetComponent<CardScript> ().cost = "10";
 				g.GetComponent<CardScript> ().damage = "0";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[0];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [0];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "10";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			
@@ -305,13 +335,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Chama a unidade Bidu para ajudar";
 				g.GetComponent<CardScript> ().cost = "1";
 				g.GetComponent<CardScript> ().damage = "1";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[1];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[1];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [1];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "1";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 12:
@@ -323,13 +356,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Chama a unidade Astronauta para ajudar";
 				g.GetComponent<CardScript> ().cost = "3";
 				g.GetComponent<CardScript> ().damage = "1";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[1];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 13: //removido (Anjinho)
@@ -359,13 +395,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Chama a unidade jotalhão para ajudar";
 				g.GetComponent<CardScript> ().cost = "50";
 				g.GetComponent<CardScript> ().damage = "1";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[1];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 15:
@@ -377,13 +416,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Chama a unidade Piteco para ajudar";
 				g.GetComponent<CardScript> ().cost = "15";
 				g.GetComponent<CardScript> ().damage = "1";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[1];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 16:
@@ -395,13 +437,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Chama a unidade Penadinho para ajudar";
 				g.GetComponent<CardScript> ().cost = "50";
 				g.GetComponent<CardScript> ().damage = "1";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[1];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 17: // removido(Louco)
@@ -431,13 +476,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Chama a unidade Sansão para ajudar";
 				g.GetComponent<CardScript> ().cost = "40";
 				g.GetComponent<CardScript> ().damage = "3";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[1];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[1];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [1];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 19:
@@ -449,13 +497,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Chama a unidade Mingau para ajudar";
 				g.GetComponent<CardScript> ().cost = "110";
 				g.GetComponent<CardScript> ().damage = "2";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[1];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[2];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [2];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 20:// Removido(Alfredo)
@@ -488,13 +539,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Constroi a torre para ajudar no campo";
 				g.GetComponent<CardScript> ().cost = "1";
 				g.GetComponent<CardScript> ().damage = "1";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[2];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [2];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 22:
@@ -505,14 +559,17 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().cardname = "Torre de Agua";
 				g.GetComponent<CardScript> ().descrition = "Constroi a torre para ajudar no campo";
 				g.GetComponent<CardScript> ().cost = "3";
-				g.GetComponent<CardScript> ().damage ="1";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[2];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().damage = "1";
+				g.GetComponent<CardScript> ().efect.sprite = Efects [2];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 23:
@@ -524,13 +581,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Constroi a torre para ajudar no campo";
 				g.GetComponent<CardScript> ().cost = "1";
 				g.GetComponent<CardScript> ().damage = "1";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[2];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [2];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 24:
@@ -542,13 +602,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Constroi a torre para ajudar no campo";
 				g.GetComponent<CardScript> ().cost = "50";
 				g.GetComponent<CardScript> ().damage = "1";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[2];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [2];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 25:
@@ -560,13 +623,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Constroi a torre para ajudar no campo";
 				g.GetComponent<CardScript> ().cost = "15";
 				g.GetComponent<CardScript> ().damage = "1";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[2];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [2];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 26:
@@ -576,15 +642,18 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Torre do Tesouro";
 				g.GetComponent<CardScript> ().descrition = "Constroi a torre para ajudar no campo";
-				g.GetComponent<CardScript> ().cost ="50";
+				g.GetComponent<CardScript> ().cost = "50";
 				g.GetComponent<CardScript> ().damage = "1";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[2];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [2];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 27:
@@ -594,15 +663,18 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Torre do Sono";
 				g.GetComponent<CardScript> ().descrition = "Constroi a torre para ajudar no campo";
-				g.GetComponent<CardScript> ().cost ="100";
+				g.GetComponent<CardScript> ().cost = "100";
 				g.GetComponent<CardScript> ().damage = "5";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[2];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [2];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 28:
@@ -614,13 +686,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Constroi a torre para ajudar no campo";
 				g.GetComponent<CardScript> ().cost = "40";
 				g.GetComponent<CardScript> ().damage = "3";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[2];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [2];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			case 29:
@@ -632,13 +707,16 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().descrition = "Constroi a torre para ajudar no campo";
 				g.GetComponent<CardScript> ().cost = "110";
 				g.GetComponent<CardScript> ().damage = "5";
-				g.GetComponent<CardScript> ().efect.sprite = Efects[2];
-				g.GetComponent<CardScript> ().image = Images[cardID];
-				g.GetComponent<CardScript> ().peson = Persons[0];
-				g.transform.SetParent (this.transform,false);
+				g.GetComponent<CardScript> ().efect.sprite = Efects [2];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [0];
+				g.transform.SetParent (this.transform, false);
 				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-				if (CardShop)
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "100";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
 				childrens.Add (g.transform);
 				break;
 			}

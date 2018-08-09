@@ -629,8 +629,10 @@ public class WPIASoldierControler : MonoBehaviour {
 		int id;
 		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1) {
 			id =	PlayerPrefs.GetInt ("SelectedCharacter");
+		} else if (PlayerPrefs.GetInt ("Enemy") != null && this.team != 1) {
+			id = PlayerPrefs.GetInt ("Character");
 		} else {
-			id = 1;
+			id = 0;
 		}
 		Debug.Log ("id: " + id);
 		switch (id) {
@@ -721,7 +723,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		} else {
 			this.tag = "enemysoldier2";
 			this.GetComponent<SpriteRenderer>().flipX = true;
-			platform.GetComponent<SpriteRenderer> ().color = Color.red;
+			//platform.GetComponent<SpriteRenderer> ().color = Color.red;
 
 		}
 
@@ -864,7 +866,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		} else {
 			this.tag = "enemysoldier2";
 			this.GetComponent<SpriteRenderer>().flipX = true;
-			platform.GetComponent<SpriteRenderer> ().color = Color.red;
+			//platform.GetComponent<SpriteRenderer> ().color = Color.red;
 
 		}
 	}

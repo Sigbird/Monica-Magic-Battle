@@ -8,6 +8,8 @@ public class ConfigOptions : MonoBehaviour {
 	public Toggle MusicToggle;
 	public Toggle EffectToggle;
 	public AudioManager manager;
+	public GameObject UntoggleBT;
+	public GameObject UntoggleBT2;
 
 	// Use this for initialization
 	void Start () {
@@ -32,16 +34,20 @@ public class ConfigOptions : MonoBehaviour {
 
 		if (MusicToggle.isOn) {
 			PlayerPrefs.SetFloat ("GameVolume", 1);
+			UntoggleBT.SetActive (false);
 			//manager.source.Play();
 		} else {
 			PlayerPrefs.SetFloat ("GameVolume", 0);
+			UntoggleBT.SetActive (true);
 			//manager.source.Stop ();
 		}
 
 		if (EffectToggle.isOn) {
 			PlayerPrefs.SetFloat ("GameVolumeEffects", 1);
+			UntoggleBT2.SetActive (false);
 		} else {
 			PlayerPrefs.SetFloat ("GameVolumeEffects", 0);
+			UntoggleBT2.SetActive (true);
 		}
 
 	}
