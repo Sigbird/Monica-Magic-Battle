@@ -21,7 +21,7 @@ public class ChargesScript : MonoBehaviour {
 	public float progressSpeed;
 
 	public GameObject VictoryScreen;
-
+	public GameObject HitEffect;
 
 
 

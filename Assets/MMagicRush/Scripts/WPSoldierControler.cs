@@ -183,10 +183,12 @@ public class WPSoldierControler : MonoBehaviour {
 
 	private float count; 
 
+	private bool gameBegin;
+
 
 	// Use this for initialization
 	void Start () {
-
+		gameBegin = false;
 
 
 		if (heroUnity) {// CONFIGURAÇÃO DE HEROIS
@@ -288,7 +290,7 @@ public class WPSoldierControler : MonoBehaviour {
 
 
 		//EVENTO DE MORTE
-		if (this.vida <= 0 && heroUnity && this.GetComponent<SpriteRenderer>().enabled == true) {
+		if (this.vida <= 0 && heroUnity && this.GetComponent<SpriteRenderer>().enabled == true && gameBegin == true) {
 			this.speed = 0;
 			Instantiate (deathAngel, this.transform.position, Quaternion.identity).transform.parent = this.transform;
 			GameObject.Find ("RespawnTimerHero").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
@@ -298,7 +300,7 @@ public class WPSoldierControler : MonoBehaviour {
 			StartCoroutine (Respawning ());
 			Camera.main.gameObject.GetComponent<CameraShake> ().ShakeCamera ();
 			audioManager.PlayAudio ("death");
-		} else if(this.vida <= 0) {
+		} else if(this.vida <= 0 && gameBegin == true) {
 			audioManager.PlayAudio ("death");
 			Destroy (this.gameObject);
 		}
@@ -443,8 +445,10 @@ public class WPSoldierControler : MonoBehaviour {
 				//anim.SetTrigger ("Walk");
 				if (WaypointMark.transform.position.x < transform.position.x) {
 					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = true;
+					anim.gameObject.transform.localPosition = new Vector3 (0.03f, 0.2f, 0f);
 				} else if (WaypointMark.transform.position.x > transform.position.x) {
 					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = false;
+					anim.gameObject.transform.localPosition = new Vector3 (-0.05f, 0.2f, 0f);
 				}
 				transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
 			} else {
@@ -526,12 +530,16 @@ public class WPSoldierControler : MonoBehaviour {
 
 	public void SetupHero(){
 		//CONFIGURAÇÃO DE TIPO DE HEROI
-		int id;
+		int id = 1;
 		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1) {
 			heroID = PlayerPrefs.GetInt ("SelectedCharacter");
 		} else {
 			heroID = 1;
 		}
+
+		if(tutorial==false)
+		GameObject.Find ("HeroPortrait").GetComponent<Image> ().sprite = heroPortraits [heroID];
+		
 //		Debug.Log ("id: " + id);
 		switch (heroID) {
 		case(0): 
@@ -669,7 +677,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.speed = speed + 0.1f;
 		}
 		if (effect == "damage") {
-			this.vida--;
+			this.vida --;
 			UpdateLife ();
 		}
 		if (effect == "extraDamage") {
@@ -717,7 +725,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.speed = maxSpeed;
 		}
 		if (effects == "shield") {
-			this.vida--;
+			this.vida --;
 		}
 		if (effects == "warShout") {
 			this.damage--;
@@ -794,6 +802,7 @@ public class WPSoldierControler : MonoBehaviour {
 		respawningTimer = 12;
 		Arrival.Play ();
 		alive = true;
+		gameBegin = true;
 	}
 
 	public GameObject SeekEnemyTarget (){
@@ -966,7 +975,7 @@ public class WPSoldierControler : MonoBehaviour {
 		this.vida -= x;
 		UpdateLife ();
 
-		//Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
 
 		if (this.team == 1 && heroUnity == true) {
 			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
@@ -977,13 +986,19 @@ public class WPSoldierControler : MonoBehaviour {
 
 
 	public void TrowArrow(){
-
+		StartCoroutine (DelayedHitEffect ());
 		GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity);
 		if (targetEnemy != null) {
 			arrow.GetComponent<ArrowScript> ().target = targetEnemy;
 		} else {
 			Destroy (arrow);
 		}
+
+	}
+
+	IEnumerator DelayedHitEffect(){
+		yield return new WaitForSeconds (0.3f);
+		Instantiate (HitAnimationObject, targetEnemy.transform.position, Quaternion.identity);
 
 	}
 

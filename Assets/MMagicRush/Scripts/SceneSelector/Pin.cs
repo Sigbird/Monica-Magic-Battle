@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public enum Direction
 {
@@ -28,7 +29,7 @@ public class Pin : MonoBehaviour
 	public bool IsAutomatic;
 	public bool HideIcon;
 	public string SceneToLoad;
-	public string Enemy;
+	public int Enemy;
 
 	
 	[Header("Pins")] //
@@ -73,7 +74,7 @@ public class Pin : MonoBehaviour
 				if (Vector2.Distance (GameObject.Find ("Character").transform.position, this.transform.position) <= 1) {
 					if (this.ActualStatus != PinStatus.Locked) {
 						PlayerPrefs.SetString ("TerrainType", SceneToLoad);
-						PlayerPrefs.SetString ("Enemy", Enemy);
+						PlayerPrefs.SetInt ("Enemy", Enemy);
 
 						PlayerPrefs.SetInt ("SelectedCharacter", PlayerPrefs.GetInt ("Character"));
 						PlayerPrefs.SetInt ("round", 1);

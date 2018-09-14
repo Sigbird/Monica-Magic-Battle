@@ -626,16 +626,22 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	public void SetupHero(){
 		//CONFIGURAÇÃO DE TIPO DE HEROI
-		int id;
-		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1) {
-			id =	PlayerPrefs.GetInt ("SelectedCharacter");
-		} else if (PlayerPrefs.GetInt ("Enemy") != null && this.team != 1) {
-			id = PlayerPrefs.GetInt ("Character");
-		} else {
-			id = 0;
+		heroID = 1;
+
+		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1 && tutorial == false) {
+			heroID =	PlayerPrefs.GetInt ("SelectedCharacter");
+		} else if (PlayerPrefs.GetInt ("Enemy") != null && this.team != 1 && tutorial == false) {
+			heroID = PlayerPrefs.GetInt ("Enemy");
+		} else if (tutorial == true){
+			heroID = 1;
 		}
-		Debug.Log ("id: " + id);
-		switch (id) {
+
+		if(tutorial == false)
+		GameObject.Find ("EnemyPortrait").GetComponent<Image> ().sprite = heroPortraits [heroID];
+
+
+//		Debug.Log ("id: " + id);
+		switch (heroID) {
 		case(0): 
 			this.vidaMax = 6;
 			this.vida = 6;
@@ -1236,7 +1242,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		this.vida -= x;
 		UpdateLife ();
 		
-		//Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
 
 		if (this.team == 1 && heroUnity == true) {
 			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");

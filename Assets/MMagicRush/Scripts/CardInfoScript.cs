@@ -26,11 +26,16 @@ public class CardInfoScript : MonoBehaviour {
 
 	public GameObject enableButton;
 	public GameObject disableButton;
+	public int[] zero;
+	public bool ClearPlayerPrefs;
 
 
 	// Use this for initialization
 	void Start () {
-	
+		if (ClearPlayerPrefs) {
+			//PlayerPrefsX.SetIntArray ("PlayerCardsIDs", zero);
+			//PlayerPrefsX.SetIntArray ("SelectedCardsIDs", zero);
+		}
 	}
 	
 	// Update is called once per frame
@@ -49,11 +54,11 @@ public class CardInfoScript : MonoBehaviour {
 		image.sprite = o.GetComponent<CardScript> ().image;
 		character.sprite = o.GetComponent<CardScript> ().peson;
 		Debug.Log (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length);
-		if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15 && enableButton != null) {
-			enableButton.GetComponent<Button> ().interactable = false;
-		} else if(enableButton != null) {
-			enableButton.GetComponent<Button> ().interactable = true;
-		}
+//		if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15 && enableButton != null) {
+//			enableButton.GetComponent<Button> ().interactable = false;
+//		} else if(enableButton != null) {
+//			enableButton.GetComponent<Button> ().interactable = true;
+//		}
 
 		if (cardStore == true) {
 			cardPurchasedButton.SetActive (false);
@@ -68,7 +73,7 @@ public class CardInfoScript : MonoBehaviour {
 		}
 
 		if(enableButton != null && disableButton != null)
-		if (o.GetComponent<CardScript> ().isactivebutton) {
+		if (o.GetComponent<CardScript> ().isactivebutton == false) {
 			enableButton.SetActive (true);
 			disableButton.SetActive(false);
 		} else {
@@ -88,7 +93,7 @@ public class CardInfoScript : MonoBehaviour {
 				}
 			}
 		}
-		
+
 		switch (cardID) {
 		case 1:
 			cardname.text = "Nevasca";
@@ -439,9 +444,9 @@ public class CardInfoScript : MonoBehaviour {
 			//ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
 			PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
 
-			if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15) {
+			//if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15) {
 				ActiveCard ();
-			}
+			//}
 
 			PlayerPrefs.SetInt ("PlayerCoins", coins - int.Parse (cost.text));
 			this.gameObject.SetActive (false);
@@ -481,7 +486,7 @@ public class CardInfoScript : MonoBehaviour {
 	}
 
 	public void ActiveCard(){
-		lastCard.GetComponent<CardScript> ().SetActiveButton ();
+		//lastCard.GetComponent<CardScript> ().SetActiveButton ();
 		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
 
 		List<int> iList = new List<int>();
@@ -500,18 +505,19 @@ public class CardInfoScript : MonoBehaviour {
 			x++;
 		}
 			
+			
 //		int[] finalArray = new  int[original.Length + 1 ];
 //
 //		for(int i = 0; i < original.Length; i ++ ) {
 //			finalArray[i] = original[i];
 //		}
-
+		lastCard.GetComponent<CardScript> ().SetActiveButton ();
 //		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
 		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
 	}
 
 	public void DeactiveCard(){
-		lastCard.GetComponent<CardScript> ().SetDesativeButton ();
+		//lastCard.GetComponent<CardScript> ().SetDesativeButton ();
 		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
 
 		List<int> iList = new List<int>();
@@ -521,16 +527,42 @@ public class CardInfoScript : MonoBehaviour {
 		}
 
 		iList.Remove (lastCard.GetComponent<CardScript> ().CardID);
+	
+//		if(iList.Contains(lastCard.GetComponent<CardScript> ().CardID)){
+//			DeactiveCard ();
+//		}else{
+//			Debug.Log ("Removida!");
+//		}
 
-		int[] finalArray = new int[iList.Count];
+		lastCard.GetComponent<CardScript> ().SetDesativeButton ();
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", iList.ToArray());
 
-		int x = 0;
-		foreach (int i in iList) {
-			finalArray [x] = i;
-			x++;
-		}
+//		int[] finalArray = new int[iList.Count];
+//
+//		int x = 0;
 
-		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
+
+
+		//iList.CopyTo (finalArray);
+		//iList.ToArray();
+
+//		for(int i = 0; i < iList.Count; i ++ ) {
+//			//iList.Add (original [i]);
+//			finalArray [i] = iList.IndexOf[i];
+//		}
+
+//		foreach (int i in iList) {
+//			finalArray [x] = i;
+//			x++;
+//
+////			if (i == lastCard.GetComponent<CardScript> ().CardID) {
+////				DeactiveCard ();
+////			} else {
+////				Debug.Log ("Removida!");
+////			}
+//		}
+
+
 	}
 
 	public void CloseInfo(){

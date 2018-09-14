@@ -12,16 +12,25 @@ public class MapManager : MonoBehaviour
 	public GameObject[] WaypointsMapIce;
 	public GameObject[] WaypointsMapCastle;
 	public GameObject[] WaypointsAll;
-	public int actualMap;
+	public int actualMap = 0;
+	public int nextMap = 1;
 	public GameObject[] NextButton;
 	public GameObject[] FirstPins;
 	public GameObject[] SecondPins;
+	public GameObject ScrollController;
+
+
+	public Text MapNames;
+	public float t = 0;
+	public float u = 0;
+	public int idxChanged;
 	
 	/// <summary>
 	/// Use this for initialization
 	/// </summary>
 	public void Start ()
 	{
+		idxChanged = 100;
 		actualMap = 0;
 		//PlayerPrefs.SetInt ("ClearedLevels", 0);
 		// Pass a ref and default the player Starting Pin
@@ -40,6 +49,66 @@ public class MapManager : MonoBehaviour
 		
 		// First thing to do is try get the player input
 		CheckForInput();
+
+		int index = Camera.main.GetComponent<ScrollSanp> ().idx;
+		//Debug.Log ("UPDATE INDEX "+index);
+		if (index != idxChanged) {
+			switch (index) {
+			case 0:
+				MapNames.text = "Reino da Floresta";
+				ScrollController.transform.localPosition = new Vector3 (0, -2, 0);
+				ChangeMap ("Forest");
+				break;
+			case 1:
+				MapNames.text = "Reino Congelado";
+				ScrollController.transform.localPosition = new Vector3(-607,-2,0);
+				ChangeMap ("Ice");
+				break;
+			case 2:
+				MapNames.text = "Castelo da Escuridão";
+				ScrollController.transform.localPosition = new Vector3(-1214,-2,0);
+				ChangeMap ("Dungeon");
+				break;
+			default:
+				break;
+			}
+			idxChanged = index;
+		}
+
+		//Maps [actualMap].transform.FindChild ("MapSea").GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, Mathf.Lerp(1, 0, t));
+		//Maps [nextMap].transform.FindChild ("MapSea").GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, Mathf.Lerp(1, 0, t));
+
+
+		if (t <= 1) {
+			t += u * Time.deltaTime;
+		} else {
+			t = 0;
+			u = 0;
+		}
+
+
+		if (index<= 0) {
+			NextButton [1].SetActive (false);
+		} else {
+			NextButton [1].SetActive (true);
+		}
+
+		if (index >= 2) {
+			NextButton [0].SetActive (false);
+		} else {
+			NextButton [0].SetActive (true);
+		}
+
+//		if (t <= 1 && t >= 0) {
+//			t += u * Time.deltaTime;
+//		} else {
+//			if(t >= 1)
+//				t = 0.99f;
+//
+//			if(t <= 0)
+//				t = 0.01f;
+//		}
+			
 	}
 
 	
@@ -89,12 +158,13 @@ public class MapManager : MonoBehaviour
 	/// </summary>
 	public void UpdateGui()
 	{
-		SelectedLevelText.text = string.Format("Current Level: {0}", Character.CurrentPin.SceneToLoad);
+//		SelectedLevelText.text = string.Format("Current Level: {0}", Character.CurrentPin.SceneToLoad);
 	}
 
 	public void UpdateLevels()
 	{
 		int cleared = PlayerPrefs.GetInt ("ClearedLevels");
+		Debug.Log ("Cleared Levels: "+cleared);
 		for(int x = 0 ; x<=11 ; x++){
 			if (x < cleared) {//Cleareds
 				WaypointsAll[x].GetComponent<Pin>().ActualStatus = PinStatus.Cleared;
@@ -106,12 +176,50 @@ public class MapManager : MonoBehaviour
 		}
 	}
 
+	public void SwitchMap(string x){
+		int cleared = PlayerPrefs.GetInt ("ClearedLevels");
+		 
+		if (x == "Next") {
+			if (actualMap < 2) {
+				actualMap++;
+				Camera.main.GetComponent<ScrollSanp> ().idx = actualMap;
+			}
+		}
+
+		if (x == "Previous") {
+			if (actualMap > 0) {
+				actualMap--;
+				Camera.main.GetComponent<ScrollSanp> ().idx = actualMap;
+			}
+		}
+
+			if (actualMap == 1 && cleared > 4){
+				Character.gameObject.SetActive (true);
+			} else {
+				Character.gameObject.SetActive (false);
+			}
+
+			if (actualMap == 2 && cleared > 8) {
+				Character.gameObject.SetActive (true);
+			} else {
+				Character.gameObject.SetActive (false);
+			}
+
+			if (actualMap == 0)
+				Character.gameObject.SetActive (true);
+		
+
+	}
+
+
+
 	public void ChangeMap(string x){
 	
 		if (x == "Next") {
 			if (actualMap < 2) {
 				Maps [actualMap].SetActive (false);
 				actualMap++;
+				nextMap = actualMap + 1;
 				Maps [actualMap].SetActive (true);
 				Character.transform.position = FirstPins [actualMap].transform.position; //new Vector3 (FirstPins [x].transform.position.x, FirstPins [x].transform.position.y, FirstPins [x].transform.position.z);
 				StartPin = FirstPins [actualMap].GetComponent<Pin>();
@@ -119,6 +227,7 @@ public class MapManager : MonoBehaviour
 			} 
 			if (actualMap == 2) {
 				NextButton [0].SetActive (false);
+				nextMap = actualMap - 1;
 			}
 			if (actualMap > 0) {
 				NextButton [1].SetActive (true);
@@ -129,6 +238,7 @@ public class MapManager : MonoBehaviour
 			if(actualMap>0){
 				Maps [actualMap].SetActive (false);
 				actualMap--;
+				nextMap = actualMap - 1;
 				Maps [actualMap].SetActive (true);
 				Character.transform.position = FirstPins [actualMap].transform.position;
 				StartPin = FirstPins [actualMap].GetComponent<Pin>();
@@ -137,10 +247,27 @@ public class MapManager : MonoBehaviour
 
 			if (actualMap == 0) {
 				NextButton [1].SetActive (false);
+				nextMap = actualMap + 1;
 			}
 			if (actualMap < 2) {
 				NextButton [0].SetActive (true);
 			}
+		}
+
+		if (x == "Forest") {
+			Character.transform.position = FirstPins [0].transform.position;
+			StartPin = FirstPins [0].GetComponent<Pin>();
+			Character.SetCurrentPin(FirstPins[0].GetComponent<Pin>());
+		}
+		if (x == "Ice") {
+			Character.transform.position = FirstPins [1].transform.position;
+			StartPin = FirstPins [1].GetComponent<Pin>();
+			Character.SetCurrentPin(FirstPins[1].GetComponent<Pin>());
+		}
+		if (x == "Dungeon") {
+			Character.transform.position = FirstPins [2].transform.position;
+			StartPin = FirstPins [2].GetComponent<Pin>();
+			Character.SetCurrentPin(FirstPins[2].GetComponent<Pin>());
 		}
 
 	}

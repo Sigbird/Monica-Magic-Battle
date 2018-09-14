@@ -18,8 +18,15 @@ public class SceneHelper : MonoBehaviour {
 
 
 	public GameObject[] TutorialPanels;
+
+	public int[] zero;
+	// Use this for initialization
+
  	// Use this for initialization
 	void Start () {
+		//PlayerPrefsX.SetIntArray ("PlayerCardsIDs", zero);
+		//fPlayerPrefsX.SetIntArray ("SelectedCardsIDs", zero);
+
 		//PlayerPrefs.SetInt ("Lesson", 6);
 		Time.timeScale = 1;
 
@@ -54,18 +61,18 @@ public class SceneHelper : MonoBehaviour {
 //		}
 		temp[0] = 11;
 
-		if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length <= 0) {
-			PlayerPrefsX.SetIntArray ("PlayerCardsIDs", temp);
-			if (temp.Length < 15) {
-				PlayerPrefsX.SetIntArray ("SelectedCardsIDs", temp);
-			}
-			Debug.Log (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length);
-		} else {
-			if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length > 0 || PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length <= 15) {
-				PlayerPrefsX.SetIntArray ("SelectedCardsIDs", PlayerPrefsX.GetIntArray ("PlayerCardsIDs"));
-			}
-			temp = empty;
-		}
+//		if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length <= 0) {
+//			PlayerPrefsX.SetIntArray ("PlayerCardsIDs", temp);
+//			if (temp.Length < 15) {
+//				PlayerPrefsX.SetIntArray ("SelectedCardsIDs", temp);
+//			}
+//			Debug.Log (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length);
+//		} else {
+//			if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length > 0 || PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length <= 15) {
+//				PlayerPrefsX.SetIntArray ("SelectedCardsIDs", PlayerPrefsX.GetIntArray ("PlayerCardsIDs"));
+//			}
+//			temp = empty;
+//		}
 		Debug.Log (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length);
 		PlayerPrefs.SetString ("Tutorial", "True");
 		if(tutorial == true)

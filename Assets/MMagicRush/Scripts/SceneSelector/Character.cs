@@ -20,6 +20,7 @@ public class Character : MonoBehaviour
     }
     
 	public void Start(){
+		
 		if (PlayerPrefs.GetInt ("Character") == null) {
 			PlayerPrefs.SetInt ("Character", 1);
 		}

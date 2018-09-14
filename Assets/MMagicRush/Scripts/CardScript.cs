@@ -9,7 +9,7 @@ public class CardScript : MonoBehaviour {
 	public bool tutorial;
 	public bool cardshop;
 
-	public bool isactivebutton = false;
+	public bool isactivebutton;
 	public Image activebutton;
 	public Sprite activeTrue;
 	public Sprite activeFalse;
@@ -36,14 +36,42 @@ public class CardScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-		this.GetComponent<Image> ().sprite = image;
-	}
 		
+		this.GetComponent<Image> ().sprite = image;
+
+
+	}
+
+	void OnEnable(){
+		StartCoroutine (LateStart (0.1f));
+	}
+
+	IEnumerator LateStart(float waitTime)
+	{
+		yield return new WaitForSeconds(waitTime);
+		int[] enableds = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+		//if (CardShop == false) {
+		foreach (int enab in enableds) {
+			//Debug.Log ("Carta ativa!: " + enab +" "+ this.CardID);
+			if (enab == this.CardID) {
+				Debug.Log ("Carta ativa!: " + enab + this.CardID);
+				//g.GetComponent<CardScript> ().activebutton.sprite = g.GetComponent<CardScript> ().activeTrue;
+				isactivebutton = true;
+				break;
+			} else {
+				isactivebutton = false;
+			}
+		}
+		//}
+	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (isactivebutton == true) {
+			activebutton.sprite = activeTrue;
+		} else {
+			activebutton.sprite = activeFalse;
+		}
 	
 
 	}

@@ -104,6 +104,7 @@ public class TutorialController : MonoBehaviour {
 			PlayerPrefs.SetInt ("Lesson", PlayerPrefs.GetInt ("Lesson") + 1);
 			GameObject.Find ("New Sprite").SetActive (false);
 			GetComponent<GameController> ().OpenReward (0);
+			//GiveReward (3);
 			//RewardWindow.SetActive (true);
 		}else if (PlayerPrefs.GetInt ("Lesson") == 3) {//RecebendoRecompensa
 			if (PlayerPrefs.GetString ("ResetCards") != "false") {
@@ -226,6 +227,34 @@ public class TutorialController : MonoBehaviour {
 		StartCoroutine (Lesson6 ());
 	}
 
+	public void GiveReward(int x){
+		switch (x) {
+		case 1:
+			PlayerPrefs.SetInt ("PlayerCoins", PlayerPrefs.GetInt("PlayerCoins")+100);
+			break;
+		case 2:
+			PlayerPrefs.SetInt ("PlayerCoins", PlayerPrefs.GetInt("PlayerCoins")+25);
+			break;
+		case 3: // BIDU
+			int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
 
+			List<int> iList = new List<int> ();
+
+			for (int i = 0; i < original.Length; i++) {
+				iList.Add (original [i]);
+			}
+
+			iList.Add (1);
+
+			PlayerPrefsX.SetIntArray("PlayerCardsIDs", iList.ToArray());
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		default:
+			break;
+		}
+	}
 
 }

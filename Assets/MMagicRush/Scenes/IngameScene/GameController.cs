@@ -70,8 +70,11 @@ public class GameController : MonoBehaviour {
 	public GameObject NetClock;
 	public GameObject NetGameController;
 
+	private int[] zero;
 	// Use this for initialization
 	void Awake() {
+		//PlayerPrefsX.SetIntArray("PlayerCardsIDs",zero);
+		//PlayerPrefsX.SetIntArray("SelectedCardsIDs",zero);
 
 		if (PlayerPrefs.GetString ("Multiplayer") == "True") {
 			if (tutorial == false) {
@@ -410,8 +413,14 @@ public class GameController : MonoBehaviour {
 			//CheckPlayerPos ();
 		} else if (tutorial == true) {
 			rewardWindows [x].SetActive (true);
+			if (x == 0) {
+				GiveReward (3);
+				Debug.Log ("Deu Bidu");
+			} else {
+				GiveReward (4);
+			}
 		} else {
-			rewardWindows [0].SetActive (true);
+			rewardWindows [2].SetActive (true);
 		}
 	}
 
@@ -423,6 +432,16 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void GiveReward(int x){
+
+		int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+
+		List<int> iList = new List<int> ();
+
+		for (int i = 0; i < original.Length; i++) {
+			//iList.Add (original [i]);
+			iList.Insert (i, original [i]);
+		}
+
 		switch (x) {
 		case 1:
 			PlayerPrefs.SetInt ("PlayerCoins", PlayerPrefs.GetInt("PlayerCoins")+100);
@@ -430,9 +449,15 @@ public class GameController : MonoBehaviour {
 		case 2:
 			PlayerPrefs.SetInt ("PlayerCoins", PlayerPrefs.GetInt("PlayerCoins")+25);
 			break;
-		case 3:
+		case 3: // BIDU
+			iList.Add (11);
+
+			PlayerPrefsX.SetIntArray("PlayerCardsIDs", iList.ToArray());
 			break;
-		case 4:
+		case 4://Sansão
+			iList.Add (18);
+
+			PlayerPrefsX.SetIntArray("PlayerCardsIDs", iList.ToArray());
 			break;
 		case 5:
 			break;
@@ -516,7 +541,8 @@ public class GameController : MonoBehaviour {
 	public void NextLevel(){
 		int x = PlayerPrefs.GetInt ("ClearedLevels");
 		if (x < 11) {
-			PlayerPrefs.SetInt ("ClearedLevels", x++);
+			x += 1;
+			PlayerPrefs.SetInt ("ClearedLevels", x);
 		}
 		SceneManager.LoadScene("Level Select");
 	

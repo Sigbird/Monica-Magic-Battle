@@ -43,7 +43,7 @@ public class FilterScript : MonoBehaviour {
 			if(c.GetComponent<CardScript>().efeito == t){
 				c.gameObject.SetActive(true);
 			}
-			if(c.GetComponent<CardScript>().efeito == "Todos"){
+			if(t == "Todos"){
 				c.gameObject.SetActive(true);
 			}
 		}
@@ -70,8 +70,8 @@ public class FilterScript : MonoBehaviour {
 
 	public void EnableCards(){
 		int[] a = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
-		if (x.Length == a.Length) {
-			
+		if (x.Length == a.Length && a.Length != 0) {
+			//UpdatePlayerCardList ();
 		} else {
 			ResetCards ();
 			UpdatePlayerCardList ();
@@ -80,9 +80,11 @@ public class FilterScript : MonoBehaviour {
 	}
 
 	public void UpdatePlayerCardList(){
+		
 		cs = new int[30];
 		for (int i = 1; i <= 20; i++) {
 			cs [i] = i;
+			//Debug.Log (i);
 		}
 		
 		if (CardShop) {
@@ -106,6 +108,7 @@ public class FilterScript : MonoBehaviour {
 		foreach (int cardID in x){
 			switch (cardID) {
 			case 1:
+				
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
 				g.GetComponent<CardScript> ().CardID = 1;
 				g.GetComponent<CardScript> ().efeito = "Magia";
@@ -126,6 +129,17 @@ public class FilterScript : MonoBehaviour {
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
 				}
 				childrens.Add (g.transform);
+				if (CardShop == false) {
+					foreach (int enab in enableds) {
+						if (enab == cardID) {
+							Debug.Log ("Cartas " + enab);
+							//g.GetComponent<CardScript> ().activebutton.sprite = g.GetComponent<CardScript> ().activeTrue;
+							g.GetComponent<CardScript> ().isactivebutton = true;
+						} else {
+							g.GetComponent<CardScript> ().isactivebutton = false;
+						}
+					}
+				}
 
 				break;
 			case 2:
@@ -348,6 +362,7 @@ public class FilterScript : MonoBehaviour {
 				childrens.Add (g.transform);
 				break;
 			case 12:
+				
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
 				g.GetComponent<CardScript> ().CardID = 12;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
@@ -723,8 +738,9 @@ public class FilterScript : MonoBehaviour {
 			if (CardShop == false) {
 //				foreach (int enab in enableds) {
 //					if (enab == cardID) {
-//						g.GetComponent<CardScript> ().activebutton.sprite = g.GetComponent<CardScript> ().activeTrue;
-//						g.GetComponent<CardScript> ().isactivebutton = true;
+//						Debug.Log ("Cartas " + enab);
+//						//g.GetComponent<CardScript> ().activebutton.sprite = g.GetComponent<CardScript> ().activeTrue;
+//						//g.GetComponent<CardScript> ().isactivebutton = true;
 //					}
 //				}
 			}

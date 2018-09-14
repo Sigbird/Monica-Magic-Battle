@@ -14,7 +14,17 @@ public class HeroSpecialHability : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		StartCoroutine (LateStart ());
 
+
+	}
+
+	void Update () {
+		
+	}
+
+	IEnumerator LateStart(){
+		yield return new WaitForSeconds (0.2f);
 		if (team == 0) {
 			effect = PlayerPrefs.GetInt ("SelectedCharacter");
 			//effect = this.gameObject.GetComponent<WPSoldierControler> ().heroID;
@@ -46,15 +56,10 @@ public class HeroSpecialHability : MonoBehaviour {
 			effectDuration = 3;
 			break;
 		default:
-			
+
 			break;
 		}
 		StartCoroutine (ApplyEffect ());
-	}
-
-	void Update () {
-		
-		
 	}
 
 
@@ -84,12 +89,12 @@ public class HeroSpecialHability : MonoBehaviour {
 					yield return new WaitForSeconds (effectDuration);
 					break;
 				case 1://CEBOLINHA INVISIVEl
-					transform.FindChild("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, .5f);  
-					transform.FindChild ("Platform").gameObject.SetActive (false);
+					this.transform.FindChild("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, .5f);  
+					this.transform.FindChild ("Platform").gameObject.SetActive (false);
 					//transform.FindChild ("HealtBarSoldier").gameObject.SetActive (false);
 					yield return new WaitForSeconds (effectDuration);
-					transform.Find("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
-					transform.FindChild ("Platform").gameObject.SetActive (true);
+					this.transform.Find("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
+					this.transform.FindChild ("Platform").gameObject.SetActive (true);
 					//transform.FindChild ("HealtBarSoldier").gameObject.SetActive (true);
 					break;
 				case 2://AREA DE CURA MAGALI
