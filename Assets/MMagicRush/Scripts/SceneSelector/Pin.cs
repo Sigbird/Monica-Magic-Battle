@@ -80,7 +80,7 @@ public class Pin : MonoBehaviour
 						PlayerPrefs.SetInt ("round", 1);
 						PlayerPrefs.SetInt ("playerCharges", 0);
 						PlayerPrefs.SetInt ("enemyCharges", 0);
-						SceneManager.LoadScene ("JogoMulti");
+						SceneManager.LoadScene ("JogoOffline");
 
 						Debug.Log ("Chamando cena: " + SceneToLoad);
 					}

@@ -278,7 +278,7 @@ public class WPSoldierControler : MonoBehaviour {
 				}
 
 			}
-			Debug.Log (obstacle.name);
+//			Debug.Log (obstacle.name);
 		}
 
 
@@ -558,7 +558,7 @@ public class WPSoldierControler : MonoBehaviour {
 			//this.gameObject.GetComponent<Animator> ().enabled = false;
 			this.anim = transform.Find ("MonicaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
 			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-			Debug.Log ("Monica");
+//			Debug.Log ("Monica");
 			break;
 		case(1):
 			this.vidaMax = 4;
@@ -574,7 +574,7 @@ public class WPSoldierControler : MonoBehaviour {
 			//this.anim.SetInteger ("Char", 1);
 			this.anim = transform.Find ("CebolinhaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
 			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-			Debug.Log ("Cebolinha");
+//			Debug.Log ("Cebolinha");
 			break;
 		case(2):
 			this.vidaMax = 7;
@@ -589,7 +589,7 @@ public class WPSoldierControler : MonoBehaviour {
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim = transform.Find ("MagaliAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
 			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-			Debug.Log ("Magali");
+//			Debug.Log ("Magali");
 			break;
 		case(3):
 			this.vidaMax = 4;
@@ -604,7 +604,7 @@ public class WPSoldierControler : MonoBehaviour {
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim = transform.Find ("CascãoAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
 			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-			Debug.Log ("Cascao");
+//			Debug.Log ("Cascao");
 			break;
 		case(4):
 			this.vidaMax = 4;
@@ -619,7 +619,7 @@ public class WPSoldierControler : MonoBehaviour {
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim = transform.Find ("ChicoAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
 			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-			Debug.Log ("Chico");
+//			Debug.Log ("Chico");
 			break;
 		default:
 			this.vidaMax = 6;
@@ -634,7 +634,7 @@ public class WPSoldierControler : MonoBehaviour {
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim = transform.Find ("MonicaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
 			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-			Debug.Log ("Monica");
+//			Debug.Log ("Monica");
 			break;
 
 		}

@@ -40,7 +40,13 @@ public class CardInfoScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		int[] cards = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+		Debug.Log ("Card Count "+ cards.Length);
+		if (cards.Length < 2) {
+			disableButton.GetComponent<Button> ().interactable = false;
+		} else {
+			disableButton.GetComponent<Button> ().interactable = true;
+		}
 	}
 
 	public void SendCard(GameObject o){

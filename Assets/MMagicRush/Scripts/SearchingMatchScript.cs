@@ -80,9 +80,9 @@ public class SearchingMatchScript : MonoBehaviour {
 		PlayerPrefs.SetInt ("playerCharges",0);
 		PlayerPrefs.SetInt ("enemyCharges",0);
 		if (noLoading) {
-			SceneManager.LoadScene ("JogoMulti");
+			SceneManager.LoadScene ("JogoOffline");
 		} else {
-			SceneLoadingManager.LoadScene ("JogoMulti");
+			SceneLoadingManager.LoadScene ("JogoOffline");
 		}
 	}
 

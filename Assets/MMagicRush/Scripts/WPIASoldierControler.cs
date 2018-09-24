@@ -1296,7 +1296,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		} else {
 			chooser = x;
 		}
-		Debug.Log (chooser);
+//		Debug.Log (chooser);
 	
 			switch(chooser) {
 		case 1://IDLE

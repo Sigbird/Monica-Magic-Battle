@@ -76,48 +76,48 @@ public class GameController : MonoBehaviour {
 		//PlayerPrefsX.SetIntArray("PlayerCardsIDs",zero);
 		//PlayerPrefsX.SetIntArray("SelectedCardsIDs",zero);
 
-		if (PlayerPrefs.GetString ("Multiplayer") == "True") {
-			if (tutorial == false) {
-				multiplayer = true;
-				NetGameController.SetActive (true);
-				NetClock.SetActive (true);
-				EnemyGameObject.GetComponent<EnemyRemoteController> ().enabled = true;
-				EnemyGameObject.GetComponent<WPIASoldierControler> ().multiplayer = true;
-				HeroGameObject.GetComponent<PlayerController> ().enabled = true;
-				HeroGameObject.GetComponent<WPSoldierControler> ().multiplayer = true;
-
-			}
-
-			EnemyGameObject.GetComponent<WPIASoldierControler> ().enabled = false;
-
-			HeroGameObject.GetComponent<WPSoldierControler> ().enabled = false;
-
-		} else {
-			if (tutorial == false) {
-				NetGameController.SetActive (false);
-				NetClock.SetActive (false);
-
-				EnemyGameObject.GetComponent<EnemyRemoteController> ().enabled = false;
-				EnemyGameObject.GetComponent<WPIASoldierControler> ().multiplayer = false;
-				HeroGameObject.GetComponent<PlayerController> ().enabled = false;
-				HeroGameObject.GetComponent<WPSoldierControler> ().multiplayer = false;
-			}
-
-			EnemyGameObject.GetComponent<WPIASoldierControler> ().enabled = true;
-		
-			HeroGameObject.GetComponent<WPSoldierControler> ().enabled = true;
-
-		}
+//		if (PlayerPrefs.GetString ("Multiplayer") == "True") {
+//			if (tutorial == false) {
+//				multiplayer = true;
+//				NetGameController.SetActive (true);
+//				NetClock.SetActive (true);
+//				EnemyGameObject.GetComponent<EnemyRemoteController> ().enabled = true;
+//				EnemyGameObject.GetComponent<WPIASoldierControler> ().multiplayer = true;
+//				HeroGameObject.GetComponent<PlayerController> ().enabled = true;
+//				HeroGameObject.GetComponent<WPSoldierControler> ().multiplayer = true;
+//
+//			}
+//
+//			EnemyGameObject.GetComponent<WPIASoldierControler> ().enabled = false;
+//
+//			HeroGameObject.GetComponent<WPSoldierControler> ().enabled = false;
+//
+//		} else {
+//			if (tutorial == false) {
+//				NetGameController.SetActive (false);
+//				NetClock.SetActive (false);
+//
+//				EnemyGameObject.GetComponent<EnemyRemoteController> ().enabled = false;
+//				EnemyGameObject.GetComponent<WPIASoldierControler> ().multiplayer = false;
+//				HeroGameObject.GetComponent<PlayerController> ().enabled = false;
+//				HeroGameObject.GetComponent<WPSoldierControler> ().multiplayer = false;
+//			}
+//
+//			EnemyGameObject.GetComponent<WPIASoldierControler> ().enabled = true;
+//		
+//			HeroGameObject.GetComponent<WPSoldierControler> ().enabled = true;
+//
+//		}
 		EnemyDiamonds = 0;
 		Diamonds = 0;
 		gempertimeprogress = 0;
 		gempertimeMaxValue = 1;
 		enemyCharges = PlayerPrefs.GetInt ("enemyCharges");
-		Debug.Log ("Enemy " + enemyCharges);
+//		Debug.Log ("Enemy " + enemyCharges);
 		playerCharges = PlayerPrefs.GetInt ("playerCharges");
-		Debug.Log ("Player " + playerCharges);
+//		Debug.Log ("Player " + playerCharges);
 		round = PlayerPrefs.GetInt ("round");
-		Debug.Log ("Round " + round);
+//		Debug.Log ("Round " + round);
 		if (enemyCharges == 0 && playerCharges == 0) {
 			this.round = 1;
 			GameController.playerXp = 0;
@@ -270,7 +270,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void NextRound(){
-		Debug.Log ("xp: "+GameController.playerXp);
+//		Debug.Log ("xp: "+GameController.playerXp);
 		PlayerPrefs.SetFloat ("PlayerXP", GameController.playerXp);
 		PlayerPrefs.SetFloat ("EnemyXP", GameController.enemyXp);
 		StartCoroutine (newRound ());
@@ -279,7 +279,7 @@ public class GameController : MonoBehaviour {
 
 	IEnumerator newRound(){
 		yield return new WaitForSeconds (0.1f);
-		Debug.Log (enemyCharges);
+//		Debug.Log (enemyCharges);
 		if (enemyCharges == 1) {//3
 			PlayerPrefs.SetInt ("round", 1);
 			PlayerPrefs.SetInt ("playerCharges", 0);
@@ -321,7 +321,7 @@ public class GameController : MonoBehaviour {
 			//GameObject.Find ("Chest2").transform.Find ("Closed").GetComponent<Image> ().color = Color.gray;
 			endGamePanel [1].SetActive (true);
 		} else { // EMPATE
-			Debug.Log ("EMPATE");
+//			Debug.Log ("EMPATE");
 			this.GetComponent<AudioManager> ().StopAudio ();
 			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
@@ -357,7 +357,7 @@ public class GameController : MonoBehaviour {
 			//GameObject.Find ("Chest2").transform.Find ("Closed").GetComponent<Image> ().color = Color.gray;
 			endGamePanel [1].SetActive (true);
 		} else { // EMPATE
-			Debug.Log ("EMPATE");
+//			Debug.Log ("EMPATE");
 			this.GetComponent<AudioManager> ().StopAudio ();
 			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
@@ -415,7 +415,7 @@ public class GameController : MonoBehaviour {
 			rewardWindows [x].SetActive (true);
 			if (x == 0) {
 				GiveReward (3);
-				Debug.Log ("Deu Bidu");
+				//Debug.Log ("Deu Bidu");
 			} else {
 				GiveReward (4);
 			}

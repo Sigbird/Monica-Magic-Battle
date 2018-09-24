@@ -103,7 +103,7 @@ public class SceneHelper : MonoBehaviour {
 			premiumcoinsText.text = "0";
 		}
 
-		if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length >= 12 && tutorial == true) {
+		if (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length >= 2 && tutorial == true) {
 			TutorialPanels [1].SetActive (false);
 			TutorialPanels [2].SetActive (true);
  		}
@@ -115,6 +115,11 @@ public class SceneHelper : MonoBehaviour {
 	}
 
 	public void OpenCoinsShop(){
+		StartCoroutine (LateCoinsShop ());
+	}
+
+	IEnumerator LateCoinsShop(){
+		yield return new WaitForSeconds (0.2f);
 		this.coinsPurchasing = 0;
 		this.premiumcoinsPurchasing = 0;
 	}
