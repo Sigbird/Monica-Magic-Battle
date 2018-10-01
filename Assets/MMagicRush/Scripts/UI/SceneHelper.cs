@@ -74,6 +74,11 @@ public class SceneHelper : MonoBehaviour {
 //			temp = empty;
 //		}
 		Debug.Log (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length);
+
+		if (PlayerPrefs.GetString ("Tutorial") == "False" || PlayerPrefs.HasKey ("Tutorial") == false) {
+			PurchaseCardBidu ();
+		}
+
 		PlayerPrefs.SetString ("Tutorial", "True");
 		if(tutorial == true)
 		GameObject.Find ("Canvas").GetComponent<Animator> ().SetTrigger ("menuCartas");
@@ -264,6 +269,32 @@ public class SceneHelper : MonoBehaviour {
 
 		//		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
 		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
+	}
+
+	public void PurchaseCardBidu(){
+
+		int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+
+		List<int> iList = new List<int> ();
+
+		for (int i = 0; i < original.Length; i++) {
+			iList.Add (original [i]);
+		}
+
+		iList.Add (11);
+
+		int[] finalArray = new int[iList.Count];
+
+		int x = 0;
+		foreach (int i in iList) {
+			finalArray [x] = i;
+			x++;
+		}
+
+
+		//ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
+		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
+
 	}
 
 }

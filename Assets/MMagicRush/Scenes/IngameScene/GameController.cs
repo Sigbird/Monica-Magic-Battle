@@ -414,7 +414,7 @@ public class GameController : MonoBehaviour {
 		} else if (tutorial == true) {
 			rewardWindows [x].SetActive (true);
 			if (x == 0) {
-				GiveReward (3);
+				//GiveReward (3);
 				//Debug.Log ("Deu Bidu");
 			} else {
 				GiveReward (4);
@@ -455,7 +455,7 @@ public class GameController : MonoBehaviour {
 			PlayerPrefsX.SetIntArray("PlayerCardsIDs", iList.ToArray());
 			break;
 		case 4://Sansão
-			iList.Add (18);
+			iList.Add (12);
 
 			PlayerPrefsX.SetIntArray("PlayerCardsIDs", iList.ToArray());
 			break;
