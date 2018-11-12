@@ -18,6 +18,9 @@ public class MapManager : MonoBehaviour
 	public GameObject[] FirstPins;
 	public GameObject[] SecondPins;
 	public GameObject ScrollController;
+	public int atualPin;
+
+
 
 
 	public Text MapNames;
@@ -120,10 +123,14 @@ public class MapManager : MonoBehaviour
 		if (Input.GetMouseButtonUp (0)) {
 			if (Character.NextPin () != null) {
 				if (Character.NextPin ().ActualStatus != PinStatus.Locked) {
-					if (Vector2.Distance (Camera.main.ScreenToWorldPoint (Input.mousePosition), Character.NextPin ().gameObject.transform.position) < 1) {
-						Character.TrySetDirection (Direction.Up);
-						GameObject.Find ("Main Camera").GetComponent<AudioManager> ().PlayAudio ("passos");
-					}
+//					if (Vector2.Distance (Camera.main.ScreenToWorldPoint (Input.mousePosition), Character.NextPin ().gameObject.transform.position) < 1) {
+//						Character.TrySetDirection (Direction.Up);
+//						GameObject.Find ("Main Camera").GetComponent<AudioManager> ().PlayAudio ("passos");
+//					}
+//					if (Vector2.Distance (Camera.main.ScreenToWorldPoint (Input.mousePosition), Character.NextPin ().gameObject.transform.position) < 1) {
+//						Character.targetpin = 
+//						GameObject.Find ("Main Camera").GetComponent<AudioManager> ().PlayAudio ("passos");
+//					}
 				}
 			}
 
@@ -133,6 +140,26 @@ public class MapManager : MonoBehaviour
 //				}
 //			}
 		}
+
+		RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+		if(hit.collider != null)
+		{
+			if (hit.collider.transform.tag == "PinWaypoint") {
+				if (hit.transform.gameObject.GetComponent<Pin> ().ActualStatus != PinStatus.Locked) {
+					if (hit.transform.gameObject.GetComponent<Pin> ().PinID != atualPin) {
+						atualPin = hit.transform.gameObject.GetComponent<Pin> ().PinID;
+						Character.targetpin = hit.transform.GetComponent<Pin> ();
+						GameObject.Find ("Main Camera").GetComponent<AudioManager> ().PlayAudio ("passos");
+					} else {
+						
+					}
+				}
+			}
+
+			Debug.Log ("Target Position: " + hit.collider.gameObject.transform.position);
+		}
+
 
 //		if (Input.GetKeyUp(KeyCode.UpArrow))
 //		{
@@ -193,13 +220,13 @@ public class MapManager : MonoBehaviour
 			}
 		}
 
-			if (actualMap == 1 && cleared > 4){
+			if (actualMap == 1 && cleared > 3){
 				Character.gameObject.SetActive (true);
 			} else {
 				Character.gameObject.SetActive (false);
 			}
 
-			if (actualMap == 2 && cleared > 8) {
+			if (actualMap == 2 && cleared > 7) {
 				Character.gameObject.SetActive (true);
 			} else {
 				Character.gameObject.SetActive (false);
@@ -253,21 +280,34 @@ public class MapManager : MonoBehaviour
 				NextButton [0].SetActive (true);
 			}
 		}
-
+		Character.atualpin = 0;
 		if (x == "Forest") {
 			Character.transform.position = FirstPins [0].transform.position;
 			StartPin = FirstPins [0].GetComponent<Pin>();
 			Character.SetCurrentPin(FirstPins[0].GetComponent<Pin>());
+			Maps [0].SetActive (true);
+			Maps [1].SetActive (false);
+			Maps [2].SetActive (false);
+			Character.GenericPins = Character.ForestPins;
+
 		}
 		if (x == "Ice") {
 			Character.transform.position = FirstPins [1].transform.position;
 			StartPin = FirstPins [1].GetComponent<Pin>();
 			Character.SetCurrentPin(FirstPins[1].GetComponent<Pin>());
+			Maps [0].SetActive (false);
+			Maps [1].SetActive (true);
+			Maps [2].SetActive (false);
+			Character.GenericPins = Character.FrozenPins;
 		}
 		if (x == "Dungeon") {
 			Character.transform.position = FirstPins [2].transform.position;
 			StartPin = FirstPins [2].GetComponent<Pin>();
 			Character.SetCurrentPin(FirstPins[2].GetComponent<Pin>());
+			Maps [0].SetActive (false);
+			Maps [1].SetActive (false);
+			Maps [2].SetActive (true);
+			Character.GenericPins = Character.DungeonPins;
 		}
 
 	}

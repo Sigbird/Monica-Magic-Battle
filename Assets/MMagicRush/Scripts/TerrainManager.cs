@@ -5,13 +5,14 @@ using UnityEngine;
 public class TerrainManager : MonoBehaviour {
 	public Sprite[] TerrainImages;
 	public GameObject[] Trees;
-	private SpriteRenderer Sr;
+	public SpriteRenderer Sr;
 	private int rand;
 	public string terrain;
+
 	// Use this for initialization
 	void Start () {
 
-		Sr = this.GetComponent<SpriteRenderer> ();
+		//Sr = this.GetComponent<SpriteRenderer> ();
 
 		terrain = PlayerPrefs.GetString ("TerrainType");
 

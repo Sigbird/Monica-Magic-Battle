@@ -14,6 +14,8 @@ public class HeroSpecialHability : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		MeiaCascao.GetComponent<MeiaCascao> ().team = team;
 		StartCoroutine (LateStart ());
 
 
@@ -73,14 +75,14 @@ public class HeroSpecialHability : MonoBehaviour {
 				case 0://ATIRA O COELHO
 					if (team == 0) {
 						target = GameObject.Find ("HeroEnemy");
-						if (target.GetComponent<SpriteRenderer> ().enabled == true) {
+						if (target.GetComponent<WPIASoldierControler> ().anim.GetComponent<SpriteRenderer> ().enabled == true) {
 							GameObject arrow = Instantiate (sansãoProjectile, this.transform.position, Quaternion.identity);
 							arrow.GetComponent<ArrowScript> ().target = target;
 							target.GetComponent<WPIASoldierControler> ().ReceiveDamage (1);
 						}	
 					} else {
 						target = GameObject.Find ("Hero");
-						if (target.GetComponent<SpriteRenderer> ().enabled == true) {
+						if (target.GetComponent<WPSoldierControler> ().anim.GetComponent<SpriteRenderer> ().enabled == true) {
 							GameObject arrow = Instantiate (sansãoProjectile, this.transform.position, Quaternion.identity);
 							arrow.GetComponent<ArrowScript> ().target = target;
 							target.GetComponent<WPSoldierControler> ().ReceiveDamage (1);
@@ -89,19 +91,37 @@ public class HeroSpecialHability : MonoBehaviour {
 					yield return new WaitForSeconds (effectDuration);
 					break;
 				case 1://CEBOLINHA INVISIVEl
-					this.transform.FindChild("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, .5f);  
+					this.transform.FindChild ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, .5f);  
 					this.transform.FindChild ("Platform").gameObject.SetActive (false);
 					//transform.FindChild ("HealtBarSoldier").gameObject.SetActive (false);
 					yield return new WaitForSeconds (effectDuration);
-					this.transform.Find("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
+					if (this.team == 1) {
+						string ter = PlayerPrefs.GetString ("TerrainType");
+						if (ter == "Forest") {
+							this.transform.Find ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = Color.green;
+						} else if (ter == "Winter") {
+							this.transform.Find ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = Color.cyan;
+						} else if (ter == "Dungeon") {
+							this.transform.Find ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = Color.gray;
+						} 
+					} else {
+						this.transform.Find ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
+					}
 					this.transform.FindChild ("Platform").gameObject.SetActive (true);
 					//transform.FindChild ("HealtBarSoldier").gameObject.SetActive (true);
 					break;
 				case 2://AREA DE CURA MAGALI
 					SpecialHabilityZone [effect].SetActive (true);
-					if (this.gameObject.GetComponent<WPSoldierControler> ().vida < this.gameObject.GetComponent<WPSoldierControler> ().vidaMax) {
-						this.gameObject.GetComponent<WPSoldierControler> ().vida++;
-						this.gameObject.GetComponent<WPSoldierControler> ().UpdateLife ();
+					if (team == 0) {
+						if (this.gameObject.GetComponent<WPSoldierControler> ().vida < this.gameObject.GetComponent<WPSoldierControler> ().vidaMax) {
+							this.gameObject.GetComponent<WPSoldierControler> ().vida++;
+							this.gameObject.GetComponent<WPSoldierControler> ().UpdateLife ();
+						}
+					} else {
+						if (this.gameObject.GetComponent<WPIASoldierControler> ().vida < this.gameObject.GetComponent<WPIASoldierControler> ().vidaMax) {
+							this.gameObject.GetComponent<WPIASoldierControler> ().vida++;
+							this.gameObject.GetComponent<WPIASoldierControler> ().UpdateLife ();
+						}
 					}
 					yield return new WaitForSeconds (effectDuration);
 					SpecialHabilityZone [effect].SetActive (false);

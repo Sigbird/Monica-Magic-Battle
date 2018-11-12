@@ -18,6 +18,7 @@ public class FilterScript : MonoBehaviour {
 	public Sprite[] Efects;
 	public Sprite[] Images;
 	public Sprite[] Persons;
+	public List<int> ids = new List<int>();
 
 	void OnEnable() {
 		EnableCards ();
@@ -384,26 +385,8 @@ public class FilterScript : MonoBehaviour {
 				childrens.Add (g.transform);
 				break;
 			case 13: //removido (Anjinho)
-//				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
-//				g.GetComponent<CardScript> ().CardID = 13;
-//				g.GetComponent<CardScript> ().efeito = "Unidade";
-//				g.GetComponent<CardScript> ().personagem = "Todos";
-//				g.GetComponent<CardScript> ().cardname = "Anjinho";
-//				g.GetComponent<CardScript> ().descrition = "Chama a unidade Anjinho para ajudar";
-//				g.GetComponent<CardScript> ().cost = "1";
-//				g.GetComponent<CardScript> ().damage = "1";
-//				g.GetComponent<CardScript> ().efect.sprite = Efects[1];
-//				g.GetComponent<CardScript> ().image = Images[cardID];
-//				g.GetComponent<CardScript> ().peson = Persons[0];
-//				g.transform.SetParent (this.transform,false);
-//				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-//				if (CardShop)
-//					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
-//				childrens.Add (g.transform);
-				break;
-			case 14:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
-				g.GetComponent<CardScript> ().CardID = 14;
+				g.GetComponent<CardScript> ().CardID = 13;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Jotalhão";
@@ -422,9 +405,9 @@ public class FilterScript : MonoBehaviour {
 				}
 				childrens.Add (g.transform);
 				break;
-			case 15:
+			case 14:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
-				g.GetComponent<CardScript> ().CardID = 15;
+				g.GetComponent<CardScript> ().CardID = 14;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Piteco";
@@ -443,9 +426,9 @@ public class FilterScript : MonoBehaviour {
 				}
 				childrens.Add (g.transform);
 				break;
-			case 16:
+			case 15:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
-				g.GetComponent<CardScript> ().CardID = 16;
+				g.GetComponent<CardScript> ().CardID = 15;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Penadinho";
@@ -464,27 +447,9 @@ public class FilterScript : MonoBehaviour {
 				}
 				childrens.Add (g.transform);
 				break;
-			case 17: // removido(Louco)
-//				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
-//				g.GetComponent<CardScript> ().CardID = 17;
-//				g.GetComponent<CardScript> ().efeito = "Unidade";
-//				g.GetComponent<CardScript> ().personagem = "Cebolinha";
-//				g.GetComponent<CardScript> ().cardname = "Louco";
-//				g.GetComponent<CardScript> ().descrition = "Chama a unidade Louco para ajudar";
-//				g.GetComponent<CardScript> ().cost = "100";
-//				g.GetComponent<CardScript> ().damage = "5";
-//				g.GetComponent<CardScript> ().efect.sprite = Efects[1];
-//				g.GetComponent<CardScript> ().image = Images[cardID];
-//				g.GetComponent<CardScript> ().peson = Persons[3];
-//				g.transform.SetParent (this.transform,false);
-//				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-//				if (CardShop)
-//					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
-//				childrens.Add (g.transform);
-				break;
-			case 18:
+			case 16:
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
-				g.GetComponent<CardScript> ().CardID = 18;
+				g.GetComponent<CardScript> ().CardID = 16;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Monica";
 				g.GetComponent<CardScript> ().cardname = "Sansão";
@@ -503,9 +468,9 @@ public class FilterScript : MonoBehaviour {
 				}
 				childrens.Add (g.transform);
 				break;
-			case 19:
+			case 17: // removido(Louco)
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
-				g.GetComponent<CardScript> ().CardID = 19;
+				g.GetComponent<CardScript> ().CardID = 17;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
 				g.GetComponent<CardScript> ().personagem = "Magali";
 				g.GetComponent<CardScript> ().cardname = "Mingau";
@@ -524,24 +489,7 @@ public class FilterScript : MonoBehaviour {
 				}
 				childrens.Add (g.transform);
 				break;
-			case 20:// Removido(Alfredo)
-//				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
-//				g.GetComponent<CardScript> ().CardID = 20;
-//				g.GetComponent<CardScript> ().efeito = "Unidade";
-//				g.GetComponent<CardScript> ().personagem = "Todos";
-//				g.GetComponent<CardScript> ().cardname = "Alfredo";
-//				g.GetComponent<CardScript> ().descrition = "Chama a unidade Alfredo para ajudar";
-//				g.GetComponent<CardScript> ().cost = "150";
-//				g.GetComponent<CardScript> ().damage = "2";
-//				g.GetComponent<CardScript> ().efect.sprite = Efects[1];
-//				g.GetComponent<CardScript> ().image = Images[cardID];
-//				g.GetComponent<CardScript> ().peson = Persons[0];
-//				g.transform.SetParent (this.transform,false);
-//				g.GetComponent<CardScript> ().cardInfo = CardInfo;
-//				if (CardShop)
-//					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
-//				childrens.Add (g.transform);
-				break;
+			
 
 										//TORRES
 
@@ -751,9 +699,30 @@ public class FilterScript : MonoBehaviour {
 //			}
 
 		}
+		if (CardShop == false) {
+			CheckForDoubles ();
+		}
+	}
+
+	public void CheckForDoubles(){
+		Transform[] filter = this.gameObject.GetComponentsInChildren<Transform> ();
+		//int[] ids;
+		foreach (Transform f in filter)
+		{
+			if(f.name == "Card(Clone)"){
+				if(ids.Contains(f.GetComponent<CardScript>().CardID)){
+					Destroy (f.gameObject);
+				}else{
+					ids.Add(f.GetComponent<CardScript>().CardID);
+				}
+
+			}  
+		}
+		ids.Clear ();
 	}
 
 	public void ResetCards(){
+		
 				Transform[] filter = this.gameObject.GetComponentsInChildren<Transform> ();
 				foreach (Transform f in filter)
 				{
@@ -761,6 +730,7 @@ public class FilterScript : MonoBehaviour {
 						Destroy (f.gameObject);
 						x = empty;
 						childrens.Clear ();
+						
 					}  
 				}
 	}

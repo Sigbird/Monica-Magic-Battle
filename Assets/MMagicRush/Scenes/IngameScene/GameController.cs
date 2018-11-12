@@ -13,6 +13,9 @@ public class GameController : MonoBehaviour {
 	public float gempertime;	
 	private float gempertimeprogress;
 	private int gempertimeMaxValue;
+	private string terraintype;
+	public int terrain;
+	public bool victory;
 
 	public int playerCharges;
 	public static float playerXp;
@@ -69,10 +72,28 @@ public class GameController : MonoBehaviour {
 	public GameObject HeroGameObject;
 	public GameObject NetClock;
 	public GameObject NetGameController;
+	public bool vsIAMode;
 
 	private int[] zero;
 	// Use this for initialization
 	void Awake() {
+		
+
+
+
+		terraintype = PlayerPrefs.GetString ("TerrainType");
+		if (terraintype == "Forest") {
+			terrain = 1;
+			vsIAMode = false;
+		} else if (terraintype == "Winter") {
+			terrain = 2;
+			vsIAMode = false;
+		} else if (terraintype == "Dungeon") {
+			terrain = 3;
+			vsIAMode = false;
+		} else {
+			vsIAMode = true;
+		}
 		//PlayerPrefsX.SetIntArray("PlayerCardsIDs",zero);
 		//PlayerPrefsX.SetIntArray("SelectedCardsIDs",zero);
 
@@ -279,22 +300,23 @@ public class GameController : MonoBehaviour {
 
 	IEnumerator newRound(){
 		yield return new WaitForSeconds (0.1f);
+		StartCoroutine (endGame());
 //		Debug.Log (enemyCharges);
-		if (enemyCharges == 1) {//3
-			PlayerPrefs.SetInt ("round", 1);
-			PlayerPrefs.SetInt ("playerCharges", 0);
-			PlayerPrefs.SetInt ("enemyCharges", 0);
-			StartCoroutine (endGame());
-		}else if(playerCharges == 1) {//3
-			PlayerPrefs.SetInt ("round", 1);
-			PlayerPrefs.SetInt ("playerCharges", 0);
-			PlayerPrefs.SetInt ("enemyCharges", 0);
-			StartCoroutine (endGame());
-		} else {
-			PlayerPrefs.SetInt ("round", round + 1);
-			yield return new WaitForSeconds (2);
-			SceneManager.LoadScene ("Jogo");
-		}
+//		if (enemyCharges == 1) {//3
+//			PlayerPrefs.SetInt ("round", 1);
+//			PlayerPrefs.SetInt ("playerCharges", 0);
+//			PlayerPrefs.SetInt ("enemyCharges", 0);
+//			StartCoroutine (endGame());
+//		}else if(playerCharges == 1) {//3
+//			PlayerPrefs.SetInt ("round", 1);
+//			PlayerPrefs.SetInt ("playerCharges", 0);
+//			PlayerPrefs.SetInt ("enemyCharges", 0);
+//			StartCoroutine (endGame());
+//		} else {
+//			PlayerPrefs.SetInt ("round", round + 1);
+//			yield return new WaitForSeconds (2);
+//			SceneManager.LoadScene ("Jogo");
+//		}
 
 	}
 
@@ -307,6 +329,7 @@ public class GameController : MonoBehaviour {
 			this.GetComponent<AudioManager> ().StopAudio ();
 			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
+			victory = true;
 			endGamePanel [0].SetActive (true);
 			if (tutorial == true) {
 				GetComponent<TutorialController> ().tutorialPanels [0].SetActive (false);
@@ -317,6 +340,7 @@ public class GameController : MonoBehaviour {
 			this.GetComponent<AudioManager> ().StopAudio ();
 			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("defeat");
+			victory = false;
 			//GameObject.Find ("Chest2").GetComponent<Button> ().interactable = false;
 			//GameObject.Find ("Chest2").transform.Find ("Closed").GetComponent<Image> ().color = Color.gray;
 			endGamePanel [1].SetActive (true);
@@ -325,7 +349,9 @@ public class GameController : MonoBehaviour {
 			this.GetComponent<AudioManager> ().StopAudio ();
 			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
+			victory = true;
 			endGamePanel [0].SetActive (true);
+
 		}
 		GameOver = true;
 		Time.timeScale = 0;
@@ -378,16 +404,7 @@ public class GameController : MonoBehaviour {
 		//PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
 	}
 
-	public void LoadScene(string scene){
-		Time.timeScale = 1;
-		round = 1;
-		playerCharges = 0;
-		enemyCharges = 0;
-		PlayerPrefs.SetInt ("round",1);
-		PlayerPrefs.SetInt ("playerCharges",0);
-		PlayerPrefs.SetInt ("enemyCharges",0);
-		SceneManager.LoadScene (scene);
-	}
+
 
 	public void OpenReward(int x){
 		GameObject.Find ("Hero").SetActive (false);
@@ -455,7 +472,7 @@ public class GameController : MonoBehaviour {
 			PlayerPrefsX.SetIntArray("PlayerCardsIDs", iList.ToArray());
 			break;
 		case 4://Sansão
-			iList.Add (12);
+			iList.Add (16);
 
 			PlayerPrefsX.SetIntArray("PlayerCardsIDs", iList.ToArray());
 			break;
@@ -540,14 +557,77 @@ public class GameController : MonoBehaviour {
 
 	public void NextLevel(){
 		int x = PlayerPrefs.GetInt ("ClearedLevels");
-		if (x < 11) {
-			x += 1;
-			PlayerPrefs.SetInt ("ClearedLevels", x);
+//		if (x < 11 && victory == true) {
+//			x += 1;
+//			PlayerPrefs.SetInt ("ClearedLevels", x);
+//		}
+		if (terrain == 1 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 2 && victory == true && PlayerPrefs.GetString ("TerrainType") != null) {
+			PlayerPrefs.SetInt ("AnimationToPlay", terrain);
+			if (x < 12 && victory == true) {
+				x += 1;
+				PlayerPrefs.SetInt ("ClearedLevels", x);
+			}
+			PlayerPrefs.DeleteKey ("TerrainType");
+			SceneManager.LoadScene ("Cinematics");
+
+
+		} else if (terrain == 2 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 1 && victory == true && PlayerPrefs.GetString ("TerrainType") != null) {
+			PlayerPrefs.SetInt ("AnimationToPlay", terrain);
+			if (x < 12 && victory == true) {
+				x += 1;
+				PlayerPrefs.SetInt ("ClearedLevels", x);
+			}
+			PlayerPrefs.DeleteKey ("TerrainType");
+			SceneManager.LoadScene ("Cinematics");
+
+
+		}else if(terrain == 3 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 0 && victory == true && PlayerPrefs.GetString ("TerrainType") != null){
+			PlayerPrefs.SetInt ("AnimationToPlay", terrain);
+			if (x < 12 && victory == true) {
+				x += 1;
+				PlayerPrefs.SetInt ("ClearedLevels", x);
+			}
+			PlayerPrefs.DeleteKey ("TerrainType");
+			SceneManager.LoadScene ("Cinematics");
+
+		} else {
+			if (vsIAMode == false) {
+				if (x < 12 && victory == true) {
+					x += 1;
+					PlayerPrefs.SetInt ("ClearedLevels", x);
+				}
+				PlayerPrefs.DeleteKey ("TerrainType");
+				SceneManager.LoadScene ("Level Select");
+			} else {
+				PlayerPrefs.DeleteKey ("TerrainType");
+				SceneManager.LoadScene ("JogoOffline");
+			}
 		}
-		SceneManager.LoadScene("Level Select");
-	
+			
+
 	}
 
+	public void LoadScene(string scene){
+		Time.timeScale = 1;
+		round = 1;
+		playerCharges = 0;
+		enemyCharges = 0;
+		PlayerPrefs.SetInt ("round",1);
+		PlayerPrefs.SetInt ("playerCharges",0);
+		PlayerPrefs.SetInt ("enemyCharges",0);
+		if (terrain == 0 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 2 && victory == true) {
+			PlayerPrefs.SetInt ("AnimationToPlay", terrain);
+			SceneManager.LoadScene ("Cinematics");
+		} else if (terrain == 1 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 1 && victory == true) {
+			PlayerPrefs.SetInt ("AnimationToPlay", terrain);
+			SceneManager.LoadScene ("Cinematics");
+		}else if(terrain == 2 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 0 && victory == true){
+			PlayerPrefs.SetInt ("AnimationToPlay", terrain);
+			SceneManager.LoadScene ("Cinematics");
+		} else {
+			SceneManager.LoadScene (scene);
+		}
+	}
 
 	public void OpenUI(){
 		if (multiplayer == false) {

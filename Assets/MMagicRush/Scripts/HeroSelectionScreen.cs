@@ -6,45 +6,61 @@ using UnityEngine.UI;
 public class HeroSelectionScreen : MonoBehaviour {
 
 	public Button monica;
-	public Button cebolinha;
+	public Button monica2;
 	public Button magali;
-	public Button cascao;
+	public Button magali2;
 	public Button chico;
+	public Button chico2;
+	public Button cebolinha;
+	public Button cebolinha2;
+	public Button cascao;
+	public Button cascao2;
 
 	public void Start(){
 		
 	}
 
 	// Use this for initialization
-	void Enable () {
+	void OnEnable () {
 //		if (PlayerPrefs.GetInt ("monica") == 1) {
-//			monica.interactable = true;
+//			monica.enabled = true;
+//			monica2.enabled = true;
 //		} else {
-//			monica.interactable = false;
+//			monica.enabled = false;
+//			monica2.enabled = false;
 //		}
 //
 //		if (PlayerPrefs.GetInt ("cebolinha") == 1) {
-//			cebolinha.interactable = true;
+//			cebolinha.enabled = true;
+//			cebolinha2.enabled = true;
 //		} else {
-//			cebolinha.interactable = false;
+//			cebolinha.enabled = true;
+//			cebolinha2.enabled = true;
 //		}
-//
-//		if (PlayerPrefs.GetInt ("magali") == 1) {
-//			magali.interactable = true;
-//		} else {
-//			magali.interactable = false;
-//		}
-//
-//		if (PlayerPrefs.GetInt ("cascao") == 1) {
-//			cascao.interactable = true;
-//		} else {
-//			cascao.interactable = false;
-//		}
-//
+
+		if (PlayerPrefs.GetInt ("magali") == 1) {
+			magali.gameObject.SetActive (true);
+			magali2.gameObject.SetActive (true);
+		} else {
+			magali.gameObject.SetActive (false);
+			magali2.gameObject.SetActive (false);
+		}
+
+
+		if (PlayerPrefs.GetInt ("cascao") == 1) {
+			cascao.gameObject.SetActive (true);
+			cascao2.gameObject.SetActive (true);
+		} else {
+			cascao.gameObject.SetActive (false);
+			cascao2.gameObject.SetActive (false);
+		}
+
 //		if (PlayerPrefs.GetInt ("chico") == 1) {
-//			chico.interactable = true;
+//			monica.enabled = true;
+//			monica2.enabled = true;
 //		} else {
-//			chico.interactable = false;
+//			monica.enabled = true;
+//			monica2.enabled = true;
 //		}
 	}
 	

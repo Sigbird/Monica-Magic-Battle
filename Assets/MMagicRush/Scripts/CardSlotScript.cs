@@ -144,18 +144,18 @@ public class CardSlotScript : MonoBehaviour {
 	//INICIO DO ARRASTO
 	void OnMouseDrag() {
 		if (StaticController.instance.GameController.GameOver == false) {
-			if (cardID == 1) {
-				UIilustrationAnim.gameObject.SetActive (true);
-				UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill1", true);
-			}
-			if (cardID == 3) {
-				UIilustrationAnim.gameObject.SetActive (true);
-				UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill2", true);
-			}
-			if (cardID == 7) {
-				UIilustrationAnim.gameObject.SetActive (true);
-				UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill3", true);
-			}
+//			if (cardID == 1) {
+//				UIilustrationAnim.gameObject.SetActive (true);
+//				UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill1", true);
+//			}
+//			if (cardID == 3) {
+//				UIilustrationAnim.gameObject.SetActive (true);
+//				UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill2", true);
+//			}
+//			if (cardID == 7) {
+//				UIilustrationAnim.gameObject.SetActive (true);
+//				UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill3", true);
+//			}
 			GameObject.Find ("EnemyArea").GetComponent<Image> ().enabled = true;
 			Debug.Log (cardID);
 			this.released = false;
@@ -319,47 +319,32 @@ public class CardSlotScript : MonoBehaviour {
 			nameText.text = "Astronauta";
 			UIilustration.sprite = cardsImages [12];
 			break;
-		case 13://TROPA: ANJINHO
-			cardCost = 1;
-			nameText.text = "Anjinho";
-			UIilustration.sprite = cardsImages [13];
-			break;
-		case 14://TROPA: JOTALHAO
+		case 13://TROPA: JOTALHAO
 			cardCost = 50;
 			nameText.text = "Jotalhão";
 			UIilustration.sprite = cardsImages [14];
 			break;
-		case 15://TROPA: PITECO
+		case 14://TROPA: PITECO
 			cardCost = 15;
 			nameText.text = "Piteco";
 			UIilustration.sprite = cardsImages [15];
 			break;
-		case 16://TROPA: PENADINHO
+		case 15://TROPA: PENADINHO
 			cardCost = 50;
 			nameText.text = "Penadinho";
 			UIilustration.sprite = cardsImages [16];
 			break;
-		case 17://TROPA: LOUCO
-			cardCost = 100;
-			nameText.text = "Louco";
-			UIilustration.sprite = cardsImages [17];
-			break;
-		case 18://TROPA: SANSAO
+		case 16://TROPA: SANSAO
 			cardCost = 40;
 			nameText.text = "Sansao";
 			UIilustration.sprite = cardsImages [18];
 			break;
-		case 19://TROPA: MINGAU
-			cardCost = 110;
+		case 17://TROPA: MINGAU
+			cardCost = 5;
 			nameText.text = "Mingau";
 			UIilustration.sprite = cardsImages [19];
 			break;
-		case 20://TROPA: ALFREDO
-			cardCost = 125;
-			nameText.text = "Alfredo";
-			UIilustration.sprite = cardsImages [20];
-			break;
-																//TORRES
+													//TORRES
 
 		case 21://Mover
 			cardCost = 1;
@@ -574,13 +559,16 @@ public class CardSlotScript : MonoBehaviour {
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 //				target.GetComponent<SoldierControler> ().ReceiveEffect ("warShout");
-					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
-						if (obj.GetComponent<SoldierControler>() != null) 
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
+					if (obj.GetComponent<SoldierControler> () != null) 
 /*Effect*/				Instantiate (effectsAnimation [9], obj.transform);
-						audioManager.PlayAudio ("nervosa");
-						obj.GetComponent<SoldierControler> ().ReceiveEffect ("warShout");
-					}
-				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
+					audioManager.PlayAudio ("nervosa");
+					obj.GetComponent<SoldierControler> ().ReceiveEffect ("warShout");
+				}
+				GameObject.Find ("DeckPile").GetComponent<DeckPileScript> ().DrawNewCard (CardPosition);
+				Destroy (this.gameObject);
+			} else {
+				GameObject.Find ("DeckPile").GetComponent<DeckPileScript> ().DrawNewCard (CardPosition);
 				Destroy (this.gameObject);
 			}
 				break;
@@ -635,24 +623,7 @@ public class CardSlotScript : MonoBehaviour {
 			GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 			Destroy (this.gameObject);
 			break;
-		case 13:// TROPA: ANJINHO
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = troop;
-			t.GetComponent<SoldierControler> ().troopId = 3;
-			if (Movable != null) {
-				Instantiate (t, Movable.transform.position, Quaternion.identity);
-			} else {
-				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
-			}
-//			if (Random.Range (1, 3) == 1) {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
-//			} else {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
-//			}
-			GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
-			Destroy (this.gameObject);
-			break;
-		case 14:// TROPA: JOTALHÃO
+		case 13:// TROPA: JOTALHÃO
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 4;
@@ -661,28 +632,28 @@ public class CardSlotScript : MonoBehaviour {
 			} else {
 				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
 			}
-//			if (Random.Range (1, 3) == 1) {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
-//			} else {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
-//			}
+			//			if (Random.Range (1, 3) == 1) {
+			//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
+			//			} else {
+			//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
+			//			}
 			GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 			Destroy (this.gameObject);
 			break;
-		case 15:// TROPA: PITECO
+		case 14:// TROPA: PITECO
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 5;
 			Instantiate(t,Movable.transform.position, Quaternion.identity);
-//			if (Random.Range (1, 3) == 1) {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
-//			} else {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
-//			}
+			//			if (Random.Range (1, 3) == 1) {
+			//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
+			//			} else {
+			//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
+			//			}
 			GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 			Destroy (this.gameObject);
 			break;
-		case 16:// TROPA: PENADINHO
+		case 15:// TROPA: PENADINHO
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 6;//PENADINHO
@@ -691,32 +662,15 @@ public class CardSlotScript : MonoBehaviour {
 			} else {
 				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
 			}
-//			if (Random.Range (1, 3) == 1) {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
-//			} else {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
-//			}
+			//			if (Random.Range (1, 3) == 1) {
+			//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
+			//			} else {
+			//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
+			//			}
 			GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 			Destroy (this.gameObject);
 			break;
-		case 17:// TROPA: LOUCO
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = troop;
-			t.GetComponent<SoldierControler> ().troopId = 7;
-			if (Movable != null) {
-				Instantiate (t, Movable.transform.position, Quaternion.identity);
-			} else {
-				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
-			}
-//			if (Random.Range (1, 3) == 1) {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
-//			} else {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
-//			}
-			GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
-			Destroy (this.gameObject);
-			break;
-		case 18:// TROPA: SANSAO
+		case 16:// TROPA: SANSAO
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 8;
@@ -725,15 +679,15 @@ public class CardSlotScript : MonoBehaviour {
 			} else {
 				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
 			}
-//			if (Random.Range (1, 3) == 1) {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
-//			} else {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
-//			}
+			//			if (Random.Range (1, 3) == 1) {
+			//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
+			//			} else {
+			//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
+			//			}
 			GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 			Destroy (this.gameObject);
 			break;
-		case 19:// TROPA: MINGAU
+		case 17:// TROPA: MINGAU
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 9;
@@ -742,31 +696,15 @@ public class CardSlotScript : MonoBehaviour {
 			} else {
 				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
 			}
-//			if (Random.Range (1, 3) == 1) {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
-//			} else {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
-//			}
+			//			if (Random.Range (1, 3) == 1) {
+			//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
+			//			} else {
+			//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
+			//			}
 			GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 			Destroy (this.gameObject);
 			break;
-		case 20:// TROPA: ALFREDO
-			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-			t = troop;
-			t.GetComponent<SoldierControler> ().troopId = 10; //ALFREDO
-			if (Movable != null) {
-				Instantiate (t, Movable.transform.position, Quaternion.identity);
-			} else {
-				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
-			}
-//			if (Random.Range (1, 3) == 1) {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
-//			} else {
-//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
-//			}
-			GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
-			Destroy (this.gameObject);
-			break;
+		
 
 											//MOVIMENTACAO
 

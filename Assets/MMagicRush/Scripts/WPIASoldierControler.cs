@@ -167,7 +167,7 @@ public class WPIASoldierControler : MonoBehaviour {
 	public float captureMarkerTimer;
 
 	private Vector3 previous;
-	private float velocity;
+	public float velocity;
 
 
 	//LANE WAYPOINTS
@@ -628,9 +628,9 @@ public class WPIASoldierControler : MonoBehaviour {
 		//CONFIGURAÇÃO DE TIPO DE HEROI
 		heroID = 1;
 
-		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1 && tutorial == false) {
+		if (PlayerPrefs.HasKey ("SelectedCharacter") && this.team == 1 && tutorial == false) {
 			heroID =	PlayerPrefs.GetInt ("SelectedCharacter");
-		} else if (PlayerPrefs.GetInt ("Enemy") != null && this.team != 1 && tutorial == false) {
+		} else if (PlayerPrefs.HasKey ("Enemy") && this.team != 1 && tutorial == false) {
 			heroID = PlayerPrefs.GetInt ("Enemy");
 		} else if (tutorial == true){
 			heroID = 1;
@@ -647,7 +647,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.vida = 6;
 			this.reach = 2;//3
 			this.damage = 1;
-			this.damageSpeed = 2;
+			this.damageSpeed = 4;
 			this.range = 2;
 			this.speed = 13;
 			this.energyMax = 3;
@@ -661,13 +661,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Monica");
 			break;
 		case(1):
-			this.vidaMax = 5;
-			this.vida = 5;
+			this.vidaMax = 4;
+			this.vida = 4;
 			this.reach = 2;//3
 			this.damage = 1;
-			this.damageSpeed = 1;
+			this.damageSpeed = 4;
 			this.range = 2;
-			this.speed = 13;
+			this.speed = 17;
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -679,13 +679,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Cebolinha");
 			break;
 		case(2):
-			this.vidaMax = 6;
-			this.vida = 6;
+			this.vidaMax = 7;
+			this.vida = 7;
 			this.reach = 0.5f;
 			this.damage = 1;
-			this.damageSpeed = 2;
+			this.damageSpeed = 4;
 			this.range = 2;
-			this.speed = 13;
+			this.speed = 12;
 			this.energyMax = 4;
 			this.energy = 4;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -694,11 +694,11 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Magali");
 			break;
 		case(3):
-			this.vidaMax = 6;
-			this.vida = 6;
+			this.vidaMax = 4;
+			this.vida = 4;
 			this.reach = 0.5f;
-			this.damage = 1;
-			this.damageSpeed = 2;
+			this.damage = 2;
+			this.damageSpeed = 4;
 			this.range = 2;
 			this.speed = 13;
 			this.energyMax = 4;
@@ -721,6 +721,20 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Monica");
 			break;
 
+		}
+
+		//Configuração de Cor do Inimigo
+
+		if (this.team != 1) {
+			string ter = PlayerPrefs.GetString ("TerrainType");
+			if (ter == "Forest") {
+				Debug.Log ("Coloriu");
+				this.anim.GetComponent<SpriteRenderer> ().color = Color.green;
+			} else if (ter == "Winter") {
+				this.anim.GetComponent<SpriteRenderer> ().color = Color.cyan;
+			} else if (ter == "Dungeon") {
+				this.anim.GetComponent<SpriteRenderer> ().color = Color.gray;
+			}
 		}
 
 		// CONFIGURAÇÃO DE EQUIPE

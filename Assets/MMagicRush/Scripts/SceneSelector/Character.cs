@@ -13,6 +13,15 @@ public class Character : MonoBehaviour
 	public GameObject ActualAnimator;
 	public Pin NextPinTest;
 
+	public Pin[] GenericPins;
+	public Pin[] ForestPins;
+	public Pin[] FrozenPins;
+	public Pin[] DungeonPins;
+	public int atualpin;
+	public Pin targetpin;
+	public bool reached;
+	public bool increase;
+
     public void Initialise(MapManager mapManager, Pin startPin)
     {
         _mapManager = mapManager;
@@ -20,11 +29,12 @@ public class Character : MonoBehaviour
     }
     
 	public void Start(){
+		reached = true;
 		
 		if (PlayerPrefs.GetInt ("Character") == null) {
 			PlayerPrefs.SetInt ("Character", 1);
 		}
-
+		this.GenericPins = FrozenPins;
 		ActualAnimator = CharacterAnimators [PlayerPrefs.GetInt ("Character")];
 		ActualAnimator.GetComponent<SpriteRenderer> ().enabled = true;
 
@@ -34,47 +44,103 @@ public class Character : MonoBehaviour
     /// This runs once a frame
     /// </summary>
     private void Update()
-    {
+	{
 
-		NextPinTest = NextPin ();
-        if (_targetPin == null) return;
+//		NextPinTest = NextPin ();
+//        if (_targetPin == null) return;
+//
+//        // Get the characters current position and the targets position
+//        var currentPosition = transform.position;
+//        var targetPosition = _targetPin.transform.position;
+//
+//        // If the character isn't that close to the target move closer
+//        if (Vector3.Distance(currentPosition, targetPosition) > .02f)
+//        {
+//            transform.position = Vector3.MoveTowards(
+//                currentPosition,
+//                targetPosition,
+//                Time.deltaTime * Speed
+//            );
+//        }
+//        else
+//        {
+//            if (_targetPin.IsAutomatic)
+//            {
+//                // Get a direction to keep moving in
+//                var pin = _targetPin.GetNextPin(CurrentPin);
+//                MoveToPin(pin);
+//            }
+//            else
+//            {
+//                SetCurrentPin(_targetPin);
+//            }
+//        }
 
-        // Get the characters current position and the targets position
-        var currentPosition = transform.position;
-        var targetPosition = _targetPin.transform.position;
+		if (targetpin != null && reached == true){
+			
+		if (this.atualpin > targetpin.GetComponent<Pin> ().PinID) {
+			reached = false;
+				increase = false;	
+			
+		} else if (this.atualpin < targetpin.GetComponent<Pin> ().PinID) {
+			reached = false;
+				increase = true;
 
-        // If the character isn't that close to the target move closer
-        if (Vector3.Distance(currentPosition, targetPosition) > .02f)
-        {
-            transform.position = Vector3.MoveTowards(
-                currentPosition,
-                targetPosition,
-                Time.deltaTime * Speed
-            );
-        }
-        else
-        {
-            if (_targetPin.IsAutomatic)
-            {
-                // Get a direction to keep moving in
-                var pin = _targetPin.GetNextPin(CurrentPin);
-                MoveToPin(pin);
-            }
-            else
-            {
-                SetCurrentPin(_targetPin);
-            }
-        }
+		} else {
+			reached = true;
+			IsMoving = false;
+				Debug.Log ("AA");
+		}
+		}
+
+		if (reached == false && increase == true && Vector2.Distance (this.transform.position, GenericPins [atualpin + 1].transform.position) > 0.2f) {
+			if (GenericPins [atualpin + 1].transform.position.x < this.transform.position.x) {
+				ActualAnimator.GetComponent<SpriteRenderer> ().flipX = true;
+			} else {
+				ActualAnimator.GetComponent<SpriteRenderer> ().flipX = false;
+			}
+
+			transform.position = Vector3.MoveTowards(
+				this.transform.position,
+				GenericPins [atualpin + 1].transform.position,
+				Time.deltaTime * Speed
+			);
+			IsMoving = true;
+
+		} else if(reached == false && increase == true && IsMoving == true){
+			IsMoving = false;
+			reached = true;
+			atualpin += 1;
+		}
+
+		if (reached == false && increase == false && Vector2.Distance (this.transform.position, GenericPins [atualpin - 1].transform.position) > 0.2f) {
+			if (GenericPins [atualpin - 1].transform.position.x < this.transform.position.x) {
+				ActualAnimator.GetComponent<SpriteRenderer> ().flipX = true;
+			} else {
+				ActualAnimator.GetComponent<SpriteRenderer> ().flipX = false;
+			}
+
+			transform.position = Vector3.MoveTowards (
+				this.transform.position,
+				GenericPins [atualpin - 1].transform.position,
+				Time.deltaTime * Speed
+			);
+			IsMoving = true;
+		} else if(reached == false && increase == false && IsMoving == true){
+			IsMoving = false;
+			reached = true;
+			atualpin -= 1;
+		}
 
 		if (IsMoving) {
 			ActualAnimator.GetComponent<Animator> ().SetBool ("Idle", false);
 			ActualAnimator.GetComponent<Animator> ().SetBool ("Walk", true);
 
-			if (_targetPin.transform.position.x < this.transform.position.x) {
-				ActualAnimator.GetComponent<SpriteRenderer> ().flipX = true;
-			} else {
-				ActualAnimator.GetComponent<SpriteRenderer> ().flipX = false;
-			}
+//			if (_targetPin.transform.position.x < this.transform.position.x) {
+//				ActualAnimator.GetComponent<SpriteRenderer> ().flipX = true;
+//			} else {
+//				ActualAnimator.GetComponent<SpriteRenderer> ().flipX = false;
+//			}
 		} else {
 			ActualAnimator.GetComponent<Animator> ().SetBool ("Walk", false);
 			ActualAnimator.GetComponent<Animator> ().SetBool ("Idle", true);
@@ -141,6 +207,25 @@ public class Character : MonoBehaviour
         _targetPin = pin;
         IsMoving = true;
     }
+
+	private void MoveToGenericPin(Pin pin)
+	{
+
+		if (pin.transform.position.x < this.transform.position.x) {
+			ActualAnimator.GetComponent<SpriteRenderer> ().flipX = true;
+		} else {
+			ActualAnimator.GetComponent<SpriteRenderer> ().flipX = false;
+		}
+
+
+
+		transform.position = Vector3.MoveTowards(
+			this.transform.position,
+			pin.transform.position,
+			Time.deltaTime * 1000
+		);
+		IsMoving = true;
+	}
 
     
     /// <summary>

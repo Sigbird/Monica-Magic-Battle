@@ -15,6 +15,7 @@ public class SceneHelper : MonoBehaviour {
 	public int premiumcoinsPurchasing;
 	public dreamloLeaderBoard LeaderBoard;
 	public GameObject ExitConfirmation;
+	public GameObject notEnouthCoins;
 
 
 	public GameObject[] TutorialPanels;
@@ -85,7 +86,7 @@ public class SceneHelper : MonoBehaviour {
 
 		if (PlayerPrefs.GetInt ("Lesson") == 7) {
 			TutorialPanels [0].SetActive (true);
-			EarnCard (20);
+			EarnCard (11);
 			PlayerPrefs.SetInt ("Lesson", 8);
 		}
 	}
@@ -173,7 +174,13 @@ public class SceneHelper : MonoBehaviour {
 	}
 
 	public void PurchaseHero(string x){
-		PlayerPrefs.SetInt (x, 1);
+		int pc = PlayerPrefs.GetInt ("PlayerCoinsPremium");
+		if (pc >= 25) {
+			PlayerPrefs.SetInt (x, 1);
+			PlayerPrefs.SetInt ("PlayerCoinsPremium", (pc - 25));
+		} else {
+			notEnouthCoins.SetActive (true);
+		}
 	}
 
 	public void CallTutorial(){

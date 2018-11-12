@@ -150,7 +150,7 @@ public class WPSoldierControler : MonoBehaviour {
 	public float effectsDuration;
 
 	private Vector3 previous;
-	private float velocity;
+	public float velocity;
 
 	//LANE WAYPOINTS
 
@@ -667,7 +667,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.reach += 2;
 		}
 		if (effect == "slow") {
-			this.GetComponent<SpriteRenderer> ().color = new Color (0.5f, 0.5f, 1f);
+			anim.gameObject.GetComponent<SpriteRenderer>  ().color = new Color (0.5f, 0.5f, 1f);
 			this.speed = speed / 2;
 		}
 		if (effect == "extraSlow") {
@@ -718,7 +718,7 @@ public class WPSoldierControler : MonoBehaviour {
 		}
 		if (effects == "slow") {
 			GameObject.Find ("FrozenDamage").GetComponent<Animator> ().SetTrigger ("Unfrozen");
-			this.GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f);
+			anim.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f);
 			this.speed = maxSpeed;
 		}
 		if (effects == "speed") {

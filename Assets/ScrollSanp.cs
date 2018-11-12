@@ -25,7 +25,22 @@ public class ScrollSanp : MonoBehaviour {
 	public int idx;
 
 	void Start () {
+		int cleared = PlayerPrefs.GetInt ("ClearedLevels");
+
+		if (cleared > 7){
+			
+			idx = 1;
 		
+		}else if(cleared > 3) {
+			
+			idx = 2;
+
+		} else {
+			
+			idx = 0;
+		}
+
+
 		isEnable = false;
 		int bttnLenght = _Bttn.Length;
 		_distance=new float[bttnLenght];

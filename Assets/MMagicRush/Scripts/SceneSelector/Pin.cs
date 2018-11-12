@@ -30,7 +30,7 @@ public class Pin : MonoBehaviour
 	public bool HideIcon;
 	public string SceneToLoad;
 	public int Enemy;
-
+	public int PinID;
 	
 	[Header("Pins")] //
 	public Pin UpPin;
