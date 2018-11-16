@@ -91,8 +91,8 @@ public class HeroSpecialHability : MonoBehaviour {
 					yield return new WaitForSeconds (effectDuration);
 					break;
 				case 1://CEBOLINHA INVISIVEl
-					this.transform.FindChild ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, .5f);  
-					this.transform.FindChild ("Platform").gameObject.SetActive (false);
+					this.transform.Find ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, .5f);  
+					this.transform.Find ("Platform").gameObject.SetActive (false);
 					//transform.FindChild ("HealtBarSoldier").gameObject.SetActive (false);
 					yield return new WaitForSeconds (effectDuration);
 					if (this.team == 1) {
@@ -107,7 +107,7 @@ public class HeroSpecialHability : MonoBehaviour {
 					} else {
 						this.transform.Find ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
 					}
-					this.transform.FindChild ("Platform").gameObject.SetActive (true);
+					this.transform.Find ("Platform").gameObject.SetActive (true);
 					//transform.FindChild ("HealtBarSoldier").gameObject.SetActive (true);
 					break;
 				case 2://AREA DE CURA MAGALI

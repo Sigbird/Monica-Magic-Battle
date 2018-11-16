@@ -57,7 +57,7 @@ namespace YupiPlay {
 		public delegate void ShowOpponentInfo(ParticipantInfo opponent);
 		public static event ShowOpponentInfo OnOpponentInfo;
 						
-		public MatchInfo Match;        
+		public MatchInfo Match;
 
 		private NetworkSessionManager() {
 

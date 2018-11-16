@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using YupiPlay.MMB;
 using GooglePlayGames;
-using GooglePlayGames.BasicApi;
 using UnityEngine.UI;
 
 public class PlayGamesSignIn : MonoBehaviour {
@@ -16,7 +15,7 @@ public class PlayGamesSignIn : MonoBehaviour {
 	void Start () {
 		//Social.localUser.Authenticate(OnAuth); 
 		Login();
-		LeaderBoard.LoadScores ();
+		//LeaderBoard.LoadScores ();
 	}
 
 	private void OnReport(bool success) {
@@ -44,10 +43,10 @@ public class PlayGamesSignIn : MonoBehaviour {
 
 	public static void OnAuth(bool success) {
 		if (success) {
-			Debug.Log("Auth OK");
 			if (Social.localUser.authenticated) {
 				Debug.Log("Auth OK");
 			}
+
             PlayerInfo.Instance.DisplayName = PlayGamesPlatform.Instance.GetUserDisplayName();
             PlayerInfo.Instance.Username    = Social.localUser.userName;
 			PlayerPrefs.SetString ("PlayerName", Social.localUser.userName);
