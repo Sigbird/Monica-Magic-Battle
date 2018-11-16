@@ -560,10 +560,10 @@ public class CardSlotScript : MonoBehaviour {
 				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 //				target.GetComponent<SoldierControler> ().ReceiveEffect ("warShout");
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
-					if (obj.GetComponent<SoldierControler> () != null) 
+					if (obj.GetComponent<WPSoldierControler> () != null) 
 /*Effect*/				Instantiate (effectsAnimation [9], obj.transform);
 					audioManager.PlayAudio ("nervosa");
-					obj.GetComponent<SoldierControler> ().ReceiveEffect ("warShout");
+					obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("warShout");
 				}
 				GameObject.Find ("DeckPile").GetComponent<DeckPileScript> ().DrawNewCard (CardPosition);
 				Destroy (this.gameObject);

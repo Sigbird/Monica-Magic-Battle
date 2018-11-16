@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "597024651233",
+    "firebase_url": "https://mnica-magic-battle-95335076.firebaseio.com",
+    "project_id": "mnica-magic-battle-95335076",
+    "storage_bucket": "mnica-magic-battle-95335076.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:597024651233:android:61e1ca42938d3459",
+        "android_client_info": {
+          "package_name": "com.YupiPlay.MonicaMagicBattle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "597024651233-im2fv5vjuu15c51edcivvkp28c1pl083.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQg5XdBxe50cUx_sVY909fNa_yN5Dh_jw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

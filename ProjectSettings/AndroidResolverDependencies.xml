@@ -1,0 +1,29 @@
+<dependencies>
+  <packages>
+    <package>com.android.support:support-v4:23.1+</package>
+    <package>com.google.android.gms:play-services-analytics:LATEST</package>
+    <package>com.google.android.gms:play-services-auth:11.0.4</package>
+    <package>com.google.android.gms:play-services-games:11.0.4</package>
+    <package>com.google.android.gms:play-services-nearby:11.0.4</package>
+    <package>com.google.firebase:firebase-analytics:16.0.4</package>
+    <package>com.google.firebase:firebase-analytics-unity:5.4.1</package>
+    <package>com.google.firebase:firebase-app-unity:5.4.1</package>
+    <package>com.google.firebase:firebase-common:16.0.3</package>
+    <package>com.google.firebase:firebase-core:16.0.4</package>
+    <package>com.google.firebase:firebase-iid:[17.0.4]</package>
+  </packages>
+  <files>
+    <file>Assets/Plugins/Android/common-1.0.0.jar</file>
+    <file>Assets/Plugins/Android/firebase-analytics-unity-5.4.1.aar</file>
+    <file>Assets/Plugins/Android/firebase-app-unity-5.4.1.aar</file>
+    <file>Assets/Plugins/Android/firebase-iid-17.0.4.aar</file>
+    <file>Assets/Plugins/Android/runtime-1.0.0.aar</file>
+    <file>Assets/Plugins/Android/support-annotations-26.1.0.jar</file>
+    <file>Assets/Plugins/Android/support-compat-26.1.0.aar</file>
+    <file>Assets/Plugins/Android/support-core-ui-26.1.0.aar</file>
+    <file>Assets/Plugins/Android/support-core-utils-26.1.0.aar</file>
+    <file>Assets/Plugins/Android/support-fragment-26.1.0.aar</file>
+    <file>Assets/Plugins/Android/support-media-compat-26.1.0.aar</file>
+    <file>Assets/Plugins/Android/support-v4-26.1.0.aar</file>
+  </files>
+</dependencies>

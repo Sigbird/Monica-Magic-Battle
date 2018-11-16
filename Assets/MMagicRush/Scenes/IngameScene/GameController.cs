@@ -561,7 +561,7 @@ public class GameController : MonoBehaviour {
 //			x += 1;
 //			PlayerPrefs.SetInt ("ClearedLevels", x);
 //		}
-		if (terrain == 1 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 2 && victory == true && PlayerPrefs.GetString ("TerrainType") != null) {
+		if (terrain == 1 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 2 && victory == true && vsIAMode == false ){
 			PlayerPrefs.SetInt ("AnimationToPlay", terrain);
 			if (x < 12 && victory == true) {
 				x += 1;
@@ -571,7 +571,7 @@ public class GameController : MonoBehaviour {
 			SceneManager.LoadScene ("Cinematics");
 
 
-		} else if (terrain == 2 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 1 && victory == true && PlayerPrefs.GetString ("TerrainType") != null) {
+		} else if (terrain == 2 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 1 && victory == true && vsIAMode == false) {
 			PlayerPrefs.SetInt ("AnimationToPlay", terrain);
 			if (x < 12 && victory == true) {
 				x += 1;
@@ -581,7 +581,7 @@ public class GameController : MonoBehaviour {
 			SceneManager.LoadScene ("Cinematics");
 
 
-		}else if(terrain == 3 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 0 && victory == true && PlayerPrefs.GetString ("TerrainType") != null){
+		}else if(terrain == 3 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 0 && victory == true && vsIAMode == false){
 			PlayerPrefs.SetInt ("AnimationToPlay", terrain);
 			if (x < 12 && victory == true) {
 				x += 1;
@@ -608,6 +608,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void LoadScene(string scene){
+		int x = PlayerPrefs.GetInt ("ClearedLevels");
 		Time.timeScale = 1;
 		round = 1;
 		playerCharges = 0;
@@ -615,17 +616,25 @@ public class GameController : MonoBehaviour {
 		PlayerPrefs.SetInt ("round",1);
 		PlayerPrefs.SetInt ("playerCharges",0);
 		PlayerPrefs.SetInt ("enemyCharges",0);
-		if (terrain == 0 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 2 && victory == true) {
+		if (terrain == 1 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 2 && victory == true && vsIAMode == false) {
 			PlayerPrefs.SetInt ("AnimationToPlay", terrain);
 			SceneManager.LoadScene ("Cinematics");
-		} else if (terrain == 1 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 1 && victory == true) {
+		} else if (terrain == 2 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 1 && victory == true && vsIAMode == false) {
 			PlayerPrefs.SetInt ("AnimationToPlay", terrain);
 			SceneManager.LoadScene ("Cinematics");
-		}else if(terrain == 2 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 0 && victory == true){
+		}else if(terrain == 3 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 0 && victory == true && vsIAMode == false){
 			PlayerPrefs.SetInt ("AnimationToPlay", terrain);
 			SceneManager.LoadScene ("Cinematics");
 		} else {
-			SceneManager.LoadScene (scene);
+			if (vsIAMode == false) {
+				if (x < 12 && victory == true) {
+					x += 1;
+					PlayerPrefs.SetInt ("ClearedLevels", x);
+				}
+				SceneManager.LoadScene ("Level Select");
+			} else {
+				SceneManager.LoadScene (scene);
+			}
 		}
 	}
 

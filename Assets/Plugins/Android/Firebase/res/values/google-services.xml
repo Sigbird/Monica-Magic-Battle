@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources tools:keep="@string/firebase_database_url,@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_web_client_id" xmlns:tools="http://schemas.android.com/tools">
+  <string name="firebase_database_url" translatable="false">https://mnica-magic-battle-95335076.firebaseio.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">597024651233</string>
+  <string name="google_storage_bucket" translatable="false">mnica-magic-battle-95335076.appspot.com</string>
+  <string name="project_id" translatable="false">mnica-magic-battle-95335076</string>
+  <string name="google_api_key" translatable="false">AIzaSyBQg5XdBxe50cUx_sVY909fNa_yN5Dh_jw</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBQg5XdBxe50cUx_sVY909fNa_yN5Dh_jw</string>
+  <string name="google_app_id" translatable="false">1:597024651233:android:61e1ca42938d3459</string>
+  <string name="default_web_client_id" translatable="false">597024651233-im2fv5vjuu15c51edcivvkp28c1pl083.apps.googleusercontent.com</string>
+</resources>
