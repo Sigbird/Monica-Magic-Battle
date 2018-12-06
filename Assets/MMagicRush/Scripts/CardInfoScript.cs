@@ -30,7 +30,7 @@ public class CardInfoScript : MonoBehaviour {
 	public int[] zero;
 	public bool ClearPlayerPrefs;
 	public bool activable;
-
+	public bool inmenu;
 
 	// Use this for initialization
 	void Start () {
@@ -48,14 +48,14 @@ public class CardInfoScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		int[] cards = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
-		Debug.Log ("Card Count "+ cards.Length);
+//		Debug.Log ("Card Count "+ cards.Length);
 		if (cards.Length < 2) {
 			disableButton.GetComponent<Button> ().interactable = false;
 		} else {
 			disableButton.GetComponent<Button> ().interactable = true;
 		}
 
-		if (lastCard.GetComponent<CardSlotScript> ().cardCost < GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+		if (inmenu == false && lastCard.GetComponent<CardSlotScript> ().cardCost < GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 			activable = true;
 		}
 	}

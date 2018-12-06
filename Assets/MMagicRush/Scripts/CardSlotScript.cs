@@ -335,7 +335,7 @@ public class CardSlotScript : MonoBehaviour {
 			UIilustration.sprite = cardsImages [16];
 			break;
 		case 16://TROPA: SANSAO
-			cardCost = 40;
+			cardCost = 5;
 			nameText.text = "Sansao";
 			UIilustration.sprite = cardsImages [18];
 			break;

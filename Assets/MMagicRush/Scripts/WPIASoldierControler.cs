@@ -584,7 +584,7 @@ public class WPIASoldierControler : MonoBehaviour {
 						Destroy (targetEnemy.transform.Find ("MovementMarker(Clone)").gameObject);
 				
 					if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
-						danoCD = 0;
+						//danoCD = 0;
 						anim.SetTrigger ("Attack");
 						StartCoroutine (DealDamage ());
 					} else {
@@ -1189,10 +1189,11 @@ public class WPIASoldierControler : MonoBehaviour {
 	}
 
 	IEnumerator DealDamage(){
-		danoCD = 0;
+		
 		yield return new WaitForSeconds (0.5f);
 		if (targetEnemy != null && danoCD > damageSpeed) {
 			if (targetEnemy.GetComponent<WPSoldierControler> () != null && danoCD > damageSpeed) {//ALVO HEROI
+				danoCD = 0;
 				//targetEnemy.GetComponent<WPSoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<WPSoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
@@ -1203,6 +1204,7 @@ public class WPIASoldierControler : MonoBehaviour {
 					//lockedTarget = false;
 				}
 			} else if (targetEnemy.GetComponent<SoldierControler> () != null && danoCD > damageSpeed) {//ALVO TROPA
+				danoCD = 0;
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
@@ -1212,7 +1214,8 @@ public class WPIASoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					//lockedTarget = false;
 				}
-			} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//ALVO TORRE
+			} else if (targetEnemy.GetComponent<ChargesScript> () != null && danoCD > damageSpeed) {//ALVO TORRE
+				danoCD = 0;
 					//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 					//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 					targetEnemy.GetComponent<ChargesScript> ().progress += 0.2f;

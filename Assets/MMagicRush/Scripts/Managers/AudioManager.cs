@@ -123,7 +123,7 @@ public class AudioManager : MonoBehaviour {
 
 			if (track == "ingame") {
 				source.loop = true;
-				if (SceneManager.GetActiveScene ().name == "Level Select" || SceneManager.GetActiveScene ().name == "Main" || SceneManager.GetActiveScene ().name == "TutorialScene") {
+				if (SceneManager.GetActiveScene ().name == "Level Select" || SceneManager.GetActiveScene ().name == "TutorialMain" || SceneManager.GetActiveScene ().name == "Main" || SceneManager.GetActiveScene ().name == "TutorialScene") {
 					source.clip = audios [9];
 				} else if(StaticController.instance.GameController.GameOver == false) {
 					source.clip = audios [10];

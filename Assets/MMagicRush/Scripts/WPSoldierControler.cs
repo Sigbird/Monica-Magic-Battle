@@ -185,6 +185,8 @@ public class WPSoldierControler : MonoBehaviour {
 
 	private bool gameBegin;
 
+	public WPIASoldierControler enemycontroller;
+
 
 	// Use this for initialization
 	void Start () {
@@ -265,6 +267,7 @@ public class WPSoldierControler : MonoBehaviour {
 		// COLISÕES COM TROPAS E ADVERSÁRIOS
 
 		foreach (GameObject obstacle in GameObject.FindGameObjectsWithTag("CharacterBound")) {
+			if(enemycontroller.alive == true){
 			if (CharBound.bounds.Intersects (obstacle.GetComponent<SpriteRenderer> ().bounds) && obstacle != this.CharBound.transform.gameObject) {
 				if (this.CharBound.transform.position.x > obstacle.transform.position.x) {
 					transform.Translate (Vector3.right * Time.deltaTime * 1f);
@@ -279,6 +282,7 @@ public class WPSoldierControler : MonoBehaviour {
 
 			}
 //			Debug.Log (obstacle.name);
+			}
 		}
 
 

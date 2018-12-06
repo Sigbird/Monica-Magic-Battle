@@ -709,14 +709,23 @@ public class FilterScript : MonoBehaviour {
 		//int[] ids;
 		foreach (Transform f in filter)
 		{
-			if(f.name == "Card(Clone)"){
-				if(ids.Contains(f.GetComponent<CardScript>().CardID)){
-					Destroy (f.gameObject);
-				}else{
-					ids.Add(f.GetComponent<CardScript>().CardID);
+			if (f.name == "Card(Clone)") {
+				if (f.GetComponent<CardScript> ().CardID == 11) {
+					if (ids.Contains (f.GetComponent<CardScript> ().CardID)) {
+						Destroy (f.gameObject);
+					} else {
+						ids.Add (f.GetComponent<CardScript> ().CardID);
+					}
 				}
-
-			}  
+			}
+//			if(f.name == "Card(Clone)" || f.name == "Card" ){
+//				if(ids.Contains(f.GetComponent<CardScript>().CardID)){
+//					Destroy (f.gameObject);
+//				}else{
+//					ids.Add(f.GetComponent<CardScript>().CardID);
+//				}
+//
+//			}  
 		}
 		ids.Clear ();
 	}
