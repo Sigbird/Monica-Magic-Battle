@@ -108,7 +108,10 @@ public class WPScript : MonoBehaviour {
 
 			//Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
 			//Hero.GetComponent<WPSoldierControler> ().targetEnemy = Base.gameObject;
-		}else if (MovementCounter () < 1 && Camera.main.ScreenToWorldPoint (Input.mousePosition).y > -3 && UIopen == false) {
+		}else if (/*MovementCounter () < 1 &&*/ Camera.main.ScreenToWorldPoint (Input.mousePosition).y > -3 && UIopen == false) {
+			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
+				Destroy (o.gameObject);
+			}
 			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
 			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
 			WaypointMarker.GetComponent<SpriteRenderer> ().sprite = MovementIcon;

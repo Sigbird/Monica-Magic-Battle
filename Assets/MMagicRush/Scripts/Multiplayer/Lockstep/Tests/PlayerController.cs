@@ -9,7 +9,7 @@ public class PlayerController : BasePlayerController {
     
 	// Update is called once per frame
 	void Update () {
-        if (NetGameController.Instance.HasGameStarted()) {
+       /* if (NetGameController.Instance.HasGameStarted()) {
             if (Input.GetMouseButtonUp(0)) {
                 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 CommandController.Move(target);
@@ -19,7 +19,7 @@ public class PlayerController : BasePlayerController {
 
                 NetClock.Instance.RegisterInputTime();
             }
-        }              
+        }  */            
     }
 
     

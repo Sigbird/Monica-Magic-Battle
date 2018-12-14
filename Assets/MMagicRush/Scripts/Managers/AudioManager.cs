@@ -111,9 +111,11 @@ public class AudioManager : MonoBehaviour {
 			}
 			if (track == "defeat") { //ok
 				source.Stop();
-				source.loop = true;
-				source.clip = audios [2];
-				source.Play ();
+				source.PlayOneShot (audios [2]);
+//				source.Stop();
+//				source.loop = true;
+//				source.clip = audios [2];
+//				source.Play ();
 			}
 			if (track == "menu") {
 				source.loop = true;
