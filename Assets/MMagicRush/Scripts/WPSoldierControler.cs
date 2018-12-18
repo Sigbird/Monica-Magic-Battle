@@ -965,6 +965,18 @@ public class WPSoldierControler : MonoBehaviour {
 //				}
 
 			}
+			else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null) {//ALVO TORRE PEQUENA
+				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
+				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
+				targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.5f;
+				if (this.range > 1)
+					TrowArrow ();
+				//				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
+				//					this.targetEnemy = null;
+				//					lockedTarget = false;
+				//				}
+
+			}
 
 			if (this.range > 1) {
 				audioManager.PlayAudio ("shot");

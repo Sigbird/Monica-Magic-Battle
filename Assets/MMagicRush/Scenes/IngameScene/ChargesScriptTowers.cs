@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ChargesScript : MonoBehaviour {
+public class ChargesScriptTowers : MonoBehaviour {
 	
 	public bool tutorial;
 
@@ -28,17 +28,13 @@ public class ChargesScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		progress = 0;
-		uiProgressBar.SetFloat ("Blend", progress);
+
 
 		gc = GameObject.Find ("GameController").GetComponent<GameController> ();
 
-		if (this.tag == "enemytower1" && gc.round>0) {
-			this.charges = gc.playerCharges;
-		} else if(gc.round>0){
-			this.charges = gc.enemyCharges;
-		}else{
+
 			this.charges = 0;
-		}
+
 
 
 
@@ -46,53 +42,52 @@ public class ChargesScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		scoreText.text = this.charges.ToString ();
-
-//		if (endgame == true) {
-//			NetGameController.Instance.EndGame ();
-//		}
+		
 
 		if (tutorial == false) {
 			if (this.tag == "enemytower1") {
 				if (progress >= 1 && endgame == false) {
-					GameObject.FindGameObjectWithTag ("enemytower2").GetComponent<ChargesScript> ().charges++;
-					GameObject.Find ("GameController").GetComponent<GameController> ().NextRound ();
-					endgame = true;
+					Destroy (this.gameObject);
+//					GameObject.FindGameObjectWithTag ("enemytower2").GetComponent<ChargesScript> ().charges++;
+//					GameObject.Find ("GameController").GetComponent<GameController> ().NextRound ();
+//					endgame = true;
 				}
-				PlayerPrefs.SetInt ("playerCharges", charges);
-				gc.playerCharges = this.charges;
+//				PlayerPrefs.SetInt ("playerCharges", charges);
+//				gc.playerCharges = this.charges;
 			} else {
 				if (progress >= 1 && endgame == false) {
-					GameObject.FindGameObjectWithTag ("enemytower1").GetComponent<ChargesScript> ().charges++;
-					GameObject.Find ("GameController").GetComponent<GameController> ().NextRound ();
-					endgame = true;
+					Destroy (this.gameObject);
+//					GameObject.FindGameObjectWithTag ("enemytower1").GetComponent<ChargesScript> ().charges++;
+//					GameObject.Find ("GameController").GetComponent<GameController> ().NextRound ();
+//					endgame = true;
 				}
-				PlayerPrefs.SetInt ("enemyCharges", charges);
-				gc.enemyCharges = this.charges;
+//				PlayerPrefs.SetInt ("enemyCharges", charges);
+//				gc.enemyCharges = this.charges;
 			}
 		} else {
 			if (this.tag == "enemytower1") {
-				if (tutorial == false) {
 					if (progress >= 1 && endgame == false) {
-						if (GameObject.Find ("TutorialPanels") != null)
-							GameObject.Find ("TutorialPanels").transform.gameObject.SetActive (false);
-						VictoryScreen.SetActive (true);
-						Time.timeScale = 0;
-						endgame = true;
+						Destroy (this.gameObject);
+//						if (GameObject.Find ("TutorialPanels") != null)
+//							GameObject.Find ("TutorialPanels").transform.gameObject.SetActive (false);
+//						VictoryScreen.SetActive (true);
+//						Time.timeScale = 0;
+//						endgame = true;
 					}
-					PlayerPrefs.SetInt ("playerCharges", charges);
-					gc.playerCharges = this.charges;
-				}
+//					PlayerPrefs.SetInt ("playerCharges", charges);
+//					gc.playerCharges = this.charges;
+
 			} else {
 				if (progress >= 1 && endgame == false) {
-					if (GameObject.Find ("TutorialPanels") != null)
-						GameObject.Find ("TutorialPanels").transform.gameObject.SetActive (false);
-					VictoryScreen.SetActive (true);
-					Time.timeScale = 0;
-					endgame = true;
+					Destroy (this.gameObject);
+//					if (GameObject.Find ("TutorialPanels") != null)
+//						GameObject.Find ("TutorialPanels").transform.gameObject.SetActive (false);
+//					VictoryScreen.SetActive (true);
+//					Time.timeScale = 0;
+//					endgame = true;
 				}
-				PlayerPrefs.SetInt ("enemyCharges", charges);
-				gc.enemyCharges = this.charges;
+//				PlayerPrefs.SetInt ("enemyCharges", charges);
+//				gc.enemyCharges = this.charges;
 			}
 		}
 
@@ -104,7 +99,7 @@ public class ChargesScript : MonoBehaviour {
 			foreach (GameObject en in enemies) {
 				if (Vector2.Distance (en.transform.position, this.transform.position) < 3 && en.GetComponent<SpriteRenderer>().enabled == true) {
 					//progress += Time.deltaTime * progressSpeed;//0.1f
-					uiProgressBar.SetFloat ("Blend", progress);
+					//uiProgressBar.SetFloat ("Blend", progress);
 					inCombat = true;
 				} else {
 					inCombat = false;
@@ -116,7 +111,7 @@ public class ChargesScript : MonoBehaviour {
 			foreach (GameObject en in enemies) {
 				if (Vector2.Distance (en.transform.position, this.transform.position) < 3  && en.GetComponent<SpriteRenderer>().enabled == true) {
 					//progress += Time.deltaTime * progressSpeed;//0.1f
-					uiProgressBar.SetFloat ("Blend", progress);
+					//uiProgressBar.SetFloat ("Blend", progress);
 					inCombat = true;
 				} else {
 					inCombat = false;

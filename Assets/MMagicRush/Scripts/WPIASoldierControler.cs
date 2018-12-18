@@ -259,11 +259,11 @@ public class WPIASoldierControler : MonoBehaviour {
 		}
 
 		// VELOCIDADE
-		if (previous.x < transform.position.x) {
-			this.anim.GetComponent<SpriteRenderer> ().flipX = false;
-		} else if (previous.x > transform.position.x) {
-			this.anim.GetComponent<SpriteRenderer> ().flipX = true;
-		}
+//		if (previous.x < transform.position.x) {
+//			this.anim.GetComponent<SpriteRenderer> ().flipX = false;
+//		} else if (previous.x > transform.position.x) {
+//			this.anim.GetComponent<SpriteRenderer> ().flipX = true;
+//		}
 
 		velocity = ((transform.position - previous).magnitude) / Time.deltaTime;
 		previous = transform.position;
@@ -509,6 +509,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			//targetEnemy = null;
 			if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f) {
 				//anim.SetTrigger ("Walk");
+				if (WaypointMark.transform.position.x < transform.position.x) {
+					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = true;
+					anim.gameObject.transform.localPosition = new Vector3 (0.03f, 0.2f, 0f);
+				} else if (WaypointMark.transform.position.x > transform.position.x) {
+					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = false;
+					anim.gameObject.transform.localPosition = new Vector3 (-0.05f, 0.2f, 0f);
+				}
 				transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
 			} else {
 				if (WaypointMark.GetComponent<MovementMarkerScript> ().capture == true && WaypointMark.GetComponent<MovementMarkerScript> ().enabled == true) {
@@ -1138,6 +1145,19 @@ public class WPIASoldierControler : MonoBehaviour {
 					}
 				}
 			}
+			if (GameObject.FindGameObjectsWithTag ("enemytower2") != null) {//PROCURA BASE TORRE
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower2")) {
+					float dist = Vector3.Distance (transform.position, obj.transform.position);
+					if (dist <= reach) {
+						if (dist < minDis) {
+							if (obj.GetComponent<ChargesScriptTowers> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+								Emin = obj;
+								minDis = dist;
+							}
+						}
+					}
+				}
+			}
 
 
 
@@ -1183,6 +1203,19 @@ public class WPIASoldierControler : MonoBehaviour {
 					}
 				}
 			}
+			if (GameObject.FindGameObjectsWithTag ("enemytower1") != null) {//PROCURA BASE TORRE
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower1")) {
+					float dist = Vector3.Distance (transform.position, obj.transform.position);
+					if (dist <= reach) {
+						if (dist < minDis) {
+							if (obj.GetComponent<ChargesScriptTowers> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+								Emin = obj;
+								minDis = dist;
+							}
+						}
+					}
+				}
+			}
 
 		}
 		return Emin;
@@ -1221,29 +1254,13 @@ public class WPIASoldierControler : MonoBehaviour {
 					targetEnemy.GetComponent<ChargesScript> ().progress += 0.2f;
 					if (this.range > 1)
 						TrowArrow ();
-					//				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
-					//					this.targetEnemy = null;
-					//					lockedTarget = false;
-					//				}
-				//ALVO BASE
-				//							if(targetEnemy.tag == "waypoint"){
-				//								if (Progress == 2) {
-				//									if (heroUnity) {
-				//										heroBase.GetComponent<ChargesScript> ().charges++;
-				//										GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
-				//										//StartCoroutine (Respawning ());
-				//									}
-				//								} else {
-				//									Progress++;
-				//									targetEnemy = null;
-				//								}
-				//							}
-				if (heroUnity) {
-					//								heroBase.GetComponent<ChargesScript> ().charges += 1;
-					//								StartCoroutine (Respawning ());
-					//								GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
-
-				}
+			}else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null && danoCD > damageSpeed) {//ALVO TORRE
+				danoCD = 0;
+				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
+				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
+				targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.2f;
+				if (this.range > 1)
+					TrowArrow ();
 			}
 
 			if (this.range > 1) {
