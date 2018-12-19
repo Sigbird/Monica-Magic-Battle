@@ -71,7 +71,7 @@ public class WPScript : MonoBehaviour {
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
 				o.name = "Waypoint1";
 				o.GetComponent<MovementMarkerScript> ().progress = 1;
-				GameObject.Find ("Line1").GetComponent<LineScript> ().endObject = o;
+//				GameObject.Find ("Line1").GetComponent<LineScript> ().endObject = o;
 			}
 			StartCoroutine (RedrawLine ());
 			progress--;
@@ -207,7 +207,7 @@ public class WPScript : MonoBehaviour {
 				GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
 			}
 			renderer.sprite = AttackIcon; //ATAQUE DE BASE INIMIGO
-		} else if(GameObject.Find("HeroBaseEnemy") != null && Vector3.Distance (new Vector3 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y,0), GameObject.Find ("EnemyTower1").transform.position) <= 1f){
+		} else if(GameObject.Find("EnemyTower1") != null && Vector3.Distance (new Vector3 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y,0), GameObject.Find ("EnemyTower1").transform.position) <= 1f){
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
@@ -215,7 +215,7 @@ public class WPScript : MonoBehaviour {
 				GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
 			}
 			renderer.sprite = AttackIcon; //ATAQUE DE BASE INIMIGO
-		} else if(GameObject.Find("HeroBaseEnemy") != null && Vector3.Distance (new Vector3 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y,0), GameObject.Find ("EnemyTower2").transform.position) <= 1f){
+		} else if(GameObject.Find("EnemyTower2") != null && Vector3.Distance (new Vector3 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y,0), GameObject.Find ("EnemyTower2").transform.position) <= 1f){
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;

@@ -1052,7 +1052,7 @@ public class WPSoldierControler : MonoBehaviour {
 		}
 
 		yield return new WaitForSeconds (0.01f);
-		GameObject.Find ("Line1").GetComponent<LineScript> ().firstLineDraw = false;
+		//GameObject.Find ("Line1").GetComponent<LineScript> ().firstLineDraw = false;
 		yield return new WaitForSeconds (0.01f);
 		WaypointMark = GetNewWaypoint ();
 	}

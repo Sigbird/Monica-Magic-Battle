@@ -47,7 +47,8 @@ public class ChargesScriptTowers : MonoBehaviour {
 		if (tutorial == false) {
 			if (this.tag == "enemytower1") {
 				if (progress >= 1 && endgame == false) {
-					Destroy (this.gameObject);
+					gameObject.SetActive (false);
+					//Destroy (this.gameObject);
 //					GameObject.FindGameObjectWithTag ("enemytower2").GetComponent<ChargesScript> ().charges++;
 //					GameObject.Find ("GameController").GetComponent<GameController> ().NextRound ();
 //					endgame = true;
@@ -56,7 +57,8 @@ public class ChargesScriptTowers : MonoBehaviour {
 //				gc.playerCharges = this.charges;
 			} else {
 				if (progress >= 1 && endgame == false) {
-					Destroy (this.gameObject);
+					gameObject.SetActive (false);
+					//Destroy (this.gameObject);
 //					GameObject.FindGameObjectWithTag ("enemytower1").GetComponent<ChargesScript> ().charges++;
 //					GameObject.Find ("GameController").GetComponent<GameController> ().NextRound ();
 //					endgame = true;
@@ -67,7 +69,8 @@ public class ChargesScriptTowers : MonoBehaviour {
 		} else {
 			if (this.tag == "enemytower1") {
 					if (progress >= 1 && endgame == false) {
-						Destroy (this.gameObject);
+					gameObject.SetActive (false);
+						//Destroy (this.gameObject);
 //						if (GameObject.Find ("TutorialPanels") != null)
 //							GameObject.Find ("TutorialPanels").transform.gameObject.SetActive (false);
 //						VictoryScreen.SetActive (true);
@@ -79,7 +82,8 @@ public class ChargesScriptTowers : MonoBehaviour {
 
 			} else {
 				if (progress >= 1 && endgame == false) {
-					Destroy (this.gameObject);
+					//Destroy (this.gameObject);
+					gameObject.SetActive (false);
 //					if (GameObject.Find ("TutorialPanels") != null)
 //						GameObject.Find ("TutorialPanels").transform.gameObject.SetActive (false);
 //					VictoryScreen.SetActive (true);
