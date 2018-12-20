@@ -10,7 +10,7 @@ public class BaseDefense : MonoBehaviour {
 
 	public int team;
 
-	public int reach;
+	public float reach;
 	public float shootCD;
 	public float damageSpeed;
 	public float danoCD;

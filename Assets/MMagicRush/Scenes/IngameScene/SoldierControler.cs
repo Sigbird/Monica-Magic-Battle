@@ -814,28 +814,25 @@ public class SoldierControler : MonoBehaviour {
 
 		GameObject Emin = null;
 		float minDis = Mathf.Infinity;
-		if (this.tag == "enemysoldier1") { //Procura de Jogador 1
-			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null ) {//PROCURA TROPA
-				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 
+
+		//Procura de Jogador 1
+
+		if (this.tag == "enemysoldier1") {
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {//PROCURA TROPA
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
-					if (dist <= reach) {
-						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-							if (obj.GetComponent<SoldierControler> () != null) {
+					if (obj.GetComponent<SoldierControler> () != null) {
+						if (dist <= reach) {
+							if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
 								Emin = obj;
 								minDis = dist;
 							}
 						}
-					}
-				}
-			} 
-			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {//PROCURA HEROI
-				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
-					if (obj.GetComponent<SpriteRenderer> ().enabled == true) {
-						float dist = Vector3.Distance (transform.position, obj.transform.position);
-						if (dist <= reach) {
-							if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-								if (obj.GetComponent<WPIASoldierControler> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+					} else if (obj.GetComponent<WPIASoldierControler> () != null) {
+						if (obj.GetComponent<SpriteRenderer> ().enabled == true) {
+							if (dist <= reach) {
+								if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
 									Emin = obj;
 									minDis = dist;
 								}
@@ -843,43 +840,50 @@ public class SoldierControler : MonoBehaviour {
 						}
 					}
 				}
-			} 
+			}
 			if (GameObject.FindGameObjectsWithTag ("enemytower2") != null) {//PROCURA BASE
-				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower2")) {
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower1")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
-					if (dist <= reach) {
-						if (dist < minDis) {
-							if (obj.GetComponent<ChargesScript> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
-								Emin = obj;
-								minDis = dist;
+					if (obj.GetComponent<ChargesScriptTowers> () != null) {
+						if (dist <= reach) {
+							if (dist < minDis) {
+								if (obj.GetComponent<ChargesScriptTowers> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+									Emin = obj;
+									minDis = dist;
+								}
+							}
+						}
+					} else if (obj.GetComponent<ChargesScript> () != null) {
+						if (dist <= reach) {
+							if (dist < minDis) {
+								if (obj.GetComponent<ChargesScript> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+									Emin = obj;
+									minDis = dist;
+								}
 							}
 						}
 					}
 				}
-			} 
+			}
 
 
-		} else if (this.tag == "enemysoldier2") { //Procura de Jogador 2
+			//Procura de Jogador 2
+
+		} else if (this.tag == "enemysoldier2") {
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//PROCURA TROPA
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
-					if (dist <= reach) {
-						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-							if (obj.GetComponent<SoldierControler> () != null) {
+					if (obj.GetComponent<SoldierControler> () != null) {
+						if (dist <= reach) {
+							if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
 								Emin = obj;
 								minDis = dist;
 							}
 						}
-					}
-				}
-			}
-			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//PROCURA HEROI
-				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
-					if (obj.GetComponent<SpriteRenderer> ().enabled == true) {
-						float dist = Vector3.Distance (transform.position, obj.transform.position);
-						if (dist <= reach) {
-							if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-								if (obj.GetComponent<WPSoldierControler> ().heroUnity != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+					} else if (obj.GetComponent<WPSoldierControler> () != null) {
+						if (obj.GetComponent<SpriteRenderer> ().enabled == true) {
+							if (dist <= reach) {
+								if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
 									Emin = obj;
 									minDis = dist;
 								}
@@ -888,20 +892,33 @@ public class SoldierControler : MonoBehaviour {
 					}
 				}
 			}
+
 
 			if (GameObject.FindGameObjectsWithTag ("enemytower1") != null) {//PROCURA BASE
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower1")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
-					if (dist <= reach) {
-						if (dist < minDis) {
-							if (obj.GetComponent<ChargesScript> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
-								Emin = obj;
-								minDis = dist;
+					if (obj.GetComponent<ChargesScriptTowers> () != null) {
+						if (dist <= reach) {
+							if (dist < minDis) {
+								if (obj.GetComponent<ChargesScriptTowers> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+									Emin = obj;
+									minDis = dist;
+								}
+							}
+						}
+					}else if (obj.GetComponent<ChargesScript> () != null) {
+						if (dist <= reach) {
+							if (dist < minDis) {
+								if (obj.GetComponent<ChargesScript> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+									Emin = obj;
+									minDis = dist;
+								}
 							}
 						}
 					}
 				}
 			}
+
 
 		}
 		return Emin;

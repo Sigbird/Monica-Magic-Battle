@@ -393,8 +393,9 @@ public class CardSlotScript : MonoBehaviour {
 		//ATIVA EFEITO DA CARTA SOBRE O ALVO DO OBJETO MOVABLE
 		public void ActivateCardEffect(){
 		GameObject t;
-		if(GameObject.Find("HistoricContent") != null)
-		GameObject.Find("HistoricContent").GetComponent<CardHistoric>().AddCard (cardID, 1);
+		if (GameObject.Find ("HistoricContent") != null) {
+			GameObject.Find ("HistoricContent").GetComponent<CardHistoric> ().AddCard (cardID, 2);
+		}
 		
 			switch (cardID) {
 

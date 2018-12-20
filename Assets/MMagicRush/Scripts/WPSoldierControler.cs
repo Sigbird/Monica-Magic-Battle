@@ -552,8 +552,8 @@ public class WPSoldierControler : MonoBehaviour {
 			this.reach = 2;//3
 			this.damage = 1;
 			this.damageSpeed = 4;
-			this.range = 2;
-			this.speed = 13;
+			this.range = 1.5f;
+			this.speed = 10;
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -570,8 +570,8 @@ public class WPSoldierControler : MonoBehaviour {
 			this.reach = 2;//3
 			this.damage = 1;
 			this.damageSpeed = 4;
-			this.range = 2;
-			this.speed = 17;
+			this.range = 1.5f;
+			this.speed = 12;
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -586,8 +586,8 @@ public class WPSoldierControler : MonoBehaviour {
 			this.reach = 0.5f;
 			this.damage = 1;
 			this.damageSpeed = 4;
-			this.range = 2;
-			this.speed = 12;
+			this.range = 1.5f;
+			this.speed = 10;
 			this.energyMax = 4;
 			this.energy = 4;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -601,8 +601,8 @@ public class WPSoldierControler : MonoBehaviour {
 			this.reach = 0.5f;
 			this.damage = 2;
 			this.damageSpeed = 4;
-			this.range = 2;
-			this.speed = 13;
+			this.range = 1.5f;
+			this.speed = 10;
 			this.energyMax = 4;
 			this.energy = 4;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -616,8 +616,8 @@ public class WPSoldierControler : MonoBehaviour {
 			this.reach = 0.5f;
 			this.damage = 1;
 			this.damageSpeed = 2;
-			this.range = 2;
-			this.speed = 13;
+			this.range = 1.5f;
+			this.speed = 10;
 			this.energyMax = 4;
 			this.energy = 4;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -631,8 +631,8 @@ public class WPSoldierControler : MonoBehaviour {
 			this.reach = 0.5f;
 			this.damage = 1;
 			this.damageSpeed = 2;
-			this.range = 2;
-			this.speed = 13;
+			this.range = 1.5f;
+			this.speed = 10;
 			this.energyMax = 4;
 			this.energy = 4;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -956,7 +956,7 @@ public class WPSoldierControler : MonoBehaviour {
 			} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//ALVO TORRE
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-				targetEnemy.GetComponent<ChargesScript> ().progress += 0.3f;
+				targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
 				if (this.range > 1)
 					TrowArrow ();
 //				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
