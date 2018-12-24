@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using YupiPlay.MMB;
 using GooglePlayGames;
-using GooglePlayGames.BasicApi;
 using UnityEngine.UI;
 
 public class PlayGamesSignIn : MonoBehaviour {
