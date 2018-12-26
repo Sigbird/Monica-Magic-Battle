@@ -177,10 +177,10 @@ public class CardSlotScript : MonoBehaviour {
 	//FIM DO ARRASTO
 	void OnMouseUp(){
 
-		UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill1", false);
-		UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill2", false);
-		UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill3", false);
-		UIilustrationAnim.gameObject.SetActive (false);
+//		UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill1", false);
+//		UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill2", false);
+//		UIilustrationAnim.transform.GetComponent<Animator> ().SetBool ("Skill3", false);
+//		UIilustrationAnim.gameObject.SetActive (false);
 
 
 		GameObject.Find ("EnemyArea").GetComponent<Image> ().enabled = false;
@@ -191,7 +191,7 @@ public class CardSlotScript : MonoBehaviour {
 //					GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 //					Movable.GetComponent<sparkScript> ().DestroyItself ();
 //				} else 
-				if(Movable.transform.position.y<0f && cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+				if(Movable.transform.position.y> -2f && cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 //					if (PlayerPrefs.GetString ("Tutorial") == "False") {
 						ActivateCardEffect ();
 //					} else {
@@ -394,7 +394,7 @@ public class CardSlotScript : MonoBehaviour {
 		public void ActivateCardEffect(){
 		GameObject t;
 		if (GameObject.Find ("HistoricContent") != null) {
-			GameObject.Find ("HistoricContent").GetComponent<CardHistoric> ().AddCard (cardID, 2);
+			GameObject.Find ("HistoricContent").GetComponent<CardHistoric> ().AddCard (cardID, 1);
 		}
 		
 			switch (cardID) {

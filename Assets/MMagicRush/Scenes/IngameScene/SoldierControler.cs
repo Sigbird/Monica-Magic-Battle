@@ -842,7 +842,7 @@ public class SoldierControler : MonoBehaviour {
 				}
 			}
 			if (GameObject.FindGameObjectsWithTag ("enemytower2") != null) {//PROCURA BASE
-				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower1")) {
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower2")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
 					if (obj.GetComponent<ChargesScriptTowers> () != null) {
 						if (dist <= reach) {
@@ -948,35 +948,20 @@ public class SoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					//lockedTarget = false;
 				}
-			} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//ALVO TORRE
+			} else if (targetEnemy.GetComponent<ChargesScript> () != null && danoCD > damageSpeed) {//ALVO BASE
+				danoCD = 0;
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-				targetEnemy.GetComponent<ChargesScript> ().progress += 0.1f;
+				targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
 				if (this.range > 1)
 					TrowArrow ();
-				//				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
-				//					this.targetEnemy = null;
-				//					lockedTarget = false;
-				//				}
-				//ALVO BASE
-				//							if(targetEnemy.tag == "waypoint"){
-				//								if (Progress == 2) {
-				//									if (heroUnity) {
-				//										heroBase.GetComponent<ChargesScript> ().charges++;
-				//										GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
-				//										//StartCoroutine (Respawning ());
-				//									}
-				//								} else {
-				//									Progress++;
-				//									targetEnemy = null;
-				//								}
-				//							}
-				if (heroUnity) {
-					//								heroBase.GetComponent<ChargesScript> ().charges += 1;
-					//								StartCoroutine (Respawning ());
-					//								GameObject.Find("GameController").GetComponent<GameController>().NextRound ();
-
-				}
+			}else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null && danoCD > damageSpeed) {//ALVO TORRE
+				danoCD = 0;
+				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
+				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
+				targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.25f;
+				if (this.range > 1)
+					TrowArrow ();
 			}
 
 			if (this.range > 1) {

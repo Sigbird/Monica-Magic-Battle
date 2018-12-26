@@ -25,7 +25,7 @@ public class SkillsScript : MonoBehaviour {
 	}
 
 	public void Enable(){
-		this.GetComponent<Animator> ().SetTrigger ("Enable");
+//		this.GetComponent<Animator> ().SetTrigger ("Enable");
 	}
 
 	public void Disable(){

@@ -76,10 +76,11 @@ public class WPScript : MonoBehaviour {
 			StartCoroutine (RedrawLine ());
 			progress--;
 			cancel = false;
-		}else if (MovementCounter () < 1  && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Enemy.position) < 1 && UIopen == false && Enemy.GetComponent<SpriteRenderer>().enabled == true) {
+		}else if (MovementCounter () < 1  && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Enemy.position) < 2 && UIopen == false) {
 			Hero.GetComponent<WPSoldierControler> ().targetEnemy = Enemy.gameObject;
 			Hero.GetComponent<WPSoldierControler> ().seeking = false;
 			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
+			Debug.Log ("Oi");
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
 					Destroy (o.gameObject);
 			}
@@ -265,6 +266,6 @@ public class WPScript : MonoBehaviour {
 
 	IEnumerator RedrawLine(){
 		yield return new WaitForSeconds (0.01f);
-		GameObject.Find ("Line1").GetComponent<LineScript> ().firstLineDraw = false;
+		///GameObject.Find ("Line1").GetComponent<LineScript> ().firstLineDraw = false;
 	}
 }

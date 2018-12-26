@@ -385,7 +385,7 @@ public class WPSoldierControler : MonoBehaviour {
 			if (this.xp < xplvl2 && this.xp < xplvl3) {
 				this.level = 1;
 				xpMax = 25;
-				LvlUpAnim.SetInteger ("LevelUpInt", -1);
+//				LvlUpAnim.SetInteger ("LevelUpInt", -1);
 				if (skill1.skillLevel <= this.level) {
 					skill1.Enable ();
 				}
@@ -396,7 +396,7 @@ public class WPSoldierControler : MonoBehaviour {
 			if (this.xp > xplvl2 && this.xp < xplvl3) {
 				this.level = 2;
 				xpMax = 125;
-				LvlUpAnim.SetInteger ("LevelUpInt", 1);
+//				LvlUpAnim.SetInteger ("LevelUpInt", 1);
 				if (skill1.skillLevel <= this.level) {
 					skill1.Enable ();
 				}
@@ -407,7 +407,7 @@ public class WPSoldierControler : MonoBehaviour {
 			if (this.xp >= xplvl3) {
 				this.level = 3;
 				xpMax = 125;
-				LvlUpAnim.SetInteger ("LevelUpInt", 2);
+//				LvlUpAnim.SetInteger ("LevelUpInt", 2);
 				if (skill1.skillLevel <= this.level) {
 					skill1.Enable ();
 				}
@@ -416,8 +416,8 @@ public class WPSoldierControler : MonoBehaviour {
 				}
 			}
 		}
-		if (XpBar != null)
-			XpBar.SetFloat ("Blend", xp / xpMax);
+//		if (XpBar != null)
+//			XpBar.SetFloat ("Blend", xp / xpMax);
 
 
 		//

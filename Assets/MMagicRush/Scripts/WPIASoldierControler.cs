@@ -435,7 +435,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			if (this.xp < xplvl2 && this.xp < xplvl3) {
 				this.level = 1;
 				xpMax = 25;
-				LvlUpAnim.SetInteger ("LevelUpInt", -1);
+//				LvlUpAnim.SetInteger ("LevelUpInt", -1);
 				if (skill1.skillLevel <= this.level) {
 					skill1.Enable ();
 				}
@@ -446,7 +446,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			if (this.xp > xplvl2 && this.xp < xplvl3) {
 				this.level = 2;
 				xpMax = 125;
-				LvlUpAnim.SetInteger ("LevelUpInt", 1);
+//				LvlUpAnim.SetInteger ("LevelUpInt", 1);
 				if (skill1.skillLevel <= this.level) {
 					skill1.Enable ();
 				}
@@ -457,7 +457,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			if (this.xp >= xplvl3) {
 				this.level = 3;
 				xpMax = 125;
-				LvlUpAnim.SetInteger ("LevelUpInt", 2);
+//				LvlUpAnim.SetInteger ("LevelUpInt", 2);
 				if (skill1.skillLevel <= this.level) {
 					skill1.Enable ();
 				}
@@ -1238,18 +1238,18 @@ public class WPIASoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					//lockedTarget = false;
 				}
-			} else if (targetEnemy.GetComponent<ChargesScript> () != null && danoCD > damageSpeed) {//ALVO TORRE
+			} else if (targetEnemy.GetComponent<ChargesScript> () != null && danoCD > damageSpeed) {//ALVO BASE
 				danoCD = 0;
 					//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 					//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-					targetEnemy.GetComponent<ChargesScript> ().progress += 0.2f;
+					targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
 					if (this.range > 1)
 						TrowArrow ();
 			}else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null && danoCD > damageSpeed) {//ALVO TORRE
 				danoCD = 0;
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-				targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.2f;
+				targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.5f;
 				if (this.range > 1)
 					TrowArrow ();
 			}
