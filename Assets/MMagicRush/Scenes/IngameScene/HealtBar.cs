@@ -9,6 +9,8 @@ public class HealtBar : MonoBehaviour {
 	public SpriteRenderer[] healtBars;
 	public List<GameObject> HBars = new List<GameObject>();
 	public GameObject HPoint;
+	public Sprite HPGreen;
+	public Sprite HPRed;
 
 
 	public int Life;
@@ -64,9 +66,9 @@ public class HealtBar : MonoBehaviour {
 				}
 			} else {
 				if (x < Life) {
-					target.GetComponent<SpriteRenderer> ().color = Color.green;
+					target.GetComponent<SpriteRenderer> ().sprite = HPGreen;
 				} else {
-					target.GetComponent<SpriteRenderer> ().color = Color.red;
+					target.GetComponent<SpriteRenderer> ().sprite = HPRed;
 				}
 			}
 			x++;

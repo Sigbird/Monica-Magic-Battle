@@ -18,10 +18,16 @@ public class ChargesScriptTowers : MonoBehaviour {
 
 	private GameObject[] enemies;
 	public float progress;
+	public float progressbar;
 	public float progressSpeed;
 
 	public GameObject VictoryScreen;
 	public GameObject HitEffect;
+	public HealtBar HealtBarTower;
+	public bool Tower;
+	public int vida;
+	public int vidaMax;
+	public GameObject HitAnimationObject;
 
 
 
@@ -29,13 +35,27 @@ public class ChargesScriptTowers : MonoBehaviour {
 	void Start () {
 		progress = 0;
 
+		if (Tower) {
+			vidaMax = 2;
+			vida = 2;
+		}else{
+			vidaMax = 4;
+			vida = 4;
+		}
+
 
 		gc = GameObject.Find ("GameController").GetComponent<GameController> ();
 
 
 			this.charges = 0;
 
-
+		if (HealtBarTower != null) {
+			
+			//this.vida = Mathf.RoundToInt ((progress * 100) / 25);
+			this.HealtBarTower.gameObject.SetActive (true);
+			UpdateLife ();
+			this.HealtBarTower.RefreshMaxLIfe ();
+		}
 
 
 	}
@@ -125,4 +145,21 @@ public class ChargesScriptTowers : MonoBehaviour {
 
 
 	}
+
+	public void ReceiveDamage(int x){
+
+		this.vida -= x;
+		UpdateLife ();
+
+		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+
+	}
+
+	public void UpdateLife(){
+
+		this.HealtBarTower.Life = this.vida;
+		this.HealtBarTower.MaxLife = this.vidaMax;
+		this.HealtBarTower.UpdateHealtbars();
+	}
+
 }

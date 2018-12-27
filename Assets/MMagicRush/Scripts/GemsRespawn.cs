@@ -27,6 +27,7 @@ public class GemsRespawn : MonoBehaviour {
 	public int lastEnemyGem;
 	private int gemID;
 	private int enemygemID;
+	public bool NewMechanic;
 
 	// Use this for initialization
 	void Start () {
@@ -108,6 +109,7 @@ public class GemsRespawn : MonoBehaviour {
 				}
 			}
 		}
+
 		return result;
 	}
 

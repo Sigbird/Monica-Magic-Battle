@@ -30,6 +30,7 @@ public class GemScript : MonoBehaviour {
 	private GameObject Enemy;
 	public GameObject gc;
 	public GameObject flyingGem;
+	public bool NewMechanic;
 	// Use this for initialization
 	void Start () {
 		gc = GameObject.Find ("GameController");
@@ -231,11 +232,19 @@ public class GemScript : MonoBehaviour {
 	public void EnableRandomGem(){
 		if (team == 1) {
 			//ActualGem = AvaiaBleGems [Random.Range (0, AvaiaBleGems.Length - 1)];
+			if (NewMechanic) {
+			ActualGem = AvaiaBleGems [0];
+			}else{
 			ActualGem = AvaiaBleGems [gc.GetComponent<GameController> ().heroSpawnedGems];
+			}
 			ActualGem.SetActive (true);
 			gc.GetComponent<GameController> ().heroSpawnedGems += 1;
 		} else {
-			ActualGem = AvaiaBleGems [gc.GetComponent<GameController> ().enemySpawnedGems];
+			if (NewMechanic) {
+				ActualGem = AvaiaBleGems [0];
+			} else {
+				ActualGem = AvaiaBleGems [gc.GetComponent<GameController> ().enemySpawnedGems];
+			}
 			ActualGem.SetActive (true);
 			gc.GetComponent<GameController> ().enemySpawnedGems += 1;
 		}

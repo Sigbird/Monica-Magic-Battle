@@ -953,6 +953,7 @@ public class SoldierControler : MonoBehaviour {
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
+				targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (1);
 				if (this.range > 1)
 					TrowArrow ();
 			}else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null && danoCD > damageSpeed) {//ALVO TORRE
@@ -960,6 +961,7 @@ public class SoldierControler : MonoBehaviour {
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.25f;
+				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (1);
 				if (this.range > 1)
 					TrowArrow ();
 			}

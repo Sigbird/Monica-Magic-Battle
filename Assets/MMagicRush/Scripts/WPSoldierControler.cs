@@ -957,6 +957,7 @@ public class WPSoldierControler : MonoBehaviour {
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
+				targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (1);
 				if (this.range > 1)
 					TrowArrow ();
 //				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
@@ -969,6 +970,7 @@ public class WPSoldierControler : MonoBehaviour {
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.5f;
+				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (1);
 				if (this.range > 1)
 					TrowArrow ();
 				//				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU

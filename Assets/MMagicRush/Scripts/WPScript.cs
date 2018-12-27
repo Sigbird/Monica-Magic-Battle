@@ -76,7 +76,7 @@ public class WPScript : MonoBehaviour {
 			StartCoroutine (RedrawLine ());
 			progress--;
 			cancel = false;
-		}else if (MovementCounter () < 1  && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Enemy.position) < 2 && UIopen == false) {
+		}else if (MovementCounter () < 1  && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Enemy.position) < 2 && UIopen == false && Enemy.GetComponent<WPIASoldierControler>().alive == true) {
 			Hero.GetComponent<WPSoldierControler> ().targetEnemy = Enemy.gameObject;
 			Hero.GetComponent<WPSoldierControler> ().seeking = false;
 			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
@@ -87,7 +87,7 @@ public class WPScript : MonoBehaviour {
 			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
 			Instantiate (WaypointMarker, Enemy).transform.position = Enemy.transform.position;
 			//Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity);
-		}else if (MovementCounter () < 1  && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),EnemyBase.position) < 1 && UIopen == false /*&& Enemy.GetComponent<SpriteRenderer>().enabled == true*/) {
+		}else if (MovementCounter () < 1  && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),EnemyBase.position) < 1 && UIopen == false /*&& Enemy.GetComponent<WPIASoldierControler>().alive == true*/) {
 			Hero.GetComponent<WPSoldierControler> ().targetEnemy = EnemyBase.gameObject;
 			Hero.GetComponent<WPSoldierControler> ().seeking = false;
 			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;

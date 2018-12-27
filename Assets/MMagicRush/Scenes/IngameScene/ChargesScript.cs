@@ -22,11 +22,19 @@ public class ChargesScript : MonoBehaviour {
 
 	public GameObject VictoryScreen;
 	public GameObject HitEffect;
+	public HealtBar HealtBarTower;
+	public int vida;
+	public int vidaMax;
+	public GameObject HitAnimationObject;
+	public bool NewMechanic;
 
 
 
 	// Use this for initialization
 	void Start () {
+
+		vidaMax = 4;
+		vida = 4;
 		progress = 0;
 		uiProgressBar.SetFloat ("Blend", progress);
 
@@ -41,6 +49,14 @@ public class ChargesScript : MonoBehaviour {
 		}
 
 
+		if (HealtBarTower != null) {
+
+			//this.vida = Mathf.RoundToInt ((progress * 100) / 25);
+			this.HealtBarTower.gameObject.SetActive (true);
+			UpdateLife ();
+			this.HealtBarTower.RefreshMaxLIfe ();
+		}
+
 
 	}
 	
@@ -52,27 +68,86 @@ public class ChargesScript : MonoBehaviour {
 //			NetGameController.Instance.EndGame ();
 //		}
 
-		if (tutorial == false) {
-			if (this.tag == "enemytower1") {
-				if (progress >= 1 && endgame == false) {
-					GameObject.FindGameObjectWithTag ("enemytower2").GetComponent<ChargesScript> ().charges++;
-					GameObject.Find ("GameController").GetComponent<GameController> ().NextRound ();
-					endgame = true;
+		if (NewMechanic) {
+
+			if (tutorial == false) {
+				if (this.tag == "enemytower1") {
+					if (vida<=0 && endgame == false) {
+						GameObject.FindGameObjectWithTag ("enemytower2").GetComponent<ChargesScript> ().charges++;
+						GameObject.Find ("GameController").GetComponent<GameController> ().NextRound ();
+						endgame = true;
+					}
+					PlayerPrefs.SetInt ("playerCharges", charges);
+					gc.playerCharges = this.charges;
+				} else {
+					if (vida<=0 && endgame == false) {
+						GameObject.FindGameObjectWithTag ("enemytower1").GetComponent<ChargesScript> ().charges++;
+						GameObject.Find ("GameController").GetComponent<GameController> ().NextRound ();
+						endgame = true;
+					}
+					PlayerPrefs.SetInt ("enemyCharges", charges);
+					gc.enemyCharges = this.charges;
 				}
-				PlayerPrefs.SetInt ("playerCharges", charges);
-				gc.playerCharges = this.charges;
 			} else {
-				if (progress >= 1 && endgame == false) {
-					GameObject.FindGameObjectWithTag ("enemytower1").GetComponent<ChargesScript> ().charges++;
-					GameObject.Find ("GameController").GetComponent<GameController> ().NextRound ();
-					endgame = true;
+				if (this.tag == "enemytower1") {
+					if (tutorial == false) {
+						if (vida<=0 && endgame == false) {
+							if (GameObject.Find ("TutorialPanels") != null)
+								GameObject.Find ("TutorialPanels").transform.gameObject.SetActive (false);
+							VictoryScreen.SetActive (true);
+							Time.timeScale = 0;
+							endgame = true;
+						}
+						PlayerPrefs.SetInt ("playerCharges", charges);
+						gc.playerCharges = this.charges;
+					}
+				} else {
+					if (vida<=0 && endgame == false) {
+						if (GameObject.Find ("TutorialPanels") != null)
+							GameObject.Find ("TutorialPanels").transform.gameObject.SetActive (false);
+						VictoryScreen.SetActive (true);
+						Time.timeScale = 0;
+						endgame = true;
+					}
+					PlayerPrefs.SetInt ("enemyCharges", charges);
+					gc.enemyCharges = this.charges;
 				}
-				PlayerPrefs.SetInt ("enemyCharges", charges);
-				gc.enemyCharges = this.charges;
 			}
+		
 		} else {
-			if (this.tag == "enemytower1") {
-				if (tutorial == false) {
+		
+			if (tutorial == false) {
+				if (this.tag == "enemytower1") {
+					if (progress >= 1 && endgame == false) {
+						GameObject.FindGameObjectWithTag ("enemytower2").GetComponent<ChargesScript> ().charges++;
+						GameObject.Find ("GameController").GetComponent<GameController> ().NextRound ();
+						endgame = true;
+					}
+					PlayerPrefs.SetInt ("playerCharges", charges);
+					gc.playerCharges = this.charges;
+				} else {
+					if (progress >= 1 && endgame == false) {
+						GameObject.FindGameObjectWithTag ("enemytower1").GetComponent<ChargesScript> ().charges++;
+						GameObject.Find ("GameController").GetComponent<GameController> ().NextRound ();
+						endgame = true;
+					}
+					PlayerPrefs.SetInt ("enemyCharges", charges);
+					gc.enemyCharges = this.charges;
+				}
+			} else {
+				if (this.tag == "enemytower1") {
+					if (tutorial == false) {
+						if (progress >= 1 && endgame == false) {
+							if (GameObject.Find ("TutorialPanels") != null)
+								GameObject.Find ("TutorialPanels").transform.gameObject.SetActive (false);
+							VictoryScreen.SetActive (true);
+							Time.timeScale = 0;
+							endgame = true;
+						}
+						PlayerPrefs.SetInt ("playerCharges", charges);
+						gc.playerCharges = this.charges;
+					}
+				} else {
 					if (progress >= 1 && endgame == false) {
 						if (GameObject.Find ("TutorialPanels") != null)
 							GameObject.Find ("TutorialPanels").transform.gameObject.SetActive (false);
@@ -80,21 +155,14 @@ public class ChargesScript : MonoBehaviour {
 						Time.timeScale = 0;
 						endgame = true;
 					}
-					PlayerPrefs.SetInt ("playerCharges", charges);
-					gc.playerCharges = this.charges;
+					PlayerPrefs.SetInt ("enemyCharges", charges);
+					gc.enemyCharges = this.charges;
 				}
-			} else {
-				if (progress >= 1 && endgame == false) {
-					if (GameObject.Find ("TutorialPanels") != null)
-						GameObject.Find ("TutorialPanels").transform.gameObject.SetActive (false);
-					VictoryScreen.SetActive (true);
-					Time.timeScale = 0;
-					endgame = true;
-				}
-				PlayerPrefs.SetInt ("enemyCharges", charges);
-				gc.enemyCharges = this.charges;
 			}
+
 		}
+
+
 
 
 
@@ -126,4 +194,23 @@ public class ChargesScript : MonoBehaviour {
 
 
 	}
+
+	public void ReceiveDamage(int x){
+
+		this.vida -= x;
+		if (NewMechanic) {
+			UpdateLife ();
+		}
+
+		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+
+	}
+
+	public void UpdateLife(){
+
+		this.HealtBarTower.Life = this.vida;
+		this.HealtBarTower.MaxLife = this.vidaMax;
+		this.HealtBarTower.UpdateHealtbars();
+	}
+
 }
