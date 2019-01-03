@@ -8,6 +8,8 @@ public class AudioManager : MonoBehaviour {
 	public AudioSource source;
 	public float MusicVolume;
 	public float EffectVolume;
+	public string terraintype;
+	public bool boss;
 	// Use this for initialization
 	void Start () {
 		if (PlayerPrefs.HasKey ("GameVolume")) {
@@ -22,6 +24,10 @@ public class AudioManager : MonoBehaviour {
 			EffectVolume = 1;
 		}
 		source = this.GetComponent<AudioSource> ();
+		terraintype = PlayerPrefs.GetString ("TerrainType");
+
+
+
 		PlayAudio ("ingame");
 	}
 	
@@ -102,6 +108,12 @@ public class AudioManager : MonoBehaviour {
 			if (track == "passos") {
 				source.PlayOneShot (audios [18]);
 			}
+			if (track == "selecaocarta") {
+				source.PlayOneShot (audios [24]);
+			}
+			if (track == "selecaofase") {
+				source.PlayOneShot (audios [25]);
+			}
 
 		}
 		if (MusicVolume > 0) {
@@ -125,10 +137,33 @@ public class AudioManager : MonoBehaviour {
 
 			if (track == "ingame") {
 				source.loop = true;
-				if (SceneManager.GetActiveScene ().name == "Level Select" || SceneManager.GetActiveScene ().name == "TutorialMain" || SceneManager.GetActiveScene ().name == "Main" || SceneManager.GetActiveScene ().name == "TutorialScene") {
+
+				if (SceneManager.GetActiveScene ().name == "JogoOffline" || SceneManager.GetActiveScene ().name == "GamePlayReview" || SceneManager.GetActiveScene ().name == "TutorialScene") {
+						if(StaticController.instance.GameController.GameOver == false){ // CENAS DE GAMEPLAY
+							if (terraintype == "Forest") {
+								if (boss) {
+									source.clip = audios [18];
+								} else {
+									source.clip = audios [21];
+								}
+							} else if (terraintype == "Winter") {
+								if (boss) {
+									source.clip = audios [19];
+								} else {
+									source.clip = audios [22];
+								}
+							} else if (terraintype == "Dungeon") {
+								if (boss) {
+									source.clip = audios [20];
+								} else {
+									source.clip = audios [23];
+								}
+							} else {
+								source.clip = audios [10];
+							}
+						}
+				} else { 																// CENAS DE MENU
 					source.clip = audios [9];
-				} else if(StaticController.instance.GameController.GameOver == false) {
-					source.clip = audios [10];
 				}
 				source.Play ();
 			}

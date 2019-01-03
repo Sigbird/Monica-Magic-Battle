@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -186,8 +187,17 @@ public class Pin : MonoBehaviour
 		Debug.Log ("apertou");
 
 		if (Vector2.Distance (GameObject.Find ("Character").transform.position, this.transform.position) <= 1) {
-			SceneManager.LoadScene (SceneToLoad);
+			//SceneManager.LoadScene (SceneToLoad);
+			StartCoroutine (CallSceneDelay ());
 		}
 
 	}
+
+
+	IEnumerator CallSceneDelay(){
+		GameObject.Find ("Main Camera").GetComponent<AudioManager> ().PlayAudio ("selecaofase");
+		yield return new WaitForSeconds (0.1f);
+		SceneManager.LoadScene (SceneToLoad);
+	}
+
 }

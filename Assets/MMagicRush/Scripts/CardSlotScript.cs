@@ -163,6 +163,7 @@ public class CardSlotScript : MonoBehaviour {
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				if (projectileCreated == false) {
 					projectileCreated = true;
+					audioManager.PlayAudio ("selecaocarta");
 					Movable = (GameObject)Instantiate (Spark, new Vector2 (0, 0), Quaternion.identity);
 					Movable.transform.SetParent (GameObject.Find ("Canvas").transform);
 					Movable.GetComponent<sparkScript> ().CardSlot = this.gameObject.GetComponent<CardSlotScript> ();
@@ -943,4 +944,6 @@ public class CardSlotScript : MonoBehaviour {
 		cardInfo.lastCard = this.gameObject;
 		WPScript.UIopen = true;
 	}
+
+
 }

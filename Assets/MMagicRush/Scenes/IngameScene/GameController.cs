@@ -77,7 +77,11 @@ public class GameController : MonoBehaviour {
 	private int[] zero;
 	// Use this for initialization
 	void Awake() {
-		
+		if (terrain == 1 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 2 || terrain == 2 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 1 || terrain == 3 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 0) {
+			this.GetComponent<AudioManager> ().boss = true;
+		} else {
+			this.GetComponent<AudioManager> ().boss = false;
+		}
 
 
 
@@ -348,7 +352,7 @@ public class GameController : MonoBehaviour {
 //			Debug.Log ("EMPATE");
 			this.GetComponent<AudioManager> ().StopAudio ();
 			this.GetComponent<AudioManager> ().SetVolume (1);
-			this.GetComponent<AudioManager> ().PlayAudio ("victory");
+			this.GetComponent<AudioManager> ().PlayAudio ("selecaocarta");
 			victory = true;
 			endGamePanel [0].SetActive (true);
 
