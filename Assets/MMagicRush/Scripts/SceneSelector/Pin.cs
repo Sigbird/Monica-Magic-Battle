@@ -83,7 +83,7 @@ public class Pin : MonoBehaviour
 						PlayerPrefs.SetInt ("enemyCharges", 0);
 						SceneManager.LoadScene ("JogoOffline");
 
-						Debug.Log ("Chamando cena: " + SceneToLoad);
+//						Debug.Log ("Chamando cena: " + SceneToLoad);
 					}
 				}
 			}

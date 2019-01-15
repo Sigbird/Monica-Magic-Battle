@@ -89,7 +89,7 @@ public class Character : MonoBehaviour
 		} else {
 			reached = true;
 			IsMoving = false;
-				Debug.Log ("AA");
+//				Debug.Log ("AA");
 		}
 		}
 

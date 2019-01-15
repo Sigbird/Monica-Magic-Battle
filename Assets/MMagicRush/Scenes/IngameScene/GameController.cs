@@ -75,12 +75,14 @@ public class GameController : MonoBehaviour {
 	public bool vsIAMode;
 
 	private int[] zero;
+	private int heroid;
 	// Use this for initialization
 	void Awake() {
-		if (terrain == 1 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 2 || terrain == 2 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 1 || terrain == 3 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 0) {
-			this.GetComponent<AudioManager> ().boss = true;
+		
+		if (PlayerPrefs.HasKey ("Enemy")) {
+			heroid = PlayerPrefs.GetInt ("Enemy");
 		} else {
-			this.GetComponent<AudioManager> ().boss = false;
+			heroid = 10;
 		}
 
 
@@ -98,6 +100,18 @@ public class GameController : MonoBehaviour {
 		} else {
 			vsIAMode = true;
 		}
+
+
+		if (terrain == 1 && heroid == 2) {
+			this.GetComponent<AudioManager> ().boss = true;
+		} else if (terrain == 2 && heroid == 1) {
+			this.GetComponent<AudioManager> ().boss = true;
+		}else if( terrain == 3 && heroid == 0) {
+			this.GetComponent<AudioManager> ().boss = true;
+		} else {
+			this.GetComponent<AudioManager> ().boss = false;
+		}
+		//StartCoroutine (LateStart ());
 		//PlayerPrefsX.SetIntArray("PlayerCardsIDs",zero);
 		//PlayerPrefsX.SetIntArray("SelectedCardsIDs",zero);
 
@@ -177,8 +191,29 @@ public class GameController : MonoBehaviour {
 		if (LeaderBoard != null) {
 			LeaderBoard.LoadScores ();
 		}
-		//StartCoroutine (EnemyAI ());
+		//StartCoroutine (LateStart ());
 	}
+
+	void Start(){
+		
+
+	}
+
+	IEnumerator LateStart(){
+		yield return new WaitForSeconds (0.1f);
+		if (terrain == 1 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 2) {
+			//this.GetComponent<AudioManager> ().boss = true;
+		} else if (terrain == 2 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 1) {
+			Debug.Log (terrain + " " + EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID);
+
+			this.GetComponent<AudioManager> ().boss = true;
+		}else if( terrain == 3 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 0) {
+			//this.GetComponent<AudioManager> ().boss = true;
+		} else {
+			this.GetComponent<AudioManager> ().boss = false;
+		}
+	}
+
 	
 	// Update is called once per frame
 	void Update () {

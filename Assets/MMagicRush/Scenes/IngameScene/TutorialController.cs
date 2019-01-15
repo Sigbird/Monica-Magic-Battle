@@ -130,7 +130,7 @@ public class TutorialController : MonoBehaviour {
 			//RewardWindow2.SetActive (true);
 		}else if (PlayerPrefs.GetInt ("Lesson") == 6) {//RecebendoRecompensa
 			PlayerPrefs.SetInt ("Lesson", PlayerPrefs.GetInt ("Lesson") + 1);
-			SceneManager.LoadScene ("Main");
+			SceneManager.LoadScene ("MainNew");
 		}
 
 	}

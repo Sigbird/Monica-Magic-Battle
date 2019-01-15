@@ -31,6 +31,10 @@ public class CardInfoScript : MonoBehaviour {
 	public bool ClearPlayerPrefs;
 	public bool activable;
 	public bool inmenu;
+	public Text[] atributesOnScreen;
+	public float[] atributes;
+	private string cardatributes;
+	private int cardID;
 
 	// Use this for initialization
 	void Start () {
@@ -50,9 +54,9 @@ public class CardInfoScript : MonoBehaviour {
 		int[] cards = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
 //		Debug.Log ("Card Count "+ cards.Length);
 		if (cards.Length < 2) {
-			disableButton.GetComponent<Button> ().interactable = false;
+			//disableButton.GetComponent<Button> ().interactable = false;
 		} else {
-			disableButton.GetComponent<Button> ().interactable = true;
+			//disableButton.GetComponent<Button> ().interactable = true;
 		}
 
 		if (inmenu == false && lastCard.GetComponent<CardSlotScript> ().cardCost < GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
@@ -61,6 +65,7 @@ public class CardInfoScript : MonoBehaviour {
 	}
 
 	public void SendCard(GameObject o){
+		cardID = o.GetComponent<CardScript> ().CardID;
 		lastCard = o;
 		cardname.text = o.GetComponent<CardScript> ().cardname;
 		descrition.text = o.GetComponent<CardScript> ().descrition;
@@ -70,7 +75,10 @@ public class CardInfoScript : MonoBehaviour {
 		efect.sprite = o.GetComponent<CardScript> ().efect.sprite;
 		image.sprite = o.GetComponent<CardScript> ().image;
 		character.sprite = o.GetComponent<CardScript> ().peson;
-		Debug.Log (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length);
+		//cardatributes = "Card" + o.GetComponent<CardScript> ().CardID.ToString ();
+		GetAtributes (o.GetComponent<CardScript> ().CardID);
+		//atributes = PlayerPrefsX.GetFloatArray (cardatributes);
+
 //		if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15 && enableButton != null) {
 //			enableButton.GetComponent<Button> ().interactable = false;
 //		} else if(enableButton != null) {
@@ -110,7 +118,6 @@ public class CardInfoScript : MonoBehaviour {
 				}
 			}
 		}
-
 		switch (cardID) {
 		case 1:
 			cardname.text = "Nevasca";
@@ -120,8 +127,11 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects [0];
 			image.sprite = Images [cardID];
 			ImageAnimated.SetActive (true);
-			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill2",true);
-			character.sprite = Persons[0];
+			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill2", true);
+			character.sprite = Persons [0];
+
+			
+
 			break;
 		case 2:
 			cardname.text = "Estalo Magico";
@@ -133,6 +143,7 @@ public class CardInfoScript : MonoBehaviour {
 			ImageAnimated.SetActive (true);
 			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill1",true);
 			character.sprite = Persons [0];
+
 //			cardname.text = "Explosão Magica";
 //			descrition.text = "Aplica dois de dano em todas unidades ininimgas";
 //			cost.text = "10";
@@ -151,6 +162,7 @@ public class CardInfoScript : MonoBehaviour {
 			ImageAnimated.SetActive (true);
 			ImageAnimated.GetComponent<Animator> ().SetBool ("Skill3",true);
 			character.sprite = Persons[0];
+
 //			cardname.text = "Nevasca";
 //			descrition.text = "Aplica dois de dano em todas unidades ininimgas";
 //			cost.text = "25";
@@ -169,6 +181,7 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[0];
+
 //			cardname.text = "Terremoto";
 //			descrition.text = "Deixa Tropas Inimigas Lentas";
 //			cost.text = "50";
@@ -185,6 +198,7 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[0];
+
 //			cardname.text = "Hora da Soneca";
 //			descrition.text = "Para Tropas Inimigas";
 //			cost.text = "75";
@@ -201,6 +215,7 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[0];
+
 //			cardname.text = "Remédio";
 //			descrition.text = "Cura seu heroi";
 //			cost.text = "5";
@@ -217,6 +232,7 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[0];
+
 			break;
 		case 8:
 			cardname.text = "Escudo";
@@ -226,6 +242,8 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[0];
+			atributes = PlayerPrefsX.GetFloatArray ("Card8");
+			
 			break;
 		case 9:
 			cardname.text = "Grito de Guerra";
@@ -235,6 +253,7 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[0];
+
 			break;
 		case 10:
 			cardname.text = "Sem Munição";
@@ -244,6 +263,7 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects[0];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[0];
+
 			break;
 
 			//TROPAS
@@ -256,6 +276,7 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[1];
+
 			break;
 		case 12:
 			cardname.text = "Astronauta";
@@ -265,6 +286,7 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[0];
+
 			break;
 		case 13:
 			cardname.text = "Jotalhão";
@@ -274,6 +296,7 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[0];
+
 			break;
 		case 14:
 			cardname.text = "Piteco";
@@ -283,7 +306,7 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[0];
-			break;
+
 			break;
 		case 15:
 			cardname.text = "Penadinho";
@@ -293,6 +316,8 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[0];
+
+			
 			break;
 		case 16:
 			cardname.text = "Sansão";
@@ -302,6 +327,8 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[1];
+
+			
 			break;
 		case 17:
 			cardname.text = "Mingau";
@@ -311,6 +338,8 @@ public class CardInfoScript : MonoBehaviour {
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[2];
+
+			
 			break;
 		
 
@@ -321,9 +350,11 @@ public class CardInfoScript : MonoBehaviour {
 			descrition.text = "Muda a rota do jogador para outra especifica";
 			cost.text = "20";
 			damage.text = "0";
-			efect.sprite = Efects[0];
-			image.sprite = Images[cardID];
-			character.sprite = Persons[0];
+			efect.sprite = Efects [0];
+			image.sprite = Images [cardID];
+			character.sprite = Persons [0];
+
+			
 			break;
 //		case 22:
 //			cardname.text = "Torre de Agua";
@@ -397,9 +428,31 @@ public class CardInfoScript : MonoBehaviour {
 //			image.sprite = Images[cardID];
 //			character.sprite = Persons[0];
 //			break;
+		default:
+			break;
 		}
 
 
+	}
+
+	public void GetAtributes(int x){
+//		Debug.Log (atributes.Length);
+		Debug.Log ("Card"+x+"1 "+ PlayerPrefs.GetFloat("Card"+x+"1") );
+		atributesOnScreen [0].text = PlayerPrefs.GetFloat("Card"+x+"1").ToString();
+		atributesOnScreen [1].text = PlayerPrefs.GetFloat("Card"+x+"2").ToString();
+		atributesOnScreen [2].text = PlayerPrefs.GetFloat("Card"+x+"3").ToString();
+		atributesOnScreen [3].text = PlayerPrefs.GetFloat("Card"+x+"4").ToString();
+		atributesOnScreen [4].text = PlayerPrefs.GetFloat("Card"+x+"5").ToString();
+		atributesOnScreen [5].text = PlayerPrefs.GetFloat("Card"+x+"6").ToString();
+	}
+
+	public void IncreaseAtributes(int x){
+		float a;
+		x++;
+		a = PlayerPrefs.GetFloat("Card"+ cardID +""+ x);
+		a++;
+		PlayerPrefs.SetFloat("Card"+cardID+""+x,a);
+		atributesOnScreen [x-1].text = a.ToString ();
 	}
 
 	public void BuyCard(){

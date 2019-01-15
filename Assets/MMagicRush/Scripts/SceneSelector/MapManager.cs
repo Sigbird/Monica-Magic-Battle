@@ -157,7 +157,7 @@ public class MapManager : MonoBehaviour
 				}
 			}
 
-			Debug.Log ("Target Position: " + hit.collider.gameObject.transform.position);
+//			Debug.Log ("Target Position: " + hit.collider.gameObject.transform.position);
 		}
 
 

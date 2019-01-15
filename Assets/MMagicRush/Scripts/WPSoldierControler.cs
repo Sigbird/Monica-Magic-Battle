@@ -567,7 +567,7 @@ public class WPSoldierControler : MonoBehaviour {
 		case(1):
 			this.vidaMax = 4;
 			this.vida = 4;
-			this.reach = 2;//3
+			this.reach = 3;//3
 			this.damage = 1;
 			this.damageSpeed = 4;
 			this.range = 1.5f;

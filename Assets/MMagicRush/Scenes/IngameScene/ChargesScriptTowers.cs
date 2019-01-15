@@ -28,13 +28,14 @@ public class ChargesScriptTowers : MonoBehaviour {
 	public int vida;
 	public int vidaMax;
 	public GameObject HitAnimationObject;
+	public AudioManager manager;
 
 
 
 	// Use this for initialization
 	void Start () {
 		progress = 0;
-
+		manager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		if (Tower) {
 			vidaMax = 2;
 			vida = 2;
@@ -62,7 +63,8 @@ public class ChargesScriptTowers : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+
+
 
 		if (tutorial == false) {
 			if (this.tag == "enemytower1") {
@@ -153,6 +155,11 @@ public class ChargesScriptTowers : MonoBehaviour {
 
 		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
 
+		if (this.vida <= 0) {
+			manager.PlayAudio ("cabrum");
+			Destroy (this.gameObject);
+
+		}
 	}
 
 	public void UpdateLife(){

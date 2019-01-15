@@ -16,6 +16,7 @@ public class CinematicController : MonoBehaviour {
 	public GameObject text2b;
 	public GameObject text2c;
 	public GameObject text2d;
+	public AudioManager manager;
 	// Use this for initialization
 	void Start () {
 		textinput = 0;
@@ -26,8 +27,9 @@ public class CinematicController : MonoBehaviour {
 //
 //		} else {
 			if (PlayerPrefs.HasKey ("AnimationToPlay")) {
-				AtualAnimation = PlayerPrefs.GetInt ("AnimationToPlay");
-			} else {
+			AtualAnimation = PlayerPrefs.GetInt ("AnimationToPlay");
+
+		} else {
 				AtualAnimation = 0;
 				//SceneManager.LoadScene ("Level Select");
 			}
@@ -42,6 +44,9 @@ public class CinematicController : MonoBehaviour {
 		AnimatorsArray [AtualAnimation].SetActive (true);
 		TextWindowsArray [AtualAnimation].SetActive (true);
 		AnimatorsArray [AtualAnimation].GetComponent<CinematicAnimation> ().ScenetoCall = "Level Select";
+		manager.PlayAudio ("cinematics"+AtualAnimation.ToString());
+
+
 	}
 
 	public void EndOfAnimation(){

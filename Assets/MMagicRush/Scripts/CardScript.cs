@@ -30,6 +30,7 @@ public class CardScript : MonoBehaviour {
 	public Sprite image;
 	public Sprite peson;
 
+
 	public GameObject TutorialHand;
 
 	public GameObject cardInfo;

@@ -121,7 +121,7 @@ public class SoldierControler : MonoBehaviour {
 
 	public float range;
 
-	private float danoCD = 0;
+	public float danoCD = 0;
 
 	[HideInInspector]
 	public float speed;
@@ -462,6 +462,7 @@ public class SoldierControler : MonoBehaviour {
 					if(haveAnimation)
 						this.transform.Find("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Attack");
 					//anim.SetTrigger ("Attack");
+
 					StartCoroutine (DealDamage ());
 				} else {
 					//					if (tutorial) {
@@ -948,7 +949,7 @@ public class SoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					//lockedTarget = false;
 				}
-			} else if (targetEnemy.GetComponent<ChargesScript> () != null && danoCD > damageSpeed) {//ALVO BASE
+			} else if (targetEnemy.GetComponent<ChargesScript> () != null ) {//ALVO BASE
 				danoCD = 0;
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
@@ -956,12 +957,13 @@ public class SoldierControler : MonoBehaviour {
 				targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (1);
 				if (this.range > 1)
 					TrowArrow ();
-			}else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null && danoCD > damageSpeed) {//ALVO TORRE
+			}else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null) {//ALVO TORRE
 				danoCD = 0;
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-				targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.25f;
+				//targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.25f;
 				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (1);
+
 				if (this.range > 1)
 					TrowArrow ();
 			}

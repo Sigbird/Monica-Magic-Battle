@@ -74,7 +74,7 @@ public class ScrollSanp : MonoBehaviour {
 
 				minButtonNum = k;
 
-				Debug.Log (k);
+//				Debug.Log (k);
 
 				ScaleUpAndScaleDown (k);
 
