@@ -27,6 +27,7 @@ public class WPScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		UIopen = false;
 		progress = 1;
 		enemyprogress = 1;
 	}
@@ -67,27 +68,29 @@ public class WPScript : MonoBehaviour {
 			}
 		}
 
-		if (cancel == true) {
-			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
-				o.name = "Waypoint1";
-				o.GetComponent<MovementMarkerScript> ().progress = 1;
-//				GameObject.Find ("Line1").GetComponent<LineScript> ().endObject = o;
-			}
-			StartCoroutine (RedrawLine ());
-			progress--;
-			cancel = false;
-		}else if (MovementCounter () < 1  && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Enemy.position) < 2 && UIopen == false && Enemy.GetComponent<WPIASoldierControler>().alive == true) {
+//		if (cancel == true) {
+//			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
+//				o.name = "Waypoint1";
+//				o.GetComponent<MovementMarkerScript> ().progress = 1;
+////				GameObject.Find ("Line1").GetComponent<LineScript> ().endObject = o;
+//			}
+//			StartCoroutine (RedrawLine ());
+//			progress--;
+//			cancel = false;
+//		}else 
+		if (/*MovementCounter ()< 1  &&*/  Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Enemy.position) < 1 && UIopen == false && Enemy.GetComponent<WPIASoldierControler>().alive == true) {
+	//		Debug.Log ("HeroiInimigo");
 			Hero.GetComponent<WPSoldierControler> ().targetEnemy = Enemy.gameObject;
 			Hero.GetComponent<WPSoldierControler> ().seeking = false;
 			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
-			Debug.Log ("Oi");
+		//	Debug.Log ("Oi");
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
 					Destroy (o.gameObject);
 			}
 			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
 			Instantiate (WaypointMarker, Enemy).transform.position = Enemy.transform.position;
 			//Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity);
-		}else if (MovementCounter () < 1  && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),EnemyBase.position) < 1 && UIopen == false /*&& Enemy.GetComponent<WPIASoldierControler>().alive == true*/) {
+		}else if (/*MovementCounter ()< 1  &&*/  Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),EnemyBase.position) < 1 && UIopen == false /*&& Enemy.GetComponent<WPIASoldierControler>().alive == true*/) {
 			Hero.GetComponent<WPSoldierControler> ().targetEnemy = EnemyBase.gameObject;
 			Hero.GetComponent<WPSoldierControler> ().seeking = false;
 			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
@@ -96,7 +99,7 @@ public class WPScript : MonoBehaviour {
 			}
 			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
 			Instantiate (WaypointMarker, EnemyBase).transform.position = EnemyBase.transform.position;
-		}else if (MovementCounter () < 1  && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),EnemyBaseTower.position) < 1 && UIopen == false /*&& Enemy.GetComponent<SpriteRenderer>().enabled == true*/) {
+		}else if(EnemyBaseTower != null && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),EnemyBaseTower.position) < 1 && UIopen == false /*&& Enemy.GetComponent<SpriteRenderer>().enabled == true*/) {
 			Hero.GetComponent<WPSoldierControler> ().targetEnemy = EnemyBaseTower.gameObject;
 			Hero.GetComponent<WPSoldierControler> ().seeking = false;
 			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
@@ -105,7 +108,8 @@ public class WPScript : MonoBehaviour {
 			}
 			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
 			Instantiate (WaypointMarker, EnemyBaseTower).transform.position = EnemyBaseTower.transform.position;
-		}else if (MovementCounter () < 1  && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),EnemyBaseTower2.position) < 1 && UIopen == false /*&& Enemy.GetComponent<SpriteRenderer>().enabled == true*/) {
+
+		}else if(EnemyBaseTower2 != null && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),EnemyBaseTower2.position) < 1 && UIopen == false /*&& Enemy.GetComponent<SpriteRenderer>().enabled == true*/) {
 			Hero.GetComponent<WPSoldierControler> ().targetEnemy = EnemyBaseTower2.gameObject;
 			Hero.GetComponent<WPSoldierControler> ().seeking = false;
 			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
@@ -114,6 +118,7 @@ public class WPScript : MonoBehaviour {
 			}
 			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
 			Instantiate (WaypointMarker, EnemyBaseTower2).transform.position = EnemyBaseTower2.transform.position;
+
 		}else if(Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Base.position) < 1 && UIopen == false){
 
 			Debug.Log ("Clicou!");
@@ -182,25 +187,26 @@ public class WPScript : MonoBehaviour {
 //			}
 //			renderer.sprite = CaptureIcon; //CAPTURA DE BASE INIMIGA
 //		} else 
-			if (GemNearbyClick()) {
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = true;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
-			renderer.sprite = MineIcon; //CAPTURA DE GEMA
-
-		} else if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBase").transform.position) < 0.5f) {
+//			if (GemNearbyClick()) {
+//			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = true;
+//			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
+//			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
+//			renderer.sprite = MineIcon; //CAPTURA DE GEMA
+//
+//		} else
+			if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBase").transform.position) < 0.5f) {
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = true;
 			renderer.sprite = DefendIcon; //DEFESA DE BASE
-		} else if(GameObject.Find("HeroEnemy") != null && GameObject.Find("HeroEnemy").GetComponent<SpriteRenderer>().enabled == true && Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroEnemy").transform.position) < 0.5f){
+		} else if(Enemy != null && Enemy.GetComponent<WPIASoldierControler>().alive == true && Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Enemy.transform.position) < 1f){
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
 				if (tutorial == true && GameObject.Find ("TutorialHand") != null)
 					GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
 			renderer.sprite = AttackIcon; //ATAQUE DE INIMIGO
-		} else if(GameObject.Find("HeroBaseEnemy") != null && Vector3.Distance (new Vector3 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y,0), GameObject.Find ("HeroBaseEnemy").transform.position) <= 1f){
+		} else if(EnemyBase != null && Vector3.Distance (new Vector3 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y,0), EnemyBase.transform.position) <= 1f){
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
@@ -237,7 +243,7 @@ public class WPScript : MonoBehaviour {
 	public bool GemNearbyClick(){
 		GameObject[] Gems = GameObject.FindGameObjectsWithTag ("enemygem");
 		foreach (GameObject o in Gems) {
-			if (Vector2.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), o.transform.position) <= 0.6f && o.GetComponent<GemScript>().enabled == true) {
+			if (Vector2.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), o.transform.position) <= 0.1f && o.GetComponent<GemScript>().enabled == true) {
 				return true;
 			}
 		}

@@ -24,6 +24,7 @@ public class ChargesScriptTowers : MonoBehaviour {
 	public GameObject VictoryScreen;
 	public GameObject HitEffect;
 	public HealtBar HealtBarTower;
+	public HealtBarSolid HealtBarSolid;
 	public bool Tower;
 	public int vida;
 	public int vidaMax;
@@ -50,13 +51,13 @@ public class ChargesScriptTowers : MonoBehaviour {
 
 			this.charges = 0;
 
-		if (HealtBarTower != null) {
-			
-			//this.vida = Mathf.RoundToInt ((progress * 100) / 25);
-			this.HealtBarTower.gameObject.SetActive (true);
-			UpdateLife ();
-			this.HealtBarTower.RefreshMaxLIfe ();
-		}
+//		if (HealtBarTower != null) {
+//			
+//			//this.vida = Mathf.RoundToInt ((progress * 100) / 25);
+//			this.HealtBarTower.gameObject.SetActive (true);
+//			UpdateLife ();
+//			this.HealtBarTower.RefreshMaxLIfe ();
+//		}
 
 
 	}
@@ -64,7 +65,8 @@ public class ChargesScriptTowers : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-
+		HealtBarSolid.maxValue = vidaMax;
+		HealtBarSolid.atualValue = vida;
 
 		if (tutorial == false) {
 			if (this.tag == "enemytower1") {

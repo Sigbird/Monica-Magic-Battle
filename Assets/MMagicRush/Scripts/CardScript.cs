@@ -23,6 +23,7 @@ public class CardScript : MonoBehaviour {
 
 	public string cardname;
 	public string descrition;
+	public string descritionLong;
 	public string Gemcost;
 	public string cost;
 	public string damage;

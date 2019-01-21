@@ -35,6 +35,8 @@ public class CardInfoScript : MonoBehaviour {
 	public float[] atributes;
 	private string cardatributes;
 	private int cardID;
+	private string description;
+	public GameObject[] OptionBars;
 
 	// Use this for initialization
 	void Start () {
@@ -69,6 +71,7 @@ public class CardInfoScript : MonoBehaviour {
 		lastCard = o;
 		cardname.text = o.GetComponent<CardScript> ().cardname;
 		descrition.text = o.GetComponent<CardScript> ().descrition;
+		description = o.GetComponent<CardScript> ().descritionLong;
 		cost.text = o.GetComponent<CardScript> ().cost;
 		Gemcost.text = o.GetComponent<CardScript> ().Gemcost;
 		damage.text = o.GetComponent<CardScript> ().damage;
@@ -438,21 +441,58 @@ public class CardInfoScript : MonoBehaviour {
 	public void GetAtributes(int x){
 //		Debug.Log (atributes.Length);
 		Debug.Log ("Card"+x+"1 "+ PlayerPrefs.GetFloat("Card"+x+"1") );
-		atributesOnScreen [0].text = PlayerPrefs.GetFloat("Card"+x+"1").ToString();
-		atributesOnScreen [1].text = PlayerPrefs.GetFloat("Card"+x+"2").ToString();
-		atributesOnScreen [2].text = PlayerPrefs.GetFloat("Card"+x+"3").ToString();
-		atributesOnScreen [3].text = PlayerPrefs.GetFloat("Card"+x+"4").ToString();
-		atributesOnScreen [4].text = PlayerPrefs.GetFloat("Card"+x+"5").ToString();
-		atributesOnScreen [5].text = PlayerPrefs.GetFloat("Card"+x+"6").ToString();
+		if (x >= 11) {
+			atributesOnScreen [0].gameObject.transform.parent.gameObject.SetActive (true);
+			atributesOnScreen [1].gameObject.transform.parent.gameObject.SetActive (true);
+			atributesOnScreen [2].gameObject.transform.parent.gameObject.SetActive (true);
+			atributesOnScreen [3].gameObject.transform.parent.gameObject.SetActive (true);
+			atributesOnScreen [4].gameObject.transform.parent.gameObject.SetActive (true);
+			atributesOnScreen [5].gameObject.transform.parent.gameObject.SetActive (true);
+			atributesOnScreen [6].gameObject.SetActive (false);
+
+			atributesOnScreen [0].text = PlayerPrefs.GetFloat ("Card" + x + "1").ToString ();
+			atributesOnScreen [1].text = PlayerPrefs.GetFloat ("Card" + x + "2").ToString ();
+			atributesOnScreen [2].text = PlayerPrefs.GetFloat ("Card" + x + "3").ToString ();
+			atributesOnScreen [3].text = PlayerPrefs.GetFloat ("Card" + x + "4").ToString ();
+			atributesOnScreen [4].text = PlayerPrefs.GetFloat ("Card" + x + "5").ToString ();
+			atributesOnScreen [5].text = PlayerPrefs.GetFloat ("Card" + x + "6").ToString ();
+
+			if (cardStore == false) {
+				OptionBars [0].SetActive (true);
+				OptionBars [1].SetActive (false);
+			}
+		
+		} else {
+			atributesOnScreen [0].gameObject.transform.parent.gameObject.SetActive (false);
+			atributesOnScreen [1].gameObject.transform.parent.gameObject.SetActive (false);
+			atributesOnScreen [2].gameObject.transform.parent.gameObject.SetActive (false);
+			atributesOnScreen [3].gameObject.transform.parent.gameObject.SetActive (false);
+			atributesOnScreen [4].gameObject.transform.parent.gameObject.SetActive (false);
+			atributesOnScreen [5].gameObject.transform.parent.gameObject.SetActive (false);
+			atributesOnScreen [6].gameObject.SetActive (true);
+
+			atributesOnScreen [6].text = description;
+
+			if (cardStore == false) {
+				OptionBars [0].SetActive (false);
+				OptionBars [1].SetActive (true);
+			}
+		}
 	}
 
 	public void IncreaseAtributes(int x){
-		float a;
-		x++;
-		a = PlayerPrefs.GetFloat("Card"+ cardID +""+ x);
-		a++;
-		PlayerPrefs.SetFloat("Card"+cardID+""+x,a);
-		atributesOnScreen [x-1].text = a.ToString ();
+		int coins = PlayerPrefs.GetInt ("PlayerCoins");
+		if (200 <= coins) {
+			float a;
+			x++;
+			a = PlayerPrefs.GetFloat ("Card" + cardID + "" + x);
+			a++;
+			PlayerPrefs.SetFloat ("Card" + cardID + "" + x, a);
+			atributesOnScreen [x - 1].text = a.ToString ();
+			PlayerPrefs.SetInt ("PlayerCoins", coins - 200);
+		} else {
+			noEnouthCoins.SetActive (true);
+		}
 	}
 
 	public void BuyCard(){

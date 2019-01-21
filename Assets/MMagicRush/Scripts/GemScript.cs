@@ -85,7 +85,7 @@ public class GemScript : MonoBehaviour {
 		if (GameObject.Find ("Hero") != null) {
 			Hero = GameObject.Find ("Hero");
 
-			if (Vector2.Distance (this.transform.position, Hero.transform.position) < 0.5 && this.enabled == true && Hero.GetComponent<WPSoldierControler>().velocity == 0 && Hero.GetComponent<WPSoldierControler>().alive == true) {
+			if (Vector2.Distance (this.transform.position, Hero.transform.position) < 0.5 && this.enabled == true && Hero.GetComponent<WPSoldierControler>().velocity <= 0.2f && Hero.GetComponent<WPSoldierControler>().alive == true) {
 				gemBarUI.transform.position = this.transform.position;
 				heroProgressObj.SetActive (true);
 				heroProgress += Time.deltaTime * 1.5f;
@@ -151,7 +151,7 @@ public class GemScript : MonoBehaviour {
 		if (GameObject.Find ("HeroEnemy") != null) {
 			Enemy = GameObject.Find ("HeroEnemy");
 
-			if (Vector2.Distance (this.transform.position, Enemy.transform.position) < 0.5 && this.enabled == true && Enemy.GetComponent<WPIASoldierControler>().velocity == 0 && Hero.GetComponent<WPSoldierControler>().alive == true) {
+			if (Vector2.Distance (this.transform.position, Enemy.transform.position) < 0.5 && this.enabled == true && Enemy.GetComponent<WPIASoldierControler>().velocity <= 0.2f && Enemy.GetComponent<WPIASoldierControler>().alive == true) {
 				gemBarUI.transform.position = Camera.main.ViewportToWorldPoint (this.transform.position);
 				enemyProgressObj.SetActive (true);
 				enemyProgress += Time.deltaTime * 0.7f;

@@ -48,6 +48,8 @@ public class SoldierControler : MonoBehaviour {
 
 	public GameObject healtbarSoldier;
 
+	public HealtBarSolid healtbarSoldierSolid;
+
 	public GameObject energybarSoldier;
 
 	public Sprite warrior;
@@ -218,12 +220,12 @@ public class SoldierControler : MonoBehaviour {
 //		}
 			
 		//CONFIGURAÇÃO EM COMUM 
-		UpdateLife ();
-		this.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
+		//UpdateLife ();
+		//this.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
 
 		//UpdateEnergy ();
-		this.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
-		this.energybarSoldier.GetComponent<HealtBar> ().energy = true;
+		//this.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
+		//this.energybarSoldier.GetComponent<HealtBar> ().energy = true;
 
 		if(heroUnity)
 		if (team == 1) {
@@ -242,7 +244,9 @@ public class SoldierControler : MonoBehaviour {
 		this.speed = speed / 10;
 		this.maxSpeed = this.speed;
 		this.level = 1;
-		this.healtbarSoldier.SetActive (true);
+		if (healtbarSoldierSolid != null) {
+			this.healtbarSoldierSolid.transform.gameObject.SetActive (true);
+		}
 		this.state = STATE.DEFAULT;
 
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
@@ -257,6 +261,11 @@ public class SoldierControler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (healtbarSoldierSolid != null) {
+			healtbarSoldierSolid.maxValue = vidaMax;
+			healtbarSoldierSolid.atualValue = vida;
+		}
+
 
 		//
 		//ORDEM DE LAYER
@@ -417,9 +426,9 @@ public class SoldierControler : MonoBehaviour {
 				//transform.position = Vector2.MoveTowards (transform.position, RightExit [2].transform.position, Time.deltaTime * speed);
 			}
 			if (t.position.x > transform.position.x) {
-				transform.eulerAngles = new Vector3 (0, 0, 0);
-			} else {
 				transform.eulerAngles = new Vector3 (0, 180, 0);
+			} else {
+				transform.eulerAngles = new Vector3 (0, 0, 0);
 			}
 			transform.position = Vector2.MoveTowards (transform.position, t.position, Time.deltaTime * speed);
 			if (haveAnimation)

@@ -47,6 +47,10 @@ public class WPSoldierControler : MonoBehaviour {
 
 	public GameObject healtbarSoldier;
 
+	public HealtBarSolid healtbarSoldierSolid;
+
+	public GameObject specialBar;
+
 	//public GameObject energybarSoldier;
 
 	public Sprite warrior;
@@ -198,8 +202,8 @@ public class WPSoldierControler : MonoBehaviour {
 		} 
 
 		//CONFIGURAÇÃO EM COMUM 
-		UpdateLife ();
-		this.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
+//		UpdateLife ();
+//		this.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
 
 //		UpdateEnergy ();
 //		this.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
@@ -222,7 +226,10 @@ public class WPSoldierControler : MonoBehaviour {
 		this.speed = speed / 10;
 		this.maxSpeed = this.speed;
 		this.level = 1;
-		this.healtbarSoldier.SetActive (true);
+		if (healtbarSoldierSolid != null) {
+			this.healtbarSoldierSolid.transform.gameObject.SetActive (true);
+			this.specialBar.SetActive (true);
+		}
 		//		this.state = STATE.DEFAULT;
 		if(heroUnity)
 			StartCoroutine (HealingAndXp ());
@@ -234,6 +241,11 @@ public class WPSoldierControler : MonoBehaviour {
 	}
 
 	void Update () {
+		if (healtbarSoldierSolid != null) {
+			healtbarSoldierSolid.atualValue = vida;
+			healtbarSoldierSolid.maxValue = vidaMax;
+
+		}
 		if(tutorial == false)
 		if (StaticController.instance.GameController.GameOver == true) {
 			this.speed = 0;
@@ -778,7 +790,10 @@ public class WPSoldierControler : MonoBehaviour {
 		this.gameObject.GetComponent<SpriteRenderer> ().enabled = false;
 		this.anim.GetComponent<SpriteRenderer>().enabled = false;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
-		this.healtbarSoldier.SetActive (false);
+		if (healtbarSoldierSolid != null) {
+			this.healtbarSoldierSolid.transform.gameObject.SetActive (false);
+			this.specialBar.SetActive (false);
+		}
 		//this.energybarSoldier.SetActive (false);
 		this.skill1.gameObject.SetActive (false);
 		this.skill2.gameObject.SetActive (false);
@@ -794,7 +809,10 @@ public class WPSoldierControler : MonoBehaviour {
 		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		this.anim.GetComponent<SpriteRenderer>().enabled = true;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
-		this.healtbarSoldier.SetActive (true);
+		if (healtbarSoldierSolid != null) {
+			this.healtbarSoldierSolid.transform.gameObject.SetActive (true);
+			this.specialBar.SetActive (true);
+		}
 //		if (heroUnity)
 //			this.energybarSoldier.SetActive (true);
 		this.skill1.gameObject.SetActive (true);
@@ -1016,8 +1034,9 @@ public class WPSoldierControler : MonoBehaviour {
 
 	IEnumerator DelayedHitEffect(){
 		yield return new WaitForSeconds (0.3f);
-		Instantiate (HitAnimationObject, targetEnemy.transform.position, Quaternion.identity);
-
+		if (targetEnemy != null) {
+			Instantiate (HitAnimationObject, targetEnemy.transform.position, Quaternion.identity);
+		}
 	}
 
 	public GameObject GetNewWaypoint(){

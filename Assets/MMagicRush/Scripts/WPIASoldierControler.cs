@@ -64,6 +64,9 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	public GameObject healtbarSoldier;
 
+	public HealtBarSolid healtbarSoldierSolid;
+
+	public GameObject specialBar;
 	//public GameObject energybarSoldier;
 
 	public Sprite warrior;
@@ -91,6 +94,8 @@ public class WPIASoldierControler : MonoBehaviour {
 	public GameObject HitAnimationObject;
 
 	public Animation Arrival;
+
+	public Collider2D ColliderComponent;
 
 	//FLAGS
 
@@ -213,8 +218,8 @@ public class WPIASoldierControler : MonoBehaviour {
 		}
 
 		//CONFIGURAÇÃO EM COMUM 
-		UpdateLife ();
-		this.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
+		//UpdateLife ();
+		//this.healtbarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
 
 		//UpdateEnergy ();
 		//this.energybarSoldier.GetComponent<HealtBar> ().RefreshMaxLIfe ();
@@ -237,7 +242,10 @@ public class WPIASoldierControler : MonoBehaviour {
 		this.speed = speed / 10;
 		this.maxSpeed = this.speed;
 		this.level = 1;
-		this.healtbarSoldier.SetActive (true);
+		if (healtbarSoldierSolid != null) {
+			this.healtbarSoldierSolid.transform.gameObject.SetActive (true);
+			this.specialBar.SetActive (true);
+		}
 		//		this.state = STATE.DEFAULT;
 		if(heroUnity)
 			StartCoroutine (HealingAndXp ());
@@ -245,12 +253,17 @@ public class WPIASoldierControler : MonoBehaviour {
 		waypoint = GameObject.Find ("Terreno").GetComponent<WPScript> ();
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		audioManager.PlayAudio ("spawn");
+		ColliderComponent = GetComponent<BoxCollider2D> ();
 
 		if(tutorial == false)
 		Twist (0); ///INICIA ESCOLHA DE DECISOES
 	}
 
 	void Update () {
+		if (healtbarSoldierSolid != null) {
+			healtbarSoldierSolid.atualValue = vida;
+			healtbarSoldierSolid.maxValue = vidaMax;
+		}
 
 		if(tutorial == false)
 		if (StaticController.instance.GameController.GameOver == true) {
@@ -1060,10 +1073,14 @@ public class WPIASoldierControler : MonoBehaviour {
 	IEnumerator Respawning(){
 		yield return new WaitForSeconds (0.01f);
 		this.alive = false;
+		this.ColliderComponent.enabled = false;
 		this.GetComponent<SpriteRenderer> ().enabled = false;
 		this.anim.GetComponent<SpriteRenderer> ().enabled = false;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
-		this.healtbarSoldier.SetActive (false);
+		if (healtbarSoldierSolid != null) {
+			this.healtbarSoldierSolid.transform.gameObject.SetActive (false);
+			this.specialBar.SetActive (false);
+		}
 		//this.energybarSoldier.SetActive (false);
 		this.skill1.gameObject.SetActive (false);
 		this.skill2.gameObject.SetActive (false);
@@ -1078,10 +1095,14 @@ public class WPIASoldierControler : MonoBehaviour {
 		this.alive = true;
 		if(heroUnity)
 			transform.position = heroBase.transform.position;
+		this.ColliderComponent.enabled = true;
 		this.anim.GetComponent<SpriteRenderer>().enabled = true;
 		this.GetComponent<SpriteRenderer> ().enabled = true;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
-		this.healtbarSoldier.SetActive (true);
+		if (healtbarSoldierSolid != null) {
+			this.healtbarSoldierSolid.transform.gameObject.SetActive (true);
+			this.specialBar.SetActive (true);
+		}
 //		UpdateLife ();
 //		if (heroUnity)
 //			this.energybarSoldier.SetActive (true);

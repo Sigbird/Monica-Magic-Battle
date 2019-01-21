@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HeroSpecialHability : MonoBehaviour {
 	public GameObject sansãoProjectile;
-	public PassiveUI uiTrigger;
+	public PassiveUI2 uiTrigger;
 	public int team;
 	public int effectDuration;
 	public int effect;
@@ -34,7 +34,7 @@ public class HeroSpecialHability : MonoBehaviour {
 			effect = this.gameObject.GetComponent<WPIASoldierControler> ().heroID;
 		}
 
-		uiTrigger.hero = effect;
+		//uiTrigger.hero = effect;
 
 		switch (effect) {
 		case 0:

@@ -35,13 +35,16 @@ public class GameController : MonoBehaviour {
 	public int roundCounter;
 
 	public GameObject[] endGamePanel;
+	public GameObject OptionsPanel;
 	[HideInInspector]
 	public int[] empty;
 
 	public string tipo{ get; set; }
 	public GameObject Soldado;
 	public int Diamonds;
+	public int DiamondsMax;
 	public int EnemyDiamonds;
+	public int Duration;
 	public Sprite[] cointSprites;
 	[HideInInspector]
 	public int WarriorCost = 10;
@@ -147,10 +150,11 @@ public class GameController : MonoBehaviour {
 //			HeroGameObject.GetComponent<WPSoldierControler> ().enabled = true;
 //
 //		}
-		EnemyDiamonds = 0;
-		Diamonds = 0;
+		EnemyDiamonds = 60;
+		Diamonds = 60;
 		gempertimeprogress = 0;
 		gempertimeMaxValue = 1;
+		DiamondsMax = 100;
 		enemyCharges = PlayerPrefs.GetInt ("enemyCharges");
 //		Debug.Log ("Enemy " + enemyCharges);
 		playerCharges = PlayerPrefs.GetInt ("playerCharges");
@@ -195,7 +199,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	void Start(){
-		
+		gempertimeMaxValue = 3;
 
 	}
 
@@ -218,6 +222,13 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		Duration = (int)Time.time;
+
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			OptionsPanel.SetActive (true);
+			OpenUI ();
+		}
+
 		if (heroSpawnedGems >= 3)
 			heroSpawnedGems = 0;
 
@@ -229,19 +240,32 @@ public class GameController : MonoBehaviour {
 			tutorialending = true;
 		}
 
-		if (gempertime >= 2 && tutorial == false && GameOver == false) {
+		if (gempertime >= 1 && tutorial == false && GameOver == false && Diamonds<= DiamondsMax) {
 			gempertime = 0;
 			Diamonds += gempertimeMaxValue;
 			EnemyDiamonds += gempertimeMaxValue;
-			gempertimeprogress += 1;
+			//gempertimeprogress += 1;
 		} else {
 			gempertime += Time.deltaTime;
 		}
 
-		if (gempertimeprogress >= 20) {
-			gempertimeprogress = 0;
-			gempertimeMaxValue += 1;
+		if (Duration >= 180) {
+			gempertimeMaxValue = 6;
 		}
+
+		if(Diamonds>100){
+			Diamonds = 100;
+		}
+
+		if(EnemyDiamonds>100){
+			Diamonds = 100;
+		}
+
+
+//		if (gempertimeprogress >= 20) {
+//			gempertimeprogress = 0;
+//			gempertimeMaxValue += 1;
+//		}
 
 		if (Input.GetKey (KeyCode.Escape)) {
 			ExitPanel.SetActive (true);

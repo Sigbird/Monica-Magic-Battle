@@ -23,6 +23,7 @@ public class ChargesScript : MonoBehaviour {
 	public GameObject VictoryScreen;
 	public GameObject HitEffect;
 	public HealtBar HealtBarTower;
+	public HealtBarSolid HealtBarSolid;
 	public int vida;
 	public int vidaMax;
 	public GameObject HitAnimationObject;
@@ -49,13 +50,13 @@ public class ChargesScript : MonoBehaviour {
 		}
 
 
-		if (HealtBarTower != null) {
-
-			//this.vida = Mathf.RoundToInt ((progress * 100) / 25);
-			this.HealtBarTower.gameObject.SetActive (true);
-			UpdateLife ();
-			this.HealtBarTower.RefreshMaxLIfe ();
-		}
+//		if (HealtBarTower != null) {
+//
+//			//this.vida = Mathf.RoundToInt ((progress * 100) / 25);
+//			this.HealtBarTower.gameObject.SetActive (true);
+//			UpdateLife ();
+//			this.HealtBarTower.RefreshMaxLIfe ();
+//		}
 
 
 	}
@@ -63,7 +64,10 @@ public class ChargesScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		scoreText.text = this.charges.ToString ();
-
+		if (HealtBarSolid != null) {
+			HealtBarSolid.atualValue = vida;
+			HealtBarSolid.maxValue = vidaMax;
+		}
 //		if (endgame == true) {
 //			NetGameController.Instance.EndGame ();
 //		}

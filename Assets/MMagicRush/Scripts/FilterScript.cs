@@ -116,6 +116,7 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Nevasca";
 				g.GetComponent<CardScript> ().descrition = "Aplica dois de dano em todas unidades ininimgas";
+				g.GetComponent<CardScript> ().descritionLong = "Nevasca \n Congela tropas e herois inimigos causando dano leve a estes temporariamente.";
 				g.GetComponent<CardScript> ().Gemcost = "25";
 				g.GetComponent<CardScript> ().cost = "50";
 				g.GetComponent<CardScript> ().damage = "2";
@@ -150,6 +151,7 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Estalo Magico";
 				g.GetComponent<CardScript> ().descrition = "Aplica um de dano em uma unidade ininimga";
+				g.GetComponent<CardScript> ().descritionLong = "Estalo Magico \n Causa um dano repentino na unidade heroica do adversário.";
 				g.GetComponent<CardScript> ().cost = "25";
 				g.GetComponent<CardScript> ().Gemcost = "10";
 				g.GetComponent<CardScript> ().damage = "1";
@@ -172,6 +174,7 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Canja de Galinha";
 				g.GetComponent<CardScript> ().descrition = "Cura toda sua tropa";
+				g.GetComponent<CardScript> ().descritionLong = "Canja de Galinha \n Canja faz muito bem pra saude, alimenta e recupera as energias do seu heroi e amigos.";
 				g.GetComponent<CardScript> ().cost = "100";
 				g.GetComponent<CardScript> ().Gemcost = "75";
 				g.GetComponent<CardScript> ().damage = "0";
@@ -194,6 +197,7 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Explosão Mágica";
 				g.GetComponent<CardScript> ().descrition = "Aplica Dano a Todas as Unidades";
+				g.GetComponent<CardScript> ().descritionLong = "Explosão Magica \n Grande explosão mágica causando dano a todas as unidades no raio.";
 				g.GetComponent<CardScript> ().cost = "10";
 				g.GetComponent<CardScript> ().Gemcost = "2";
 				g.GetComponent<CardScript> ().damage = "1";
@@ -216,6 +220,7 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Terremoto";
 				g.GetComponent<CardScript> ().descrition = "Abala o chão sob o adversário";
+				g.GetComponent<CardScript> ().descritionLong = "Terremoto \n Tremor repentino que pode causar dano a todas as tropas adversarias alem de dificultar sua movimentação.";
 				g.GetComponent<CardScript> ().cost = "50";
 				g.GetComponent<CardScript> ().Gemcost = "10";
 				g.GetComponent<CardScript> ().damage = "3";
@@ -238,6 +243,7 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Hora da Soneca";
 				g.GetComponent<CardScript> ().descrition = "Poe o heroi adversário para dormir.";
+				g.GetComponent<CardScript> ().descritionLong = "Hora da soneca \n Provoca um sono repentino no heroi adversário botando ele para tirar um cochilinho.";
 				g.GetComponent<CardScript> ().cost = "75";
 				g.GetComponent<CardScript> ().Gemcost = "25";
 				g.GetComponent<CardScript> ().damage = "0";
@@ -260,6 +266,7 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Remédio";
 				g.GetComponent<CardScript> ().descrition = "Cura toda sua tropa em 2 pontos";
+				g.GetComponent<CardScript> ().descritionLong = "Remedio \n Bom e velho remedinho caseiro da vóvó, recupera boa parte da vida do seu heroi.";
 				g.GetComponent<CardScript> ().cost = "5";
 				g.GetComponent<CardScript> ().Gemcost = "15";
 				g.GetComponent<CardScript> ().damage = "0";
@@ -282,7 +289,9 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Escudo";
 				g.GetComponent<CardScript> ().descrition = "Parotege suas Tropas em 3 pontos";
+				g.GetComponent<CardScript> ().descritionLong = "Escudo \n Bloqueia temporariamente parte do dano recebido por seu personagem.";
 				g.GetComponent<CardScript> ().cost = "25";
+				g.GetComponent<CardScript> ().Gemcost = "15";
 				g.GetComponent<CardScript> ().damage = "50";
 				g.GetComponent<CardScript> ().efect.sprite = Efects [0];
 				g.GetComponent<CardScript> ().image = Images [cardID];
@@ -303,7 +312,9 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Grito de Guerra";
 				g.GetComponent<CardScript> ().descrition = "Fortalece suas tropas";
+				g.GetComponent<CardScript> ().descritionLong = "Grito de Guerra \n Chama toda a molecada e vamos com tudo pra cima deles! Aumenta motivação de suas tropas..";
 				g.GetComponent<CardScript> ().cost = "10";
+				g.GetComponent<CardScript> ().Gemcost = "15";
 				g.GetComponent<CardScript> ().damage = "0";
 				g.GetComponent<CardScript> ().efect.sprite = Efects [0];
 				g.GetComponent<CardScript> ().image = Images [cardID];
@@ -324,7 +335,9 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().personagem = "Todos";
 				g.GetComponent<CardScript> ().cardname = "Sem Munição";
 				g.GetComponent<CardScript> ().descrition = "Paralisa torres inimigas";
+				g.GetComponent<CardScript> ().descritionLong = "Sem Munição \n Sabota e deixa as torres do adversário sem munição.";
 				g.GetComponent<CardScript> ().cost = "10";
+				g.GetComponent<CardScript> ().Gemcost = "15";
 				g.GetComponent<CardScript> ().damage = "0";
 				g.GetComponent<CardScript> ().efect.sprite = Efects [0];
 				g.GetComponent<CardScript> ().image = Images [cardID];
@@ -349,6 +362,7 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().cardname = "Bidu";
 				g.GetComponent<CardScript> ().descrition = "Chama a unidade Bidu para ajudar";
 				g.GetComponent<CardScript> ().cost = "1";
+				g.GetComponent<CardScript> ().Gemcost = "5";
 				g.GetComponent<CardScript> ().damage = "1";
 				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
 				g.GetComponent<CardScript> ().image = Images [cardID];
@@ -371,6 +385,7 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().cardname = "Astronauta";
 				g.GetComponent<CardScript> ().descrition = "Chama a unidade Astronauta para ajudar";
 				g.GetComponent<CardScript> ().cost = "3";
+				g.GetComponent<CardScript> ().Gemcost = "1";
 				g.GetComponent<CardScript> ().damage = "1";
 				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
 				g.GetComponent<CardScript> ().image = Images [cardID];
@@ -392,6 +407,7 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().cardname = "Jotalhão";
 				g.GetComponent<CardScript> ().descrition = "Chama a unidade jotalhão para ajudar";
 				g.GetComponent<CardScript> ().cost = "50";
+				g.GetComponent<CardScript> ().Gemcost = "75";
 				g.GetComponent<CardScript> ().damage = "1";
 				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
 				g.GetComponent<CardScript> ().image = Images [cardID];
@@ -413,6 +429,7 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().cardname = "Piteco";
 				g.GetComponent<CardScript> ().descrition = "Chama a unidade Piteco para ajudar";
 				g.GetComponent<CardScript> ().cost = "15";
+				g.GetComponent<CardScript> ().Gemcost = "75";
 				g.GetComponent<CardScript> ().damage = "1";
 				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
 				g.GetComponent<CardScript> ().image = Images [cardID];
@@ -434,6 +451,7 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().cardname = "Penadinho";
 				g.GetComponent<CardScript> ().descrition = "Chama a unidade Penadinho para ajudar";
 				g.GetComponent<CardScript> ().cost = "50";
+				g.GetComponent<CardScript> ().Gemcost = "125";
 				g.GetComponent<CardScript> ().damage = "1";
 				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
 				g.GetComponent<CardScript> ().image = Images [cardID];
@@ -455,6 +473,7 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().cardname = "Sansão";
 				g.GetComponent<CardScript> ().descrition = "Chama a unidade Sansão para ajudar";
 				g.GetComponent<CardScript> ().cost = "40";
+				g.GetComponent<CardScript> ().Gemcost = "50";
 				g.GetComponent<CardScript> ().damage = "3";
 				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
 				g.GetComponent<CardScript> ().image = Images [cardID];
@@ -476,6 +495,7 @@ public class FilterScript : MonoBehaviour {
 				g.GetComponent<CardScript> ().cardname = "Mingau";
 				g.GetComponent<CardScript> ().descrition = "Chama a unidade Mingau para ajudar";
 				g.GetComponent<CardScript> ().cost = "110";
+				g.GetComponent<CardScript> ().Gemcost = "150";
 				g.GetComponent<CardScript> ().damage = "2";
 				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
 				g.GetComponent<CardScript> ().image = Images [cardID];

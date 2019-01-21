@@ -32,8 +32,6 @@ public class DeckPileScript : MonoBehaviour {
 				Hand += 10;
 			} else {
 				StartCoroutine (TriggerCards());
-//				Instantiate (newCard, this.transform.position, Quaternion.identity);
-//				Hand += 10;
 			}
 		}
 	}
