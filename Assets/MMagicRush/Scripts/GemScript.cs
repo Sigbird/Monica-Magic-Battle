@@ -152,10 +152,11 @@ public class GemScript : MonoBehaviour {
 			Enemy = GameObject.Find ("HeroEnemy");
 
 			if (Vector2.Distance (this.transform.position, Enemy.transform.position) < 0.5 && this.enabled == true && Enemy.GetComponent<WPIASoldierControler>().velocity <= 0.2f && Enemy.GetComponent<WPIASoldierControler>().alive == true) {
-				gemBarUI.transform.position = Camera.main.ViewportToWorldPoint (this.transform.position);
+				Debug.Log ("EnemyCAPTURING");
+				gemBarUI.transform.position = this.transform.position;
 				enemyProgressObj.SetActive (true);
-				enemyProgress += Time.deltaTime * 0.7f;
-				enemyProgressBar.GetComponent<Animator> ().SetFloat ("Blend", heroProgress);
+				enemyProgress += Time.deltaTime * 1.5f;
+				enemyProgressBar.GetComponent<Animator> ().SetFloat ("Blend", enemyProgress);
 				if (enemyProgress >= 1) {
 						
 					if(ActualGem.transform.name == "GO_greenGem")
@@ -203,8 +204,8 @@ public class GemScript : MonoBehaviour {
 				}
 
 			} else {
-				enemyProgressObj.SetActive (false);
-				enemyProgress = 0;
+				//enemyProgressObj.SetActive (false);
+				//enemyProgress = 0;
 			}
 		}
 

@@ -13,6 +13,7 @@ public class SplashAnim : MonoBehaviour {
 		PlayerPrefs.SetFloat ("GameVolumeEffects", 1);
 
 		PlayerPrefs.SetInt ("Lesson", 1);
+		PlayerPrefs.SetString ("Tutorial", "False");
 	}
 	
 	// Update is called once per frame

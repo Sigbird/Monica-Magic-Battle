@@ -291,7 +291,7 @@ public class CardSlotScript : MonoBehaviour {
 //					GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 //					Movable.GetComponent<sparkScript> ().DestroyItself ();
 //				} else 
-				if(Movable.transform.position.y> -2f && cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+				if(Movable.transform.position.y> -2f && Movable.transform.position.y < 0.5f && cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 //					if (PlayerPrefs.GetString ("Tutorial") == "False") {
 						ActivateCardEffect ();
 //					} else {
@@ -311,10 +311,13 @@ public class CardSlotScript : MonoBehaviour {
 				projectileCreated = false;
 			}
 		} else {
+			
 			//if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-				SendCard ();
+
+			SendCard ();
 			//}
 			projectileCreated = false;
+
 		}
 		released = true;
 		beeingDraged = false;
@@ -885,7 +888,7 @@ public class CardSlotScript : MonoBehaviour {
 		switch (CardPosition) {
 		case 0:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.2f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.2f, Camera.main.transform.position.y -4.4f), Time.deltaTime * 3);
 				//Uibg.sprite = cardFront [2];
 				UIilustration.sprite = cardsImages[cardID];
 				//UIilustration.color = defaultUIilustration;
@@ -906,7 +909,7 @@ public class CardSlotScript : MonoBehaviour {
 			break;
 		case 10:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x - 0.05f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x - 0.05f, Camera.main.transform.position.y -4.4f), Time.deltaTime * 3);
 				//Uibg.sprite = cardFront [2];
 				UIilustration.sprite = cardsImages[cardID];
 				//UIilustration.color = defaultUIilustration;
@@ -927,7 +930,7 @@ public class CardSlotScript : MonoBehaviour {
 			break;
 		case 20:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 1.1f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 1.1f, Camera.main.transform.position.y -4.4f), Time.deltaTime * 3);
 				//Uibg.sprite = cardFront [2];
 				UIilustration.sprite = cardsImages[cardID];
 				//UIilustration.color = defaultUIilustration;
@@ -948,7 +951,7 @@ public class CardSlotScript : MonoBehaviour {
 			break;
 		case 30:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 2.25f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 2.25f, Camera.main.transform.position.y -4.4f), Time.deltaTime * 3);
 				//Uibg.sprite = cardFront [2];
 				UIilustration.sprite = cardsImages[cardID];
 				//UIilustration.color = defaultUIilustration;

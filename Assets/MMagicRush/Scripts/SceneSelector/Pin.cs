@@ -45,6 +45,7 @@ public class Pin : MonoBehaviour
 
 	public PinStatus ActualStatus;
 	public GameObject[] StatusImages;
+	private GameObject character;
 	
 
 	/// <summary>
@@ -52,6 +53,7 @@ public class Pin : MonoBehaviour
 	/// </summary>
 	private void Start()
 	{
+		character = GameObject.Find ("Character");
 		// Load the directions into a dictionary for easy access
 		_pinDirections = new Dictionary<Direction, Pin>
 		{
@@ -72,7 +74,7 @@ public class Pin : MonoBehaviour
 	
 		if (Input.GetMouseButtonUp (0)) {
 			if (Vector2.Distance (Camera.main.ScreenToWorldPoint (Input.mousePosition), this.transform.position) <= 1){
-				if (Vector2.Distance (GameObject.Find ("Character").transform.position, this.transform.position) <= 1) {
+				if (Vector2.Distance (character.transform.position, this.transform.position) <= 1) {
 					if (this.ActualStatus != PinStatus.Locked) {
 						PlayerPrefs.SetString ("TerrainType", SceneToLoad);
 						PlayerPrefs.SetInt ("Enemy", Enemy);
@@ -81,7 +83,7 @@ public class Pin : MonoBehaviour
 						PlayerPrefs.SetInt ("round", 1);
 						PlayerPrefs.SetInt ("playerCharges", 0);
 						PlayerPrefs.SetInt ("enemyCharges", 0);
-						SceneManager.LoadScene ("JogoOffline");
+						SceneManager.LoadScene ("GamePlayReview");
 
 //						Debug.Log ("Chamando cena: " + SceneToLoad);
 					}

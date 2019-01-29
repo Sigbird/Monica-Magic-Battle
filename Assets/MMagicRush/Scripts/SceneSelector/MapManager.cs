@@ -19,6 +19,7 @@ public class MapManager : MonoBehaviour
 	public GameObject[] SecondPins;
 	public GameObject ScrollController;
 	public int atualPin;
+	public int cleared;
 
 
 
@@ -47,6 +48,7 @@ public class MapManager : MonoBehaviour
 	/// </summary>
 	private void Update()
 	{
+		cleared = PlayerPrefs.GetInt ("ClearedLevels");
 		// Only check input when character is stopped
 		if (Character.IsMoving) return;
 		
@@ -111,7 +113,7 @@ public class MapManager : MonoBehaviour
 //			if(t <= 0)
 //				t = 0.01f;
 //		}
-			
+
 	}
 
 	
@@ -220,20 +222,20 @@ public class MapManager : MonoBehaviour
 			}
 		}
 
-			if (actualMap == 1 && cleared > 3){
-				Character.gameObject.SetActive (true);
-			} else {
-				Character.gameObject.SetActive (false);
-			}
+		if (actualMap == 1 && cleared > 3){
+			Character.gameObject.SetActive (true);
+		} else if(actualMap == 1) {
+			Character.gameObject.SetActive (false);
+		}
 
-			if (actualMap == 2 && cleared > 7) {
-				Character.gameObject.SetActive (true);
-			} else {
-				Character.gameObject.SetActive (false);
-			}
+		if (actualMap == 2 && cleared > 7) {
+			Character.gameObject.SetActive (true);
+		} else if(actualMap == 2) {
+			Character.gameObject.SetActive (false);
+		}
 
-			if (actualMap == 0)
-				Character.gameObject.SetActive (true);
+		if (actualMap == 0)
+			Character.gameObject.SetActive (true);	
 		
 
 	}

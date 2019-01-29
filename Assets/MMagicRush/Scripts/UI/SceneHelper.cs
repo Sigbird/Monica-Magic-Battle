@@ -120,10 +120,15 @@ public class SceneHelper : MonoBehaviour {
 //			}
 //			temp = empty;
 //		}
+		 
+		//PlayerPrefs.DeleteAll ();
+
 		Debug.Log (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length);
 
 		if (PlayerPrefs.GetString ("Tutorial") == "False" || PlayerPrefs.HasKey ("Tutorial") == false) {
-			PurchaseCardBidu ();
+			StartCoroutine (StartingCards ());
+			//			PurchaseCardBidu ();
+//			PurchaseCardCanja ();
 		}
 
 		PlayerPrefs.SetString ("Tutorial", "True");
@@ -187,7 +192,7 @@ public class SceneHelper : MonoBehaviour {
 	public void CoinPurchase() {
 		int c = PlayerPrefs.GetInt ("PlayerCoins");
 		int pc = PlayerPrefs.GetInt ("PlayerCoinsPremium");
-		if(pc > (coinsPurchasing/2)){
+		if(pc >= (coinsPurchasing/2)){
 		PlayerPrefs.SetInt ("PlayerCoinsPremium", (pc - (coinsPurchasing/2)));
 		PlayerPrefs.SetInt ("PlayerCoins", c + coinsPurchasing);
 		}
@@ -324,6 +329,12 @@ public class SceneHelper : MonoBehaviour {
 		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
 	}
 
+	IEnumerator StartingCards(){
+		PurchaseCardBidu ();
+		yield return new WaitForSeconds (0.1f);
+		PurchaseCardCanja ();
+	}
+
 	public void PurchaseCardBidu(){
 
 		int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
@@ -343,11 +354,83 @@ public class SceneHelper : MonoBehaviour {
 			finalArray [x] = i;
 			x++;
 		}
+			
+		//ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
+		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
 
+
+
+		//lastCard.GetComponent<CardScript> ().SetActiveButton ();
+		int[] original2 = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+
+		List<int> iList2 = new List<int>();
+
+		for(int i = 0; i < original2.Length; i ++ ) {
+			iList2.Add (original2 [i]);
+		}
+
+		iList2.Add (11);
+
+		int[] finalArray2 = new int[iList2.Count];
+
+		int y = 0;
+		foreach (int i in iList) {
+			finalArray2 [y] = i;
+			y++;
+		}
+
+
+		//		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray2);
+
+	}
+
+	public void PurchaseCardCanja(){
+
+		int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+
+		List<int> iList = new List<int> ();
+
+		for (int i = 0; i < original.Length; i++) {
+			iList.Add (original [i]);
+		}
+
+		iList.Add (3);
+
+		int[] finalArray = new int[iList.Count];
+
+		int x = 0;
+		foreach (int i in iList) {
+			finalArray [x] = i;
+			x++;
+		}
 
 		//ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
 		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
 
+
+		//lastCard.GetComponent<CardScript> ().SetActiveButton ();
+		int[] original2 = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+
+		List<int> iList2 = new List<int>();
+
+		for(int i = 0; i < original2.Length; i ++ ) {
+			iList2.Add (original2 [i]);
+		}
+
+		iList2.Add (3);
+
+		int[] finalArray2 = new int[iList2.Count];
+
+		int y = 0;
+		foreach (int i in iList) {
+			finalArray2 [y] = i;
+			y++;
+		}
+
+
+		//		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray2);
 	}
 
 	public void SetCardValues(){

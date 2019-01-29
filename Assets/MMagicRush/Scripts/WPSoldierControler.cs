@@ -79,6 +79,8 @@ public class WPSoldierControler : MonoBehaviour {
 
 	public Animation Arrival;
 
+	public GameObject SplashEffect;
+
 	//FLAGS
 
 	public bool alive;
@@ -191,6 +193,10 @@ public class WPSoldierControler : MonoBehaviour {
 
 	public WPIASoldierControler enemycontroller;
 
+	public GameObject RiverPassLeft;
+	public GameObject RiverPassRight;
+	public GameObject NearestPass;
+
 
 	// Use this for initialization
 	void Start () {
@@ -223,7 +229,8 @@ public class WPSoldierControler : MonoBehaviour {
 		StartCoroutine (Respawning ());
 
 		this.effects = "default";
-		this.speed = speed / 10;
+		//this.speed = speed / 10;
+		this.damageSpeed = damageSpeed + 1.5f;
 		this.maxSpeed = this.speed;
 		this.level = 1;
 		if (healtbarSoldierSolid != null) {
@@ -241,6 +248,11 @@ public class WPSoldierControler : MonoBehaviour {
 	}
 
 	void Update () {
+
+		if (GameObject.Find ("GameController").GetComponent<GameController> ().GameOver) {
+			this.alive = false;
+		}
+
 		if (healtbarSoldierSolid != null) {
 			healtbarSoldierSolid.atualValue = vida;
 			healtbarSoldierSolid.maxValue = vidaMax;
@@ -443,7 +455,32 @@ public class WPSoldierControler : MonoBehaviour {
 			}
 		}
 
+		if(Vector3.Distance (transform.position, RiverPassLeft.transform.position)>Vector3.Distance (transform.position, RiverPassRight.transform.position)){
+			NearestPass = RiverPassRight;
+		}else{
+			NearestPass = RiverPassLeft;
+		}
 
+//		if (WaypointMark != null) {
+//			if (transform.position.y < 0.5f && WaypointMark.transform.position.y > 0.5f) {
+//				
+//				if ( WaypointMark != null) {
+//					if (Vector3.Distance (transform.position, NearestPass.transform.position) > 0.5f) {
+//						Vector3 direction = transform.position - NearestPass.transform.position;
+//						GetComponent<Rigidbody2D> ().AddForceAtPosition (direction.normalized, transform.position);
+//					}
+//				}
+//			}
+//
+//			if (transform.position.y > 0.5f && WaypointMark.transform.position.y < 0.5f) {
+//				if (seeking == false && WaypointMark != null) {
+//					if (Vector3.Distance (transform.position, NearestPass.transform.position) > 0.5f) {
+//						GetComponent<Rigidbody2D> ().MovePosition (NearestPass.transform.position);
+//					}
+//				}
+//			}
+//
+//		}
 		//
 		//ESTADOS DO PERSONAGEM
 		//
@@ -555,87 +592,72 @@ public class WPSoldierControler : MonoBehaviour {
 
 		if(tutorial==false)
 		GameObject.Find ("HeroPortrait").GetComponent<Image> ().sprite = heroPortraits [heroID];
-		
-//		Debug.Log ("id: " + id);
+
 		switch (heroID) {
 		case(0): 
-			this.vidaMax = 6;
-			this.vida = 6;
+			this.vidaMax = 200; //ALto
+			this.vida = 200;
 			this.reach = 2;//3
-			this.damage = 1;
-			this.damageSpeed = 4;
+			this.damage = 22; //Medio
+			this.damageSpeed = 0.5f;
 			this.range = 1.5f;
-			this.speed = 10;
+			this.speed = 1.3f; //Medio
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
-			//	this.anim.SetInteger ("Char", 0);
-			//this.anim.GetComponent<SpriteRenderer> ().enabled = false;
-			//this.gameObject.GetComponent<Animator> ().enabled = false;
+			this.anim.SetInteger ("Char", 0);
 			this.anim = transform.Find ("MonicaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
 			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-//			Debug.Log ("Monica");
+			if (team == 1)
+				GameObject.Find ("HeroPortrait").GetComponent<Image> ().sprite = heroPortraits [0];
+			Debug.Log ("Monica");
 			break;
 		case(1):
-			this.vidaMax = 4;
-			this.vida = 4;
-			this.reach = 3;//3
-			this.damage = 1;
-			this.damageSpeed = 4;
+			this.vidaMax = 100; //Medio
+			this.vida = 100;
+			this.reach = 2;//3
+			this.damage = 22; //Medio
+			this.damageSpeed = 0.33f;
 			this.range = 1.5f;
-			this.speed = 12;
+			this.speed = 1.7f; //Alto
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
-			//this.anim.SetInteger ("Char", 1);
+			this.anim.SetInteger ("Char", 1);
 			this.anim = transform.Find ("CebolinhaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
 			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-//			Debug.Log ("Cebolinha");
+			if (team == 1)
+				GameObject.Find ("HeroPortrait").GetComponent<Image> ().sprite = heroPortraits [1];
+			Debug.Log ("Cebolinha");
 			break;
 		case(2):
-			this.vidaMax = 7;
-			this.vida = 7;
+			this.vidaMax = 300; //Altissimo
+			this.vida = 300;
 			this.reach = 0.5f;
-			this.damage = 1;
-			this.damageSpeed = 4;
+			this.damage = 22;  //Medio
+			this.damageSpeed = 1;
 			this.range = 1.5f;
-			this.speed = 10;
+			this.speed =0.8f; //baixo
 			this.energyMax = 4;
 			this.energy = 4;
-			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim = transform.Find ("MagaliAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
 			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-//			Debug.Log ("Magali");
+			Debug.Log ("Magali");
 			break;
 		case(3):
-			this.vidaMax = 4;
-			this.vida = 4;
+			this.vidaMax = 100; //Medio
+			this.vida = 100;
 			this.reach = 0.5f;
-			this.damage = 2;
-			this.damageSpeed = 4;
+			this.damage = 50;  //Alto
+			this.damageSpeed = 0.5f;
 			this.range = 1.5f;
-			this.speed = 10;
+			this.speed = 1.3f; //Medio
 			this.energyMax = 4;
 			this.energy = 4;
-			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim = transform.Find ("CascãoAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
 			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-//			Debug.Log ("Cascao");
-			break;
-		case(4):
-			this.vidaMax = 4;
-			this.vida = 4;
-			this.reach = 0.5f;
-			this.damage = 1;
-			this.damageSpeed = 2;
-			this.range = 1.5f;
-			this.speed = 10;
-			this.energyMax = 4;
-			this.energy = 4;
-			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
-			this.anim = transform.Find ("ChicoAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
-			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-//			Debug.Log ("Chico");
 			break;
 		default:
 			this.vidaMax = 6;
@@ -647,13 +669,110 @@ public class WPSoldierControler : MonoBehaviour {
 			this.speed = 10;
 			this.energyMax = 4;
 			this.energy = 4;
-			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
-			this.anim = transform.Find ("MonicaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
-			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-//			Debug.Log ("Monica");
+			this.GetComponent<SpriteRenderer> ().sprite = warrior;
+			Debug.Log ("Monica");
 			break;
 
 		}
+
+//		Debug.Log ("id: " + id);
+//		switch (heroID) {
+//		case(0): 
+//			this.vidaMax = 6;
+//			this.vida = 6;
+//			this.reach = 2;//3
+//			this.damage = 1;
+//			this.damageSpeed = 4;
+//			this.range = 1.5f;
+//			this.speed = 10;
+//			this.energyMax = 3;
+//			this.energy = 3;
+//			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
+//			//	this.anim.SetInteger ("Char", 0);
+//			//this.anim.GetComponent<SpriteRenderer> ().enabled = false;
+//			//this.gameObject.GetComponent<Animator> ().enabled = false;
+//			this.anim = transform.Find ("MonicaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+//			this.anim.GetComponent<SpriteRenderer>().enabled = true;
+////			Debug.Log ("Monica");
+//			break;
+//		case(1):
+//			this.vidaMax = 4;
+//			this.vida = 4;
+//			this.reach = 3;//3
+//			this.damage = 1;
+//			this.damageSpeed = 4;
+//			this.range = 1.5f;
+//			this.speed = 12;
+//			this.energyMax = 3;
+//			this.energy = 3;
+//			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
+//			//this.anim.SetInteger ("Char", 1);
+//			this.anim = transform.Find ("CebolinhaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+//			this.anim.GetComponent<SpriteRenderer>().enabled = true;
+////			Debug.Log ("Cebolinha");
+//			break;
+//		case(2):
+//			this.vidaMax = 7;
+//			this.vida = 7;
+//			this.reach = 0.5f;
+//			this.damage = 1;
+//			this.damageSpeed = 4;
+//			this.range = 1.5f;
+//			this.speed = 10;
+//			this.energyMax = 4;
+//			this.energy = 4;
+//			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
+//			this.anim = transform.Find ("MagaliAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+//			this.anim.GetComponent<SpriteRenderer>().enabled = true;
+////			Debug.Log ("Magali");
+//			break;
+//		case(3):
+//			this.vidaMax = 4;
+//			this.vida = 4;
+//			this.reach = 0.5f;
+//			this.damage = 2;
+//			this.damageSpeed = 4;
+//			this.range = 1.5f;
+//			this.speed = 10;
+//			this.energyMax = 4;
+//			this.energy = 4;
+//			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
+//			this.anim = transform.Find ("CascãoAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+//			this.anim.GetComponent<SpriteRenderer>().enabled = true;
+////			Debug.Log ("Cascao");
+//			break;
+//		case(4):
+//			this.vidaMax = 4;
+//			this.vida = 4;
+//			this.reach = 0.5f;
+//			this.damage = 1;
+//			this.damageSpeed = 2;
+//			this.range = 1.5f;
+//			this.speed = 10;
+//			this.energyMax = 4;
+//			this.energy = 4;
+//			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
+//			this.anim = transform.Find ("ChicoAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+//			this.anim.GetComponent<SpriteRenderer>().enabled = true;
+////			Debug.Log ("Chico");
+//			break;
+//		default:
+//			this.vidaMax = 6;
+//			this.vida = 6;
+//			this.reach = 0.5f;
+//			this.damage = 1;
+//			this.damageSpeed = 2;
+//			this.range = 1.5f;
+//			this.speed = 10;
+//			this.energyMax = 4;
+//			this.energy = 4;
+//			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
+//			this.anim = transform.Find ("MonicaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
+//			this.anim.GetComponent<SpriteRenderer>().enabled = true;
+////			Debug.Log ("Monica");
+//			break;
+//
+//		}
 
 		// CONFIGURAÇÃO DE EQUIPE
 		if (this.team == 1) {
@@ -975,7 +1094,7 @@ public class WPSoldierControler : MonoBehaviour {
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
-				targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (1);
+				targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (damage);
 				if (this.range > 1)
 					TrowArrow ();
 //				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
@@ -988,7 +1107,7 @@ public class WPSoldierControler : MonoBehaviour {
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.5f;
-				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (1);
+				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (damage);
 				if (this.range > 1)
 					TrowArrow ();
 				//				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
@@ -1016,6 +1135,21 @@ public class WPSoldierControler : MonoBehaviour {
 		if (this.team == 1 && heroUnity == true) {
 			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
 
+		}
+
+	}
+
+	public void ReceiveDamage(int x, bool explosion){
+
+		this.vida -= x;
+		//UpdateLife ();
+		if (explosion) {
+			Instantiate (SplashEffect, this.transform.position, Quaternion.identity);
+		} else {
+			Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+		}
+		if (this.team == 1 && heroUnity == true) {
+			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
 		}
 
 	}

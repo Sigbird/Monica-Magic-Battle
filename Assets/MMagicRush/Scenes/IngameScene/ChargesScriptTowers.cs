@@ -30,7 +30,8 @@ public class ChargesScriptTowers : MonoBehaviour {
 	public int vidaMax;
 	public GameObject HitAnimationObject;
 	public AudioManager manager;
-
+	public int playerteam;
+	public GameObject SplashEffect;
 
 
 	// Use this for initialization
@@ -38,11 +39,11 @@ public class ChargesScriptTowers : MonoBehaviour {
 		progress = 0;
 		manager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		if (Tower) {
-			vidaMax = 2;
-			vida = 2;
+			vidaMax = 500;
+			vida = 500;
 		}else{
-			vidaMax = 4;
-			vida = 4;
+			vidaMax = 12;
+			vida = 12;
 		}
 
 
@@ -159,9 +160,43 @@ public class ChargesScriptTowers : MonoBehaviour {
 
 		if (this.vida <= 0) {
 			manager.PlayAudio ("cabrum");
+			if (this.playerteam == 1) {
+				gc.Player1Score += 1;
+			} else {
+				gc.Player2Score += 1;
+			}
 			Destroy (this.gameObject);
 
+
+			//StartCoroutine (DelayedDestoy ());
 		}
+	}
+
+	public void ReceiveDamage(int x, bool explosion){
+
+		this.vida -= x;
+		//UpdateLife ();
+		if (explosion) {
+			Instantiate (SplashEffect, this.transform.position, Quaternion.identity);
+		} else {
+			Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+		}
+
+		if (this.vida <= 0) {
+			manager.PlayAudio ("cabrum");
+			if (this.playerteam == 1) {
+				gc.Player1Score += 1;
+			} else {
+				gc.Player2Score += 1;
+			}
+			Destroy (this.gameObject);
+		}
+
+	}
+
+	IEnumerator DelayedDestoy(){
+		yield return new WaitForSeconds (0.1f);
+		Destroy (this.gameObject);
 	}
 
 	public void UpdateLife(){

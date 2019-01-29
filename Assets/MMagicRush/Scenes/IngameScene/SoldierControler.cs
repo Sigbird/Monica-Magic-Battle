@@ -76,7 +76,11 @@ public class SoldierControler : MonoBehaviour {
 	public GameObject HitAnimationObject;
 
 	public GameObject troop;
+
+	public GameObject SplashEffect;
 	//FLAGS
+
+	public bool alive;
 
 	private bool gameEnded = false;
 
@@ -125,7 +129,7 @@ public class SoldierControler : MonoBehaviour {
 
 	public float danoCD = 0;
 
-	[HideInInspector]
+	//[HideInInspector]
 	public float speed;
 
 	[HideInInspector]
@@ -204,13 +208,42 @@ public class SoldierControler : MonoBehaviour {
 
 		 LeftExit = new GameObject[3];
 		 RightExit = new GameObject[3];
+		if (troopId != 2) {
+			if (team == 1) {
+				LeftExit [0] = GameObject.Find ("Left1").gameObject;
+				LeftExit [1] = GameObject.Find ("Left2").gameObject;
+				LeftExit [2] = GameObject.Find ("Left3").gameObject;
+				RightExit [0] = GameObject.Find ("Right1").gameObject;
+				RightExit [1] = GameObject.Find ("Right2").gameObject;
+				RightExit [2] = GameObject.Find ("Right3").gameObject;
+			} else {
+				LeftExit [0] = GameObject.Find ("Left1Enemy").gameObject;
+				LeftExit [1] = GameObject.Find ("Left2Enemy").gameObject;
+				LeftExit [2] = GameObject.Find ("Left3Enemy").gameObject;
+				RightExit [0] = GameObject.Find ("Right1Enemy").gameObject;
+				RightExit [1] = GameObject.Find ("Right2Enemy").gameObject;
+				RightExit [2] = GameObject.Find ("Right3Enemy").gameObject;	
+			}
 
-		LeftExit [0] = GameObject.Find ("Left1").gameObject;
-		LeftExit [1] = GameObject.Find ("Left2").gameObject;
-		LeftExit [2] = GameObject.Find ("Left3").gameObject;
-		RightExit [0] = GameObject.Find ("Right1").gameObject;
-		RightExit [1] = GameObject.Find ("Right2").gameObject;
-		RightExit [2] = GameObject.Find ("Right3").gameObject;
+		} else {
+			if (team == 1) {
+				LeftExit [0] = GameObject.Find ("Left2").gameObject;
+				LeftExit [1] = GameObject.Find ("Left2").gameObject;
+				LeftExit [2] = GameObject.Find ("Left3").gameObject;
+				RightExit [0] = GameObject.Find ("Right2").gameObject;
+				RightExit [1] = GameObject.Find ("Right2").gameObject;
+				RightExit [2] = GameObject.Find ("Right3").gameObject;
+			} else {
+				LeftExit [0] = GameObject.Find ("Left2Enemy").gameObject;
+				LeftExit [1] = GameObject.Find ("Left2Enemy").gameObject;
+				LeftExit [2] = GameObject.Find ("Left3Enemy").gameObject;
+				RightExit [0] = GameObject.Find ("Right2Enemy").gameObject;
+				RightExit [1] = GameObject.Find ("Right2Enemy").gameObject;
+				RightExit [2] = GameObject.Find ("Right3Enemy").gameObject;	
+
+			}
+			GetComponent<BoxCollider2D> ().isTrigger = true;
+		}
 		ChooseLane ();
 
 //		if (heroUnity) {// CONFIGURAÇÃO DE HEROIS
@@ -241,8 +274,11 @@ public class SoldierControler : MonoBehaviour {
 //		StartCoroutine (Respawning ());
 
 		this.effects = "default";
-		this.speed = speed / 10;
+		this.speed = speed - 0.9f;
+		this.damageSpeed = damageSpeed + 1.5f;
 		this.maxSpeed = this.speed;
+		this.range = range - 0.1f;
+		this.reach = 1.5f;
 		this.level = 1;
 		if (healtbarSoldierSolid != null) {
 			this.healtbarSoldierSolid.transform.gameObject.SetActive (true);
@@ -261,6 +297,11 @@ public class SoldierControler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (GameObject.Find ("GameController").GetComponent<GameController> ().GameOver) {
+			Destroy (this.gameObject);
+		}
+
 		if (healtbarSoldierSolid != null) {
 			healtbarSoldierSolid.maxValue = vidaMax;
 			healtbarSoldierSolid.atualValue = vida;
@@ -393,7 +434,7 @@ public class SoldierControler : MonoBehaviour {
 			//
 			//ESTADOS DO PERSONAGEM
 			// 
-		if (this.tag == "enemysoldier1" && LeftExit.Length > 0 && RightExit.Length > 0  && targetEnemy == null) {
+		if ( LeftExit.Length > 0 && RightExit.Length > 0  && targetEnemy == null) {
 
 			if (Vector2.Distance (this.transform.position, LeftExit [0].transform.position) <= 0.2f || Vector2.Distance (this.transform.position, RightExit [0].transform.position) <= 0.2f) {
 				step = 2;
@@ -435,6 +476,8 @@ public class SoldierControler : MonoBehaviour {
 				this.transform.Find("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
 		}		
 
+
+
 		// PROCURANDO ALVO NOVO
 
 		if (seeking && cdSeek >= 1) {
@@ -453,36 +496,46 @@ public class SoldierControler : MonoBehaviour {
 
 		if (seeking == false && this.targetEnemy != null) { 
 
-			//DESLOCAMENTO ATE INIMIGO
-			if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
-				//anim.SetTrigger ("Walk");
-				//SpendingEnergy ();
-				//transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
+
+			if (Vector3.Distance (transform.position, targetEnemy.transform.position) > reach) {
 				seeking = true;
-			} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
-//				if (targetEnemy.transform.position.x < transform.position.x) {
-//					GetComponent<SpriteRenderer> ().flipX = true;
-//				} else if (targetEnemy.transform.position.x > transform.position.x) {
-//					GetComponent<SpriteRenderer> ().flipX = false;
-//				}
+				targetEnemy = null;
+			} else {
+				//DESLOCAMENTO ATE INIMIGO
+				if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
+					this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
 
-				if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
-					danoCD = 0;
-					if(haveAnimation)
-						this.transform.Find("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Attack");
-					//anim.SetTrigger ("Attack");
-
-					StartCoroutine (DealDamage ());
+					//SpendingEnergy ();
+					Debug.Log ("Perseguindo");
+					transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
+					//seeking = true;
+				} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
+				if (targetEnemy.transform.position.x < transform.position.x) {
+					transform.eulerAngles = new Vector3 (0, 0, 0);
 				} else {
-					//					if (tutorial) {
-					//						danoCD += Time.deltaTime * 20;
-					//					} else {
-					//						danoCD += Time.deltaTime * 10;
-					//					}
+						transform.eulerAngles = new Vector3 (0, 180, 0);
 				}
-			} 
+
+					if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
+						danoCD = 0;
+						if (haveAnimation)
+							this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Attack");
+						//anim.SetTrigger ("Attack");
+
+						StartCoroutine (DealDamage ());
+					} else {
+						//					if (tutorial) {
+						//						danoCD += Time.deltaTime * 20;
+						//					} else {
+						//						danoCD += Time.deltaTime * 10;
+						//					}
+					}
+				} 
+			}
 		} else if(this.targetEnemy == null)  {
 			seeking = true;
+			this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+
 		}
 
 		danoCD += Time.deltaTime * 2;
@@ -493,13 +546,13 @@ public class SoldierControler : MonoBehaviour {
 
 		switch (id) {
 		case(1): // BIDU
-			this.vidaMax = 5;
-			this.vida = 5;
+			this.vidaMax = 75;//Medio
+			this.vida = 75;//Medio
 			this.reach = 2;
-			this.damage = 2;
-			this.damageSpeed = 3;
-			this.range = 2;
-			this.speed = 4;
+			this.damage = 22;//Medio
+			this.damageSpeed = 0.5f;//Medio
+			this.range = 1; //Baixissimo
+			this.speed = 1.3f; //Medio
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -508,13 +561,13 @@ public class SoldierControler : MonoBehaviour {
 			Instantiate (animations [1], transform);
 			break;
 		case(2): // ASTRONAUTA
-			this.vidaMax = 2;
-			this.vida = 2;
+			this.vidaMax = 35;//Baixo
+			this.vida = 35;//Baixo
 			this.reach = 2;
-			this.damage = 1;
-			this.damageSpeed = 3;
-			this.range = 2;
-			this.speed = 5;
+			this.damage = 22; //Medio
+			this.damageSpeed = 1; //Baixo
+			this.range = 3; //Alto
+			this.speed = 1.3f; //Medio
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -524,13 +577,13 @@ public class SoldierControler : MonoBehaviour {
 			this.haveAnimation = true;
 			break;
 		case(3): //ANJINHO -> Cranicola
-			this.vidaMax = 2;
-			this.vida = 2;
-			this.reach = 2;
-			this.damage = 1;
-			this.damageSpeed = 3;
-			this.range = 2;
-			this.speed = 4;
+			this.vidaMax = 15; //Baixissimo
+			this.vida = 15; //Baixissimo
+			this.reach = 2; 
+			this.damage = 50; //Alto
+			this.damageSpeed = 0.25f; //Altissimo
+			this.range = 1; //Baixissimo
+			this.speed = 1.7f; //Alto
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -539,13 +592,13 @@ public class SoldierControler : MonoBehaviour {
 			this.haveAnimation = true;
 			break;
 		case(4): //JOTALHÃO
-			this.vidaMax = 2;
-			this.vida = 2;
+			this.vidaMax = 200; //Alto
+			this.vida = 200; //Alto
 			this.reach = 2;
-			this.damage = 1;
-			this.damageSpeed = 3;
-			this.range = 2;
-			this.speed = 2;
+			this.damage = 50; //Alto
+			this.damageSpeed = 1; //Baixo
+			this.range = 1; //Baixissimo
+			this.speed = 0.8f; //Baixo
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -554,13 +607,13 @@ public class SoldierControler : MonoBehaviour {
 			this.haveAnimation = true;
 			break;
 		case(5): //PITECO
-			this.vidaMax = 2;
-			this.vida = 2;
+			this.vidaMax = 35; //Baixo
+			this.vida = 35; //Baixo
 			this.reach = 2;
-			this.damage = 1;
-			this.damageSpeed = 3;
-			this.range = 2;
-			this.speed = 4;
+			this.damage = 22; // Medio
+			this.damageSpeed = 0.5f; //medio
+			this.range = 2; //Medio
+			this.speed = 1.3f; //Medio
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -569,13 +622,13 @@ public class SoldierControler : MonoBehaviour {
 			this.haveAnimation = true;
 			break;
 		case(6): //PENADINHO
-			this.vidaMax = 3;
-			this.vida = 3;
-			this.reach = 2;
-			this.damage = 2;
-			this.damageSpeed = 3;
-			this.range = 3;
-			this.speed = 2;
+			this.vidaMax =75; //Medio
+			this.vida = 75; //Medio
+			this.reach = 2; 
+			this.damage = 22; //Medio
+			this.damageSpeed = 0.5f; //Medio
+			this.range = 2; //Medio
+			this.speed = 0.8f; //Baixo
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = true;
@@ -598,13 +651,13 @@ public class SoldierControler : MonoBehaviour {
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [6];
 			break;
 		case(8): //SANSAO
-			this.vidaMax = 6;
-			this.vida = 6;
+			this.vidaMax = 35; //Baixo
+			this.vida = 35; //Baixo
 			this.reach = 1;
-			this.damage = 3;
-			this.damageSpeed = 3;
-			this.range = 1;
-			this.speed = 4;
+			this.damage = 14; //Baixo
+			this.damageSpeed = 0.5f; //Medio
+			this.range = 1; //Baixissimo
+			this.speed = 1.3f; //Medio
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -613,13 +666,13 @@ public class SoldierControler : MonoBehaviour {
 			this.haveAnimation = true;
 			break;
 		case(9): //MINGAU
-			this.vidaMax = 6;
-			this.vida = 6;
+			this.vidaMax = 75; //Medio
+			this.vida = 75; //Medio
 			this.reach = 1;
-			this.damage = 5;
-			this.damageSpeed = 3;
-			this.range = 1;
-			this.speed = 4;
+			this.damage = 22; //Medio
+			this.damageSpeed = 0.33f;  //Alto
+			this.range = 1; //Baixissimo
+			this.speed = 1.7f; //Alto
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -667,7 +720,7 @@ public class SoldierControler : MonoBehaviour {
 		} else {
 			this.tag = "enemysoldier2";
 			this.GetComponent<SpriteRenderer>().flipX = true;
-			platform.GetComponent<SpriteRenderer> ().color = Color.red;
+			//platform.GetComponent<SpriteRenderer> ().color = Color.red;
 
 		}
 	}
@@ -829,7 +882,7 @@ public class SoldierControler : MonoBehaviour {
 		//Procura de Jogador 1
 
 		if (this.tag == "enemysoldier1") {
-			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {//PROCURA TROPA
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null && troopId != 4) {//PROCURA TROPA
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
 					if (obj.GetComponent<SoldierControler> () != null) {
@@ -880,7 +933,7 @@ public class SoldierControler : MonoBehaviour {
 			//Procura de Jogador 2
 
 		} else if (this.tag == "enemysoldier2") {
-			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//PROCURA TROPA
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null && troopId != 4) {//PROCURA TROPA
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
 					if (obj.GetComponent<SoldierControler> () != null) {
@@ -937,50 +990,91 @@ public class SoldierControler : MonoBehaviour {
 	IEnumerator DealDamage(){
 		danoCD = 0;
 		yield return new WaitForSeconds (0.5f);
-		if (targetEnemy != null) {
-			if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO HEROI
+		if (targetEnemy != null) { 
+			if (targetEnemy.GetComponent<WPSoldierControler> () != null) {//ALVO HEROI
 				//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife ();
-				targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
-				if (this.range > 1)
-					TrowArrow ();
-				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
+				if (targetEnemy.GetComponent<WPSoldierControler> ().alive == false) { // ALVO MORREU
 					this.targetEnemy = null;
 					//lockedTarget = false;
+				} else {
+					if (troopId != 5 || troopId != 6) {
+						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
+					} else {
+						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage,true);
+					}
+					if (this.range > 1)
+						TrowArrow ();
+				}
+			} else if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO HEROI
+				//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
+				//targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife ();
+				if (targetEnemy.GetComponent<WPIASoldierControler> ().alive == false) { // ALVO MORREU
+					this.targetEnemy = null;
+					//lockedTarget = false;
+				} else {
+					if (troopId != 5 || troopId != 6) {
+						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
+					} else {
+						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage,true);
+					}
+					if (this.range > 1)
+						TrowArrow ();
 				}
 			} else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-				targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
-				if (this.range > 1)
-					TrowArrow ();
 				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
 					this.targetEnemy = null;
 					//lockedTarget = false;
+				} else {
+					if (troopId != 5 || troopId != 6) {
+						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
+					} else {
+						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage,true);
+					}
+					if (this.range > 1)
+						TrowArrow ();
 				}
-			} else if (targetEnemy.GetComponent<ChargesScript> () != null ) {//ALVO BASE
+			} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//ALVO BASE
 				danoCD = 0;
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
-				targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (1);
+				if (troopId != 5 || troopId != 6) {
+					targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
+				} else {
+					targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage,true);
+				}
 				if (this.range > 1)
 					TrowArrow ();
-			}else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null) {//ALVO TORRE
+			} else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null) {//ALVO TORRE
 				danoCD = 0;
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				//targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.25f;
-				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (1);
+				if (troopId != 5 || troopId != 6) {
+					targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
+				} else {
+					targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage,true);
+				}
 
 				if (this.range > 1)
 					TrowArrow ();
+				
+			} else if (targetEnemy == null) {
+				this.targetEnemy = null;
 			}
 
-			if (this.range > 1) {
+			if (this.range > 1 && this.targetEnemy != null) {
 				audioManager.PlayAudio ("shot");
-			} else {
+			} else if(this.targetEnemy != null) {
 				audioManager.PlayAudio ("atack");
+			}
+
+			if (troopId == 3) {
+				Instantiate (SplashEffect, this.transform.position, Quaternion.identity);
+				Destroy (this.gameObject);
 			}
 		}
 	}
@@ -988,10 +1082,25 @@ public class SoldierControler : MonoBehaviour {
 	public void ReceiveDamage(int x){
 
 		this.vida -= x;
-		UpdateLife ();
+		//UpdateLife ();
 	
 		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
 
+		if (this.team == 1 && heroUnity == true) {
+			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
+		}
+
+	}
+
+	public void ReceiveDamage(int x, bool explosion){
+
+		this.vida -= x;
+		//UpdateLife ();
+		if (explosion) {
+			Instantiate (SplashEffect, this.transform.position, Quaternion.identity);
+		} else {
+			Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+		}
 		if (this.team == 1 && heroUnity == true) {
 			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
 		}
@@ -1008,12 +1117,12 @@ public class SoldierControler : MonoBehaviour {
 		
 
 	public void TrowArrow(){
-		
-	GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity);
 		if (targetEnemy != null) {
-		arrow.GetComponent<ArrowScript> ().target = targetEnemy;
+		GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity).GetComponent<ArrowScript>().target = targetEnemy;
+//		if (targetEnemy != null) {
+//		arrow.GetComponent<ArrowScript> ().target = targetEnemy;
 	} else {
-		Destroy (arrow);
+			//Destroy (arrow);
 	}
 
 	}

@@ -21,23 +21,26 @@ public class ScrollSanp : MonoBehaviour {
 	private bool isRunning = false;
 	private bool isEnable = false;
 	private int cleared;
+	private MapManager manager;
 
 	public int idx;
 
 	void Start () {
 		int cleared = PlayerPrefs.GetInt ("ClearedLevels");
+		manager = GameObject.Find ("MapManager").GetComponent<MapManager> ();
 
 		if (cleared > 7){
 			
-			idx = 1;
-		
-		}else if(cleared > 3) {
-			
 			idx = 2;
-
+			manager.actualMap = 2;
+		}else if(cleared > 3 ) {
+			
+			idx = 1;
+			manager.actualMap = 1;
 		} else {
 			
 			idx = 0;
+			manager.actualMap = 0;
 		}
 
 
@@ -56,6 +59,8 @@ public class ScrollSanp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		manager.actualMap = idx;
 
 		cleared = PlayerPrefs.GetInt ("ClearedLevels");
 

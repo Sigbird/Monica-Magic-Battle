@@ -42,6 +42,7 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	public int twist;
 	public bool twisting;
+	public bool twisted;
 
 	public WPScript waypoint;
 
@@ -96,6 +97,8 @@ public class WPIASoldierControler : MonoBehaviour {
 	public Animation Arrival;
 
 	public Collider2D ColliderComponent;
+
+	public GameObject SplashEffect;
 
 	//FLAGS
 
@@ -179,6 +182,10 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	public GameObject WaypointMark;
 
+	public GameObject RiverPassLeft;
+	public GameObject RiverPassRight;
+	public GameObject NearestPass;
+
 
 	//SKILLS
 
@@ -239,7 +246,8 @@ public class WPIASoldierControler : MonoBehaviour {
 		StartCoroutine (Respawning ());
 
 		this.effects = "default";
-		this.speed = speed / 10;
+		this.speed = speed;
+		this.damageSpeed = damageSpeed + 1.5f;
 		this.maxSpeed = this.speed;
 		this.level = 1;
 		if (healtbarSoldierSolid != null) {
@@ -255,8 +263,8 @@ public class WPIASoldierControler : MonoBehaviour {
 		audioManager.PlayAudio ("spawn");
 		ColliderComponent = GetComponent<BoxCollider2D> ();
 
-		if(tutorial == false)
-		Twist (0); ///INICIA ESCOLHA DE DECISOES
+		//if(tutorial == false)
+		//Twist (0); ///INICIA ESCOLHA DE DECISOES
 	}
 
 	void Update () {
@@ -271,6 +279,10 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.targetEnemy = null;
 		}
 
+
+		if (GameObject.Find ("GameController").GetComponent<GameController> ().GameOver) {
+			this.alive = false;
+		}
 		// VELOCIDADE
 //		if (previous.x < transform.position.x) {
 //			this.anim.GetComponent<SpriteRenderer> ().flipX = false;
@@ -317,7 +329,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			retreatChance = 0;
 		}
 
-		if (GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds >= 40) {
+		if (GameObject.Find ("GameController").GetComponent<GameController> ().EnemyDiamonds >= 100) {
 			cheapMagicCastChance = 90;
 			cheapUnitySummonChance = 90;
 		} else {
@@ -344,10 +356,10 @@ public class WPIASoldierControler : MonoBehaviour {
 			pushHatChance = 0;
 		}
 
-		if (twisting == false && tutorial == false) {
-			twisting = true;
-			Twist (0);
-		}
+//		if (twisting == false && tutorial == false) {
+//			twisting = true;
+//			Twist (0);
+//		}
 	
 
 		//EVENTO DE MORTE
@@ -496,6 +508,11 @@ public class WPIASoldierControler : MonoBehaviour {
 			}
 		}
 
+		if(Vector3.Distance (transform.position, RiverPassLeft.transform.position)>Vector3.Distance (transform.position, RiverPassRight.transform.position)){
+			NearestPass = RiverPassRight;
+		}else{
+			NearestPass = RiverPassLeft;
+		}
 
 		//
 		//ESTADOS DO PERSONAGEM
@@ -619,7 +636,7 @@ public class WPIASoldierControler : MonoBehaviour {
 				}
 			} 
 		} else if(this.targetEnemy == null)  {
-			Twist (0);
+			//Twist (0);
 			seeking = true;
 		}
 
@@ -663,13 +680,13 @@ public class WPIASoldierControler : MonoBehaviour {
 //		Debug.Log ("id: " + id);
 		switch (heroID) {
 		case(0): 
-			this.vidaMax = 6;
-			this.vida = 6;
+			this.vidaMax = 200; //ALto
+			this.vida = 200;
 			this.reach = 2;//3
-			this.damage = 1;
-			this.damageSpeed = 4;
+			this.damage = 22; //Medio
+			this.damageSpeed = 0.5f;
 			this.range = 1.5f;
-			this.speed = 10;
+			this.speed = 1.3f; //Medio
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -681,13 +698,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Monica");
 			break;
 		case(1):
-			this.vidaMax = 4;
-			this.vida = 4;
+			this.vidaMax = 100; //Medio
+			this.vida = 100;
 			this.reach = 2;//3
-			this.damage = 1;
-			this.damageSpeed = 4;
+			this.damage = 22; //Medio
+			this.damageSpeed = 0.33f;
 			this.range = 1.5f;
-			this.speed = 12;
+			this.speed = 1.7f; //Alto
 			this.energyMax = 3;
 			this.energy = 3;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -699,13 +716,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Cebolinha");
 			break;
 		case(2):
-			this.vidaMax = 7;
-			this.vida = 7;
+			this.vidaMax = 300; //Altissimo
+			this.vida = 300;
 			this.reach = 0.5f;
-			this.damage = 1;
-			this.damageSpeed = 4;
+			this.damage = 22;  //Medio
+			this.damageSpeed = 1;
 			this.range = 1.5f;
-			this.speed = 10;
+			this.speed =0.8f; //baixo
 			this.energyMax = 4;
 			this.energy = 4;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -714,13 +731,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Magali");
 			break;
 		case(3):
-			this.vidaMax = 4;
-			this.vida = 4;
+			this.vidaMax = 100; //Medio
+			this.vida = 100;
 			this.reach = 0.5f;
-			this.damage = 2;
-			this.damageSpeed = 4;
+			this.damage = 50;  //Alto
+			this.damageSpeed = 0.5f;
 			this.range = 1.5f;
-			this.speed = 10;
+			this.speed = 1.3f; //Medio
 			this.energyMax = 4;
 			this.energy = 4;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
@@ -1264,7 +1281,7 @@ public class WPIASoldierControler : MonoBehaviour {
 					//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 					//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 					targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
-					targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (1);
+					targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (damage);
 					if (this.range > 1)
 						TrowArrow ();
 			}else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null && danoCD > damageSpeed) {//ALVO TORRE
@@ -1272,7 +1289,7 @@ public class WPIASoldierControler : MonoBehaviour {
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.5f;
-				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (1);
+				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (damage);
 				if (this.range > 1)
 					TrowArrow ();
 			}
@@ -1292,6 +1309,21 @@ public class WPIASoldierControler : MonoBehaviour {
 		
 		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
 
+		if (this.team == 1 && heroUnity == true) {
+			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
+		}
+
+	}
+
+	public void ReceiveDamage(int x, bool explosion){
+
+		this.vida -= x;
+		//UpdateLife ();
+		if (explosion) {
+			Instantiate (SplashEffect, this.transform.position, Quaternion.identity);
+		} else {
+			Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+		}
 		if (this.team == 1 && heroUnity == true) {
 			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
 		}
@@ -1331,12 +1363,18 @@ public class WPIASoldierControler : MonoBehaviour {
 	}
 
 	IEnumerator WaitForTwist(){ // espera 3 segundos e chama um novo twist
-		yield return new WaitForSeconds (3);
+//		yield return new WaitForSeconds (3);
+//		Twist (0);
+		yield return new WaitUntil (() => twisted == true);
+		twisted = false;
 		Twist (0);
+
 	}
 
 	public void Twist(int x){ // aplica efeito do twist
-		
+
+		StartCoroutine (WaitForTwist ());
+
 		int chooser = 0;
 		if (x == 0) {
 			chooser = TwistIntChooser ();
@@ -1344,7 +1382,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		} else {
 			chooser = x;
 		}
-//		Debug.Log (chooser);
+		Debug.Log ("Escolha: "+chooser);
 	
 			switch(chooser) {
 		case 1://IDLE
@@ -1354,74 +1392,119 @@ public class WPIASoldierControler : MonoBehaviour {
 			if (GameObject.Find ("HeroBaseEnemy").GetComponent<EnemyHand> ().ActivateCardEffect ("Magic")) {
 				cheapMagicCastChance -= 10;
 			}
-			twisting = false;
+			//twisting = false;
+			twisted = true;
 
 			break;
 		case 3://UNIT
 			if (GameObject.Find ("HeroBaseEnemy").GetComponent<EnemyHand> ().ActivateCardEffect ("Unit")) {
 				cheapUnitySummonChance -= 10;
 			}
-			twisting = false;
+			//twisting = false;
+			twisted = true;
 
 			break;
 		case 4://GEM COLECTOR
 			if (GetEnabledGem() != null) {
 				waypoint.EnemyMovementPlacement (GetEnabledGem().transform.position);
+				StartCoroutine(WaitMethod(6));
 			} else {
-				StartCoroutine (WaitForTwist ());
+				//StartCoroutine (WaitForTwist ());
+				twisted = true;
 			} 
 			break;
 		case 5://HERO HARASS
-			if (Vector2.Distance(GameObject.Find ("Hero").transform.position,transform.position) > 0.3f) {
-				waypoint.EnemyMovementPlacement (GameObject.Find ("Hero").transform.position);
-			}  else {
-				StartCoroutine (WaitForTwist ());
-			} 
+			if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == true) {
+				if (Vector2.Distance (GameObject.Find ("Hero").transform.position, transform.position) > 1f) {
+					waypoint.EnemyMovementPlacement (GameObject.Find ("Hero").transform.position);
+					targetEnemy = GameObject.Find ("Hero");
+					StartCoroutine (WaitMethod (3));
+				} else {
+					targetEnemy = GameObject.Find ("Hero");
+					StartCoroutine( WaitMethod (2));
+				} 
+			} else {
+				twisted = true;
+			}
+
 			break;
 		case 6://ITEM COLECTOR
-			if (GameObject.FindGameObjectsWithTag ("enemygem").Length > 0) {
-				waypoint.EnemyMovementPlacement (GameObject.FindGameObjectsWithTag ("enemygem") [0].transform.position);
+			if (GetEnabledGem() != null) {
+				waypoint.EnemyMovementPlacement (GetEnabledGem().transform.position);
+				StartCoroutine(WaitMethod(6));
 			} else {
-				StartCoroutine (WaitForTwist ());
+				//StartCoroutine (WaitForTwist ());
+				twisted = true;
 			}  
 			break;
 		case 7://PROTECT HAT
-			if (Vector2.Distance(GameObject.Find ("HeroBaseEnemy").transform.position,transform.position) > 0.3f) {
+			if (Vector2.Distance (GameObject.Find ("HeroBaseEnemy").transform.position, transform.position) > 1f) {
 				waypoint.EnemyMovementPlacement (GameObject.Find ("HeroBaseEnemy").transform.position);
+				targetEnemy = GameObject.Find ("Hero");
+				StartCoroutine (WaitMethod (3));
 			} else {
-				StartCoroutine (WaitForTwist ());
-			} 
+				twisted = true;
+			}  
 			break;
 		case 8://PUSH HAT 
-			if (Vector2.Distance(GameObject.Find ("HeroBase").transform.position,transform.position) > 0.3f) {
+			if (Vector2.Distance(GameObject.Find ("HeroBase").transform.position,transform.position) > 0.5f) {
 				waypoint.EnemyMovementPlacement (GameObject.Find ("HeroBase").transform.position);
+				targetEnemy = GameObject.Find ("HeroBase");
+				StartCoroutine( WaitMethod (3));
 			} else {
-				StartCoroutine (WaitForTwist ());
+				//StartCoroutine (WaitForTwist ());
+				targetEnemy = GameObject.Find ("HeroBase");
+				StartCoroutine( WaitMethod (3));
 			}  
 			break;
 		case 9://RETREAT
-			if (Vector2.Distance(GameObject.Find ("HeroBaseEnemy").transform.position,transform.position) > 0.3f) {
+			if (Vector2.Distance (GameObject.Find ("HeroBaseEnemy").transform.position, transform.position) > 1f) {
 				waypoint.EnemyMovementPlacement (GameObject.Find ("HeroBaseEnemy").transform.position);
+				StartCoroutine (WaitMethod (3));
 			} else {
-				StartCoroutine (WaitForTwist ());
+				twisted = true;
 			}  
+			gemColectorChance += 10;
+			heroHarassChance += 10;
 			break;
 		case 10://HERO BATTLE
-			if (Vector2.Distance (GameObject.Find ("Hero").transform.position, transform.position) > 0.3f) {
-				waypoint.EnemyMovementPlacement (GameObject.Find ("Hero").transform.position);
+			if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == true) {
+				if (Vector2.Distance (GameObject.Find ("Hero").transform.position, transform.position) > 1f) {
+					waypoint.EnemyMovementPlacement (GameObject.Find ("Hero").transform.position);
+					targetEnemy = GameObject.Find ("Hero");
+					StartCoroutine( WaitMethod (2));
+				} else {
+					targetEnemy = GameObject.Find ("Hero");
+					StartCoroutine( WaitMethod (2));
+				} 
 			} else {
-				StartCoroutine (WaitForTwist ());
-			} 
+				twisted = true;
+				//StartCoroutine (WaitForTwist ());
+			}
 			break;
 		case 11://RANDON MOVEMENT
 			gemColectorChance += 10;
-			StartCoroutine (WaitForTwist ());
+			twisted = true;
+			//StartCoroutine (WaitForTwist ());
 			break;
 		default:
-			Twist (1);
+			twisted = true;
+			//Twist (1);
 			break;
 		}
 
+	}
+
+//	IEnumerator WaitMethodCrossingRiver(int x){
+//		yield return new WaitForSeconds (x);
+//		twisted = true;
+//		//StartCoroutine (WaitForTwist ());
+//	}
+
+	IEnumerator WaitMethod(int x){
+		yield return new WaitForSeconds (x);
+		twisted = true;
+		//StartCoroutine (WaitForTwist ());
 	}
 
 	public int TwistIntChooser(){ // escolhe o twist a ser executado;
@@ -1474,7 +1557,8 @@ public class WPIASoldierControler : MonoBehaviour {
 				}
 			}
 			if (enablegems.Count > 0) {
-				return enablegems [0];
+				//enablegems.Sort ();
+				return enablegems [Random.Range(0,enablegems.Count)];
 			} else {
 				return null;
 			}

@@ -61,11 +61,11 @@ public class TutorialController : MonoBehaviour {
 
 		if (PlayerPrefs.GetInt ("Lesson") == 5)
 			StartCoroutine (Lesson5 ());
-
+		
 	}
 	// Use this for initialization
 	void Start () {
-		
+		Debug.Log ("Lesson: "+PlayerPrefs.GetInt ("Lesson"));
 	}
 	
 	// Update is called once per frame
@@ -168,6 +168,7 @@ public class TutorialController : MonoBehaviour {
 	}
 
 	IEnumerator Lesson1(){
+		HeroEnemy.SetActive (false);
 		yield return new WaitForSeconds (1);
 		tutorialPanels [0].SetActive (true);
 		yield return new WaitForSeconds (5);
@@ -179,6 +180,7 @@ public class TutorialController : MonoBehaviour {
 	}
 
 	IEnumerator Lesson2(){
+		
 		HeroEnemy.SetActive (true);
 		yield return new WaitForSeconds (0.1f);
 		HeroEnemy.GetComponent<WPIASoldierControler> ().maxSpeed = 0;
@@ -221,10 +223,12 @@ public class TutorialController : MonoBehaviour {
 	}
 
 	public void StartTutorialEnding(){
-		GetComponent<GameController> ().enabled = true;
-		HeroEnemy.SetActive (true);
-		DeckPile.SetActive (true);
-		StartCoroutine (Lesson6 ());
+		if (PlayerPrefs.GetInt ("Lesson") == 5) {
+			GetComponent<GameController> ().enabled = true;
+			HeroEnemy.SetActive (true);
+			DeckPile.SetActive (true);
+			StartCoroutine (Lesson6 ());
+		}
 	}
 
 	public void GiveReward(int x){

@@ -37,6 +37,7 @@ public class CardInfoScript : MonoBehaviour {
 	private int cardID;
 	private string description;
 	public GameObject[] OptionBars;
+	public int treeatributes;
 
 	// Use this for initialization
 	void Start () {
@@ -49,6 +50,7 @@ public class CardInfoScript : MonoBehaviour {
 
 	void OnEnable(){
 		activable = false;
+		treeatributes = 0;
 	}
 	
 	// Update is called once per frame
@@ -482,14 +484,22 @@ public class CardInfoScript : MonoBehaviour {
 
 	public void IncreaseAtributes(int x){
 		int coins = PlayerPrefs.GetInt ("PlayerCoins");
+
+
 		if (200 <= coins) {
+
+		if (treeatributes == 2) {
+			PlayerPrefs.SetInt ("PlayerCoins", coins - 200);
+			treeatributes = 0;
+		} else {
+			treeatributes += 1;
+		}
 			float a;
 			x++;
 			a = PlayerPrefs.GetFloat ("Card" + cardID + "" + x);
 			a++;
 			PlayerPrefs.SetFloat ("Card" + cardID + "" + x, a);
 			atributesOnScreen [x - 1].text = a.ToString ();
-			PlayerPrefs.SetInt ("PlayerCoins", coins - 200);
 		} else {
 			noEnouthCoins.SetActive (true);
 		}

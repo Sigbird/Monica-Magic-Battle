@@ -28,14 +28,14 @@ public class ChargesScript : MonoBehaviour {
 	public int vidaMax;
 	public GameObject HitAnimationObject;
 	public bool NewMechanic;
-
+	public GameObject SplashEffect;
 
 
 	// Use this for initialization
 	void Start () {
 
-		vidaMax = 4;
-		vida = 4;
+		vidaMax = 1000;
+		vida = 1000;
 		progress = 0;
 		uiProgressBar.SetFloat ("Blend", progress);
 
@@ -77,19 +77,21 @@ public class ChargesScript : MonoBehaviour {
 			if (tutorial == false) {
 				if (this.tag == "enemytower1") {
 					if (vida<=0 && endgame == false) {
-						GameObject.FindGameObjectWithTag ("enemytower2").GetComponent<ChargesScript> ().charges++;
-						GameObject.Find ("GameController").GetComponent<GameController> ().NextRound ();
+						//GameObject.FindGameObjectWithTag ("enemytower2").GetComponent<ChargesScript> ().charges++;
+						gc.Player2Score = 3;
+						gc.NextRound ();
 						endgame = true;
 					}
-					PlayerPrefs.SetInt ("playerCharges", charges);
+					//PlayerPrefs.SetInt ("playerCharges", charges);
 					gc.playerCharges = this.charges;
 				} else {
 					if (vida<=0 && endgame == false) {
-						GameObject.FindGameObjectWithTag ("enemytower1").GetComponent<ChargesScript> ().charges++;
-						GameObject.Find ("GameController").GetComponent<GameController> ().NextRound ();
+						//GameObject.FindGameObjectWithTag ("enemytower1").GetComponent<ChargesScript> ().charges++;
+						gc.Player1Score = 3;
+						gc.NextRound ();
 						endgame = true;
 					}
-					PlayerPrefs.SetInt ("enemyCharges", charges);
+					//PlayerPrefs.SetInt ("enemyCharges", charges);
 					gc.enemyCharges = this.charges;
 				}
 			} else {
@@ -102,7 +104,7 @@ public class ChargesScript : MonoBehaviour {
 							Time.timeScale = 0;
 							endgame = true;
 						}
-						PlayerPrefs.SetInt ("playerCharges", charges);
+						//PlayerPrefs.SetInt ("playerCharges", charges);
 						gc.playerCharges = this.charges;
 					}
 				} else {
@@ -113,7 +115,7 @@ public class ChargesScript : MonoBehaviour {
 						Time.timeScale = 0;
 						endgame = true;
 					}
-					PlayerPrefs.SetInt ("enemyCharges", charges);
+					//PlayerPrefs.SetInt ("enemyCharges", charges);
 					gc.enemyCharges = this.charges;
 				}
 			}
@@ -207,6 +209,19 @@ public class ChargesScript : MonoBehaviour {
 		}
 
 		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+
+	}
+
+
+	public void ReceiveDamage(int x, bool explosion){
+
+		this.vida -= x;
+		//UpdateLife ();
+		if (explosion) {
+			Instantiate (SplashEffect, this.transform.position, Quaternion.identity);
+		} else {
+			Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+		}
 
 	}
 

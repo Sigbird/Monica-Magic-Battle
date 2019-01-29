@@ -15,7 +15,7 @@ public class RiverColliderReverse : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D col){
-		col.transform.GetComponent<Rigidbody2D> ().AddForce (Vector2.left * 80);
+		//col.transform.GetComponent<Rigidbody2D> ().AddForce (Vector2.left * 80);
 		//col.transform.position = Vector3.MoveTowards (col.transform.position, new Vector2(col.transform.position.x-1,col.transform.position.y), Time.deltaTime * 20);
 
 	}
