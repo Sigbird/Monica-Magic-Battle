@@ -71,7 +71,7 @@ public class AudioManager : MonoBehaviour {
 			}
 			if (track == "shot") { //ok
 				source.PlayOneShot (audios [3],EffectVolume);
-				Debug.Log ("Pow "+ EffectVolume);
+//				Debug.Log ("Pow "+ EffectVolume);
 			}
 			if (track == "spawn") { //ok 
 				source.PlayOneShot (audios [4],EffectVolume);

@@ -680,7 +680,7 @@ public class WPIASoldierControler : MonoBehaviour {
 //		Debug.Log ("id: " + id);
 		switch (heroID) {
 		case(0): 
-			this.vidaMax = 200; //ALto
+			this.vidaMax = 150; //ALto
 			this.vida = 200;
 			this.reach = 2;//3
 			this.damage = 22; //Medio
@@ -716,7 +716,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Cebolinha");
 			break;
 		case(2):
-			this.vidaMax = 300; //Altissimo
+			this.vidaMax = 200; //Altissimo
 			this.vida = 300;
 			this.reach = 0.5f;
 			this.damage = 22;  //Medio
@@ -1320,6 +1320,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		this.vida -= x;
 		//UpdateLife ();
 		if (explosion) {
+			Debug.Log ("BOOOOM");
 			Instantiate (SplashEffect, this.transform.position, Quaternion.identity);
 		} else {
 			Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
@@ -1382,7 +1383,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		} else {
 			chooser = x;
 		}
-		Debug.Log ("Escolha: "+chooser);
+//		Debug.Log ("Escolha: "+chooser);
 	
 			switch(chooser) {
 		case 1://IDLE

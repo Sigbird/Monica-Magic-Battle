@@ -34,13 +34,14 @@ public class ChargesScriptTowers : MonoBehaviour {
 	public GameObject SplashEffect;
 
 
+
 	// Use this for initialization
 	void Start () {
 		progress = 0;
 		manager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		if (Tower) {
-			vidaMax = 500;
-			vida = 500;
+			vidaMax = 120;
+			vida = 120;
 		}else{
 			vidaMax = 12;
 			vida = 12;

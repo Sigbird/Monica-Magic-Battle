@@ -96,6 +96,8 @@ public class SoldierControler : MonoBehaviour {
 
 	public float respawningTimer;
 
+	public float specialHabilityCD;
+
 	//STATUS
 
 	public float xp;
@@ -275,9 +277,12 @@ public class SoldierControler : MonoBehaviour {
 
 		this.effects = "default";
 		this.speed = speed - 0.9f;
+		if (this.speed < 0) {
+			this.speed = 0.1f;
+		}
 		this.damageSpeed = damageSpeed + 1.5f;
 		this.maxSpeed = this.speed;
-		this.range = range - 0.1f;
+		this.range = range - 0.3f;
 		this.reach = 1.5f;
 		this.level = 1;
 		if (healtbarSoldierSolid != null) {
@@ -506,14 +511,14 @@ public class SoldierControler : MonoBehaviour {
 					this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
 
 					//SpendingEnergy ();
-					Debug.Log ("Perseguindo");
+//					Debug.Log ("Perseguindo");
 					transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
 					//seeking = true;
 				} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
 				if (targetEnemy.transform.position.x < transform.position.x) {
-					transform.eulerAngles = new Vector3 (0, 0, 0);
+					transform.eulerAngles = new Vector3 (0, 180, 0);
 				} else {
-						transform.eulerAngles = new Vector3 (0, 180, 0);
+						transform.eulerAngles = new Vector3 (0, 0, 0);
 				}
 
 					if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
@@ -556,6 +561,7 @@ public class SoldierControler : MonoBehaviour {
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
+			this.specialHabilityCD = 2;
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [0];
 			this.haveAnimation = true;
 			Instantiate (animations [1], transform);
@@ -998,7 +1004,7 @@ public class SoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					//lockedTarget = false;
 				} else {
-					if (troopId != 5 || troopId != 6) {
+					if (troopId != 5 && troopId != 6) {
 						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
 					} else {
 						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage,true);
@@ -1013,10 +1019,10 @@ public class SoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					//lockedTarget = false;
 				} else {
-					if (troopId != 5 || troopId != 6) {
-						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
+					if (troopId != 5 && troopId != 6) {
+						targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
 					} else {
-						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage,true);
+						targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage,true);
 					}
 					if (this.range > 1)
 						TrowArrow ();
@@ -1028,10 +1034,10 @@ public class SoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					//lockedTarget = false;
 				} else {
-					if (troopId != 5 || troopId != 6) {
-						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
+					if (troopId != 5 && troopId != 6) {
+						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
 					} else {
-						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage,true);
+						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage,true);
 					}
 					if (this.range > 1)
 						TrowArrow ();
@@ -1041,10 +1047,10 @@ public class SoldierControler : MonoBehaviour {
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
-				if (troopId != 5 || troopId != 6) {
-					targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
+				if (troopId != 5 && troopId != 6) {
+					targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (damage);
 				} else {
-					targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage,true);
+					targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (damage,true);
 				}
 				if (this.range > 1)
 					TrowArrow ();
@@ -1053,10 +1059,10 @@ public class SoldierControler : MonoBehaviour {
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				//targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.25f;
-				if (troopId != 5 || troopId != 6) {
-					targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
+				if (troopId != 5 && troopId != 6) {
+					targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (damage);
 				} else {
-					targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage,true);
+					targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (damage,true);
 				}
 
 				if (this.range > 1)

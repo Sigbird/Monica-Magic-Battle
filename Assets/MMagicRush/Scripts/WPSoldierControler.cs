@@ -454,13 +454,14 @@ public class WPSoldierControler : MonoBehaviour {
 				effects = "default";
 			}
 		}
+		if (tutorial == false) {
+			if (Vector3.Distance (transform.position, RiverPassLeft.transform.position) > Vector3.Distance (transform.position, RiverPassRight.transform.position)) {
+				NearestPass = RiverPassRight;
+			} else {
+				NearestPass = RiverPassLeft;
+			}
 
-		if(Vector3.Distance (transform.position, RiverPassLeft.transform.position)>Vector3.Distance (transform.position, RiverPassRight.transform.position)){
-			NearestPass = RiverPassRight;
-		}else{
-			NearestPass = RiverPassLeft;
 		}
-
 //		if (WaypointMark != null) {
 //			if (transform.position.y < 0.5f && WaypointMark.transform.position.y > 0.5f) {
 //				
@@ -595,8 +596,8 @@ public class WPSoldierControler : MonoBehaviour {
 
 		switch (heroID) {
 		case(0): 
-			this.vidaMax = 200; //ALto
-			this.vida = 200;
+			this.vidaMax = 150; //ALto
+			this.vida = 150;
 			this.reach = 2;//3
 			this.damage = 22; //Medio
 			this.damageSpeed = 0.5f;
@@ -631,8 +632,8 @@ public class WPSoldierControler : MonoBehaviour {
 			Debug.Log ("Cebolinha");
 			break;
 		case(2):
-			this.vidaMax = 300; //Altissimo
-			this.vida = 300;
+			this.vidaMax = 200; //Altissimo
+			this.vida = 200;
 			this.reach = 0.5f;
 			this.damage = 22;  //Medio
 			this.damageSpeed = 1;

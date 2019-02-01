@@ -34,8 +34,8 @@ public class ChargesScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		vidaMax = 1000;
-		vida = 1000;
+		vidaMax = 150;
+		vida = 150;
 		progress = 0;
 		uiProgressBar.SetFloat ("Blend", progress);
 

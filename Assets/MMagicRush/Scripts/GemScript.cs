@@ -152,7 +152,7 @@ public class GemScript : MonoBehaviour {
 			Enemy = GameObject.Find ("HeroEnemy");
 
 			if (Vector2.Distance (this.transform.position, Enemy.transform.position) < 0.5 && this.enabled == true && Enemy.GetComponent<WPIASoldierControler>().velocity <= 0.2f && Enemy.GetComponent<WPIASoldierControler>().alive == true) {
-				Debug.Log ("EnemyCAPTURING");
+//				Debug.Log ("EnemyCAPTURING");
 				gemBarUI.transform.position = this.transform.position;
 				enemyProgressObj.SetActive (true);
 				enemyProgress += Time.deltaTime * 1.5f;

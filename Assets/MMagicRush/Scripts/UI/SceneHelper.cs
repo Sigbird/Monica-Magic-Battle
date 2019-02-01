@@ -125,11 +125,11 @@ public class SceneHelper : MonoBehaviour {
 
 		Debug.Log (PlayerPrefsX.GetIntArray ("PlayerCardsIDs").Length);
 
-		if (PlayerPrefs.GetString ("Tutorial") == "False" || PlayerPrefs.HasKey ("Tutorial") == false) {
+		//if (PlayerPrefs.GetString ("Tutorial") == "False" || PlayerPrefs.HasKey ("Tutorial") == false) {
 			StartCoroutine (StartingCards ());
 			//			PurchaseCardBidu ();
 //			PurchaseCardCanja ();
-		}
+		//}
 
 		PlayerPrefs.SetString ("Tutorial", "True");
 		if(tutorial == true)

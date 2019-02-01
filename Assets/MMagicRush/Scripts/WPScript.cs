@@ -16,10 +16,12 @@ public class WPScript : MonoBehaviour {
 
 	public Transform Hero;
 	public Transform Enemy;
+	public Transform EnemyTroop;
 	public Transform EnemyBase;
 	public Transform EnemyBaseTower;
 	public Transform EnemyBaseTower2;
 	public Transform Base;
+	public GameObject[] EnemiesOnScene;
 
 	public static bool UIopen;
 	public int progress;
@@ -46,6 +48,21 @@ public class WPScript : MonoBehaviour {
 			progress = 1;
 		}
 
+
+//		if (Input.GetMouseButtonUp (0)) {
+//			RaycastHit2D hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero);
+//
+//			if (hit.collider != null) {
+//				Debug.Log ("Troop");
+//				if (hit.collider.transform.tag == "enemysoldier2") {
+//					
+//					EnemyTroop = hit.collider.transform;
+//				}
+//
+//			}
+//		}
+		EnemiesOnScene = GameObject.FindGameObjectsWithTag("enemysoldier2");
+
 	}
 
 	void OnMouseUp(){
@@ -53,6 +70,8 @@ public class WPScript : MonoBehaviour {
 		int lastprogress = 0;
 		string lastname = "";
 		Hero.GetComponent<WPSoldierControler> ().targetEnemy = null;
+		EnemyTroop = EnemyNearbyClick ();
+
 		if (MovementCounter () > 0) {
 			foreach (GameObject a in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
 				if (Vector2.Distance (Camera.main.ScreenToWorldPoint (Input.mousePosition), a.transform.position) < 1) {
@@ -89,6 +108,18 @@ public class WPScript : MonoBehaviour {
 			}
 			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
 			Instantiate (WaypointMarker, Enemy).transform.position = Enemy.transform.position;
+			//Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity);
+		}else if (/*MovementCounter ()< 1  &&*/ EnemyTroop != null && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),EnemyTroop.position) < 1 && UIopen == false && EnemyTroop.GetComponent<SoldierControler>() != null) {
+			//		Debug.Log ("HeroiInimigo");
+			Hero.GetComponent<WPSoldierControler> ().targetEnemy = EnemyTroop.gameObject;
+			Hero.GetComponent<WPSoldierControler> ().seeking = false;
+			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
+				Debug.Log ("TroopDetected");
+			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
+				Destroy (o.gameObject);
+			}
+			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
+			Instantiate (WaypointMarker, EnemyTroop).transform.position = EnemyTroop.transform.position;
 			//Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity);
 		}else if (/*MovementCounter ()< 1  &&*/  Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),EnemyBase.position) < 1 && UIopen == false /*&& Enemy.GetComponent<WPIASoldierControler>().alive == true*/) {
 			Hero.GetComponent<WPSoldierControler> ().targetEnemy = EnemyBase.gameObject;
@@ -219,6 +250,13 @@ public class WPScript : MonoBehaviour {
 				if (tutorial == true && GameObject.Find ("TutorialHand") != null)
 					GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
 			renderer.sprite = AttackIcon; //ATAQUE DE INIMIGO
+		}else if(EnemyTroop != null && EnemyTroop.GetComponent<SoldierControler>() != null && Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), EnemyTroop.transform.position) < 1f){
+			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
+			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
+			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
+			if (tutorial == true && GameObject.Find ("TutorialHand") != null)
+				GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
+			renderer.sprite = AttackIcon; //ATAQUE DE TROPA
 		} else if(EnemyBase != null && Vector3.Distance (new Vector3 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y,0), EnemyBase.transform.position) <= 1f){
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
@@ -261,6 +299,18 @@ public class WPScript : MonoBehaviour {
 			}
 		}
 		return false;
+	}
+
+	public Transform EnemyNearbyClick(){
+		
+		foreach (GameObject o in EnemiesOnScene) {
+			if (Vector2.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), o.transform.position) <1f ) {
+				if (o.GetComponent<SoldierControler> () != null) {
+					return o.transform;
+				}
+			}
+		}
+		return null;
 	}
 
 	public void EnemyMovementPlacement(Vector2 position){
