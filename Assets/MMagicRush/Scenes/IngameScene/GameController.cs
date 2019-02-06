@@ -287,7 +287,7 @@ public class GameController : MonoBehaviour {
 			GetComponent<TutorialController> ().StartTutorialEnding ();
 			tutorialending = true;
 		}
-		if (tutorial = false) {
+		if (tutorial == false) {
 			if (gempertime >= 1 && GameOver == false) {
 				gempertime = 0;
 				Diamonds += gempertimeMaxValue;
@@ -297,6 +297,9 @@ public class GameController : MonoBehaviour {
 			}
 
 		}
+
+
+
 		if (Duration <= 120) {
 			gempertimeMaxValue = 6;
 		} else {

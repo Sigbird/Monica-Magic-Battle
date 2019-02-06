@@ -51,14 +51,14 @@ public class ArrowScript : MonoBehaviour {
 				Destroy (this.gameObject);
 			} else {
 				this.transform.position = Vector3.MoveTowards (this.transform.position,target.transform.position, Time.deltaTime * 5);		
-				if(leftcurve == false)
-				transform.Translate (Vector2.up * Time.deltaTime * curve);
-
-				if(leftcurve == true)
-					transform.Translate (Vector2.down * Time.deltaTime * curve);
-
-				if(curve>0)
-				curve -= Time.deltaTime * 4;
+//				if(leftcurve == false)
+//				transform.Translate (Vector2.up * Time.deltaTime * curve);
+//
+//				if(leftcurve == true)
+//					transform.Translate (Vector2.down * Time.deltaTime * curve);
+//
+//				if(curve>0)
+//				curve -= Time.deltaTime * 4;
 			}
 		} else {
 			Destroy (this.gameObject);

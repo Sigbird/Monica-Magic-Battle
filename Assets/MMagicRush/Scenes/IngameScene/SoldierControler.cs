@@ -894,12 +894,17 @@ public class SoldierControler : MonoBehaviour {
 					if (obj.GetComponent<SoldierControler> () != null) {
 						if (dist <= reach) {
 							if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-								Emin = obj;
-								minDis = dist;
+								if (this.range > 1) {
+									Emin = obj;
+									minDis = dist;
+								} else if(obj.GetComponent<SoldierControler> ().troopId != 2) {
+									Emin = obj;
+									minDis = dist;
+								}
 							}
 						}
 					} else if (obj.GetComponent<WPIASoldierControler> () != null) {
-						if (obj.GetComponent<SpriteRenderer> ().enabled == true) {
+						if (obj.GetComponent<WPIASoldierControler> ().alive == true) {
 							if (dist <= reach) {
 								if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
 									Emin = obj;
@@ -945,12 +950,17 @@ public class SoldierControler : MonoBehaviour {
 					if (obj.GetComponent<SoldierControler> () != null) {
 						if (dist <= reach) {
 							if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-								Emin = obj;
-								minDis = dist;
+								if (this.range > 1) {
+									Emin = obj;
+									minDis = dist;
+								} else if(obj.GetComponent<SoldierControler> ().troopId != 2) {
+									Emin = obj;
+									minDis = dist;
+								}
 							}
 						}
 					} else if (obj.GetComponent<WPSoldierControler> () != null) {
-						if (obj.GetComponent<SpriteRenderer> ().enabled == true) {
+						if (obj.GetComponent<WPSoldierControler> ().alive == true) {
 							if (dist <= reach) {
 								if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
 									Emin = obj;

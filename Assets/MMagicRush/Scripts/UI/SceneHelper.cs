@@ -433,6 +433,10 @@ public class SceneHelper : MonoBehaviour {
 		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray2);
 	}
 
+	public void SetDificulty(int x){
+		PlayerPrefs.SetInt ("Dificulty", x);
+	}
+
 	public void SetCardValues(){
 
 

@@ -10,9 +10,31 @@ public class RandomEnemySpawner : MonoBehaviour {
 	public Transform Troop;
 	public bool Spawning;
 	public GameObject[] EnemiesOnScene;
+	private int RandomMin;
+	private int RandomMax;
 	// Use this for initialization
 	void Start () {
-		randomMoment = Random.Range (5, 15);
+		if (PlayerPrefs.HasKey ("Dificulty")) {
+			var x = PlayerPrefs.GetInt ("Dificulty");
+			if (x == 1) {
+				RandomMin = 30;
+				RandomMax = 40;
+			}
+			if (x == 2) {
+				RandomMin = 22;
+				RandomMax = 32;
+			}
+			if (x == 3) {
+				RandomMin = 15;
+				RandomMax = 25;
+			}
+
+		} else {
+			RandomMin = 22;
+			RandomMax = 32;
+		}
+
+		randomMoment = Random.Range (RandomMin, RandomMax);
 	}
 	
 	// Update is called once per frame
@@ -22,7 +44,7 @@ public class RandomEnemySpawner : MonoBehaviour {
 
 		if (timer >= randomMoment && Spawning == true) {
 			timer = 0;
-			randomMoment = Random.Range (10, 30);
+			randomMoment = Random.Range (RandomMin, RandomMax);
 			InstatiateEnemyTroop(Random.Range(1,6));
 		}
 
