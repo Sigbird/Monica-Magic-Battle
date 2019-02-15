@@ -98,6 +98,9 @@ public class SoldierControler : MonoBehaviour {
 
 	public float specialHabilityCD;
 
+	public float specialHabilityCDTimer;
+
+	public bool skillshoter;
 	//STATUS
 
 	public float xp;
@@ -146,6 +149,8 @@ public class SoldierControler : MonoBehaviour {
 	public int energy;
 
 	public bool resting;
+
+	public bool explosiveDamage;
 
 	private float energyCounter;
 
@@ -283,7 +288,7 @@ public class SoldierControler : MonoBehaviour {
 		this.damageSpeed = damageSpeed + 1.5f;
 		this.maxSpeed = this.speed;
 		this.range = range - 0.3f;
-		this.reach = 1.5f;
+		//this.reach = 1.5f;
 		this.level = 1;
 		if (healtbarSoldierSolid != null) {
 			this.healtbarSoldierSolid.transform.gameObject.SetActive (true);
@@ -372,6 +377,10 @@ public class SoldierControler : MonoBehaviour {
 			//audioManager.PlayAudio ("death");
 		}
 
+		if (this.vida > this.vidaMax) {
+			this.vida = this.vidaMax;
+		}
+
 
 		//	
 		//FLAGS PARA HEALING
@@ -407,21 +416,31 @@ public class SoldierControler : MonoBehaviour {
 
 
 		//
-		//FLAGS PARA HABILIDADES
+		//FLAGS PARA HABILIDADES 
 		//
-		if(this.GetComponent<SpriteRenderer>().enabled == true){
-			summonCounter += Time.deltaTime;
+		specialHabilityCDTimer += Time.deltaTime;
+		if (targetEnemy != null) {
+			if(Vector2.Distance(transform.position, targetEnemy.transform.position)>1f){
+				if (this.troopId == 1 && specialHabilityCDTimer > 3) {
+				specialHabilityCDTimer = 0;
+				transform.GetComponent<Rigidbody2D> ().AddForce ((targetEnemy.transform.position - transform.position).normalized * 60 );
+			}
+			}
 		}
 
-		if (summonCounter >= 9 && this.summon == true) {
-			summonCounter = 0;
-			GameObject t =  troop;
-			t.GetComponent<SoldierControler> ().troopId = 3;
-			t.GetComponent<SoldierControler> ().step = this.step;
-			t.GetComponent<SoldierControler> ().summon = false;
-			Instantiate (t, new Vector2(this.transform.position.x - 0.5f, this.transform.position.y), Quaternion.identity);
-			Instantiate (t, new Vector2(this.transform.position.x + 0.5f, this.transform.position.y), Quaternion.identity);
-		}
+//		if(this.GetComponent<SpriteRenderer>().enabled == true){
+//			summonCounter += Time.deltaTime;
+//		}
+//
+//		if (summonCounter >= 9 && this.summon == true) {
+//			summonCounter = 0;
+//			GameObject t =  troop;
+//			t.GetComponent<SoldierControler> ().troopId = 3;
+//			t.GetComponent<SoldierControler> ().step = this.step;
+//			t.GetComponent<SoldierControler> ().summon = false;
+//			Instantiate (t, new Vector2(this.transform.position.x - 0.5f, this.transform.position.y), Quaternion.identity);
+//			Instantiate (t, new Vector2(this.transform.position.x + 0.5f, this.transform.position.y), Quaternion.identity);
+//		}
 			
 
 		//
@@ -499,49 +518,197 @@ public class SoldierControler : MonoBehaviour {
 
 		// PERSEGUINDO E ATACANDO ALVO ENCONTRADO
 
-		if (seeking == false && this.targetEnemy != null) { 
+		if (this.team == 1) { // VERIFICA EQUIPE 
+		
+			if (targetEnemy != null && seeking == false) { // VERIFICA SE EXISTE ALVO E SE PAROU A BUSCA
 
 
-			if (Vector3.Distance (transform.position, targetEnemy.transform.position) > reach) {
-				seeking = true;
-				targetEnemy = null;
-			} else {
-				//DESLOCAMENTO ATE INIMIGO
-				if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
-					this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
-
-					//SpendingEnergy ();
-//					Debug.Log ("Perseguindo");
-					transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
-					//seeking = true;
-				} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
-				if (targetEnemy.transform.position.x < transform.position.x) {
-					transform.eulerAngles = new Vector3 (0, 180, 0);
+				if (Vector3.Distance (transform.position, targetEnemy.transform.position) > reach) {
+					seeking = true;
+					targetEnemy = null;
 				} else {
-						transform.eulerAngles = new Vector3 (0, 0, 0);
+					//DESLOCAMENTO ATE INIMIGO
+					if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
+						this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+
+						//SpendingEnergy ();
+						//					Debug.Log ("Perseguindo");
+						transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
+						//seeking = true;
+					} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
+						if (targetEnemy.transform.position.x < transform.position.x) {
+							transform.eulerAngles = new Vector3 (0, 180, 0);
+						} else {
+							transform.eulerAngles = new Vector3 (0, 0, 0);
+						}
+
+						if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
+
+							if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//VERIFICA SE ALVO HEROI
+								if (targetEnemy.GetComponent<WPIASoldierControler> ().alive == true) {//VERIFICA ALVO AINDA VIVE
+									StartCoroutine (DealDamage ());
+								} else {
+									targetEnemy = null;
+									seeking = true;
+									this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+
+								}
+							} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//VERIFICA SE ALVO É BASE
+								if (targetEnemy.GetComponent<ChargesScript> ()!= null) {//VERIFICA ALVO AINDA VIVE
+									StartCoroutine (DealDamage ());
+								} else {
+									targetEnemy = null;
+									seeking = true;
+									this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+
+								}
+							} else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null) {//VERIFICA SE ALVO É TORRE
+								if (targetEnemy.GetComponent<ChargesScriptTowers> ()!= null) {//VERIFICA ALVO AINDA VIVE
+									StartCoroutine (DealDamage ());
+								} else {
+									targetEnemy = null;
+									seeking = true;
+									this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+
+								}
+							} else {//VERIFICA SE ALVO É TROPA
+								if (targetEnemy.GetComponent<SoldierControler> ()!= null) {//VERIFICA ALVO AINDA VIVE
+									StartCoroutine (DealDamage ());
+								} else {
+									targetEnemy = null;
+									seeking = true;
+									this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+
+								}
+							}
+
+						} 
+
+					}
+				}
+					
+			} else if(targetEnemy == null){ // VERIFICA SE EXISTE ALVO E SE PAROU A BUSCA
+				seeking = true;
+				this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+			}
+
+		} else if(this.team == 2) { // VERIFICA EQUIPE
+
+			if (targetEnemy != null && seeking == false) { // VERIFICA SE EXISTE ALVO E SE PAROU A BUSCA
+
+
+				if (Vector3.Distance (transform.position, targetEnemy.transform.position) > reach) {
+					seeking = true;
+					targetEnemy = null;
+				} else {
+					//DESLOCAMENTO ATE INIMIGO
+					if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
+						this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+
+						//SpendingEnergy ();
+						//					Debug.Log ("Perseguindo");
+						transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
+						//seeking = true;
+					} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
+						if (targetEnemy.transform.position.x < transform.position.x) {
+							transform.eulerAngles = new Vector3 (0, 180, 0);
+						} else {
+							transform.eulerAngles = new Vector3 (0, 0, 0);
+						}
+
+						if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
+
+							if (targetEnemy.GetComponent<WPSoldierControler> () != null) {//VERIFICA SE ALVO HEROI
+								if (targetEnemy.GetComponent<WPSoldierControler> ().alive == true) {//VERIFICA ALVO AINDA VIVE
+									StartCoroutine (DealDamage ());
+								} else {
+									targetEnemy = null;
+									seeking = true;
+									this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+
+								}
+							} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//VERIFICA SE ALVO É BASE
+								if (targetEnemy.GetComponent<ChargesScript> () != null) {//VERIFICA ALVO AINDA VIVE
+									StartCoroutine (DealDamage ());
+								} else {
+									targetEnemy = null;
+									seeking = true;
+									this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+
+								}
+							} else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null) {//VERIFICA SE ALVO É TORRE
+								if (targetEnemy.GetComponent<ChargesScriptTowers> () != null) {//VERIFICA ALVO AINDA VIVE
+									StartCoroutine (DealDamage ());
+								} else {
+									targetEnemy = null;
+									seeking = true;
+									this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+
+								}
+							} else {//VERIFICA SE ALVO É TROPA
+								if (targetEnemy.GetComponent<SoldierControler> () != null) {//VERIFICA ALVO AINDA VIVE
+									StartCoroutine (DealDamage ());
+								} else {
+									targetEnemy = null;
+									seeking = true;
+									this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+
+								}
+							}
+
+						} 
+
+					} else if(targetEnemy == null) {
+						seeking = true;
+						this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+					}
 				}
 
-					if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
-						danoCD = 0;
-						if (haveAnimation)
-							this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Attack");
-						//anim.SetTrigger ("Attack");
-
-						StartCoroutine (DealDamage ());
-					} else {
-						//					if (tutorial) {
-						//						danoCD += Time.deltaTime * 20;
-						//					} else {
-						//						danoCD += Time.deltaTime * 10;
-						//					}
-					}
-				} 
+			} else if(targetEnemy == null){ // VERIFICA SE EXISTE ALVO E SE PAROU A BUSCA
+				seeking = true;
+				this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
 			}
-		} else if(this.targetEnemy == null)  {
-			seeking = true;
-			this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
-
 		}
+
+
+//		if (seeking == false && this.targetEnemy != null) { 
+//
+//
+//			if (Vector3.Distance (transform.position, targetEnemy.transform.position) > reach) {
+//				seeking = true;
+//				targetEnemy = null;
+//			} else {
+//				//DESLOCAMENTO ATE INIMIGO
+//				if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
+//					this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+//
+//					//SpendingEnergy ();
+////					Debug.Log ("Perseguindo");
+//					transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
+//					//seeking = true;
+//				} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
+//						if (targetEnemy.transform.position.x < transform.position.x) {
+//							transform.eulerAngles = new Vector3 (0, 180, 0);
+//						} else {
+//							transform.eulerAngles = new Vector3 (0, 0, 0);
+//						}
+//
+//						if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
+//							danoCD = 0;
+//							if (haveAnimation)
+//								this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Attack");
+//							//anim.SetTrigger ("Attack");
+//
+//							StartCoroutine (DealDamage ());
+//						} 
+//		
+//				} 
+//			}
+//		} else if(this.targetEnemy == null)  {
+//			seeking = true;
+//			this.transform.Find ("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Walk");
+//
+//		}
 
 		danoCD += Time.deltaTime * 2;
 
@@ -562,6 +729,8 @@ public class SoldierControler : MonoBehaviour {
 			this.energy = 200;
 			this.summon = false;
 			this.specialHabilityCD = 2;
+			this.explosiveDamage = false;
+			this.skillshoter = false;
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [0];
 			this.haveAnimation = true;
 			Instantiate (animations [1], transform);
@@ -569,7 +738,7 @@ public class SoldierControler : MonoBehaviour {
 		case(2): // ASTRONAUTA
 			this.vidaMax = 35;//Baixo
 			this.vida = 35;//Baixo
-			this.reach = 2;
+			this.reach = 1.5f;
 			this.damage = 22; //Medio
 			this.damageSpeed = 1; //Baixo
 			this.range = 3; //Alto
@@ -577,6 +746,8 @@ public class SoldierControler : MonoBehaviour {
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
+			this.explosiveDamage = false;
+			this.skillshoter = false;
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [1];
 			//this.GetComponent<SpriteRenderer> ().flipX = true;
 			Instantiate (animations [2], transform);
@@ -585,7 +756,7 @@ public class SoldierControler : MonoBehaviour {
 		case(3): //ANJINHO -> Cranicola
 			this.vidaMax = 15; //Baixissimo
 			this.vida = 15; //Baixissimo
-			this.reach = 2; 
+			this.reach = 1.5f;
 			this.damage = 50; //Alto
 			this.damageSpeed = 0.25f; //Altissimo
 			this.range = 1; //Baixissimo
@@ -593,6 +764,8 @@ public class SoldierControler : MonoBehaviour {
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
+			this.explosiveDamage = true;
+			this.skillshoter = true;
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [2];
 			Instantiate (animations [3], transform);
 			this.haveAnimation = true;
@@ -600,7 +773,7 @@ public class SoldierControler : MonoBehaviour {
 		case(4): //JOTALHÃO
 			this.vidaMax = 200; //Alto
 			this.vida = 200; //Alto
-			this.reach = 2;
+			this.reach = 1.5f;
 			this.damage = 50; //Alto
 			this.damageSpeed = 1; //Baixo
 			this.range = 1; //Baixissimo
@@ -608,6 +781,8 @@ public class SoldierControler : MonoBehaviour {
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
+			this.explosiveDamage = false;
+			this.skillshoter = false;
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [3];
 			Instantiate (animations [4], transform);
 			this.haveAnimation = true;
@@ -615,7 +790,7 @@ public class SoldierControler : MonoBehaviour {
 		case(5): //PITECO
 			this.vidaMax = 35; //Baixo
 			this.vida = 35; //Baixo
-			this.reach = 2;
+			this.reach = 1.5f;
 			this.damage = 22; // Medio
 			this.damageSpeed = 0.5f; //medio
 			this.range = 2; //Medio
@@ -623,6 +798,8 @@ public class SoldierControler : MonoBehaviour {
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
+			this.explosiveDamage = true;
+			this.skillshoter = true;
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [4];
 			Instantiate (animations [5], transform);
 			this.haveAnimation = true;
@@ -630,7 +807,7 @@ public class SoldierControler : MonoBehaviour {
 		case(6): //PENADINHO
 			this.vidaMax =75; //Medio
 			this.vida = 75; //Medio
-			this.reach = 2; 
+			this.reach = 1.5f;
 			this.damage = 22; //Medio
 			this.damageSpeed = 0.5f; //Medio
 			this.range = 2; //Medio
@@ -638,12 +815,14 @@ public class SoldierControler : MonoBehaviour {
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = true;
+			this.explosiveDamage = true;
+			this.skillshoter = true;
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [5];
 			//this.GetComponent<SpriteRenderer> ().flipX = true;
 			Instantiate (animations [6], transform);
 			this.haveAnimation = true;
 			break;
-		case(7): //MAURICIO ->
+		case(7): //MAURICIO -> off
 			this.vidaMax = 10;
 			this.vida = 10;
 			this.reach = 0.5f;
@@ -659,7 +838,7 @@ public class SoldierControler : MonoBehaviour {
 		case(8): //SANSAO
 			this.vidaMax = 35; //Baixo
 			this.vida = 35; //Baixo
-			this.reach = 1;
+			this.reach =  1.5f;
 			this.damage = 14; //Baixo
 			this.damageSpeed = 0.5f; //Medio
 			this.range = 1; //Baixissimo
@@ -667,6 +846,8 @@ public class SoldierControler : MonoBehaviour {
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
+			this.explosiveDamage = false;
+			this.skillshoter = false;
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [7];
 			Instantiate (animations [8], transform);
 			this.haveAnimation = true;
@@ -674,7 +855,7 @@ public class SoldierControler : MonoBehaviour {
 		case(9): //MINGAU
 			this.vidaMax = 75; //Medio
 			this.vida = 75; //Medio
-			this.reach = 1;
+			this.reach = 1.5f;
 			this.damage = 22; //Medio
 			this.damageSpeed = 0.33f;  //Alto
 			this.range = 1; //Baixissimo
@@ -682,6 +863,8 @@ public class SoldierControler : MonoBehaviour {
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
+			this.explosiveDamage = false;
+			this.skillshoter = false;
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [8];
 			Instantiate (animations [9], transform);
 			this.haveAnimation = true;
@@ -689,7 +872,7 @@ public class SoldierControler : MonoBehaviour {
 		case(10): //ALFREDO
 			this.vidaMax = 9;
 			this.vida = 9;
-			this.reach = 2;
+			this.reach = 1.5f;
 			this.damage = 5;
 			this.damageSpeed = 5;
 			this.range = 2;
@@ -705,7 +888,7 @@ public class SoldierControler : MonoBehaviour {
 		case(11): //MUMINHO
 			this.vidaMax = 2;
 			this.vida = 2;
-			this.reach = 2;
+			this.reach =  1.5f;
 			this.damage = 1;
 			this.damageSpeed = 3;
 			this.range = 2;
@@ -805,7 +988,7 @@ public class SoldierControler : MonoBehaviour {
 			UpdateLife ();
 		}
 		if (effect == "healing") {
-			this.vida++;
+			this.vida += 22;
 			UpdateLife ();
 		}
 		if (effect == "extraGealing") {
@@ -1112,11 +1295,11 @@ public class SoldierControler : MonoBehaviour {
 
 		this.vida -= x;
 		//UpdateLife ();
-		if (explosion) {
-			Instantiate (SplashEffect, this.transform.position, Quaternion.identity);
-		} else {
-			Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
-		}
+//		if (explosion) {
+//			Instantiate (SplashEffect, this.transform.position, Quaternion.identity);
+//		} else {
+//			Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+//		}
 		if (this.team == 1 && heroUnity == true) {
 			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
 		}
@@ -1133,14 +1316,40 @@ public class SoldierControler : MonoBehaviour {
 		
 
 	public void TrowArrow(){
+		StartCoroutine (DelayedHitEffect ());
+		GameObject alvo = new GameObject ();
 		if (targetEnemy != null) {
-		GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity).GetComponent<ArrowScript>().target = targetEnemy;
+			if (troopId != 5 && troopId != 2) { //sprite do Projetil
+				arrowModel.GetComponent<ArrowScript> ().type = 0;
+			} else {
+				arrowModel.GetComponent<ArrowScript> ().type = 1;
+			}
+		
+//			if (skillshoter) {
+//				Instantiate (alvo, targetEnemy.transform.position, Quaternion.identity);
+//				GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity).GetComponent<ArrowScript>().target = alvo;
+//			} else {
+//				GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity).GetComponent<ArrowScript>().target = targetEnemy;
+//			}
+
+			GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity).GetComponent<ArrowScript>().target = targetEnemy;
 //		if (targetEnemy != null) {
 //		arrow.GetComponent<ArrowScript> ().target = targetEnemy;
 	} else {
 			//Destroy (arrow);
 	}
 
+	}
+
+	IEnumerator DelayedHitEffect(){
+		yield return new WaitForSeconds (range/8f);
+		if (targetEnemy != null) {
+			if (explosiveDamage) {
+				Instantiate (SplashEffect, targetEnemy.transform.position, Quaternion.identity);
+			} else {
+				Instantiate (HitAnimationObject, targetEnemy.transform.position, Quaternion.identity);
+			}
+		}
 	}
 
 	public void ChangeLane(Vector3 pos){

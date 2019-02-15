@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class FilterScript : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class FilterScript : MonoBehaviour {
 	public GameObject CardInfo;
 	public GameObject CardPrefab;
 	private GameObject g;
+	public int[] b;
 	public int[] x;
 	private int[] cs;
 	private int[] empty;
@@ -71,7 +73,8 @@ public class FilterScript : MonoBehaviour {
 
 	public void EnableCards(){
 		int[] a = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
-		if (x.Length == a.Length && a.Length != 0) {
+
+		if (b.Length == a.Length && a.Length != 0) {
 			//UpdatePlayerCardList ();
 		} else {
 			ResetCards ();
@@ -87,14 +90,16 @@ public class FilterScript : MonoBehaviour {
 			cs [i] = i;
 			//Debug.Log (i);
 		}
-		
+
 		if (CardShop) {
-			x = cs;
+			b = cs;
 		} else {
 			int[] a = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
-			x = a;
+			b = a;
 		}
-			
+
+		int[] x = b.Distinct ().ToArray ();
+
 		int[] enableds = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
 
 //		foreach (GameObject card in CardPrefabs) {
@@ -487,7 +492,7 @@ public class FilterScript : MonoBehaviour {
 				}
 				childrens.Add (g.transform);
 				break;
-			case 17: // removido(Louco)
+			case 17: // Mingau
 				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
 				g.GetComponent<CardScript> ().CardID = 17;
 				g.GetComponent<CardScript> ().efeito = "Unidade";
@@ -505,6 +510,28 @@ public class FilterScript : MonoBehaviour {
 				if (CardShop) {
 					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
 					g.GetComponent<CardScript> ().PricetagValue.text = "100";
+					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
+				}
+				childrens.Add (g.transform);
+				break;
+			case 18: // Cranicola
+				g = Instantiate (CardPrefab, this.transform.position, Quaternion.identity);
+				g.GetComponent<CardScript> ().CardID = 18;
+				g.GetComponent<CardScript> ().efeito = "Unidade";
+				g.GetComponent<CardScript> ().personagem = "Magali";
+				g.GetComponent<CardScript> ().cardname = "Cranicola";
+				g.GetComponent<CardScript> ().descrition = "Chama a unidade Cranicola para ajudar";
+				g.GetComponent<CardScript> ().cost = "50";
+				g.GetComponent<CardScript> ().Gemcost = "5";
+				g.GetComponent<CardScript> ().damage = "120";
+				g.GetComponent<CardScript> ().efect.sprite = Efects [1];
+				g.GetComponent<CardScript> ().image = Images [cardID];
+				g.GetComponent<CardScript> ().peson = Persons [2];
+				g.transform.SetParent (this.transform, false);
+				g.GetComponent<CardScript> ().cardInfo = CardInfo;
+				if (CardShop) {
+					g.GetComponent<CardScript> ().PriceTag.SetActive (true);
+					g.GetComponent<CardScript> ().PricetagValue.text = "50";
 					g.GetComponent<CardScript> ().activebutton.gameObject.SetActive (false);
 				}
 				childrens.Add (g.transform);

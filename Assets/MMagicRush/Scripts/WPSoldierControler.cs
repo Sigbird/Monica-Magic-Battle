@@ -101,6 +101,10 @@ public class WPSoldierControler : MonoBehaviour {
 
 	public float respawningTimer;
 
+	public bool explosiveDamage;
+
+	public int shotsCounter;
+
 	//STATUS
 
 	public int enemyGems;
@@ -235,14 +239,14 @@ public class WPSoldierControler : MonoBehaviour {
 		this.level = 1;
 		if (healtbarSoldierSolid != null) {
 			this.healtbarSoldierSolid.transform.gameObject.SetActive (true);
-			this.specialBar.SetActive (true);
+			//this.specialBar.SetActive (true);
 		}
 		//		this.state = STATE.DEFAULT;
 		if(heroUnity)
 			StartCoroutine (HealingAndXp ());
 
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
-		audioManager.PlayAudio ("spawn");
+		//audioManager.PlayAudio ("spawn");
 
 
 	}
@@ -556,19 +560,20 @@ public class WPSoldierControler : MonoBehaviour {
 
 			} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
 
-				if (targetEnemy.transform.position.x < transform.position.x) {
-					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = true;
-				} else if (targetEnemy.transform.position.x > transform.position.x) {
-					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = false;
-				}
-					
+					if (targetEnemy.transform.position.x < transform.position.x) {
+						anim.gameObject.GetComponent<SpriteRenderer> ().flipX = true;
+					} else if (targetEnemy.transform.position.x > transform.position.x) {
+						anim.gameObject.GetComponent<SpriteRenderer> ().flipX = false;
+					}
 
-				if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
-					anim.SetTrigger ("Attack");
-					StartCoroutine (DealDamage ());
-				} else {
-					//danoCD += Time.deltaTime * 2;
-				}
+
+					if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
+						anim.SetTrigger ("Attack");
+						StartCoroutine (DealDamage ());
+					} else {
+						//danoCD += Time.deltaTime * 2;
+					}
+
 			}
 		} else { // ALVO SUMIU OU MORREU
 			if (GameObject.Find ("MovementMarker(Clone)")) {
@@ -596,15 +601,16 @@ public class WPSoldierControler : MonoBehaviour {
 
 		switch (heroID) {
 		case(0): 
-			this.vidaMax = 150; //ALto
-			this.vida = 150;
-			this.reach = 2;//3
-			this.damage = 22; //Medio
-			this.damageSpeed = 0.5f;
-			this.range = 1.5f;
-			this.speed = 1.3f; //Medio
+			this.vidaMax = 200; //ALto
+			this.vida = 200;
+			this.reach = 3;//3
+			this.damage = 50; //Alto
+			this.damageSpeed = 0.5f;//Baixo
+			this.range = 2.5f;//Medio
+			this.speed = 0.8f; //Baixo
 			this.energyMax = 3;
 			this.energy = 3;
+			this.explosiveDamage = true;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim.SetInteger ("Char", 0);
 			this.anim = transform.Find ("MonicaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
@@ -614,15 +620,16 @@ public class WPSoldierControler : MonoBehaviour {
 			Debug.Log ("Monica");
 			break;
 		case(1):
-			this.vidaMax = 100; //Medio
-			this.vida = 100;
-			this.reach = 2;//3
+			this.vidaMax = 75; //Medio
+			this.vida = 75;
+			this.reach = 2;//
 			this.damage = 22; //Medio
-			this.damageSpeed = 0.33f;
-			this.range = 1.5f;
+			this.damageSpeed = 0.5f; //Alto
+			this.range = 0.5f;//Baixissimo
 			this.speed = 1.7f; //Alto
 			this.energyMax = 3;
 			this.energy = 3;
+			this.explosiveDamage = false;
 			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim.SetInteger ("Char", 1);
 			this.anim = transform.Find ("CebolinhaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
@@ -632,15 +639,16 @@ public class WPSoldierControler : MonoBehaviour {
 			Debug.Log ("Cebolinha");
 			break;
 		case(2):
-			this.vidaMax = 200; //Altissimo
-			this.vida = 200;
-			this.reach = 0.5f;
-			this.damage = 22;  //Medio
-			this.damageSpeed = 1;
-			this.range = 1.5f;
-			this.speed =0.8f; //baixo
+			this.vidaMax = 75; //Medio
+			this.vida = 75;
+			this.reach = 2f;
+			this.damage = 35;  //Baixo
+			this.damageSpeed = 1f; //Medio
+			this.range = 0.5f; //Baixissimo
+			this.speed = 1.7f; //Alto
 			this.energyMax = 4;
 			this.energy = 4;
+			this.explosiveDamage = false;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim = transform.Find ("MagaliAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
 			this.anim.GetComponent<SpriteRenderer>().enabled = true;
@@ -649,13 +657,14 @@ public class WPSoldierControler : MonoBehaviour {
 		case(3):
 			this.vidaMax = 100; //Medio
 			this.vida = 100;
-			this.reach = 0.5f;
-			this.damage = 50;  //Alto
-			this.damageSpeed = 0.5f;
-			this.range = 1.5f;
-			this.speed = 1.3f; //Medio
+			this.reach = 2f;
+			this.damage = 50;  //Baixo
+			this.damageSpeed = 0.5f; //Medio
+			this.range = 1.5f; //Baixissimo
+			this.speed = 1.3f; //Alto
 			this.energyMax = 4;
 			this.energy = 4;
+			this.explosiveDamage = false;
 			this.GetComponent<SpriteRenderer> ().sprite = warrior;
 			this.anim = transform.Find ("CascãoAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
 			this.anim.GetComponent<SpriteRenderer>().enabled = true;
@@ -810,7 +819,7 @@ public class WPSoldierControler : MonoBehaviour {
 			this.speed = speed / 4;
 		}
 		if (effect == "speed") {
-			this.speed = speed + 0.1f;
+			this.speed  += 0.2f;
 		}
 		if (effect == "damage") {
 			this.vida --;
@@ -821,7 +830,7 @@ public class WPSoldierControler : MonoBehaviour {
 			UpdateLife ();
 		}
 		if (effect == "healing") {
-			this.vida++;
+			this.vida += 50;
 			UpdateLife ();
 		}
 		if (effect == "extraGealing") {
@@ -829,20 +838,20 @@ public class WPSoldierControler : MonoBehaviour {
 			UpdateLife ();
 		}
 		if (effect == "shield") {
-			this.vida++;
+			this.vida+= 100;
 			UpdateLife ();
 		}
 		if (effect == "warShout") {
-			this.damage++;
-			this.damageSpeed++;
-			this.speed = speed * 2;
+			this.damage += 20;
+			this.damageSpeed -= 0.2f;
+			this.speed += 0.2f;
 		}
 		if (effect == "increaseDamage") {
-			this.damage++;
+			this.damage += 20;
 		}
 		if (effect == "sleep") {
-			this.damage--;
-			this.damageSpeed--;
+			
+			this.damageSpeed +=100;
 			this.speed = 0;
 		}
 	}
@@ -861,16 +870,16 @@ public class WPSoldierControler : MonoBehaviour {
 			this.speed = maxSpeed;
 		}
 		if (effects == "shield") {
-			this.vida --;
+			this.vida-= 100;
 		}
 		if (effects == "warShout") {
-			this.damage--;
-			this.damageSpeed--;
-			this.speed = maxSpeed;
+			this.damage -= 20;
+			this.damageSpeed += 0.2f;
+			this.speed = 0.2f;
 		}
 		if (effects == "sleep") {
-			this.damage++;
-			this.damageSpeed++;
+
+			this.damageSpeed -=100;
 			this.speed = maxSpeed;
 		}
 	}
@@ -912,7 +921,7 @@ public class WPSoldierControler : MonoBehaviour {
 		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
 		if (healtbarSoldierSolid != null) {
 			this.healtbarSoldierSolid.transform.gameObject.SetActive (false);
-			this.specialBar.SetActive (false);
+			//this.specialBar.SetActive (false);
 		}
 		//this.energybarSoldier.SetActive (false);
 		this.skill1.gameObject.SetActive (false);
@@ -922,8 +931,11 @@ public class WPSoldierControler : MonoBehaviour {
 //		if(heroUnity)
 //			this.energy = this.energyMax;
 		this.seeking = false;
+		this.transform.position = new Vector3(0,-6.5f,0);
+
 		yield return new WaitForSeconds (respawningTimer);
 
+		audioManager.PlayAudio ("spawn");
 		if(heroUnity)
 			transform.position = heroBase.transform.position;
 		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
@@ -931,7 +943,7 @@ public class WPSoldierControler : MonoBehaviour {
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
 		if (healtbarSoldierSolid != null) {
 			this.healtbarSoldierSolid.transform.gameObject.SetActive (true);
-			this.specialBar.SetActive (true);
+			//this.specialBar.SetActive (true);
 		}
 //		if (heroUnity)
 //			this.energybarSoldier.SetActive (true);
@@ -945,6 +957,7 @@ public class WPSoldierControler : MonoBehaviour {
 		Arrival.Play ();
 		alive = true;
 		gameBegin = true;
+		this.transform.position = new Vector3(0,-1.5f,0);
 	}
 
 	public GameObject SeekEnemyTarget (){
@@ -1165,6 +1178,19 @@ public class WPSoldierControler : MonoBehaviour {
 	}
 
 	IEnumerator DealDamage(){
+
+		int tempdamage = this.damage;
+
+		if (this.heroID == 0 && shotsCounter == 2) {
+			tempdamage = this.damage * 2;
+			shotsCounter = 0;
+		} 
+
+		if (this.heroID == 1) {
+			GetComponent<HeroSpecialHability> ().LostInvisibility ();
+		} 
+
+
 		danoCD = 0;
 		yield return new WaitForSeconds (0.5f);
 		if (targetEnemy != null) {
@@ -1190,7 +1216,7 @@ public class WPSoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					lockedTarget = false;
 				} else {
-					targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
+					targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (tempdamage);
 					if (this.range > 1)
 						TrowArrow ();
 				}
@@ -1204,7 +1230,7 @@ public class WPSoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					lockedTarget = false;
 				} else {
-					targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
+					targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (tempdamage);
 					if (this.range > 1)
 						TrowArrow ();
 				}
@@ -1212,7 +1238,7 @@ public class WPSoldierControler : MonoBehaviour {
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
-				targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (damage);
+				targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (tempdamage);
 				if (this.range > 1)
 					TrowArrow ();
 //				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
@@ -1225,7 +1251,7 @@ public class WPSoldierControler : MonoBehaviour {
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.5f;
-				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (damage);
+				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (tempdamage);
 				if (this.range > 1)
 					TrowArrow ();
 				//				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
@@ -1234,6 +1260,8 @@ public class WPSoldierControler : MonoBehaviour {
 				//				}
 
 			}
+
+			shotsCounter += 1;
 
 			if (this.range > 1) {
 				audioManager.PlayAudio ("shot");
@@ -1244,11 +1272,13 @@ public class WPSoldierControler : MonoBehaviour {
 	}
 
 	public void ReceiveDamage(int x){
-
+		if (this.heroID == 1) {
+			GetComponent<HeroSpecialHability> ().LostInvisibility ();
+		} 
 		this.vida -= x;
 		UpdateLife ();
 
-		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+		//Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
 
 		if (this.team == 1 && heroUnity == true) {
 			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
@@ -1258,14 +1288,16 @@ public class WPSoldierControler : MonoBehaviour {
 	}
 
 	public void ReceiveDamage(int x, bool explosion){
-
+		if (this.heroID == 1) {
+			GetComponent<HeroSpecialHability> ().LostInvisibility ();
+		} 
 		this.vida -= x;
 		//UpdateLife ();
-		if (explosion) {
-			Instantiate (SplashEffect, this.transform.position, Quaternion.identity);
-		} else {
-			Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
-		}
+//		if (explosion) {
+//			Instantiate (SplashEffect, this.transform.position, Quaternion.identity);
+//		} else {
+//			Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
+//		}
 		if (this.team == 1 && heroUnity == true) {
 			FlashingEffects.GetComponent<Animator> ().SetTrigger ("Flash");
 		}
@@ -1275,17 +1307,18 @@ public class WPSoldierControler : MonoBehaviour {
 
 	public void TrowArrow(){
 		StartCoroutine (DelayedHitEffect ());
-		GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity);
 		if (targetEnemy != null) {
-			arrow.GetComponent<ArrowScript> ().target = targetEnemy;
+			arrowModel.GetComponent<ArrowScript> ().type = 0;
+			arrowModel.GetComponent<ArrowScript> ().target = targetEnemy;
+			GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity);
 		} else {
-			Destroy (arrow);
+
 		}
 
 	}
 
 	IEnumerator DelayedHitEffect(){
-		yield return new WaitForSeconds (0.3f);
+		yield return new WaitForSeconds (range/7f);
 		if (targetEnemy != null) {
 			Instantiate (HitAnimationObject, targetEnemy.transform.position, Quaternion.identity);
 		}

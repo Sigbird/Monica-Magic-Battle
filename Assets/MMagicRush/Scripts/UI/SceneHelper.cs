@@ -22,7 +22,7 @@ public class SceneHelper : MonoBehaviour {
 
 	public int[] zero;
 
-	public float[][] cards = new float[18][];
+	public float[][] cards = new float[19][];
 	// Use this for initialization
 
  	// Use this for initialization
@@ -65,6 +65,7 @@ public class SceneHelper : MonoBehaviour {
 			cards [15] = new float[6]{ 2, 0, 1, 1, 4, 1 };
 			cards [16] = new float[6]{ 6, 3, 1, 0, 4, 1 };
 			cards [17] = new float[6]{ 6, 0, 1, 6, 4, 1 };
+			cards [18] = new float[6]{ 6, 0, 1, 6, 4, 1 };
 
 
 
@@ -743,6 +744,15 @@ public class SceneHelper : MonoBehaviour {
 			PlayerPrefs.SetFloat ("Card174", cards [17][3]);
 			PlayerPrefs.SetFloat ("Card175", cards [17][4]);
 			PlayerPrefs.SetFloat ("Card176", cards [17][5]);
+		}
+
+		if (PlayerPrefs.GetFloat  ("Card181")  == 0) {
+			PlayerPrefs.SetFloat ("Card181", cards [18][0]);
+			PlayerPrefs.SetFloat ("Card182", cards [18][1]);
+			PlayerPrefs.SetFloat ("Card183", cards [18][2]);
+			PlayerPrefs.SetFloat ("Card184", cards [18][3]);
+			PlayerPrefs.SetFloat ("Card185", cards [18][4]);
+			PlayerPrefs.SetFloat ("Card186", cards [18][5]);
 		}
 			
 	}

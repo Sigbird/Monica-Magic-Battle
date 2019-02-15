@@ -447,6 +447,11 @@ public class CardSlotScript : MonoBehaviour {
 			//nameText.text = "Mingau";
 			UIilustration.sprite = cardsImages [19];
 			break;
+		case 18://TROPA: Cranicola
+			cardCost = 5;
+			//nameText.text = "Cranicola";
+			UIilustration.sprite = cardsImages [18];
+			break;
 													//TORRES
 
 		case 21://Mover
@@ -623,22 +628,28 @@ public class CardSlotScript : MonoBehaviour {
 
 				break;
 			case 7:// CANJA DE GALINHA -> REMEDIO
-			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
-				GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
-				//				target.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
-				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
-//					if (obj.GetComponent<SoldierControler> () != null) {
-//							obj.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
-//					}
-					if (obj.GetComponent<WPSoldierControler> () != null) {
-/*Effect*/					Instantiate (effectsAnimation [7], new Vector3 (0, 0, 0), Quaternion.identity);
-							audioManager.PlayAudio ("alivio");
-							obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("healing");
+				if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
+					GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+					//				target.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
+					Instantiate (effectsAnimation [7], new Vector3 (0, 0, 0), Quaternion.identity);
+					audioManager.PlayAudio ("alivio");
+					foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
+						if (obj.GetComponent<SoldierControler> () != null) {
+								obj.GetComponent<SoldierControler> ().ReceiveEffect ("healing");
+						}
+						if (obj.GetComponent<WPSoldierControler> () != null ) {
+							if (obj.GetComponent<WPSoldierControler> ().alive == true) {
+								obj.GetComponent<WPSoldierControler> ().ReceiveEffect ("healing");
+							}
+						}
 					}
+					GameObject.Find ("DeckPile").GetComponent<DeckPileScript> ().DrawNewCard (CardPosition);
+					Destroy (this.gameObject);
+				} else {
+					GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+					GameObject.Find ("DeckPile").GetComponent<DeckPileScript> ().DrawNewCard (CardPosition);
+					Destroy (this.gameObject);
 				}
-				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
-				Destroy (this.gameObject);
-			}
 				break;
 			case 8:// ESCUDO
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {
@@ -795,6 +806,24 @@ public class CardSlotScript : MonoBehaviour {
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 9;
+			if (Movable != null) {
+				Instantiate (t, Movable.transform.position, Quaternion.identity);
+			} else {
+				Instantiate (t, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
+			}
+			//			if (Random.Range (1, 3) == 1) {
+			//				Instantiate (t, GameObject.Find ("HeroSpawTroop1").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 1;;
+			//			} else {
+			//				Instantiate (t, GameObject.Find ("HeroSpawTroop2").transform.position, Quaternion.identity).GetComponent<SoldierControler>().lane = 2;;
+			//			}
+			GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
+			Destroy (this.gameObject);
+			break;
+
+		case 18:// TROPA: CRANICOLA
+			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			t = troop;
+			t.GetComponent<SoldierControler> ().troopId = 3;
 			if (Movable != null) {
 				Instantiate (t, Movable.transform.position, Quaternion.identity);
 			} else {

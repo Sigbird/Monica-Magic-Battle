@@ -94,7 +94,7 @@ public class GemScript : MonoBehaviour {
 				if (heroProgress >= 1) {
 						
 					if (ActualGem.transform.name == "GO_greenGem") {
-						gc.GetComponent<GameController> ().MiningGem (5);
+						gc.GetComponent<GameController> ().MiningGem (15);
 						Instantiate (flyingGem, this.transform.position, Quaternion.identity);
 					}
 
@@ -265,21 +265,23 @@ public class GemScript : MonoBehaviour {
 		//SRender.SetActive (false);
 		heroProgress = 0;
 		enemyProgress = 0;
+		int x = Random.Range (1, 7);
+		sync = x;
 
 		if(sync == 1)
-		yield return new WaitForSeconds (2);
-		if(sync == 2)
 			yield return new WaitForSeconds (5);
+		if(sync == 2)
+			yield return new WaitForSeconds (11);
 		if(sync == 3)
-			yield return new WaitForSeconds (9);
+			yield return new WaitForSeconds (12);
 		if(sync == 4)
-			yield return new WaitForSeconds (3);
+			yield return new WaitForSeconds (7);
 		if(sync == 5)
-			yield return new WaitForSeconds (6);
-		if(sync == 6)
 			yield return new WaitForSeconds (10);
+		if(sync == 6)
+			yield return new WaitForSeconds (14);
 		if(sync == 7)
-			yield return new WaitForSeconds (4);
+			yield return new WaitForSeconds (9);
 
 			this.enabled = true;
 

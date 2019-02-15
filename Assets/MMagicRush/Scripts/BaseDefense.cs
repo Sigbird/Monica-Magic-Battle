@@ -26,6 +26,8 @@ public class BaseDefense : MonoBehaviour {
 	public bool lockedTarget;
 	public GameObject targetEnemy;
 	public GameObject arrowModel;
+
+	public GameObject HitAnimationObject;
 	// Use this for initialization
 	void Start () {
 		this.damage = 22;
@@ -238,12 +240,21 @@ public class BaseDefense : MonoBehaviour {
 	}
 
 	public void TrowArrow(){
+		StartCoroutine (DelayedHitEffect ());
 		arrowModel.GetComponent<ArrowScript> ().target = targetEnemy;
+		arrowModel.GetComponent<ArrowScript> ().type = 0;
 		//GameObject arrow = Instantiate (arrowModel, this.transform.position, Quaternion.identity);
 		if (targetEnemy != null) {
 			Instantiate (arrowModel, this.transform.position, Quaternion.identity);
 		} 
 
+	}
+
+	IEnumerator DelayedHitEffect(){
+		yield return new WaitForSeconds (reach/4.5f);
+		if (targetEnemy != null) {
+			Instantiate (HitAnimationObject, targetEnemy.transform.position, Quaternion.identity);
+		}
 	}
 
 }

@@ -12,12 +12,20 @@ public class ArrowScript : MonoBehaviour {
 
 	public float curve;
 
+	public Sprite[] Images;
+
 	public Transform Projectile;      
 	private Transform myTransform;
+	public Vector2 targetpositionstatic;
+	public bool SkillShot;
 	// Use this for initialization
+
+	public int type;
 
 	void Awake()
 	{
+		GetComponent<SpriteRenderer> ().sprite = Images [type];
+
 		myTransform = transform; 
 		Projectile = transform;
 	}
@@ -47,7 +55,7 @@ public class ArrowScript : MonoBehaviour {
 			Quaternion q = Quaternion.AngleAxis (angle, Vector3.forward);
 			transform.rotation = q;
 
-			if (Vector3.Distance (this.transform.position, target.transform.position) < 0.5f || target.GetComponent<SpriteRenderer> ().enabled == false) {
+			if (Vector3.Distance (this.transform.position, target.transform.position) < 0.1f || target == null) {
 				Destroy (this.gameObject);
 			} else {
 				this.transform.position = Vector3.MoveTowards (this.transform.position,target.transform.position, Time.deltaTime * 5);		

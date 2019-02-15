@@ -406,23 +406,23 @@ public class GameController : MonoBehaviour {
 
 	}
 
-	public void Towerfall(){
-		Debug.Log ("Tower1 " + Player2Towers [0]);
-		Debug.Log ("Tower2 " + Player2Towers [1]);
-		if (Player2Towers [0] == null || Player2Towers [1] == null) {
-			Player1Score = 1;
-			if (Player2Towers [0] == null && Player2Towers [1] == null) {
-				Player1Score = 2;
-			}
-		}
-
-		if (Player1Towers [0] == null || Player1Towers [1] == null) {
-			Player2Score = 1;
-			if (Player1Towers [0] == null && Player1Towers [1] == null) {
-				Player2Score = 2;
-			}
-		}
-	}
+//	public void Towerfall(){
+//		Debug.Log ("Tower1 " + Player2Towers [0]);
+//		Debug.Log ("Tower2 " + Player2Towers [1]);
+//		if (Player2Towers [0] == null || Player2Towers [1] == null) {
+//			Player1Score = 1;
+//			if (Player2Towers [0] == null && Player2Towers [1] == null) {
+//				Player1Score = 2;
+//			}
+//		}
+//
+//		if (Player1Towers [0] == null || Player1Towers [1] == null) {
+//			Player2Score = 1;
+//			if (Player1Towers [0] == null && Player1Towers [1] == null) {
+//				Player2Score = 2;
+//			}
+//		}
+//	}
 
 	public void NextRound(){
 //		Debug.Log ("xp: "+GameController.playerXp);
