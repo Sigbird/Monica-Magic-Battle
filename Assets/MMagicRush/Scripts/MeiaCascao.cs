@@ -21,17 +21,24 @@ public class MeiaCascao : MonoBehaviour {
 		damageCD += Time.deltaTime;
 
 		if (team == 0) {
-			if (target.GetComponent<WPIASoldierControler> ().anim.GetComponent<SpriteRenderer> ().enabled == true) {
-				if(Vector3.Distance(this.transform.position,target.transform.position)<2 && damageCD > 2){
-					target.GetComponent<WPIASoldierControler> ().ReceiveDamage (1);
+			if (target.GetComponent<WPIASoldierControler> ().alive == true) {
+				if (Vector3.Distance (this.transform.position, target.transform.position) < 2 && damageCD > 2) {
+					target.GetComponent<WPIASoldierControler> ().speed = (target.GetComponent<WPIASoldierControler> ().speed / 2);
+					target.GetComponent<WPIASoldierControler> ().ReceiveDamage (5);
 					damageCD = 0;
+				} else {
+					target.GetComponent<WPIASoldierControler> ().speed = target.GetComponent<WPIASoldierControler> ().maxSpeed;
 				}
 			}	
 		} else {
-			if (target.GetComponent<WPSoldierControler> ().anim.GetComponent<SpriteRenderer> ().enabled == true) {
+			if (target.GetComponent<WPSoldierControler> ().alive == true) {
 				if(Vector3.Distance(this.transform.position,target.transform.position)<2 && damageCD > 2){
-					target.GetComponent<WPSoldierControler> ().ReceiveDamage (1);
+					target.GetComponent<WPSoldierControler> ().speed = (target.GetComponent<WPSoldierControler> ().speed / 2);
+		
+					target.GetComponent<WPSoldierControler> ().ReceiveDamage (5);
 					damageCD = 0;
+				}else {
+					target.GetComponent<WPSoldierControler> ().speed = target.GetComponent<WPSoldierControler> ().maxSpeed;
 				}
 			}
 		}

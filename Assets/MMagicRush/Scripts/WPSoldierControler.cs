@@ -142,7 +142,7 @@ public class WPSoldierControler : MonoBehaviour {
 	public float speed;
 
 
-	private float maxSpeed;
+	public float maxSpeed;
 
 	[HideInInspector]
 	public int energyMax;
@@ -233,7 +233,7 @@ public class WPSoldierControler : MonoBehaviour {
 		StartCoroutine (Respawning ());
 
 		this.effects = "default";
-		//this.speed = speed / 10;
+		this.speed = speed / 1.5f;
 		this.damageSpeed = damageSpeed + 1.5f;
 		this.maxSpeed = this.speed;
 		this.level = 1;
@@ -589,12 +589,12 @@ public class WPSoldierControler : MonoBehaviour {
 
 	public void SetupHero(){
 		//CONFIGURAÇÃO DE TIPO DE HEROI
-		int id = 1;
-		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1) {
-			heroID = PlayerPrefs.GetInt ("SelectedCharacter");
-		} else {
-			heroID = 1;
-		}
+		int id = 0;
+//		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1) {
+//			heroID =  PlayerPrefs.GetInt ("SelectedCharacter");
+//		} else {
+//			heroID = 1;
+//		}
 
 		if(tutorial==false)
 		GameObject.Find ("HeroPortrait").GetComponent<Image> ().sprite = heroPortraits [heroID];
@@ -655,13 +655,13 @@ public class WPSoldierControler : MonoBehaviour {
 			Debug.Log ("Magali");
 			break;
 		case(3):
-			this.vidaMax = 100; //Medio
-			this.vida = 100;
+			this.vidaMax = 75; //Medio
+			this.vida = 75;
 			this.reach = 2f;
-			this.damage = 50;  //Baixo
-			this.damageSpeed = 0.5f; //Medio
-			this.range = 1.5f; //Baixissimo
-			this.speed = 1.3f; //Alto
+			this.damage = 35;  //Baixo
+			this.damageSpeed = 1f; //Medio
+			this.range = 0.5f; //Baixissimo
+			this.speed = 1.7f; //Alto
 			this.energyMax = 4;
 			this.energy = 4;
 			this.explosiveDamage = false;
@@ -1217,6 +1217,7 @@ public class WPSoldierControler : MonoBehaviour {
 					lockedTarget = false;
 				} else {
 					targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (tempdamage);
+					//Debug.Log ("Damage Dealt: " + tempdamage);
 					if (this.range > 1)
 						TrowArrow ();
 				}
@@ -1320,7 +1321,11 @@ public class WPSoldierControler : MonoBehaviour {
 	IEnumerator DelayedHitEffect(){
 		yield return new WaitForSeconds (range/7f);
 		if (targetEnemy != null) {
-			Instantiate (HitAnimationObject, targetEnemy.transform.position, Quaternion.identity);
+			if (explosiveDamage) {
+				Instantiate (SplashEffect, targetEnemy.transform.position, Quaternion.identity);
+			} else {
+				Instantiate (HitAnimationObject, targetEnemy.transform.position, Quaternion.identity);
+			}		
 		}
 	}
 

@@ -241,10 +241,16 @@ public class GameController : MonoBehaviour {
 	
 		if (newMechanicTest) {
 
-			mins = Mathf.FloorToInt (Duration / 60f);
-			secs = Mathf.FloorToInt (Duration - mins * 60f);
+			float tempduration = Duration - 60;
+			mins = Mathf.FloorToInt (tempduration / 60f);
+			secs = Mathf.FloorToInt (tempduration - mins * 60f);
 			string niceTime = string.Format ("{0:0}:{1:00}", mins, secs);
-			timetext.text = niceTime;
+			if (tempduration > 0) {
+				timetext.text = niceTime;
+			} else {
+				timetext.text = "Overtime";
+				timetext.color = Color.red;
+			}
 
 
 

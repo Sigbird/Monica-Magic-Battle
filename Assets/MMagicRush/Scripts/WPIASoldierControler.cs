@@ -113,6 +113,8 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	public bool seeking;
 
+	public bool lockedTarget;
+
 	public float cdSeek;
 
 	public float respawningTimer;
@@ -266,7 +268,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		StartCoroutine (Respawning ());
 
 		this.effects = "default";
-		this.speed = speed;
+		this.speed = speed /1.5f;
 		this.damageSpeed = damageSpeed + 1.5f;
 		this.maxSpeed = this.speed;
 		this.level = 1;
@@ -361,27 +363,29 @@ public class WPIASoldierControler : MonoBehaviour {
 //			heroHarassChance = 75;
 //		} else 
 		if (GameObject.Find ("HeroBaseEnemy").GetComponent<ChargesScript> ().inCombat == true) {
-			//retreatChance = 90;
+			retreatChance = 90;
 		} else if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == true && GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().vida <= 20) {
-			//heroHarassChance = 75;
+			heroHarassChance = 75;
 		} else if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == true && GameObject.Find ("Hero").transform.position.y > 0) {
-			//heroHarassChance = 60;
+			heroHarassChance = 60;
 		} else if (this.vida >= 100) {
-			//heroHarassChance = 10;
+			heroHarassChance = 10;
 		} else {
 			heroHarassChance = 0;
 		}
-		heroHarassChance = 100;
+		//heroHarassChance = 100;
 		if (gc.EnemyDiamonds < 100) {
-		//	gemColectorChance = 15;
+			gemColectorChance = 15;
 		}
 
 		if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == false) {
-			//pushHatChance = 20;
+			pushHatChance = 20;
 		} else if (this.vida >= 100) {
-			//pushHatChance = 10;
-		} else {
-			//pushHatChance = 0;
+			pushHatChance = 10;
+		} else if (this.vida >= 50) { 
+			pushHatChance = 5;
+		}else{
+				pushHatChance = 0;
 		}
 
 //		if (twisting == false && tutorial == false) {
@@ -561,8 +565,8 @@ public class WPIASoldierControler : MonoBehaviour {
 //				WaypointMark = GetNewWaypoint ();
 //			}
 		if (GetNewWaypoint () != null && multiplayer == false) {
-			//lockedTarget = false;
-			//seeking = false;
+			lockedTarget = false;
+			seeking = false;
 			WaypointMark = GetNewWaypoint ();
 			//targetEnemy = null;
 			if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f) {
@@ -605,8 +609,11 @@ public class WPIASoldierControler : MonoBehaviour {
 		//				}
 		//			}
 
-				if (seeking && cdSeek >= 1) {
-					this.targetEnemy = SeekEnemyTarget ();
+				if (seeking && cdSeek >= 0.01f) {
+					if (lockedTarget == false) {
+						this.targetEnemy = SeekEnemyTarget ();
+					}
+					//this.targetEnemy = SeekEnemyTarget ();
 					if (this.targetEnemy != null) {
 						seeking = false;
 					}
@@ -651,6 +658,7 @@ public class WPIASoldierControler : MonoBehaviour {
 						//danoCD = 0;
 						anim.SetTrigger ("Attack");
 						StartCoroutine (DealDamage ());
+						
 					} else {
 //					if (tutorial) {
 //						danoCD += Time.deltaTime * 20;
@@ -727,7 +735,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.vidaMax = 75; //Medio
 			this.vida = 75;
 			this.reach = 2;//
-			this.damage = 22; //Medio
+			this.damage = 14; //Medio
 			this.damageSpeed = 0.5f; //Alto
 			this.range = 0.5f;//Baixissimo
 			this.speed = 1.7f; //Alto
@@ -1156,7 +1164,6 @@ public class WPIASoldierControler : MonoBehaviour {
 		this.targetEnemy = null;
 		this.skill1.gameObject.SetActive (true);
 		this.skill2.gameObject.SetActive (true);
-		this.damage = 1;
 		this.speed = maxSpeed;
 		this.seeking = true;
 		this.targetEnemy = SeekEnemyTarget();
@@ -1311,30 +1318,33 @@ public class WPIASoldierControler : MonoBehaviour {
 				danoCD = 0;
 				//targetEnemy.GetComponent<WPSoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<WPSoldierControler> ().UpdateLife ();
-				targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (tempdamage);
-				if (this.range > 1)
-					TrowArrow ();
 				if (targetEnemy.GetComponent<WPSoldierControler> ().alive == false) { // ALVO MORREU
 					this.targetEnemy = null;
-					//lockedTarget = false;
+					lockedTarget = false;
+				}else{
+					targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (tempdamage);
+
+					if (this.range > 1)
+						TrowArrow ();
 				}
 			} else if (targetEnemy.GetComponent<SoldierControler> () != null && danoCD > damageSpeed) {//ALVO TROPA
 				danoCD = 0;
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-				targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (tempdamage);
-				if (this.range > 1)
-					TrowArrow ();
 				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
 					this.targetEnemy = null;
-					//lockedTarget = false;
+					lockedTarget = false;
+				}else{
+					targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (tempdamage);
+					if (this.range > 1)
+						TrowArrow ();
 				}
 			} else if (targetEnemy.GetComponent<ChargesScript> () != null && danoCD > damageSpeed) {//ALVO BASE
 				danoCD = 0;
 					//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 					//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 					targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
-				targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (tempdamage);
+					targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (tempdamage);
 					if (this.range > 1)
 						TrowArrow ();
 			}else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null && danoCD > damageSpeed) {//ALVO TORRE
@@ -1488,7 +1498,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		case 5://HERO HARASS
 			if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == true) {
 				if (Vector2.Distance (GameObject.Find ("Hero").transform.position, transform.position) > 1f) {
-					waypoint.EnemyMovementPlacement (new Vector2(GameObject.Find ("Hero").transform.position.x,GameObject.Find ("Hero").transform.position.y + 0.5f));
+					waypoint.EnemyMovementPlacement (new Vector2(GameObject.Find ("Hero").transform.position.x,GameObject.Find ("Hero").transform.position.y));
 					//waypoint.EnemyMovementPlacement (GameObject.Find ("Hero").transform.position);
 					targetEnemy = GameObject.Find ("Hero");
 					StartCoroutine (WaitMethod (3));
@@ -1522,7 +1532,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		case 8://PUSH HAT 
 			if (Random.value > 0.5f) {
 				if (Vector2.Distance (GameObject.Find ("HeroBase").transform.position, transform.position) > 0.5f) {
-					waypoint.EnemyMovementPlacement (new Vector2(GameObject.Find ("HeroBase").transform.position.x,GameObject.Find ("HeroBase").transform.position.y + 1));
+					waypoint.EnemyMovementPlacement (new Vector2(GameObject.Find ("HeroBase").transform.position.x,GameObject.Find ("HeroBase").transform.position.y ));
 					targetEnemy = GameObject.Find ("HeroBase");
 					StartCoroutine (WaitMethod (7));
 				} else {
@@ -1534,7 +1544,7 @@ public class WPIASoldierControler : MonoBehaviour {
 				if (Random.value > 0.5f) {
 					if (GameObject.Find ("HeroTower1") != null) {
 						if (Vector2.Distance (GameObject.Find ("HeroTower1").transform.position, transform.position) > 0.5f) {
-							waypoint.EnemyMovementPlacement (new Vector2(GameObject.Find ("HeroTower1").transform.position.x,GameObject.Find ("HeroTower1").transform.position.y + 1));
+							waypoint.EnemyMovementPlacement (new Vector2(GameObject.Find ("HeroTower1").transform.position.x,GameObject.Find ("HeroTower1").transform.position.y));
 							targetEnemy = GameObject.Find ("HeroTower1");
 							StartCoroutine (WaitMethod (7));
 						} else {
@@ -1548,7 +1558,7 @@ public class WPIASoldierControler : MonoBehaviour {
 				} else {
 					if (GameObject.Find ("HeroTower2") != null) {
 						if (Vector2.Distance (GameObject.Find ("HeroTower2").transform.position, transform.position) > 0.5f) {
-							waypoint.EnemyMovementPlacement (new Vector2(GameObject.Find ("HeroTower2").transform.position.x,GameObject.Find ("HeroTower2").transform.position.y + 1));
+							waypoint.EnemyMovementPlacement (new Vector2(GameObject.Find ("HeroTower2").transform.position.x,GameObject.Find ("HeroTower2").transform.position.y ));
 							targetEnemy = GameObject.Find ("HeroTower2");
 							StartCoroutine (WaitMethod (7));
 						} else {

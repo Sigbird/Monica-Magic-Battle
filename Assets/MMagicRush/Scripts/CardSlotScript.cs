@@ -291,7 +291,7 @@ public class CardSlotScript : MonoBehaviour {
 //					GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 //					Movable.GetComponent<sparkScript> ().DestroyItself ();
 //				} else 
-				if(Movable.transform.position.y> -2f && Movable.transform.position.y < 0.5f && cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+				if(Movable.transform.position.y> -3f && Movable.transform.position.y < 0.5f && cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 //					if (PlayerPrefs.GetString ("Tutorial") == "False") {
 						ActivateCardEffect ();
 //					} else {

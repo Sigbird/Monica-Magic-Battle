@@ -56,6 +56,8 @@ public class HeroSpecialHability : MonoBehaviour {
 				this.transform.Find ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = Color.cyan;
 			} else if (ter == "Dungeon") {
 				this.transform.Find ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = Color.gray;
+			} else {
+				this.transform.Find ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
 			} 
 		} else {
 			GetComponent<WPSoldierControler> ().alive = true;
@@ -211,7 +213,7 @@ public class HeroSpecialHability : MonoBehaviour {
 					break;
 				}
 
-				SpecialHabilityZone [effect].SetActive (false);
+				//SpecialHabilityZone [effect].SetActive (false);
 				StartCoroutine (ApplyEffect ());
 			} else {
 				uiTrigger.StartCooldown = false;

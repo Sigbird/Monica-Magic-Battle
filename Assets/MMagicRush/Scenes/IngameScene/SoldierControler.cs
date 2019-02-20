@@ -281,11 +281,11 @@ public class SoldierControler : MonoBehaviour {
 //		StartCoroutine (Respawning ());
 
 		this.effects = "default";
-		this.speed = speed - 0.9f;
+		this.speed = speed /2;
 		if (this.speed < 0) {
 			this.speed = 0.1f;
 		}
-		this.damageSpeed = damageSpeed + 1.5f;
+		//this.damageSpeed = damageSpeed + 1.5f;
 		this.maxSpeed = this.speed;
 		this.range = range - 0.3f;
 		//this.reach = 1.5f;
@@ -710,7 +710,7 @@ public class SoldierControler : MonoBehaviour {
 //
 //		}
 
-		danoCD += Time.deltaTime * 2;
+		danoCD += Time.deltaTime;
 
 	}
 
