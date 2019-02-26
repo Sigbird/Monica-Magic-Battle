@@ -150,6 +150,8 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	public int damage;
 
+	public int tempdamage;
+
 
 	public float damageSpeed;
 
@@ -1301,7 +1303,7 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	IEnumerator DealDamage(){
 		
-		int tempdamage = this.damage;
+		tempdamage = this.damage;
 
 		if (this.heroID == 0 && shotsCounter == 2) {
 			tempdamage = this.damage * 2;
@@ -1322,10 +1324,12 @@ public class WPIASoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					lockedTarget = false;
 				}else{
-					targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (tempdamage);
 
-					if (this.range > 1)
+					if (this.range > 1) {
 						TrowArrow ();
+					} else {
+						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (tempdamage);
+					}
 				}
 			} else if (targetEnemy.GetComponent<SoldierControler> () != null && danoCD > damageSpeed) {//ALVO TROPA
 				danoCD = 0;
@@ -1335,26 +1339,33 @@ public class WPIASoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					lockedTarget = false;
 				}else{
-					targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (tempdamage);
-					if (this.range > 1)
+					
+					if (this.range > 1) {
 						TrowArrow ();
+					} else {
+						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (tempdamage);
+					}
 				}
 			} else if (targetEnemy.GetComponent<ChargesScript> () != null && danoCD > damageSpeed) {//ALVO BASE
 				danoCD = 0;
 					//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 					//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
+				if (this.range > 1) {
+					TrowArrow ();
+				} else {
 					targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
 					targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (tempdamage);
-					if (this.range > 1)
-						TrowArrow ();
+				}
 			}else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null && danoCD > damageSpeed) {//ALVO TORRE
 				danoCD = 0;
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-				targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.5f;
-				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (tempdamage);
-				if (this.range > 1)
+				if (this.range > 1) {
 					TrowArrow ();
+				} else {
+					targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.5f;
+					targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (tempdamage);
+				}
 			}
 
 			shotsCounter += 1;
@@ -1421,6 +1432,29 @@ public class WPIASoldierControler : MonoBehaviour {
 			} else {
 				Instantiate (HitAnimationObject, targetEnemy.transform.position, Quaternion.identity);
 			}		
+
+			if (targetEnemy.GetComponent<SoldierControler> () != null) {
+				targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (tempdamage);
+			}
+
+			if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {
+				targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (tempdamage);
+			}
+
+			if (targetEnemy.GetComponent<WPSoldierControler> () != null) {
+				targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (tempdamage);
+			}
+
+			if (targetEnemy.GetComponent<ChargesScript> () != null) {
+				targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (tempdamage);
+			}
+
+			if (targetEnemy.GetComponent<ChargesScriptTowers> () != null) {
+				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (tempdamage);
+			}
+
+
+
 		}
 	}
 

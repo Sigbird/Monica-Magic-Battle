@@ -86,6 +86,8 @@ public class GameController : MonoBehaviour {
 	public int mins;
 	public Text timetext;
 	public int secs;
+	public Image TimeWatch;
+	private bool TimeWatchBlinking;
 
 	private int[] zero;
 	private int heroid;
@@ -232,6 +234,18 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	IEnumerator BlinkingWatch(){
+		TimeWatch.color = Color.red;
+		yield return new WaitForSeconds (1);
+		TimeWatch.color = Color.white;
+		yield return new WaitForSeconds (1);
+	
+		if (GameOver == false) {
+			StartCoroutine (BlinkingWatch ());
+		}
+
+	}
+
 	
 	// Update is called once per frame
 	void Update () {
@@ -247,7 +261,12 @@ public class GameController : MonoBehaviour {
 			string niceTime = string.Format ("{0:0}:{1:00}", mins, secs);
 			if (tempduration > 0) {
 				timetext.text = niceTime;
+
 			} else {
+				if (TimeWatchBlinking == false) {
+					TimeWatchBlinking = true;
+					StartCoroutine (BlinkingWatch ());
+				}
 				timetext.text = "Overtime";
 				timetext.color = Color.red;
 			}
