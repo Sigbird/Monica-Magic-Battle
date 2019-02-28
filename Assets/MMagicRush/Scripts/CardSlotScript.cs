@@ -413,42 +413,42 @@ public class CardSlotScript : MonoBehaviour {
 																//TROPAS
 
 		case 11://TROPA: BIDU
-			cardCost = 5;
+			cardCost = 24;
 			//nameText.text = "Bidu";
 			UIilustration.sprite = cardsImages [11];
 			break;
 		case 12://TROPA: ASTRONAUTA
-			cardCost = 3;
+			cardCost = 31;
 			//nameText.text = "Astronauta";
 			UIilustration.sprite = cardsImages [12];
 			break;
 		case 13://TROPA: JOTALHAO
-			cardCost = 50;
+			cardCost = 30;
 			//nameText.text = "Jotalhão";
 			UIilustration.sprite = cardsImages [14];
 			break;
 		case 14://TROPA: PITECO
-			cardCost = 15;
+			cardCost = 36;
 			//nameText.text = "Piteco";
 			UIilustration.sprite = cardsImages [15];
 			break;
 		case 15://TROPA: PENADINHO
-			cardCost = 50;
+			cardCost = 35;
 			//nameText.text = "Penadinho";
 			UIilustration.sprite = cardsImages [16];
 			break;
 		case 16://TROPA: SANSAO
-			cardCost = 5;
+			cardCost = 20;
 			//nameText.text = "Sansao";
 			UIilustration.sprite = cardsImages [18];
 			break;
 		case 17://TROPA: MINGAU
-			cardCost = 5;
+			cardCost = 35;
 			//nameText.text = "Mingau";
 			UIilustration.sprite = cardsImages [19];
 			break;
 		case 18://TROPA: Cranicola
-			cardCost = 5;
+			cardCost = 55;
 			//nameText.text = "Cranicola";
 			UIilustration.sprite = cardsImages [18];
 			break;

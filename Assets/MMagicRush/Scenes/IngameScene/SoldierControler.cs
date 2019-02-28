@@ -126,6 +126,8 @@ public class SoldierControler : MonoBehaviour {
 
 	public int damage;
 
+	public int tempdamage;
+
 
 	public float damageSpeed;
 
@@ -1187,6 +1189,7 @@ public class SoldierControler : MonoBehaviour {
 	}
 
 	IEnumerator DealDamage(){
+		tempdamage = this.damage;
 		danoCD = 0;
 		yield return new WaitForSeconds (0.5f);
 		if (targetEnemy != null) { 
@@ -1197,13 +1200,16 @@ public class SoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					//lockedTarget = false;
 				} else {
-					if (troopId != 5 && troopId != 6) {
-						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
-					} else {
-						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage,true);
-					}
-					if (this.range > 1)
+					
+					if (this.range > 1) {
 						TrowArrow ();
+					} else {
+						if (troopId != 5 && troopId != 6) {
+							targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
+						} else {
+							targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage,true);
+						}
+					}
 				}
 			} else if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO HEROI
 				//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
@@ -1212,13 +1218,16 @@ public class SoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					//lockedTarget = false;
 				} else {
-					if (troopId != 5 && troopId != 6) {
-						targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
-					} else {
-						targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage,true);
-					}
-					if (this.range > 1)
+					
+					if (this.range > 1) {
 						TrowArrow ();
+					} else {
+						if (troopId != 5 && troopId != 6) {
+							targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
+						} else {
+							targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage,true);
+						}
+					}
 				}
 			} else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
@@ -1227,39 +1236,48 @@ public class SoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					//lockedTarget = false;
 				} else {
-					if (troopId != 5 && troopId != 6) {
-						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
-					} else {
-						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage,true);
-					}
-					if (this.range > 1)
+					
+					if (this.range > 1) {
 						TrowArrow ();
+					} else {
+						if (troopId != 5 && troopId != 6) {
+							targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
+						} else {
+							targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage,true);
+						}
+					}
 				}
 			} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//ALVO BASE
 				danoCD = 0;
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-				targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
-				if (troopId != 5 && troopId != 6) {
-					targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (damage);
-				} else {
-					targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (damage,true);
-				}
-				if (this.range > 1)
+				//targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
+
+				if (this.range > 1) {
 					TrowArrow ();
+				} else {
+					if (troopId != 5 && troopId != 6) {
+						targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (damage);
+					} else {
+						targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (damage,true);
+					}
+				}
 			} else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null) {//ALVO TORRE
 				danoCD = 0;
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
 				//targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.25f;
-				if (troopId != 5 && troopId != 6) {
-					targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (damage);
-				} else {
-					targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (damage,true);
-				}
 
-				if (this.range > 1)
+
+				if (this.range > 1) {
 					TrowArrow ();
+				} else {
+					if (troopId != 5 && troopId != 6) {
+						targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (damage);
+					} else {
+						targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (damage,true);
+					}
+				}
 				
 			} else if (targetEnemy == null) {
 				this.targetEnemy = null;
@@ -1348,6 +1366,46 @@ public class SoldierControler : MonoBehaviour {
 				Instantiate (SplashEffect, targetEnemy.transform.position, Quaternion.identity);
 			} else {
 				Instantiate (HitAnimationObject, targetEnemy.transform.position, Quaternion.identity);
+			}
+
+			if (targetEnemy.GetComponent<SoldierControler> () != null) {
+				if (troopId != 5 && troopId != 6) {
+					targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
+				} else {
+					targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage,true);
+				}
+			}
+
+			if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {
+				if (troopId != 5 && troopId != 6) {
+					targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
+				} else {
+					targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage,true);
+				}
+			}
+
+			if (targetEnemy.GetComponent<WPSoldierControler> () != null) {
+				if (troopId != 5 && troopId != 6) {
+					targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
+				} else {
+					targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage,true);
+				}
+			}
+
+			if (targetEnemy.GetComponent<ChargesScript> () != null) {
+				if (troopId != 5 && troopId != 6) {
+					targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (damage);
+				} else {
+					targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (damage,true);
+				}
+			}
+
+			if (targetEnemy.GetComponent<ChargesScriptTowers> () != null) {
+				if (troopId != 5 && troopId != 6) {
+					targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (damage);
+				} else {
+					targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (damage,true);
+				}
 			}
 		}
 	}

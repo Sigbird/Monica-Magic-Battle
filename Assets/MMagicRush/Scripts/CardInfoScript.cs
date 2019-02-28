@@ -276,7 +276,7 @@ public class CardInfoScript : MonoBehaviour {
 		case 11:
 			cardname.text = "Bidu";
 			descrition.text = "Chama a unidade Bidu para ajudar";
-			cost.text = "5";
+			cost.text = "24";
 			damage.text = "1";
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
@@ -286,7 +286,7 @@ public class CardInfoScript : MonoBehaviour {
 		case 12:
 			cardname.text = "Astronauta";
 			descrition.text = "Chama a unidade Astronauta para ajudar";
-			cost.text = "3";
+			cost.text = "31";
 			damage.text = "1";
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
@@ -296,7 +296,7 @@ public class CardInfoScript : MonoBehaviour {
 		case 13:
 			cardname.text = "Jotalhão";
 			descrition.text = "Chama a unidade jotalhão para ajudar";
-			cost.text = "50";
+			cost.text = "30";
 			damage.text = "1";
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
@@ -306,7 +306,7 @@ public class CardInfoScript : MonoBehaviour {
 		case 14:
 			cardname.text = "Piteco";
 			descrition.text = "Chama a unidade Piteco para ajudar";
-			cost.text = "15";
+			cost.text = "36";
 			damage.text = "1";
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
@@ -316,7 +316,7 @@ public class CardInfoScript : MonoBehaviour {
 		case 15:
 			cardname.text = "Penadinho";
 			descrition.text = "Chama a unidade Penadinho para ajudar";
-			cost.text = "50";
+			cost.text = "35";
 			damage.text = "1";
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
@@ -327,7 +327,7 @@ public class CardInfoScript : MonoBehaviour {
 		case 16:
 			cardname.text = "Sansão";
 			descrition.text = "Chama a unidade Sansão para ajudar";
-			cost.text = "40";
+			cost.text = "20";
 			damage.text = "3";
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
@@ -338,13 +338,24 @@ public class CardInfoScript : MonoBehaviour {
 		case 17:
 			cardname.text = "Mingau";
 			descrition.text = "Chama a unidade Mingau para ajudar";
-			cost.text = "5";
+			cost.text = "35";
 			damage.text = "2";
 			efect.sprite = Efects[1];
 			image.sprite = Images[cardID];
 			character.sprite = Persons[2];
 
 			
+			break;
+		case 18:
+			cardname.text = "Cranicola";
+			descrition.text = "Chama a unidade Cranicola para ajudar";
+			cost.text = "55";
+			damage.text = "2";
+			efect.sprite = Efects[1];
+			image.sprite = Images[cardID];
+			character.sprite = Persons[2];
+
+
 			break;
 		
 

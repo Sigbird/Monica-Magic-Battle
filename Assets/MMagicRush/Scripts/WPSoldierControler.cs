@@ -131,6 +131,8 @@ public class WPSoldierControler : MonoBehaviour {
 
 	public int damage;
 
+	public int tempdamage;
+
 	public float damageSpeed;
 
 	public float danoCD = 0;
@@ -1179,7 +1181,7 @@ public class WPSoldierControler : MonoBehaviour {
 
 	IEnumerator DealDamage(){
 
-		int tempdamage = this.damage;
+		tempdamage = this.damage;
 
 		if (this.heroID == 0 && shotsCounter == 2) {
 			tempdamage = this.damage * 2;
@@ -1216,10 +1218,11 @@ public class WPSoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					lockedTarget = false;
 				} else {
-					targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (tempdamage);
-					//Debug.Log ("Damage Dealt: " + tempdamage);
-					if (this.range > 1)
+					if (this.range > 1) {
 						TrowArrow ();
+					} else {
+						targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (tempdamage);
+					}
 				}
 			} else if (targetEnemy.GetComponent<SoldierControler> () != null) {//ALVO TROPA
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
@@ -1231,17 +1234,21 @@ public class WPSoldierControler : MonoBehaviour {
 					this.targetEnemy = null;
 					lockedTarget = false;
 				} else {
-					targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (tempdamage);
-					if (this.range > 1)
+					if (this.range > 1) {
 						TrowArrow ();
+					} else {
+						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (tempdamage);
+					}
 				}
 			} else if (targetEnemy.GetComponent<ChargesScript> () != null) {//ALVO TORRE
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-				targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
-				targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (tempdamage);
-				if (this.range > 1)
+				if (this.range > 1) {
 					TrowArrow ();
+				} else {
+					targetEnemy.GetComponent<ChargesScript> ().progress += 0.25f;
+					targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (tempdamage);
+				}
 //				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
 //					this.targetEnemy = null;
 //					lockedTarget = false;
@@ -1251,10 +1258,12 @@ public class WPSoldierControler : MonoBehaviour {
 			else if (targetEnemy.GetComponent<ChargesScriptTowers> () != null) {//ALVO TORRE PEQUENA
 				//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-				targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.5f;
-				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (tempdamage);
-				if (this.range > 1)
+				if (this.range > 1) {
 					TrowArrow ();
+				} else {
+					targetEnemy.GetComponent<ChargesScriptTowers> ().progress += 0.5f;
+					targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (tempdamage);
+				}
 				//				if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
 				//					this.targetEnemy = null;
 				//					lockedTarget = false;
@@ -1325,7 +1334,27 @@ public class WPSoldierControler : MonoBehaviour {
 				Instantiate (SplashEffect, targetEnemy.transform.position, Quaternion.identity);
 			} else {
 				Instantiate (HitAnimationObject, targetEnemy.transform.position, Quaternion.identity);
-			}		
+			}
+
+			if (targetEnemy.GetComponent<SoldierControler> () != null) {
+				targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (tempdamage);
+			}
+
+			if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {
+				targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (tempdamage);
+			}
+
+			if (targetEnemy.GetComponent<WPSoldierControler> () != null) {
+				targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (tempdamage);
+			}
+
+			if (targetEnemy.GetComponent<ChargesScript> () != null) {
+				targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (tempdamage);
+			}
+
+			if (targetEnemy.GetComponent<ChargesScriptTowers> () != null) {
+				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (tempdamage);
+			}
 		}
 	}
 
