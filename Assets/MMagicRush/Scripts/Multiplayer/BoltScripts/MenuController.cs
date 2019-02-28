@@ -1,80 +1,167 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using System;
 using UdpKit;
+using Bolt;
+using YupiPlay.MMB;
 
-public class MenuController : Bolt.GlobalEventListener {
-    public int ClientWaitTimeout = 10;
+namespace YupiPlay.MMB.Multiplayer {
+    public class MenuController : Bolt.GlobalEventListener {
+        public int ClientWaitTimeout = 10;
+        public int MatchmakingTimeout = 300;
+        public int LaunchDelay = 3;                
+        public UnityEvent OnConnection;
+        public UnityEvent OnMatchmakingTimeout;
 
-    int limit = 0;
-    Coroutine clientwait = null;
-    
+        public event Action<string, int> OnOpponentInfoEvent;
 
-    private void Awake() {
-        limit = BoltRuntimeSettings.instance.GetConfigCopy().serverConnectionLimit;        
-    }
+        int limit = 0;
+        Coroutine clientwait = null;
+        Coroutine matchmakingTimeout = null;
 
-    public void StartServer() {
-        BoltLauncher.StartServer();
-    }
+        ServerInfoEvent serverInfoEvent;
+        ClientInfoEvent clientInfoEvent;
+        string matchName;
+        RoomInfo roomInfo;
+        
+        // Client envia
+        PlayerToken playerToken;
 
-    public void StartClient() {
-        BoltLauncher.StartClient();
-    }
+        // Server recebe
+        PlayerToken clientToken;
 
-    public void StartMatchmaking() {        
-        BoltLauncher.StartClient();
-    }
+        string myUsername;
+        int myHero;
+        int mySkill = 0;
 
-    public override void BoltStartDone() {
-        if (BoltNetwork.IsServer) {            
-            var MatchName = ServerCallbacks.Instance.MatchName = Guid.NewGuid().ToString();
-
-            // Adiciona detalhes do servidor para os clientes filtrarem
-            var roomInfo = new RoomInfo(0, true);
-            BoltNetwork.SetServerInfo(MatchName, roomInfo);
+        void Awake() {
+            limit = BoltRuntimeSettings.instance.GetConfigCopy().serverConnectionLimit;
         }
 
-        if (BoltNetwork.IsClient) {
-            clientwait = StartCoroutine(WaitForServers());
+        public void StartServer() {
+            MatchData.Instance.Reset();
+
+            myUsername = PlayerInfo.Instance.Username;
+            myHero = PlayerPrefs.GetInt("SelectedCharacter", 0);
+            BoltLauncher.StartServer();
         }
-    }
 
-    IEnumerator WaitForServers() {
-        yield return new WaitForSeconds(10);
+        public void StartClient() {
+            MatchData.Instance.Reset();
 
-        BoltLauncher.Shutdown();
-        BoltLauncher.StartServer();
-    }
+            myUsername = PlayerInfo.Instance.Username;
+            myHero = PlayerPrefs.GetInt("SelectedCharacter", 0);
+            BoltLauncher.StartClient();
+        }
 
-    // Só carrega a cena após um oponente conectar
-    public override void Connected(BoltConnection connection) {
-        if (BoltNetwork.IsServer) {            
+        public void StartMatchmaking() {
+            myUsername = PlayerInfo.Instance.Username;
+            BoltLauncher.StartClient();
+
+            matchmakingTimeout = StartCoroutine(WaitForTimeout());
+        }
+
+        public override void BoltStartDone() {
+            if (BoltNetwork.IsServer) {
+                matchName = ServerCallbacks.Instance.MatchName = Guid.NewGuid().ToString();
+                ServerCallbacks.Instance.Username = myUsername;
+                ServerCallbacks.Instance.Hero = myHero;
+                ServerCallbacks.Instance.Skill = mySkill;
+
+                // Adiciona detalhes do servidor para os clientes filtrarem
+                roomInfo = new RoomInfo(myUsername, myHero, mySkill, true);
+                BoltNetwork.SetServerInfo(matchName, roomInfo);
+            }
+
+            //if (BoltNetwork.IsClient) {
+                //clientwait = StartCoroutine(WaitForServers());
+            //}
+        }
+
+        // Só carrega a cena após um oponente conectar
+        public override void Connected(BoltConnection connection) {
+            OnConnection.Invoke();
+
+            if (BoltNetwork.IsServer) {
+                if (string.IsNullOrEmpty(myUsername)) {
+                    myUsername = "Zezinho";
+                }
+
+                clientToken = connection.ConnectToken as PlayerToken;
+
+                MatchData.Instance.SetServer(myUsername, myHero, mySkill)
+                    .SetClient(clientToken.Username, clientToken.Hero, clientToken.Skill);
+
+                CallOpponentInfoEvent(clientToken.Username, clientToken.Hero);
+                StartCoroutine(WaitAndLaunchGame());
+            }
+
+            if (BoltNetwork.IsClient) {
+                if (string.IsNullOrEmpty(myUsername)) {
+                    myUsername = "Juninho";
+                }
+            }
+        }
+
+        public override void SessionListUpdated(Map<Guid, UdpSession> sessionList) {
+            // Se não há serivodres para procurar inicie como servidor
+            // if (BoltNetwork.IsClient && sessionList.Count == 0) {
+            //     BoltLauncher.Shutdown();
+            //     BoltLauncher.StartServer();
+            //     return;
+            // }
+
+            foreach (var session in sessionList) {
+                UdpSession photonSession = session.Value as UdpSession;
+
+                var connectionsNum = photonSession.ConnectionsCurrent;
+                var roomInfo = photonSession.GetProtocolToken() as RoomInfo;
+
+                // Conecta somente em salas abertas com menos de 2 conexões
+                if (photonSession.Source == UdpSessionSource.Photon &&
+                    connectionsNum < limit && roomInfo.Open) {
+                    CallOpponentInfoEvent(roomInfo.Username, roomInfo.Hero);
+
+                    playerToken = new PlayerToken(myUsername, myHero, mySkill);
+                    
+                    MatchData.Instance.SetClient(myUsername, myHero, mySkill)
+                        .SetServer(roomInfo.Username, roomInfo.Hero, roomInfo.Skill);
+                    
+                    BoltNetwork.Connect(photonSession, playerToken);
+                }
+            }
+        }
+
+        void CallOpponentInfoEvent(string displayName, int hero) {
+            if (OnOpponentInfoEvent != null) {
+                OnOpponentInfoEvent(displayName, hero);
+            }
+        }
+
+        public override void BoltShutdownBegin(AddCallback registerDoneCallback) {
+            registerDoneCallback(StartServer);
+        }
+
+        IEnumerator WaitAndLaunchGame() {
+            yield return new WaitForSeconds(LaunchDelay);
+
             BoltNetwork.LoadScene("JogoMulti");
         }
-    }    
 
-    public override void SessionListUpdated(Map<Guid, UdpSession> sessionList) {
-        Debug.Log("SESSION LIST UPDATED");
-        // Se não há serivodres para procurar inicie como servidor
-        if (BoltNetwork.IsClient && sessionList.Count == 0) {
+        IEnumerator WaitForServers() {
+            yield return new WaitForSeconds(10);
+
+            //BoltNetwork.ShutdownImmediate();
             BoltLauncher.Shutdown();
-            BoltLauncher.StartServer();            
-            return;
+            //BoltLauncher.StartServer();
         }
 
-        foreach (var session in sessionList) {
-            UdpSession photonSession = session.Value as UdpSession;
+        IEnumerator WaitForTimeout() {
+            yield return new WaitForSeconds(MatchmakingTimeout);
 
-            var connectionsNum = photonSession.ConnectionsCurrent;
-            var roomInfo = photonSession.GetProtocolToken() as RoomInfo;            
-
-            // Conecta somente em salas abertas com menos de 2 conexões
-            if (photonSession.Source == UdpSessionSource.Photon && 
-                connectionsNum < limit && roomInfo.Open) {
-                StopCoroutine(clientwait);
-                BoltNetwork.Connect(photonSession);                
-            }           
+            OnMatchmakingTimeout.Invoke();
         }
     }
 }
+

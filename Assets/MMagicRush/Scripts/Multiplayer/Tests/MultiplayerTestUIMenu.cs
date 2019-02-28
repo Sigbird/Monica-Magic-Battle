@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using YupiPlay;
+using YupiPlay.MMB.Multiplayer;
 
 public class MultiplayerTestUIMenu : MonoBehaviour {
     public Text DisplayName;
@@ -14,7 +15,13 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
     public Button QuickGame;
     public Text QuickGameText;
 
+    public Image OpponentImage;
+
 	public GameObject VsIAPannel;
+
+    public MenuController MenuController;
+
+    public Sprite[] Heroes;
 
 	// Use this for initialization
 	void Start () {
@@ -54,18 +61,19 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
         SetUserName(username);
     }
 
-    public void OnRoomConnected() {
-        SetOpponentName(NetworkSessionManager.Instance.Match.Opponent.DisplayName);
+    public void OnRoomConnected(string username, int hero) {
+        SetOpponentName(username);
+        OpponentImage.sprite = Heroes[hero];
     }
 
     public void OnEnable() {
         PlayGamesSignIn.OnLogin += OnLogin;
-        NetworkSessionManager.RoomConnectedSuccessEvent += OnRoomConnected;
+        MenuController.OnOpponentInfoEvent += OnRoomConnected;
     }
 
     public void OnDisable() {
         PlayGamesSignIn.OnLogin -= OnLogin;
-        NetworkSessionManager.RoomConnectedSuccessEvent -= OnRoomConnected;
+        MenuController.OnOpponentInfoEvent -= OnRoomConnected;
     }
 
 	IEnumerator TimeLimit(){
