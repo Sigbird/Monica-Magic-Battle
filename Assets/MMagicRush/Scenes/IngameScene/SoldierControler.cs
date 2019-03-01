@@ -103,6 +103,8 @@ public class SoldierControler : MonoBehaviour {
 	public bool skillshoter;
 	//STATUS
 
+	public bool Custom;
+
 	public float xp;
 
 	public float xpLvl1 = 0;
@@ -718,15 +720,18 @@ public class SoldierControler : MonoBehaviour {
 
 	public void SetupTroop(int id){
 
+
 		switch (id) {
 		case(1): // BIDU
+			if(Custom == false){
 			this.vidaMax = 75;//Medio
 			this.vida = 75;//Medio
-			this.reach = 2;
 			this.damage = 22;//Medio
 			this.damageSpeed = 0.5f;//Medio
 			this.range = 1; //Baixissimo
 			this.speed = 1.3f; //Medio
+			}
+			this.reach = 2;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -738,13 +743,15 @@ public class SoldierControler : MonoBehaviour {
 			Instantiate (animations [1], transform);
 			break;
 		case(2): // ASTRONAUTA
+			if(Custom == false){
 			this.vidaMax = 35;//Baixo
 			this.vida = 35;//Baixo
-			this.reach = 1.5f;
 			this.damage = 22; //Medio
 			this.damageSpeed = 1; //Baixo
 			this.range = 3; //Alto
 			this.speed = 1.3f; //Medio
+			}
+			this.reach = 1.5f;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -756,13 +763,15 @@ public class SoldierControler : MonoBehaviour {
 			this.haveAnimation = true;
 			break;
 		case(3): //ANJINHO -> Cranicola
+			if(Custom == false){
 			this.vidaMax = 15; //Baixissimo
 			this.vida = 15; //Baixissimo
-			this.reach = 1.5f;
 			this.damage = 50; //Alto
 			this.damageSpeed = 0.25f; //Altissimo
 			this.range = 1; //Baixissimo
 			this.speed = 1.7f; //Alto
+			}
+			this.reach = 1.5f;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -773,13 +782,15 @@ public class SoldierControler : MonoBehaviour {
 			this.haveAnimation = true;
 			break;
 		case(4): //JOTALHÃO
+			if(Custom == false){
 			this.vidaMax = 200; //Alto
 			this.vida = 200; //Alto
-			this.reach = 1.5f;
 			this.damage = 50; //Alto
 			this.damageSpeed = 1; //Baixo
 			this.range = 1; //Baixissimo
 			this.speed = 0.8f; //Baixo
+			}
+			this.reach = 1.5f;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -790,13 +801,16 @@ public class SoldierControler : MonoBehaviour {
 			this.haveAnimation = true;
 			break;
 		case(5): //PITECO
+			if(Custom == false){
 			this.vidaMax = 35; //Baixo
 			this.vida = 35; //Baixo
-			this.reach = 1.5f;
+			
 			this.damage = 22; // Medio
 			this.damageSpeed = 0.5f; //medio
 			this.range = 2; //Medio
 			this.speed = 1.3f; //Medio
+			}
+			this.reach = 1.5f;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -807,13 +821,16 @@ public class SoldierControler : MonoBehaviour {
 			this.haveAnimation = true;
 			break;
 		case(6): //PENADINHO
+			if(Custom == false){
 			this.vidaMax =75; //Medio
 			this.vida = 75; //Medio
-			this.reach = 1.5f;
+			
 			this.damage = 22; //Medio
 			this.damageSpeed = 0.5f; //Medio
 			this.range = 2; //Medio
 			this.speed = 0.8f; //Baixo
+			}
+			this.reach = 1.5f;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = true;
@@ -825,6 +842,7 @@ public class SoldierControler : MonoBehaviour {
 			this.haveAnimation = true;
 			break;
 		case(7): //MAURICIO -> off
+			
 			this.vidaMax = 10;
 			this.vida = 10;
 			this.reach = 0.5f;
@@ -838,13 +856,16 @@ public class SoldierControler : MonoBehaviour {
 			this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [6];
 			break;
 		case(8): //SANSAO
+			if(Custom == false){
 			this.vidaMax = 35; //Baixo
 			this.vida = 35; //Baixo
-			this.reach =  1.5f;
+			
 			this.damage = 14; //Baixo
 			this.damageSpeed = 0.5f; //Medio
 			this.range = 1; //Baixissimo
 			this.speed = 1.3f; //Medio
+			}
+			this.reach =  1.5f;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -855,13 +876,16 @@ public class SoldierControler : MonoBehaviour {
 			this.haveAnimation = true;
 			break;
 		case(9): //MINGAU
+			if(Custom == false){
 			this.vidaMax = 75; //Medio
 			this.vida = 75; //Medio
-			this.reach = 1.5f;
+			
 			this.damage = 22; //Medio
 			this.damageSpeed = 0.33f;  //Alto
 			this.range = 1; //Baixissimo
 			this.speed = 1.7f; //Alto
+			}
+			this.reach = 1.5f;
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -872,6 +896,7 @@ public class SoldierControler : MonoBehaviour {
 			this.haveAnimation = true;
 			break;
 		case(10): //ALFREDO
+			
 			this.vidaMax = 9;
 			this.vida = 9;
 			this.reach = 1.5f;
