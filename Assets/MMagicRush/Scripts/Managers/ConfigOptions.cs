@@ -34,20 +34,20 @@ public class ConfigOptions : MonoBehaviour {
 
 		if (MusicToggle.isOn) {
 			PlayerPrefs.SetFloat ("GameVolume", 1);
-			UntoggleBT.SetActive (false);
+			//UntoggleBT.SetActive (false);
 			//manager.source.Play();
 		} else {
 			PlayerPrefs.SetFloat ("GameVolume", 0);
-			UntoggleBT.SetActive (true);
+			//UntoggleBT.SetActive (true);
 			//manager.source.Stop ();
 		}
 
 		if (EffectToggle.isOn) {
 			PlayerPrefs.SetFloat ("GameVolumeEffects", 1);
-			UntoggleBT2.SetActive (false);
+			//UntoggleBT2.SetActive (false);
 		} else {
 			PlayerPrefs.SetFloat ("GameVolumeEffects", 0);
-			UntoggleBT2.SetActive (true);
+			//UntoggleBT2.SetActive (true);
 		}
 
 	}

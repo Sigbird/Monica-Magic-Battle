@@ -9,13 +9,14 @@ public class MenuTestesVariables : MonoBehaviour {
 	public GameObject EnemyTroops;
 	public WPIASoldierControler ControllerInimigo;
 	public WPSoldierControler ControllerHeroi;
-	public Text[] InputTexts;
+	public InputField[] InputTexts;
+	public Text TroopName;
 	public int selectedtroop;
 	// Use this for initialization
 	void Start () {
 
-		ControllerHeroi = GameObject.Find ("Hero").GetComponent<WPSoldierControler> ();
-		ControllerInimigo = GameObject.Find ("HeroEnemy").GetComponent<WPIASoldierControler> ();
+		//ControllerHeroi = GameObject.Find ("Hero").GetComponent<WPSoldierControler> ();
+		//ControllerInimigo = GameObject.Find ("HeroEnemy").GetComponent<WPIASoldierControler> ();
 
 
 		switch (SelectedOption) {
@@ -45,8 +46,10 @@ public class MenuTestesVariables : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (InputTexts [6] != null) {
-			selectedtroop = int.Parse (InputTexts [6].text);
+		if (InputTexts.Length>= 6) {
+			if (InputTexts [5].text != "") {
+				selectedtroop = int.Parse (InputTexts [5].text);
+			}
 		}
 	}
 
@@ -59,25 +62,25 @@ public class MenuTestesVariables : MonoBehaviour {
 		case 1://Heroi
 			ControllerHeroi.vida = int.Parse(InputTexts [0].text);
 			ControllerHeroi.damage = int.Parse(InputTexts [1].text);
-			ControllerHeroi.damageSpeed = int.Parse(InputTexts [2].text);
-			ControllerHeroi.range = int.Parse(InputTexts [3].text);
-			ControllerHeroi.speed = int.Parse(InputTexts [4].text);
+			ControllerHeroi.damageSpeed = float.Parse(InputTexts [2].text);
+			ControllerHeroi.range = float.Parse(InputTexts [3].text);
+			ControllerHeroi.speed = float.Parse(InputTexts [4].text);
 			break;
 		case 2://HeroiOponente
 			ControllerInimigo.vida = int.Parse(InputTexts [0].text);
 			ControllerInimigo.damage = int.Parse(InputTexts [1].text);
-			ControllerInimigo.damageSpeed = int.Parse(InputTexts [2].text);
-			ControllerInimigo.range = int.Parse(InputTexts [3].text);
-			ControllerInimigo.speed = int.Parse(InputTexts [4].text);
+			ControllerInimigo.damageSpeed = float.Parse(InputTexts [2].text);
+			ControllerInimigo.range = float.Parse(InputTexts [3].text);
+			ControllerInimigo.speed = float.Parse(InputTexts [4].text);
 			break;
 		case 3://TropaAliada
 			HeroTroops.GetComponent<SoldierControler> ().Custom = true;
 			HeroTroops.GetComponent<SoldierControler> ().vida = int.Parse(InputTexts [0].text);
 			HeroTroops.GetComponent<SoldierControler> ().vidaMax = int.Parse(InputTexts [0].text);
 			HeroTroops.GetComponent<SoldierControler> ().damage = int.Parse(InputTexts [1].text);
-			HeroTroops.GetComponent<SoldierControler> ().damageSpeed = int.Parse(InputTexts [2].text);;
-			HeroTroops.GetComponent<SoldierControler> ().range = int.Parse(InputTexts [3].text);
-			HeroTroops.GetComponent<SoldierControler> ().speed = int.Parse(InputTexts [4].text);
+			HeroTroops.GetComponent<SoldierControler> ().damageSpeed = float.Parse(InputTexts [2].text);;
+			HeroTroops.GetComponent<SoldierControler> ().range = float.Parse(InputTexts [3].text);
+			HeroTroops.GetComponent<SoldierControler> ().speed = float.Parse(InputTexts [4].text);
 			Instantiate (HeroTroops, GameObject.Find("HeroBase").transform.position, Quaternion.identity);
 			break;
 		case 4://TropaInimiga
@@ -85,9 +88,9 @@ public class MenuTestesVariables : MonoBehaviour {
 			EnemyTroops.GetComponent<SoldierControler> ().vida = int.Parse(InputTexts [0].text);
 			EnemyTroops.GetComponent<SoldierControler> ().vidaMax = int.Parse(InputTexts [0].text);
 			EnemyTroops.GetComponent<SoldierControler> ().damage = int.Parse(InputTexts [1].text);
-			EnemyTroops.GetComponent<SoldierControler> ().damageSpeed = int.Parse(InputTexts [2].text);;
-			EnemyTroops.GetComponent<SoldierControler> ().range = int.Parse(InputTexts [3].text);
-			EnemyTroops.GetComponent<SoldierControler> ().speed = int.Parse(InputTexts [4].text);
+			EnemyTroops.GetComponent<SoldierControler> ().damageSpeed = float.Parse(InputTexts [2].text);;
+			EnemyTroops.GetComponent<SoldierControler> ().range = float.Parse(InputTexts [3].text);
+			EnemyTroops.GetComponent<SoldierControler> ().speed = float.Parse(InputTexts [4].text);
 			Instantiate (EnemyTroops, GameObject.Find("HeroBaseEnemy").transform.position, Quaternion.identity);
 			break;
 		default:
@@ -99,13 +102,13 @@ public class MenuTestesVariables : MonoBehaviour {
 
 		switch (selectedtroop) {
 		case(1): // BIDU
-			
+			InputTexts[0].text = "";
 			InputTexts[0].text = "75";//Medio
 			InputTexts[1].text = "22";//Medio
 			InputTexts[2].text = "0.5";//Medio
 			InputTexts[3].text = "1"; //Baixissimo
 			InputTexts[4].text = "1.3"; //Medio
-			InputTexts[5].text = "Bidu";
+			TroopName.text = "Bidu";
 			break;
 		case(2): // ASTRONAUTA
 			InputTexts[0].text = "35";//Baixo
@@ -113,7 +116,7 @@ public class MenuTestesVariables : MonoBehaviour {
 			InputTexts[2].text = "1"; //Baixo
 			InputTexts[3].text = "3"; //Alto
 			InputTexts[4].text = "1.3"; //Medio
-			InputTexts[5].text = "Astronauta";
+			TroopName.text = "Astronauta";
 			break;
 		case(3): //ANJINHO -> Cranicola
 			InputTexts[0].text = "15"; //Baixissimo
@@ -121,7 +124,7 @@ public class MenuTestesVariables : MonoBehaviour {
 			InputTexts[2].text = "0.25f"; //Altissimo
 			InputTexts[3].text = "1"; //Baixissimo
 			InputTexts[4].text = "1.7"; //Alto
-			InputTexts[5].text = "Cranicola";
+			TroopName.text = "Cranicola";
 			break;
 		case(4): //JOTALHÃO
 			InputTexts[0].text = "200"; //Alto
@@ -129,7 +132,7 @@ public class MenuTestesVariables : MonoBehaviour {
 			InputTexts[2].text = "1"; //Baixo
 			InputTexts[3].text = "1"; //Baixissimo
 			InputTexts[4].text = "0.8"; //Baixo
-			InputTexts[5].text = "Jotalhão";
+			TroopName.text  = "Jotalhão";
 			break;
 		case(5): //PITECO
 			InputTexts[0].text = "35"; //Baixo
@@ -137,7 +140,7 @@ public class MenuTestesVariables : MonoBehaviour {
 			InputTexts[2].text = "0.5"; //medio
 			InputTexts[3].text = "2"; //Medio
 			InputTexts[4].text = "1.3"; //Medio
-			InputTexts[5].text = "Piteco";
+			TroopName.text  = "Piteco";
 			break;
 		case(6): //PENADINHO
 			InputTexts[0].text = "75"; //Medio
@@ -145,7 +148,7 @@ public class MenuTestesVariables : MonoBehaviour {
 			InputTexts[2].text = "0.5"; //Medio
 			InputTexts[3].text = "2"; //Medio
 			InputTexts[4].text = "0.8"; //Baixo
-			InputTexts[5].text = "Penadinho";
+			TroopName.text  = "Penadinho";
 			break;
 		case(7): //MAURICIO -> off
 			break;
@@ -163,7 +166,7 @@ public class MenuTestesVariables : MonoBehaviour {
 			InputTexts[2].text = "0.33";  //Alto
 			InputTexts[3].text = "1"; //Baixissimo
 			InputTexts[4].text = "1.7"; //Alto
-			InputTexts[5].text = "Mingau";
+			TroopName.text = "Mingau";
 			break;
 		case(10): //ALFREDO
 			break;
