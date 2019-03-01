@@ -7,5 +7,6 @@ public class GlobalCallbacks : Bolt.GlobalEventListener {
 
     public override void BoltStartBegin() {
         BoltNetwork.RegisterTokenClass<RoomInfo>();
+        BoltNetwork.RegisterTokenClass<PlayerToken>();
     }
 }

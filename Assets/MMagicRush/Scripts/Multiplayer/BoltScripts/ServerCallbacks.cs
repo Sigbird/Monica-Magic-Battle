@@ -1,11 +1,13 @@
-﻿using UnityEngine;
-using System.Collections;
-using Bolt;
+﻿using Bolt;
 using UdpKit;
 
 [BoltGlobalBehaviour(BoltNetworkModes.Server)]
 public class ServerCallbacks : Bolt.GlobalEventListener {
     public string MatchName;
+    public string Username;
+    public int Hero;
+    public int Skill;
+    public string OpponentName;
 
     public static ServerCallbacks Instance;
 
@@ -20,10 +22,8 @@ public class ServerCallbacks : Bolt.GlobalEventListener {
         if (allowNewConnections) {
             allowNewConnections = false;
 
-            BoltNetwork.SetServerInfo(MatchName, new RoomInfo(0, false));
-
-            BoltNetwork.Accept(endpoint);
-            
+            BoltNetwork.SetServerInfo(MatchName, new RoomInfo(Username, Hero, Skill, false));
+            BoltNetwork.Accept(endpoint);            
             return;
         }
 

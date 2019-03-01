@@ -43,22 +43,21 @@ public class PlayGamesSignIn : MonoBehaviour {
 
 	public static void OnAuth(bool success) {
 		if (success) {
-			Debug.Log("Auth OK");
-			if (Social.localUser.authenticated) {
-				Debug.Log("Auth OK");
-			}
-            PlayerInfo.Instance.DisplayName = PlayGamesPlatform.Instance.GetUserDisplayName();
-            PlayerInfo.Instance.Username    = Social.localUser.userName;
+			Debug.Log("Auth OK");			
+			
+			PlayerInfo.Instance.DisplayName = PlayGamesPlatform.Instance.GetUserDisplayName();
+			PlayerInfo.Instance.Username    = Social.localUser.userName;
+
 			PlayerPrefs.SetString ("PlayerName", Social.localUser.userName);
 			//Social.ReportScore (100, "CgkI4e_Ei7AREAIQBg",OnReport);
 //			LeaderBoard.AddScore (Social.localUser.userName, 100);
 //			bt_vsJogador.interactable = true;
-            if (OnLogin != null) {
-                OnLogin(PlayerInfo.Instance.DisplayName, PlayerInfo.Instance.Username);
-	
-            }
 
-        } else {
+			if (OnLogin != null) {
+					OnLogin(PlayerInfo.Instance.DisplayName, PlayerInfo.Instance.Username);	
+			}
+
+		} else {
 			Debug.Log("Auth Fail");
 		}
 
