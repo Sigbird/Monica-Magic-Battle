@@ -592,11 +592,11 @@ public class WPSoldierControler : MonoBehaviour {
 	public void SetupHero(){
 		//CONFIGURAÇÃO DE TIPO DE HEROI
 		int id = 0;
-//		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1) {
-//			heroID =  PlayerPrefs.GetInt ("SelectedCharacter");
-//		} else {
-//			heroID = 1;
-//		}
+		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1) {
+			heroID =  PlayerPrefs.GetInt ("SelectedCharacter");
+		} else {
+			heroID = 1;
+		}
 
 		if(tutorial==false)
 		GameObject.Find ("HeroPortrait").GetComponent<Image> ().sprite = heroPortraits [heroID];

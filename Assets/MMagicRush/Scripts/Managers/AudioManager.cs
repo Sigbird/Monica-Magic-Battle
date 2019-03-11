@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour {
 	public AudioClip[] audios;
+	public AudioClip[] clickaudios;
+	public AudioClip[] reactions;
 	public AudioSource source;
 	public float MusicVolume;
 	public float EffectVolume;
@@ -63,6 +65,22 @@ public class AudioManager : MonoBehaviour {
 	public void PlayAudio(string track){
 
 		if (EffectVolume > 0) {
+
+			if (track == "reactions_monica") { 
+				source.PlayOneShot (reactions [0],EffectVolume);
+			}
+			if (track == "reactions_cebolinha") { 
+				source.PlayOneShot (reactions [1],EffectVolume);
+			}
+
+			if (track == "reactions_magali") { 
+				source.PlayOneShot (reactions [2],EffectVolume);
+			}
+
+			if (track == "reactions_cascao") { 
+				source.PlayOneShot (reactions [3],EffectVolume);
+			}
+
 			if (track == "cabrum") { 
 				source.PlayOneShot (audios [0],EffectVolume);
 			}
@@ -83,7 +101,8 @@ public class AudioManager : MonoBehaviour {
 				source.PlayOneShot (audios [6],EffectVolume);
 			}
 			if (track == "button") {
-				source.PlayOneShot (audios [8],EffectVolume);
+				int y = Random.Range (0, clickaudios.Length-1);
+				source.PlayOneShot (clickaudios [y],EffectVolume);
 			}
 			if (track == "chuva2") {
 				source.PlayOneShot (audios [11],EffectVolume);

@@ -32,11 +32,12 @@ public class ChargesScriptTowers : MonoBehaviour {
 	public AudioManager manager;
 	public int playerteam;
 	public GameObject SplashEffect;
-
+	public int heroid;
 
 
 	// Use this for initialization
 	void Start () {
+		heroid = PlayerPrefs.GetInt ("SelectedCharacter");
 		progress = 0;
 		manager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		if (Tower) {
@@ -160,7 +161,17 @@ public class ChargesScriptTowers : MonoBehaviour {
 		//Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
 
 		if (this.vida <= 0) {
-			manager.PlayAudio ("cabrum");
+			if (heroid == 0) {
+				manager.PlayAudio ("reactions_monica");
+			} else if (heroid == 1) {
+				manager.PlayAudio ("reactions_cebolinha");
+			} else if (heroid == 2) {
+				manager.PlayAudio ("reactions_magali");
+			} else if (heroid == 3) {
+				manager.PlayAudio ("reactions_cascao");
+			} else {
+				manager.PlayAudio ("cabrum");
+			}
 			if (this.playerteam == 1) {
 				gc.Player2Score += 1;
 			} else {
