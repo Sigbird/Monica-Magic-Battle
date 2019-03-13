@@ -118,17 +118,17 @@ public class SoldierControler : MonoBehaviour {
 	private bool levelUp;
 
 
-	public int vidaMax;
+	public float vidaMax;
 
 
-	public int vida;
+	public float vida;
 
 	public float reach;
 
 
-	public int damage;
+	public float damage;
 
-	public int tempdamage;
+	public float tempdamage;
 
 
 	public float damageSpeed;
@@ -953,9 +953,9 @@ public class SoldierControler : MonoBehaviour {
 //	}
 
 	public void UpdateLife(){
-		this.healtbarSoldier.GetComponent<HealtBar> ().Life = this.vida;
-		this.healtbarSoldier.GetComponent<HealtBar> ().MaxLife = this.vidaMax;
-		this.healtbarSoldier.GetComponent<HealtBar> ().UpdateHealtbars();
+//		this.healtbarSoldier.GetComponent<HealtBar> ().Life = this.vida;
+//		this.healtbarSoldier.GetComponent<HealtBar> ().MaxLife = this.vidaMax;
+//		this.healtbarSoldier.GetComponent<HealtBar> ().UpdateHealtbars();
 	}
 
 //	public void UpdateEnergy(){
@@ -1321,7 +1321,7 @@ public class SoldierControler : MonoBehaviour {
 		}
 	}
 
-	public void ReceiveDamage(int x){
+	public void ReceiveDamage(float x){
 
 		this.vida -= x;
 		//UpdateLife ();
@@ -1334,7 +1334,7 @@ public class SoldierControler : MonoBehaviour {
 
 	}
 
-	public void ReceiveDamage(int x, bool explosion){
+	public void ReceiveDamage(float x, bool explosion){
 
 		this.vida -= x;
 		//UpdateLife ();

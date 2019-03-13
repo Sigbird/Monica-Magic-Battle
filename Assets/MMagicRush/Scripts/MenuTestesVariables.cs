@@ -12,6 +12,7 @@ public class MenuTestesVariables : MonoBehaviour {
 	public InputField[] InputTexts;
 	public Text TroopName;
 	public int selectedtroop;
+	public int selectedHero;
 	// Use this for initialization
 	void Start () {
 
@@ -21,18 +22,20 @@ public class MenuTestesVariables : MonoBehaviour {
 
 		switch (SelectedOption) {
 		case 1://Heroi
-			InputTexts[0].text = ControllerHeroi.vida.ToString();
-			InputTexts[1].text = ControllerHeroi.damage.ToString();
-			InputTexts[2].text = ControllerHeroi.damageSpeed.ToString();
-			InputTexts[3].text = ControllerHeroi.range.ToString();
-			InputTexts[4].text = ControllerHeroi.speed.ToString();
+			InputTexts [0].text = ControllerHeroi.vida.ToString ();
+			InputTexts [1].text = ControllerHeroi.damage.ToString ();
+			InputTexts [2].text = ControllerHeroi.damageSpeed.ToString ();
+			InputTexts [3].text = ControllerHeroi.range.ToString ();
+			InputTexts [4].text = ControllerHeroi.speed.ToString ();
+			selectedHero = ControllerHeroi.heroID;
 			break;
 		case 2://HeroiOponente
-			InputTexts[0].text = ControllerInimigo.vida.ToString();
-			InputTexts[1].text = ControllerInimigo.damage.ToString();
-			InputTexts[2].text = ControllerInimigo.damageSpeed.ToString();
-			InputTexts[3].text = ControllerInimigo.range.ToString();
-			InputTexts[4].text = ControllerInimigo.speed.ToString();
+			InputTexts [0].text = ControllerInimigo.vida.ToString ();
+			InputTexts [1].text = ControllerInimigo.damage.ToString ();
+			InputTexts [2].text = ControllerInimigo.damageSpeed.ToString ();
+			InputTexts [3].text = ControllerInimigo.range.ToString ();
+			InputTexts [4].text = ControllerInimigo.speed.ToString ();
+			selectedHero = ControllerInimigo.heroID;
 			break;
 		case 3://TropaAliada
 			break;
@@ -41,6 +44,8 @@ public class MenuTestesVariables : MonoBehaviour {
 		default:
 			break;
 		}
+
+
 
 	}
 	
@@ -97,6 +102,43 @@ public class MenuTestesVariables : MonoBehaviour {
 			break;
 		}
 	}
+
+	public void SaveChangesHero(){
+		switch (selectedHero) {
+		case(0): // Monica
+			PlayerPrefs.SetFloat ("MonicaAtrib1", float .Parse(InputTexts [1].text) ); //Dano = Alto
+			PlayerPrefs.SetFloat ("MonicaAtrib2", float.Parse(InputTexts [2].text)); //VelDano = Baixo
+			PlayerPrefs.SetFloat ("MonicaAtrib3", float.Parse(InputTexts [3].text)); //AlcanceDano = Medio
+			PlayerPrefs.SetFloat ("MonicaAtrib4", float.Parse(InputTexts [0].text)); //Life = Alto
+			PlayerPrefs.SetFloat ("MonicaAtrib5", float.Parse(InputTexts [4].text)); //Movimento = Baixo
+			break;
+		case(1): // ASTRONAUTA
+			PlayerPrefs.SetFloat ("CebolinhaAtrib1", float .Parse(InputTexts [1].text) ); //Dano = Alto
+			PlayerPrefs.SetFloat ("CebolinhaAtrib2", float.Parse(InputTexts [2].text)); //VelDano = Baixo
+			PlayerPrefs.SetFloat ("CebolinhaAtrib3", float.Parse(InputTexts [3].text)); //AlcanceDano = Medio
+			PlayerPrefs.SetFloat ("CebolinhaAtrib4", float.Parse(InputTexts [0].text)); //Life = Alto
+			PlayerPrefs.SetFloat ("CebolinhaAtrib5", float.Parse(InputTexts [4].text)); //Movimento = Baixo
+			break;
+		case(2): //ANJINHO -> Cranicola
+			PlayerPrefs.SetFloat ("MagaliAtrib1", float .Parse(InputTexts [1].text) ); //Dano = Alto
+			PlayerPrefs.SetFloat ("MagaliAtrib2", float.Parse(InputTexts [2].text)); //VelDano = Baixo
+			PlayerPrefs.SetFloat ("MagaliAtrib3", float.Parse(InputTexts [3].text)); //AlcanceDano = Medio
+			PlayerPrefs.SetFloat ("MagaliAtrib4", float.Parse(InputTexts [0].text)); //Life = Alto
+			PlayerPrefs.SetFloat ("MagaliAtrib5", float.Parse(InputTexts [4].text)); //Movimento = Baixo
+			break;
+		case(3): //ANJINHO -> Cranicola
+			PlayerPrefs.SetFloat ("CascaoAtrib1", float .Parse(InputTexts [1].text) ); //Dano = Alto
+			PlayerPrefs.SetFloat ("CascaoAtrib2", float.Parse(InputTexts [2].text)); //VelDano = Baixo
+			PlayerPrefs.SetFloat ("CascaoAtrib3", float.Parse(InputTexts [3].text)); //AlcanceDano = Medio
+			PlayerPrefs.SetFloat ("CascaoAtrib4", float.Parse(InputTexts [0].text)); //Life = Alto
+			PlayerPrefs.SetFloat ("CascaoAtrib5", float.Parse(InputTexts [4].text)); //Movimento = Baixo
+			break;
+		default:
+			break;
+		}
+	}
+
+
 
 	public void SelectTroop(){
 

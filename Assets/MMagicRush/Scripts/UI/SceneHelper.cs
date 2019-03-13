@@ -46,6 +46,9 @@ public class SceneHelper : MonoBehaviour {
 //		cards [15] = new float[6];
 //		cards [16] = new float[6];
 //		cards [17] = new float[6];
+
+		SetHeroesValues ();
+
 		if (tutorial == false) {
 			cards [0] = new float[6]{ 0, 0, 0, 0, 0, 0 };
 			cards [1] = new float[6]{ 0, 0, 0, 0, 0, 0 };
@@ -438,155 +441,67 @@ public class SceneHelper : MonoBehaviour {
 		PlayerPrefs.SetInt ("Dificulty", x);
 	}
 
-	public void SetCardValues(){
+	public void SetHeroesValues(){
 
+		if (PlayerPrefs.HasKey ("CustomValues")) {
+			
+		}else{
+			
+		PlayerPrefs.SetInt ("CustomValues", 1);
+		
+		PlayerPrefs.SetFloat ("MonicaAtrib1", 50); //Dano = Alto
+		PlayerPrefs.SetFloat ("MonicaAtrib2", 1.4f); //VelDano = Baixo
+		PlayerPrefs.SetFloat ("MonicaAtrib3", 2.5f); //AlcanceDano = Medio
+		PlayerPrefs.SetFloat ("MonicaAtrib4", 250); //Life = Alto
+		PlayerPrefs.SetFloat ("MonicaAtrib5", 0.7f); //Movimento = Baixo
 
+		PlayerPrefs.SetFloat ("CebolinhaAtrib1", 25); //Dano = Medio
+		PlayerPrefs.SetFloat ("CebolinhaAtrib2", 0.6f); //VelDano = Alto
+		PlayerPrefs.SetFloat ("CebolinhaAtrib3", 0.5f); //AlcanceDano = Baixissimo
+		PlayerPrefs.SetFloat ("CebolinhaAtrib4", 85); //Life = Medio
+		PlayerPrefs.SetFloat ("CebolinhaAtrib5", 1.3f); //Movimento = Alto
 
+		PlayerPrefs.SetFloat ("MagaliAtrib1", 16); //Dano = Baixo
+		PlayerPrefs.SetFloat ("MagaliAtrib2", 1); //VelDano = Medio
+		PlayerPrefs.SetFloat ("MagaliAtrib3", 0.5f); //AlcanceDano = Baixissimo
+		PlayerPrefs.SetFloat ("MagaliAtrib4", 85); //Life = Medio
+		PlayerPrefs.SetFloat ("MagaliAtrib5", 1); //Movimento = Medio
 
+		PlayerPrefs.SetFloat ("CascaoAtrib1", 16); //Dano = Baixo
+		PlayerPrefs.SetFloat ("CascaoAtrib2", 1); //VelDano = Medio
+		PlayerPrefs.SetFloat ("CascaoAtrib3", 0.5f); //AlcanceDano = Baixissimo
+		PlayerPrefs.SetFloat ("CascaoAtrib4", 85); //Life = Medio
+		PlayerPrefs.SetFloat ("CascaoAtrib5",  1.3f); //Movimento = Alto
 
-//		cards [0] [0] = 0;
-//		cards [0] [1] = 0;
-//		cards [0] [2] = 0;
-//		cards [0] [3] = 0;
-//		cards [0] [4] = 0;
-//		cards [0] [5] = 0;
-//
-//		//NEVASCA
-//		cards [1] [0] = 0;
-//		cards [1] [1] = 0;
-//		cards [1] [2] = 0;
-//		cards [1] [3] = 0;
-//		cards [1] [4] = 0;
-//		cards [1] [5] = 0;
-//
-//		//ESTALO
-//		cards [2] [0] = 0;
-//		cards [2] [1] = 0;
-//		cards [2] [2] = 0;
-//		cards [2] [3] = 0;
-//		cards [2] [4] = 0;
-//		cards [2] [5] = 0;
-//
-//		//CANJA
-//		cards [3] [0] = 0;
-//		cards [3] [1] = 0;
-//		cards [3] [2] = 0;
-//		cards [3] [3] = 0;
-//		cards [3] [4] = 0;
-//		cards [3] [5] = 0;
-//
-//
-//		//ESPLOSAO
-//		cards [4] [0] = 0;
-//		cards [4] [1] = 0;
-//		cards [4] [2] = 0;
-//		cards [4] [3] = 0;
-//		cards [4] [4] = 0;
-//		cards [4] [5] = 0;
-//
-//		//TERREMOTO
-//		cards [5] [0] = 0;
-//		cards [5] [1] = 0;
-//		cards [5] [2] = 0;
-//		cards [5] [3] = 0;
-//		cards [5] [4] = 0;
-//		cards [5] [5] = 0;
-//
-//		//SONECA
-//		cards [6] [0] = 0;
-//		cards [6] [1] = 0;
-//		cards [6] [2] = 0;
-//		cards [6] [3] = 0;
-//		cards [6] [4] = 0;
-//		cards [6] [5] = 0;
-//
-//		//REMEDIO
-//		cards [7] [0] = 0;
-//		cards [7] [1] = 0;
-//		cards [7] [2] = 0;
-//		cards [7] [3] = 0;
-//		cards [7] [4] = 0;
-//		cards [7] [5] = 0;
-//
-//		//ESCUDO
-//		cards [8] [0] = 0;
-//		cards [8] [1] = 0;
-//		cards [8] [2] = 0;
-//		cards [8] [3] = 0;
-//		cards [8] [4] = 0;
-//		cards [8] [5] = 0;
-//
-//		//GRITO
-//		cards [9] [0] = 0;
-//		cards [9] [1] = 0;
-//		cards [9] [2] = 0;
-//		cards [9] [3] = 0;
-//		cards [9] [4] = 0;
-//		cards [9] [5] = 0;
-//
-//		//SEMMUNICAO
-//		cards [10] [0] = 0;
-//		cards [10] [1] = 0;
-//		cards [10] [2] = 0;
-//		cards [10] [3] = 0;
-//		cards [10] [4] = 0;
-//		cards [10] [5] = 0;
-//
-//		//BIDU
-//		cards [11] [0] = 3;//HP
-//		cards [11] [1] = 0;//DMG
-//		cards [11] [2] = 1;//AKSPD
-//		cards [11] [3] = 1;//RANGEDDMG
-//		cards [11] [4] = 5;//SPEED
-//		cards [11] [5] = 1;//LVL
-//
-//		//ASTRONAUTA
-//		cards [12] [0] = 2;
-//		cards [12] [1] = 0;
-//		cards [12] [2] = 1;
-//		cards [12] [3] = 1;
-//		cards [12] [4] = 5;
-//		cards [12] [5] = 1;
-//
-//		//JOTALHAO
-//		cards [13] [0] = 2;
-//		cards [13] [1] = 1;
-//		cards [13] [2] = 1;
-//		cards [13] [3] = 0;
-//		cards [13] [4] = 2;
-//		cards [13] [5] = 1;
-//
-//		//PITECO
-//		cards [14] [0] = 2;
-//		cards [14] [1] = 1;
-//		cards [14] [2] = 1;
-//		cards [14] [3] = 0;
-//		cards [14] [4] = 4;
-//		cards [14] [5] = 1;
-//
-//		//PENADINHO
-//		cards [15] [0] = 2;
-//		cards [15] [1] = 0;
-//		cards [15] [2] = 1;
-//		cards [15] [3] = 1;
-//		cards [15] [4] = 4;
-//		cards [15] [5] = 1;
-//
-//		//SANSÃO
-//		cards [16] [0] = 6;
-//		cards [16] [1] = 3;
-//		cards [16] [2] = 1;
-//		cards [16] [3] = 0;
-//		cards [16] [4] = 4;
-//		cards [16] [5] = 1;
-//
-//		//MINGAU
-//		cards [17] [0] = 6;
-//		cards [17] [1] = 0;
-//		cards [17] [2] = 1;
-//		cards [17] [3] = 6;
-//		cards [17] [4] = 4;
-//		cards [17] [5] = 1;
+		}
+
+	}
+
+	public void ResetHeroesToOriginal(){
+
+		PlayerPrefs.SetFloat ("MonicaAtrib1", 50); //Dano = Alto
+		PlayerPrefs.SetFloat ("MonicaAtrib2", 1.4f); //VelDano = Baixo
+		PlayerPrefs.SetFloat ("MonicaAtrib3", 2.5f); //AlcanceDano = Medio
+		PlayerPrefs.SetFloat ("MonicaAtrib4", 250); //Life = Alto
+		PlayerPrefs.SetFloat ("MonicaAtrib5", 0.7f); //Movimento = Baixo
+
+		PlayerPrefs.SetFloat ("CebolinhaAtrib1", 25); //Dano = Medio
+		PlayerPrefs.SetFloat ("CebolinhaAtrib2", 0.6f); //VelDano = Alto
+		PlayerPrefs.SetFloat ("CebolinhaAtrib3", 0.5f); //AlcanceDano = Baixissimo
+		PlayerPrefs.SetFloat ("CebolinhaAtrib4", 85); //Life = Medio
+		PlayerPrefs.SetFloat ("CebolinhaAtrib5", 1.3f); //Movimento = Alto
+
+		PlayerPrefs.SetFloat ("MagaliAtrib1", 16); //Dano = Baixo
+		PlayerPrefs.SetFloat ("MagaliAtrib2", 1); //VelDano = Medio
+		PlayerPrefs.SetFloat ("MagaliAtrib3", 0.5f); //AlcanceDano = Baixissimo
+		PlayerPrefs.SetFloat ("MagaliAtrib4", 85); //Life = Medio
+		PlayerPrefs.SetFloat ("MagaliAtrib5", 1); //Movimento = Medio
+
+		PlayerPrefs.SetFloat ("CascaoAtrib1", 16); //Dano = Baixo
+		PlayerPrefs.SetFloat ("CascaoAtrib2", 1); //VelDano = Medio
+		PlayerPrefs.SetFloat ("CascaoAtrib3", 0.5f); //AlcanceDano = Baixissimo
+		PlayerPrefs.SetFloat ("CascaoAtrib4", 85); //Life = Medio
+		PlayerPrefs.SetFloat ("CascaoAtrib5",  1.3f); //Movimento = Alto
 
 	}
 

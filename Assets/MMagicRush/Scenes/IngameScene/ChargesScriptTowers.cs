@@ -26,8 +26,8 @@ public class ChargesScriptTowers : MonoBehaviour {
 	public HealtBar HealtBarTower;
 	public HealtBarSolid HealtBarSolid;
 	public bool Tower;
-	public int vida;
-	public int vidaMax;
+	public float vida;
+	public float vidaMax;
 	public GameObject HitAnimationObject;
 	public AudioManager manager;
 	public int playerteam;
@@ -153,7 +153,7 @@ public class ChargesScriptTowers : MonoBehaviour {
 
 	}
 
-	public void ReceiveDamage(int x){
+	public void ReceiveDamage(float x){
 
 		this.vida -= x;
 		UpdateLife ();
@@ -184,7 +184,7 @@ public class ChargesScriptTowers : MonoBehaviour {
 		}
 	}
 
-	public void ReceiveDamage(int x, bool explosion){
+	public void ReceiveDamage(float x, bool explosion){
 
 		this.vida -= x;
 		//UpdateLife ();
@@ -213,9 +213,9 @@ public class ChargesScriptTowers : MonoBehaviour {
 
 	public void UpdateLife(){
 
-		this.HealtBarTower.Life = this.vida;
-		this.HealtBarTower.MaxLife = this.vidaMax;
-		this.HealtBarTower.UpdateHealtbars();
+//		this.HealtBarTower.Life = this.vida;
+//		this.HealtBarTower.MaxLife = this.vidaMax;
+//		this.HealtBarTower.UpdateHealtbars();
 	}
 
 }

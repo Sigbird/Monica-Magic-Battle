@@ -140,17 +140,17 @@ public class WPIASoldierControler : MonoBehaviour {
 	private bool levelUp;
 
 	[HideInInspector]
-	public int vidaMax;
+	public float vidaMax;
 
 
-	public int vida;
+	public float vida;
 
 	public float reach;
 
 
-	public int damage;
+	public float damage;
 
-	public int tempdamage;
+	public float tempdamage;
 
 
 	public float damageSpeed;
@@ -718,13 +718,13 @@ public class WPIASoldierControler : MonoBehaviour {
 //		Debug.Log ("id: " + id);
 		switch (heroID) {
 		case(0): 
-			this.vidaMax = 200; //ALto
-			this.vida = 200;
+			this.vidaMax = PlayerPrefs.GetFloat ("MonicaAtrib4");//200; //ALto
+			this.vida = PlayerPrefs.GetFloat ("MonicaAtrib4");//200;
 			this.reach = 2;//3
-			this.damage = 50; //Alto
-			this.damageSpeed = 0.5f;//Baixo
-			this.range = 1.5f; //Medio
-			this.speed = 0.8f; //Baixo
+			this.damage = PlayerPrefs.GetFloat ("MonicaAtrib1");//50; //Alto
+			this.damageSpeed = PlayerPrefs.GetFloat ("MonicaAtrib2");//0.5f;//Baixo
+			this.range = PlayerPrefs.GetFloat ("MonicaAtrib3");//1.5f; //Medio
+			this.speed = PlayerPrefs.GetFloat ("MonicaAtrib5");//0.8f; //Baixo
 			this.energyMax = 3;
 			this.energy = 3;
 			this.explosiveDamage = true;
@@ -737,13 +737,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Monica");
 			break;
 		case(1):
-			this.vidaMax = 75; //Medio
-			this.vida = 75;
+			this.vidaMax = PlayerPrefs.GetFloat ("CebolinhaAtrib4"); //75; //Medio
+			this.vida = PlayerPrefs.GetFloat ("CebolinhaAtrib4");//75;
 			this.reach = 2;//
-			this.damage = 14; //Medio
-			this.damageSpeed = 0.5f; //Alto
-			this.range = 0.5f;//Baixissimo
-			this.speed = 1.7f; //Alto
+			this.damage = PlayerPrefs.GetFloat ("CebolinhaAtrib1");//14; //Medio
+			this.damageSpeed = PlayerPrefs.GetFloat ("CebolinhaAtrib2");//0.5f; //Alto
+			this.range = PlayerPrefs.GetFloat ("CebolinhaAtrib3");//0.5f;//Baixissimo
+			this.speed = PlayerPrefs.GetFloat ("CebolinhaAtrib5");//1.7f; //Alto
 			this.energyMax = 3;
 			this.energy = 3;
 			this.explosiveDamage = false;
@@ -756,13 +756,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Cebolinha");
 			break;
 		case(2):
-			this.vidaMax = 75; //Medio 75
-			this.vida = 75;
+			this.vidaMax = PlayerPrefs.GetFloat ("MagaliAtrib4");//75; //Medio 75
+			this.vida = PlayerPrefs.GetFloat ("MagaliAtrib4");//75;
 			this.reach = 2f;
-			this.damage = 14;  //Baixo
-			this.damageSpeed = 1; //Medio
-			this.range = 0.5f; //Baixissimo
-			this.speed = 1.3f; //medio
+			this.damage = PlayerPrefs.GetFloat ("MagaliAtrib1");//14;  //Baixo
+			this.damageSpeed = PlayerPrefs.GetFloat ("MagaliAtrib2");//1; //Medio
+			this.range = PlayerPrefs.GetFloat ("MagaliAtrib3");//0.5f; //Baixissimo
+			this.speed = PlayerPrefs.GetFloat ("MagaliAtrib5");//1.3f; //medio
 			this.energyMax = 4;
 			this.energy = 4;
 			this.explosiveDamage = false;
@@ -772,13 +772,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Magali");
 			break;
 		case(3):
-			this.vidaMax = 75; //Medio
-			this.vida = 75;
+			this.vidaMax = PlayerPrefs.GetFloat ("CascaoAtrib4");//75; //Medio
+			this.vida = PlayerPrefs.GetFloat ("CascaoAtrib4");//75;
 			this.reach = 2f;
-			this.damage = 35;  //Baixo
-			this.damageSpeed = 1f; //Medio
-			this.range = 0.5f; //Baixissimo
-			this.speed = 1.7f; //Alto
+			this.damage = PlayerPrefs.GetFloat ("CascaoAtrib1");//35;  //Baixo
+			this.damageSpeed = PlayerPrefs.GetFloat ("CascaoAtrib2");//1f; //Medio
+			this.range = PlayerPrefs.GetFloat ("CascaoAtrib3");//0.5f; //Baixissimo
+			this.speed =PlayerPrefs.GetFloat ("CascaoAtrib5");// 1.7f; //Alto
 			this.energyMax = 4;
 			this.energy = 4;
 			this.explosiveDamage = false;
@@ -982,9 +982,9 @@ public class WPIASoldierControler : MonoBehaviour {
 	}
 
 	public void UpdateLife(){
-		this.healtbarSoldier.GetComponent<HealtBar> ().Life = this.vida;
-		this.healtbarSoldier.GetComponent<HealtBar> ().MaxLife = this.vidaMax;
-		this.healtbarSoldier.GetComponent<HealtBar> ().UpdateHealtbars();
+//		this.healtbarSoldier.GetComponent<HealtBar> ().Life = this.vida;
+//		this.healtbarSoldier.GetComponent<HealtBar> ().MaxLife = this.vidaMax;
+//		this.healtbarSoldier.GetComponent<HealtBar> ().UpdateHealtbars();
 	}
 
 //	public void UpdateEnergy(){
@@ -1382,7 +1382,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		}
 	}
 
-	public void ReceiveDamage(int x){
+	public void ReceiveDamage(float x){
 		if (this.heroID == 1) {
 			GetComponent<HeroSpecialHability> ().LostInvisibility ();
 		} 
@@ -1397,7 +1397,7 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	}
 
-	public void ReceiveDamage(int x, bool explosion){
+	public void ReceiveDamage(float x, bool explosion){
 		if (this.heroID == 1) {
 			GetComponent<HeroSpecialHability> ().LostInvisibility ();
 		} 
