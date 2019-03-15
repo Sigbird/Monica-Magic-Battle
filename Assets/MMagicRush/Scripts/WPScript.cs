@@ -330,19 +330,19 @@ public class WPScript : MonoBehaviour {
 
 			if(position.y > 0.5f && Enemy.transform.position.y<0.5){
 				EnemyWaypointMarker.GetComponent<MovementMarkerScript> ().progress = 1;
-				Instantiate(EnemyWaypointMarker, Enemy.GetComponent<WPIASoldierControler>().NearestPass.transform.position, Quaternion.identity).gameObject.name = "Waypoint"+progress;
+				Instantiate(EnemyWaypointMarker, Enemy.GetComponent<WPIASoldierControler>().NearestPass.transform.position, Quaternion.identity).gameObject.name = "Waypoint"+1;
 				EnemyWaypointMarker.GetComponent<MovementMarkerScript> ().progress = 2;
-				Instantiate(EnemyWaypointMarker, position, Quaternion.identity).gameObject.name = "Waypoint"+progress;
+				Instantiate(EnemyWaypointMarker, position, Quaternion.identity).gameObject.name = "Waypoint"+2;
 			} else if(position.y < 0.5f && Enemy.transform.position.y>0.5){
 				EnemyWaypointMarker.GetComponent<MovementMarkerScript> ().progress = 1;
-				Instantiate(EnemyWaypointMarker, Enemy.GetComponent<WPIASoldierControler>().NearestPass.transform.position, Quaternion.identity).gameObject.name = "Waypoint"+progress;
+				Instantiate(EnemyWaypointMarker, Enemy.GetComponent<WPIASoldierControler>().NearestPass.transform.position, Quaternion.identity).gameObject.name = "Waypoint"+1;
 				EnemyWaypointMarker.GetComponent<MovementMarkerScript> ().progress = 2;
-				Instantiate(EnemyWaypointMarker, position, Quaternion.identity).gameObject.name = "Waypoint"+progress;
+				Instantiate(EnemyWaypointMarker, position, Quaternion.identity).gameObject.name = "Waypoint"+2;
 			}else{
 				EnemyWaypointMarker.GetComponent<MovementMarkerScript> ().progress = 1;
-				Instantiate(EnemyWaypointMarker, position, Quaternion.identity).gameObject.name = "Waypoint"+progress;
+				Instantiate(EnemyWaypointMarker, position, Quaternion.identity).gameObject.name = "Waypoint"+1;
 			}
-
+			Debug.Log("Instanciou");
 			//Instantiate (EnemyWaypointMarker, position, Quaternion.identity);
 			//enemyprogress++;
 		}

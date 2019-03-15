@@ -24,8 +24,8 @@ public class ChargesScript : MonoBehaviour {
 	public GameObject HitEffect;
 	public HealtBar HealtBarTower;
 	public HealtBarSolid HealtBarSolid;
-	public int vida;
-	public int vidaMax;
+	public float vida;
+	public float vidaMax;
 	public GameObject HitAnimationObject;
 	public bool NewMechanic;
 	public GameObject SplashEffect;
@@ -201,7 +201,7 @@ public class ChargesScript : MonoBehaviour {
 
 	}
 
-	public void ReceiveDamage(int x){
+	public void ReceiveDamage(float x){
 
 		this.vida -= x;
 		if (NewMechanic) {
@@ -213,7 +213,7 @@ public class ChargesScript : MonoBehaviour {
 	}
 
 
-	public void ReceiveDamage(int x, bool explosion){
+	public void ReceiveDamage(float x, bool explosion){
 
 		this.vida -= x;
 		//UpdateLife ();
@@ -227,9 +227,9 @@ public class ChargesScript : MonoBehaviour {
 
 	public void UpdateLife(){
 
-		this.HealtBarTower.Life = this.vida;
-		this.HealtBarTower.MaxLife = this.vidaMax;
-		this.HealtBarTower.UpdateHealtbars();
+//		this.HealtBarTower.Life = this.vida;
+//		this.HealtBarTower.MaxLife = this.vidaMax;
+//		this.HealtBarTower.UpdateHealtbars();
 	}
 
 }

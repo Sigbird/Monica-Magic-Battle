@@ -140,17 +140,17 @@ public class WPIASoldierControler : MonoBehaviour {
 	private bool levelUp;
 
 	[HideInInspector]
-	public int vidaMax;
+	public float vidaMax;
 
 
-	public int vida;
+	public float vida;
 
 	public float reach;
 
 
-	public int damage;
+	public float damage;
 
-	public int tempdamage;
+	public float tempdamage;
 
 
 	public float damageSpeed;
@@ -347,7 +347,7 @@ public class WPIASoldierControler : MonoBehaviour {
 
 		//ALTERAÇÔES DE CHANCE DE ESCOLHAS NO TWIST
 
-		if (this.vida < 100) {
+		if (this.vida < (this.vidaMax/2)) {
 			retreatChance = 90;
 		} else {
 			retreatChance = 0;
@@ -364,6 +364,7 @@ public class WPIASoldierControler : MonoBehaviour {
 //		if (GameObject.Find ("treasureChest").GetComponent<TreasureScript> ().heroProgress > 0) {
 //			heroHarassChance = 75;
 //		} else 
+
 		if (GameObject.Find ("HeroBaseEnemy").GetComponent<ChargesScript> ().inCombat == true) {
 			retreatChance = 90;
 		} else if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == true && GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().vida <= 20) {
@@ -371,21 +372,22 @@ public class WPIASoldierControler : MonoBehaviour {
 		} else if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == true && GameObject.Find ("Hero").transform.position.y > 0) {
 			heroHarassChance = 60;
 		} else if (this.vida >= 100) {
-			heroHarassChance = 10;
+			heroHarassChance = 20;
 		} else {
 			heroHarassChance = 0;
 		}
+
 		//heroHarassChance = 100;
-		if (gc.EnemyDiamonds < 100) {
-			gemColectorChance = 15;
-		}
+//		if (gc.EnemyDiamonds < 100) {
+//			gemColectorChance = 15;
+//		}
 
 		if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == false) {
-			pushHatChance = 20;
+			pushHatChance = 50;
 		} else if (this.vida >= 100) {
-			pushHatChance = 10;
+			pushHatChance = 25;
 		} else if (this.vida >= 50) { 
-			pushHatChance = 5;
+			pushHatChance = 10;
 		}else{
 				pushHatChance = 0;
 		}
@@ -394,10 +396,11 @@ public class WPIASoldierControler : MonoBehaviour {
 //			twisting = true;
 //			Twist (0);
 //		}
-	
+		gemColectorChance = 0;
 
 		//EVENTO DE MORTE
 		if (this.vida <= 0 && heroUnity && this.GetComponent<SpriteRenderer>().enabled == true) {
+			
 			this.speed = 0;
 			Instantiate (deathAngel, this.transform.position, Quaternion.identity).transform.parent = this.transform;
 			if (tutorial == false) {
@@ -631,7 +634,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		if (seeking == false && this.targetEnemy != null ) { 
 
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag("enemywaypoint")) {
-				Destroy (o.gameObject);
+				//Destroy (o.gameObject);
 			}
 
 			if (this.team == 2 && this.vida <= 2) {
@@ -705,7 +708,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		} else if (PlayerPrefs.HasKey ("Enemy") && this.team != 1 && tutorial == false) {
 			heroID = PlayerPrefs.GetInt ("Enemy");
 		} else if (tutorial == true){
-			heroID = 1;
+			heroID = 0;
 		}
 
 		if(tutorial == false)
@@ -715,13 +718,13 @@ public class WPIASoldierControler : MonoBehaviour {
 //		Debug.Log ("id: " + id);
 		switch (heroID) {
 		case(0): 
-			this.vidaMax = 200; //ALto
-			this.vida = 200;
+			this.vidaMax = PlayerPrefs.GetFloat ("MonicaAtrib4");//200; //ALto
+			this.vida = PlayerPrefs.GetFloat ("MonicaAtrib4");//200;
 			this.reach = 2;//3
-			this.damage = 50; //Alto
-			this.damageSpeed = 0.5f;//Baixo
-			this.range = 1.5f; //Medio
-			this.speed = 0.8f; //Baixo
+			this.damage = PlayerPrefs.GetFloat ("MonicaAtrib1");//50; //Alto
+			this.damageSpeed = PlayerPrefs.GetFloat ("MonicaAtrib2");//0.5f;//Baixo
+			this.range = PlayerPrefs.GetFloat ("MonicaAtrib3");//1.5f; //Medio
+			this.speed = PlayerPrefs.GetFloat ("MonicaAtrib5");//0.8f; //Baixo
 			this.energyMax = 3;
 			this.energy = 3;
 			this.explosiveDamage = true;
@@ -734,13 +737,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Monica");
 			break;
 		case(1):
-			this.vidaMax = 75; //Medio
-			this.vida = 75;
+			this.vidaMax = PlayerPrefs.GetFloat ("CebolinhaAtrib4"); //75; //Medio
+			this.vida = PlayerPrefs.GetFloat ("CebolinhaAtrib4");//75;
 			this.reach = 2;//
-			this.damage = 14; //Medio
-			this.damageSpeed = 0.5f; //Alto
-			this.range = 0.5f;//Baixissimo
-			this.speed = 1.7f; //Alto
+			this.damage = PlayerPrefs.GetFloat ("CebolinhaAtrib1");//14; //Medio
+			this.damageSpeed = PlayerPrefs.GetFloat ("CebolinhaAtrib2");//0.5f; //Alto
+			this.range = PlayerPrefs.GetFloat ("CebolinhaAtrib3");//0.5f;//Baixissimo
+			this.speed = PlayerPrefs.GetFloat ("CebolinhaAtrib5");//1.7f; //Alto
 			this.energyMax = 3;
 			this.energy = 3;
 			this.explosiveDamage = false;
@@ -753,13 +756,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Cebolinha");
 			break;
 		case(2):
-			this.vidaMax = 75; //Medio 75
-			this.vida = 75;
+			this.vidaMax = PlayerPrefs.GetFloat ("MagaliAtrib4");//75; //Medio 75
+			this.vida = PlayerPrefs.GetFloat ("MagaliAtrib4");//75;
 			this.reach = 2f;
-			this.damage = 14;  //Baixo
-			this.damageSpeed = 1; //Medio
-			this.range = 0.5f; //Baixissimo
-			this.speed = 1.3f; //medio
+			this.damage = PlayerPrefs.GetFloat ("MagaliAtrib1");//14;  //Baixo
+			this.damageSpeed = PlayerPrefs.GetFloat ("MagaliAtrib2");//1; //Medio
+			this.range = PlayerPrefs.GetFloat ("MagaliAtrib3");//0.5f; //Baixissimo
+			this.speed = PlayerPrefs.GetFloat ("MagaliAtrib5");//1.3f; //medio
 			this.energyMax = 4;
 			this.energy = 4;
 			this.explosiveDamage = false;
@@ -769,13 +772,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			Debug.Log ("Magali");
 			break;
 		case(3):
-			this.vidaMax = 75; //Medio
-			this.vida = 75;
+			this.vidaMax = PlayerPrefs.GetFloat ("CascaoAtrib4");//75; //Medio
+			this.vida = PlayerPrefs.GetFloat ("CascaoAtrib4");//75;
 			this.reach = 2f;
-			this.damage = 35;  //Baixo
-			this.damageSpeed = 1f; //Medio
-			this.range = 0.5f; //Baixissimo
-			this.speed = 1.7f; //Alto
+			this.damage = PlayerPrefs.GetFloat ("CascaoAtrib1");//35;  //Baixo
+			this.damageSpeed = PlayerPrefs.GetFloat ("CascaoAtrib2");//1f; //Medio
+			this.range = PlayerPrefs.GetFloat ("CascaoAtrib3");//0.5f; //Baixissimo
+			this.speed =PlayerPrefs.GetFloat ("CascaoAtrib5");// 1.7f; //Alto
 			this.energyMax = 4;
 			this.energy = 4;
 			this.explosiveDamage = false;
@@ -979,9 +982,9 @@ public class WPIASoldierControler : MonoBehaviour {
 	}
 
 	public void UpdateLife(){
-		this.healtbarSoldier.GetComponent<HealtBar> ().Life = this.vida;
-		this.healtbarSoldier.GetComponent<HealtBar> ().MaxLife = this.vidaMax;
-		this.healtbarSoldier.GetComponent<HealtBar> ().UpdateHealtbars();
+//		this.healtbarSoldier.GetComponent<HealtBar> ().Life = this.vida;
+//		this.healtbarSoldier.GetComponent<HealtBar> ().MaxLife = this.vidaMax;
+//		this.healtbarSoldier.GetComponent<HealtBar> ().UpdateHealtbars();
 	}
 
 //	public void UpdateEnergy(){
@@ -1127,6 +1130,7 @@ public class WPIASoldierControler : MonoBehaviour {
 	}
 
 	IEnumerator Respawning(){
+		
 		yield return new WaitForSeconds (0.01f);
 		this.alive = false;
 		this.ColliderComponent.enabled = false;
@@ -1378,7 +1382,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		}
 	}
 
-	public void ReceiveDamage(int x){
+	public void ReceiveDamage(float x){
 		if (this.heroID == 1) {
 			GetComponent<HeroSpecialHability> ().LostInvisibility ();
 		} 
@@ -1393,7 +1397,7 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	}
 
-	public void ReceiveDamage(int x, bool explosion){
+	public void ReceiveDamage(float x, bool explosion){
 		if (this.heroID == 1) {
 			GetComponent<HeroSpecialHability> ().LostInvisibility ();
 		} 
@@ -1565,6 +1569,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			break;
 		case 8://PUSH HAT 
 			if (Random.value > 0.5f) {
+				Debug.Log ("Ataca Base");
 				if (Vector2.Distance (GameObject.Find ("HeroBase").transform.position, transform.position) > 0.5f) {
 					waypoint.EnemyMovementPlacement (new Vector2(GameObject.Find ("HeroBase").transform.position.x,GameObject.Find ("HeroBase").transform.position.y ));
 					targetEnemy = GameObject.Find ("HeroBase");
@@ -1575,7 +1580,9 @@ public class WPIASoldierControler : MonoBehaviour {
 					StartCoroutine (WaitMethod (3));
 				}  
 			} else {
+				Debug.Log ("Ataca Torre");
 				if (Random.value > 0.5f) {
+					Debug.Log ("Direita");
 					if (GameObject.Find ("HeroTower1") != null) {
 						if (Vector2.Distance (GameObject.Find ("HeroTower1").transform.position, transform.position) > 0.5f) {
 							waypoint.EnemyMovementPlacement (new Vector2(GameObject.Find ("HeroTower1").transform.position.x,GameObject.Find ("HeroTower1").transform.position.y));
@@ -1590,6 +1597,7 @@ public class WPIASoldierControler : MonoBehaviour {
 						StartCoroutine (WaitMethod (0));
 					}
 				} else {
+					Debug.Log ("Esquerda");
 					if (GameObject.Find ("HeroTower2") != null) {
 						if (Vector2.Distance (GameObject.Find ("HeroTower2").transform.position, transform.position) > 0.5f) {
 							waypoint.EnemyMovementPlacement (new Vector2(GameObject.Find ("HeroTower2").transform.position.x,GameObject.Find ("HeroTower2").transform.position.y ));
@@ -1610,6 +1618,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			if (Vector2.Distance (GameObject.Find ("HeroBaseEnemy").transform.position, transform.position) > 1f) {
 				waypoint.EnemyMovementPlacement (GameObject.Find ("HeroBaseEnemy").transform.position);
 				StartCoroutine (WaitMethod (3));
+				pushHatChance += 10;
 			} else {
 				twisted = true;
 			}  
@@ -1631,7 +1640,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			}
 			break;
 		case 11://RANDON MOVEMENT
-			gemColectorChance += 10;
+			//gemColectorChance += 10;
 			heroHarassChance += 10;
 			pushHatChance += 10;
 			twisted = true;
