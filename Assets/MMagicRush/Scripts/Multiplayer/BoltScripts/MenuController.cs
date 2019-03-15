@@ -5,6 +5,7 @@ using System;
 using UdpKit;
 using Bolt;
 using YupiPlay.MMB;
+using Bolt.Utils;
 
 namespace YupiPlay.MMB.Multiplayer {
     public class MenuController : Bolt.GlobalEventListener {
@@ -19,9 +20,7 @@ namespace YupiPlay.MMB.Multiplayer {
         int limit = 0;
         Coroutine clientwait = null;
         Coroutine matchmakingTimeout = null;
-
-        ServerInfoEvent serverInfoEvent;
-        ClientInfoEvent clientInfoEvent;
+        
         string matchName;
         RoomInfo roomInfo;
         
