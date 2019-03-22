@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class ChestDateTime : MonoBehaviour {
 
 	public Text Duration;
+	public bool Ready;
+	public GameObject Cadeado;
 
 	// Use this for initialization
 	void Start () {

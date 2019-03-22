@@ -2,11 +2,14 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using YupiPlay;
+using UnityEngine.UI;
 
 
 public class SplashAnim : MonoBehaviour {
 	public bool noLoading;
 	public string firstscene;
+	public GameObject LoadingCanvas;
+	public Scrollbar ProgressionBar;
 	// Use this for initialization
 	void Start () {
 		PlayerPrefs.SetFloat ("GameVolume", 1);
@@ -25,7 +28,40 @@ public class SplashAnim : MonoBehaviour {
 		if (noLoading) {
 			SceneManager.LoadScene (firstscene);
 		} else {
-			SceneLoadingManager.LoadScene (firstscene);
+			StartCoroutine (AsynchronousLoad (firstscene));
+			//SceneLoadingManager.LoadScene (firstscene);
 		}
 	}
+
+
+	IEnumerator AsynchronousLoad (string scene)
+	{
+		yield return null;
+
+		AsyncOperation ao = SceneManager.LoadSceneAsync(scene);
+		ao.allowSceneActivation = false;
+
+		while (! ao.isDone)
+		{
+			LoadingCanvas.SetActive (true);
+			// [0, 0.9] > [0, 1]
+			float progress = Mathf.Clamp01(ao.progress / 0.9f);
+			Debug.Log("Loading progress: " + (progress * 100) + "%");
+			ProgressionBar.size = progress;
+			// Loading completed
+			if (ao.progress == 0.9f)
+			{
+				Debug.Log("Press a key to start");
+				//if (Input.GetKeyDown(KeyCode.A))
+				if (LoadingCanvas != null) {
+					Destroy (LoadingCanvas.gameObject);
+				}
+					ao.allowSceneActivation = true;
+				//ao.isDone = true;
+			}
+
+			yield return null;
+		}
+	}
+
 }
