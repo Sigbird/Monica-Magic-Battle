@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using YupiPlay.MMB.Lockstep;
 using System;
 
-public class WPSoldierControler : MonoBehaviour {
+public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 
 	//public enum TipoSoldado {Guerreiro, Mago, Lanceiro, General};
 
@@ -203,9 +203,17 @@ public class WPSoldierControler : MonoBehaviour {
 	public GameObject RiverPassRight;
 	public GameObject NearestPass;
 
+	public override void Attached() {
+		state.SetTransforms(state.Transform, transform);
+		//__Start();
+	}
+
+	void Start() {
+		__Start();
+	}
 
 	// Use this for initialization
-	void Start () {
+	void __Start () {
 		gameBegin = false;
 
 
@@ -253,7 +261,15 @@ public class WPSoldierControler : MonoBehaviour {
 
 	}
 
-	void Update () {
+	void Update() {
+		//__Update();
+	}
+
+	public override void SimulateOwner() {
+		__Update();
+	}
+
+	void __Update () {
 
 		if (GameObject.Find ("GameController").GetComponent<GameController> ().GameOver) {
 			this.alive = false;
@@ -296,24 +312,24 @@ public class WPSoldierControler : MonoBehaviour {
 
 		// COLISÕES COM TROPAS E ADVERSÁRIOS
 
-		foreach (GameObject obstacle in GameObject.FindGameObjectsWithTag("CharacterBound")) {
-			if(enemycontroller.alive == true){
-			if (CharBound.bounds.Intersects (obstacle.GetComponent<SpriteRenderer> ().bounds) && obstacle != this.CharBound.transform.gameObject) {
-				if (this.CharBound.transform.position.x > obstacle.transform.position.x) {
-					transform.Translate (Vector3.right * Time.deltaTime * 1f);
-				} else {
-					transform.Translate (Vector3.left * Time.deltaTime * 1f);
-				}
-				if (this.CharBound.transform.position.y > obstacle.transform.position.y) {
-					transform.Translate (Vector3.up * Time.deltaTime * 1f);
-				} else {
-					transform.Translate (Vector3.down * Time.deltaTime * 1f);
-				}
+// 		foreach (GameObject obstacle in GameObject.FindGameObjectsWithTag("CharacterBound")) {
+// 			if(enemycontroller.alive == true){
+// 			if (CharBound.bounds.Intersects (obstacle.GetComponent<SpriteRenderer> ().bounds) && obstacle != this.CharBound.transform.gameObject) {
+// 				if (this.CharBound.transform.position.x > obstacle.transform.position.x) {
+// 					transform.Translate (Vector3.right * Time.deltaTime * 1f);
+// 				} else {
+// 					transform.Translate (Vector3.left * Time.deltaTime * 1f);
+// 				}
+// 				if (this.CharBound.transform.position.y > obstacle.transform.position.y) {
+// 					transform.Translate (Vector3.up * Time.deltaTime * 1f);
+// 				} else {
+// 					transform.Translate (Vector3.down * Time.deltaTime * 1f);
+// 				}
 
-			}
-//			Debug.Log (obstacle.name);
-			}
-		}
+// 			}
+// //			Debug.Log (obstacle.name);
+// 			}
+// 		}
 
 
 
@@ -461,11 +477,11 @@ public class WPSoldierControler : MonoBehaviour {
 			}
 		}
 		if (tutorial == false) {
-			if (Vector3.Distance (transform.position, RiverPassLeft.transform.position) > Vector3.Distance (transform.position, RiverPassRight.transform.position)) {
-				NearestPass = RiverPassRight;
-			} else {
-				NearestPass = RiverPassLeft;
-			}
+			// if (Vector3.Distance (transform.position, RiverPassLeft.transform.position) > Vector3.Distance (transform.position, RiverPassRight.transform.position)) {
+			// 	NearestPass = RiverPassRight;
+			// } else {
+			// 	NearestPass = RiverPassLeft;
+			// }
 
 		}
 //		if (WaypointMark != null) {
@@ -788,9 +804,9 @@ public class WPSoldierControler : MonoBehaviour {
 
 		// CONFIGURAÇÃO DE EQUIPE
 		if (this.team == 1) {
-			this.tag = "enemysoldier1";
+			//this.tag = "enemysoldier1";
 		} else {
-			this.tag = "enemysoldier2";
+			//	this.tag = "enemysoldier2";
 			this.GetComponent<SpriteRenderer>().flipX = true;
 			platform.GetComponent<SpriteRenderer> ().color = Color.red;
 
@@ -933,13 +949,14 @@ public class WPSoldierControler : MonoBehaviour {
 //		if(heroUnity)
 //			this.energy = this.energyMax;
 		this.seeking = false;
-		this.transform.position = new Vector3(0,-6.5f,0);
+		//this.transform.position = new Vector3(0,-6.5f,0);
 
 		yield return new WaitForSeconds (respawningTimer);
 
 		audioManager.PlayAudio ("spawn");
-		if(heroUnity)
-			transform.position = heroBase.transform.position;
+		
+		// if(heroUnity) transform.position = heroBase.transform.position;
+		
 		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		this.anim.GetComponent<SpriteRenderer>().enabled = true;
 		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
@@ -959,7 +976,7 @@ public class WPSoldierControler : MonoBehaviour {
 		Arrival.Play ();
 		alive = true;
 		gameBegin = true;
-		this.transform.position = new Vector3(0,-1.5f,0);
+		//this.transform.position = new Vector3(0,-1.5f,0);
 	}
 
 	public GameObject SeekEnemyTarget (){

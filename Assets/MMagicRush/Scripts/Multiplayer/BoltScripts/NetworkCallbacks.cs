@@ -6,23 +6,52 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
     public Camera MainCamera;
     public Transform Player1Position;
     public Transform Player2Position;
-    public MatchClock matchClock;    
+    public MatchClock matchClock;   
+
+    public GameController gameController; 
+    public RoundStart roundStart;
+    public WPScript wpScript;
+
+    private GameObject playerServer;
+    private GameObject playerClient;
+    
 
     public override void SceneLoadLocalDone(string map) {       
-        if (BoltNetwork.IsServer) {
-            //BoltNetwork.Instantiate(BoltPrefabs.PlayerShip, Player1Position.position, Quaternion.identity);            
-        }   
-
-        if (BoltNetwork.IsClient) {
-            //BoltNetwork.Instantiate(BoltPrefabs.Player2Ship, Player2Position.position, Player2Position.rotation);
-            //MainCamera.transform.rotation = Player2Position.rotation;
-        }
+        
     }
 
-    public override void EntityAttached(BoltEntity entity) {        
+    public override void SceneLoadRemoteDone(BoltConnection connection) {
+        if (BoltNetwork.IsServer) {
+            var serverEntinty = BoltNetwork.Instantiate(BoltPrefabs.HeroMPServer, Player1Position.position, Quaternion.identity);
+            playerServer = serverEntinty;
+            serverEntinty.name = playerServer.name = "HeroMPServer";      
+            gameController.HeroGameObject = playerServer;        
+            wpScript.Hero = playerServer.transform;
+            roundStart.Hero = playerServer;        
+        }   
+    
+        if (BoltNetwork.IsClient) {
+            var clientEntity = BoltNetwork.Instantiate(BoltPrefabs.HeroMPClient, Player2Position.position, Quaternion.identity);
+            playerClient = clientEntity;
+            clientEntity.name = playerServer.name = "HeroMPServer";  
+            gameController.EnemyGameObject = playerClient;
+            wpScript.Enemy = playerClient.transform;
+            roundStart.Enemy = playerClient;
+        }        
+    }
+
+    public override void EntityAttached(BoltEntity entity) { 
+        Debug.Log(entity.name);
         // Começa a countdown de Início partida após o Player der spawn
-        if (BoltNetwork.IsServer && entity.tag == "Player2") {            
-            matchClock.StartCountDown();
+        if (entity.tag == "enemysoldier1") {
+            gameController.HeroGameObject = entity;        
+            wpScript.Hero = entity.transform;
+            roundStart.Hero = entity;            
         }
+        if (entity.tag == "enemysoldier2") {
+            gameController.EnemyGameObject = entity;
+            wpScript.Enemy = entity.transform;
+            roundStart.Enemy = entity;
+        }        
     }    
 }
