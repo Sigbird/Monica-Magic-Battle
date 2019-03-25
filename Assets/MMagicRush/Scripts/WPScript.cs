@@ -221,23 +221,23 @@ public class WPScript : MonoBehaviour {
 //			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 //			renderer.sprite = CaptureIcon; //CAPTURA DE BAU
 //		} else 
-//		if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBaseEnemy").transform.position) < 0.5f) {
-//			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
-//			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
-//			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
-//			if (tutorial == true && GameObject.Find ("TutorialHand") != null && GameObject.Find ("Tut12") != null) {
-//				GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
-//				GameObject.Find ("Tut12").SetActive(false);
-//			}
-//			renderer.sprite = CaptureIcon; //CAPTURA DE BASE INIMIGA
-//		} else 
-//			if (GemNearbyClick()) {
-//			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = true;
-//			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
-//			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
-//			renderer.sprite = MineIcon; //CAPTURA DE GEMA
-//
-//		} else
+		if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBaseEnemy").transform.position) < 0.5f) {
+			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
+			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
+			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
+			if (tutorial == true && GameObject.Find ("TutorialHand") != null && GameObject.Find ("Tut12") != null) {
+				GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
+				GameObject.Find ("Tut12").SetActive(false);
+			}
+			renderer.sprite = CaptureIcon; //CAPTURA DE BASE INIMIGA
+		} else 
+			if (GemNearbyClick()) {
+			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = true;
+			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
+			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
+			renderer.sprite = MineIcon; //CAPTURA DE GEMA
+
+		} else
 			if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBase").transform.position) < 0.5f) {
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;

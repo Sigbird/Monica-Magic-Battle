@@ -657,7 +657,7 @@ public class WPIASoldierControler : MonoBehaviour {
 					}
 
 					if (targetEnemy.transform.Find ("MovementMarker(Clone)"))
-						Destroy (targetEnemy.transform.Find ("MovementMarker(Clone)").gameObject);
+					//	Destroy (targetEnemy.transform.Find ("MovementMarker(Clone)").gameObject);
 				
 					if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
 						//danoCD = 0;
@@ -1130,7 +1130,7 @@ public class WPIASoldierControler : MonoBehaviour {
 	}
 
 	IEnumerator Respawning(){
-		
+		this.speed = 0;
 		yield return new WaitForSeconds (0.01f);
 		this.alive = false;
 		this.ColliderComponent.enabled = false;

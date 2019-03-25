@@ -11,10 +11,18 @@ public class MovementMarkerScript : MonoBehaviour {
 
 	public bool reached;
 	// Use this for initialization
-	void Start () {
+	void Awake(){
 		reached = false;
 	}
 
+	void Start () {
+		
+
+	}
+
+	void OnDestroy(){
+		
+	}
 
 	void OnMouseDown(){
 		Destroy (this.gameObject);

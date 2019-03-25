@@ -262,7 +262,9 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 	}
 
 	void Update() {
-		//__Update();
+		if(multiplayer == false){
+		__Update();
+		}
 	}
 
 	public override void SimulateOwner() {
@@ -312,6 +314,8 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 
 		// COLISÕES COM TROPAS E ADVERSÁRIOS
 
+		if (multiplayer == false) {
+
 // 		foreach (GameObject obstacle in GameObject.FindGameObjectsWithTag("CharacterBound")) {
 // 			if(enemycontroller.alive == true){
 // 			if (CharBound.bounds.Intersects (obstacle.GetComponent<SpriteRenderer> ().bounds) && obstacle != this.CharBound.transform.gameObject) {
@@ -325,13 +329,13 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 // 				} else {
 // 					transform.Translate (Vector3.down * Time.deltaTime * 1f);
 // 				}
-
+//
 // 			}
 // //			Debug.Log (obstacle.name);
 // 			}
 // 		}
 
-
+		}
 
 		//
 		//ORDEM DE LAYER
@@ -477,11 +481,11 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 			}
 		}
 		if (tutorial == false) {
-			// if (Vector3.Distance (transform.position, RiverPassLeft.transform.position) > Vector3.Distance (transform.position, RiverPassRight.transform.position)) {
-			// 	NearestPass = RiverPassRight;
-			// } else {
-			// 	NearestPass = RiverPassLeft;
-			// }
+			 if (Vector3.Distance (transform.position, RiverPassLeft.transform.position) > Vector3.Distance (transform.position, RiverPassRight.transform.position)) {
+			 	NearestPass = RiverPassRight;
+			 } else {
+			 	NearestPass = RiverPassLeft;
+			 }
 
 		}
 //		if (WaypointMark != null) {
@@ -600,7 +604,7 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 			}
 			seeking = true;
 		} 
-		danoCD += Time.deltaTime * 2;
+		danoCD += Time.deltaTime;
 
 
 	}
@@ -702,111 +706,17 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 			break;
 
 		}
-
-//		Debug.Log ("id: " + id);
-//		switch (heroID) {
-//		case(0): 
-//			this.vidaMax = 6;
-//			this.vida = 6;
-//			this.reach = 2;//3
-//			this.damage = 1;
-//			this.damageSpeed = 4;
-//			this.range = 1.5f;
-//			this.speed = 10;
-//			this.energyMax = 3;
-//			this.energy = 3;
-//			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
-//			//	this.anim.SetInteger ("Char", 0);
-//			//this.anim.GetComponent<SpriteRenderer> ().enabled = false;
-//			//this.gameObject.GetComponent<Animator> ().enabled = false;
-//			this.anim = transform.Find ("MonicaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
-//			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-////			Debug.Log ("Monica");
-//			break;
-//		case(1):
-//			this.vidaMax = 4;
-//			this.vida = 4;
-//			this.reach = 3;//3
-//			this.damage = 1;
-//			this.damageSpeed = 4;
-//			this.range = 1.5f;
-//			this.speed = 12;
-//			this.energyMax = 3;
-//			this.energy = 3;
-//			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
-//			//this.anim.SetInteger ("Char", 1);
-//			this.anim = transform.Find ("CebolinhaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
-//			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-////			Debug.Log ("Cebolinha");
-//			break;
-//		case(2):
-//			this.vidaMax = 7;
-//			this.vida = 7;
-//			this.reach = 0.5f;
-//			this.damage = 1;
-//			this.damageSpeed = 4;
-//			this.range = 1.5f;
-//			this.speed = 10;
-//			this.energyMax = 4;
-//			this.energy = 4;
-//			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
-//			this.anim = transform.Find ("MagaliAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
-//			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-////			Debug.Log ("Magali");
-//			break;
-//		case(3):
-//			this.vidaMax = 4;
-//			this.vida = 4;
-//			this.reach = 0.5f;
-//			this.damage = 2;
-//			this.damageSpeed = 4;
-//			this.range = 1.5f;
-//			this.speed = 10;
-//			this.energyMax = 4;
-//			this.energy = 4;
-//			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
-//			this.anim = transform.Find ("CascãoAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
-//			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-////			Debug.Log ("Cascao");
-//			break;
-//		case(4):
-//			this.vidaMax = 4;
-//			this.vida = 4;
-//			this.reach = 0.5f;
-//			this.damage = 1;
-//			this.damageSpeed = 2;
-//			this.range = 1.5f;
-//			this.speed = 10;
-//			this.energyMax = 4;
-//			this.energy = 4;
-//			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
-//			this.anim = transform.Find ("ChicoAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
-//			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-////			Debug.Log ("Chico");
-//			break;
-//		default:
-//			this.vidaMax = 6;
-//			this.vida = 6;
-//			this.reach = 0.5f;
-//			this.damage = 1;
-//			this.damageSpeed = 2;
-//			this.range = 1.5f;
-//			this.speed = 10;
-//			this.energyMax = 4;
-//			this.energy = 4;
-//			//this.GetComponent<SpriteRenderer> ().sprite = warrior;
-//			this.anim = transform.Find ("MonicaAnimation").GetComponent<Animator> (); // SET THE ANIMATOR
-//			this.anim.GetComponent<SpriteRenderer>().enabled = true;
-////			Debug.Log ("Monica");
-//			break;
-//
-//		}
+			
 
 		// CONFIGURAÇÃO DE EQUIPE
 		if (this.team == 1) {
-			//this.tag = "enemysoldier1";
+			if(multiplayer == false){
+			this.tag = "enemysoldier1";
+			}
 		} else {
-			//	this.tag = "enemysoldier2";
+			if(multiplayer == false){
+				this.tag = "enemysoldier2";
+			}
 			this.GetComponent<SpriteRenderer>().flipX = true;
 			platform.GetComponent<SpriteRenderer> ().color = Color.red;
 
@@ -945,17 +855,15 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 		this.skill1.gameObject.SetActive (false);
 		this.skill2.gameObject.SetActive (false);
 		this.vida = this.vidaMax;
-		UpdateLife ();
-//		if(heroUnity)
-//			this.energy = this.energyMax;
-		this.seeking = false;
-		//this.transform.position = new Vector3(0,-6.5f,0);
 
+		this.seeking = false;
+		if(multiplayer == false){
+			this.transform.position = new Vector3(0,-6.5f,0);
+		}
 		yield return new WaitForSeconds (respawningTimer);
 
 		audioManager.PlayAudio ("spawn");
-		
-		// if(heroUnity) transform.position = heroBase.transform.position;
+
 		
 		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		this.anim.GetComponent<SpriteRenderer>().enabled = true;
@@ -964,8 +872,7 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 			this.healtbarSoldierSolid.transform.gameObject.SetActive (true);
 			//this.specialBar.SetActive (true);
 		}
-//		if (heroUnity)
-//			this.energybarSoldier.SetActive (true);
+
 		this.skill1.gameObject.SetActive (true);
 		this.skill2.gameObject.SetActive (true);
 //		this.damage = 1;
@@ -976,7 +883,9 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 		Arrival.Play ();
 		alive = true;
 		gameBegin = true;
-		//this.transform.position = new Vector3(0,-1.5f,0);
+		if(multiplayer == false){
+		this.transform.position = new Vector3(0,-1.5f,0);
+		}
 	}
 
 	public GameObject SeekEnemyTarget (){
