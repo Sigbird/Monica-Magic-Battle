@@ -9,14 +9,14 @@ namespace YupiPlay {
 
 		new private static LoadingCanvasManager instance;
 
-		protected void Awake() {
-			if (instance == null) {
-				instance = this;
-				DontDestroyOnLoad(this.gameObject);
-			} else {
-				Destroy(this.gameObject);
-			}
-		}
+//		protected void Awake() {
+//			if (instance == null) {
+//				instance = this;
+//				DontDestroyOnLoad(this.gameObject);
+//			} else {
+//				Destroy(this.gameObject);
+//			}
+//		}
 
 		// Update is called once per frame
 		void Update () {

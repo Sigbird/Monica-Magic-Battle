@@ -598,11 +598,13 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 
 			}
 		} else { // ALVO SUMIU OU MORREU
-			if (GameObject.Find ("MovementMarker(Clone)")) {
-				if (GameObject.Find ("MovementMarker(Clone)").GetComponent<MovementMarkerScript> ().herobase == false)
-					Destroy (GameObject.Find ("MovementMarker(Clone)").gameObject);
-			}
+			
+//			if (GameObject.Find ("MovementMarker(Clone)")) {
+//				if (GameObject.Find ("MovementMarker(Clone)").GetComponent<MovementMarkerScript> ().herobase == false)
+//					Destroy (GameObject.Find ("MovementMarker(Clone)").gameObject);
+//			}
 			seeking = true;
+
 		} 
 		danoCD += Time.deltaTime;
 

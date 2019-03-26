@@ -54,7 +54,7 @@ public class SplashAnim : MonoBehaviour {
 				Debug.Log("Press a key to start");
 				//if (Input.GetKeyDown(KeyCode.A))
 				if (LoadingCanvas != null) {
-					Destroy (LoadingCanvas.gameObject);
+					//Destroy (LoadingCanvas.gameObject);
 				}
 					ao.allowSceneActivation = true;
 				//ao.isDone = true;
