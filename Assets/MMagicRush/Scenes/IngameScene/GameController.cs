@@ -88,6 +88,7 @@ public class GameController : MonoBehaviour {
 	public int secs;
 	public Image TimeWatch;
 	private bool TimeWatchBlinking;
+	public int ChestsQtd;
 
 	private int[] zero;
 	private int heroid;
@@ -215,6 +216,9 @@ public class GameController : MonoBehaviour {
 	}
 
 	void Start(){
+
+		ChestsQtd = PlayerPrefs.GetInt ("ChestsNumber");
+
 		gempertimeMaxValue = 3;
 
 	}
@@ -841,6 +845,20 @@ public class GameController : MonoBehaviour {
 
 		yield return new WaitForSeconds (0.3f);
 		WPScript.UIopen = x;
+	}
+
+	public void GiveChests(){
+	
+		if (ChestsQtd < 4) {
+			PlayerPrefs.SetInt ("ChestsNumber", ChestsQtd++);
+		} 
+
+	}
+
+	public void FacebookSharing(){
+
+		Application.OpenURL ("https://www.facebook.com/sharer/sharer.php?u=https://play.google.com/store/apps/details?id=com.YupiPlay.MonicaMagicBattle");
+
 	}
 
 }

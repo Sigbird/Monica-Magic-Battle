@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CanvasAnimationController : MonoBehaviour {
 
@@ -10,6 +11,7 @@ public class CanvasAnimationController : MonoBehaviour {
 	public GameObject Chests;
 	public GameObject Ranking;
 	public GameObject Opcoes;
+	public GameObject[] Buttons;
 
 	// Use this for initialization
 	void Start () {
@@ -25,6 +27,17 @@ public class CanvasAnimationController : MonoBehaviour {
 	public void ButtonPressed(string bt){
 	
 		if (bt == "Colecao") {
+			
+			Buttons[0].transform.localScale = new Vector3 (1.2f, 1.2f, 1);
+			Buttons[1].transform.localScale = new Vector3 (1, 1, 1);
+			Buttons[2].transform.localScale = new Vector3 (1, 1, 1);
+			Buttons[3].transform.localScale = new Vector3 (1, 1, 1);
+
+			Buttons [0].GetComponent<Button> ().interactable = false;
+			Buttons [1].GetComponent<Button> ().interactable = true;
+			Buttons [2].GetComponent<Button> ().interactable = true;
+			Buttons [3].GetComponent<Button> ().interactable = true;
+
 			if (Chests.activeSelf == true) {
 				Anim.SetTrigger ("menuChestsOff");
 			}
@@ -41,6 +54,17 @@ public class CanvasAnimationController : MonoBehaviour {
 		}
 
 		if (bt == "Batalha") {
+			
+			Buttons[0].transform.localScale = new Vector3 (1, 1, 1);
+			Buttons[1].transform.localScale = new Vector3 (1.2f, 1.2f, 1);
+			Buttons[2].transform.localScale = new Vector3 (1, 1, 1);
+			Buttons[3].transform.localScale = new Vector3 (1, 1, 1);
+
+			Buttons [0].GetComponent<Button> ().interactable = true;
+			Buttons [1].GetComponent<Button> ().interactable = false;
+			Buttons [2].GetComponent<Button> ().interactable = true;
+			Buttons [3].GetComponent<Button> ().interactable = true;
+
 			if (Coleções.activeSelf == true) {
 				Anim.SetTrigger ("menuCartasOff");
 			}
@@ -57,6 +81,17 @@ public class CanvasAnimationController : MonoBehaviour {
 		}
 
 		if (bt == "Opcoes") {
+
+			Buttons[0].transform.localScale = new Vector3 (1, 1, 1);
+			Buttons[1].transform.localScale = new Vector3 (1, 1, 1);
+			Buttons[2].transform.localScale = new Vector3 (1.2f, 1.2f, 1);
+			Buttons[3].transform.localScale = new Vector3 (1, 1, 1);
+
+			Buttons [0].GetComponent<Button> ().interactable = true;
+			Buttons [1].GetComponent<Button> ().interactable = true;
+			Buttons [2].GetComponent<Button> ().interactable = false;
+			Buttons [3].GetComponent<Button> ().interactable = true;
+
 			if (Chests.activeSelf == true) {
 				Anim.SetTrigger ("menuChestsOff");
 			}
@@ -73,6 +108,18 @@ public class CanvasAnimationController : MonoBehaviour {
 		}
 
 		if (bt == "Ranking") {
+
+			Buttons[0].transform.localScale = new Vector3 (1, 1, 1);
+			Buttons[1].transform.localScale = new Vector3 (1, 1, 1);
+			Buttons[2].transform.localScale = new Vector3 (1, 1, 1);
+			Buttons[3].transform.localScale = new Vector3 (1.2f, 1.2f, 1);
+
+			Buttons [0].GetComponent<Button> ().interactable = true;
+			Buttons [1].GetComponent<Button> ().interactable = true;
+			Buttons [2].GetComponent<Button> ().interactable = true;
+			Buttons [3].GetComponent<Button> ().interactable = false;
+
+
 			if (Chests.activeSelf == true) {
 				Anim.SetTrigger ("menuChestsOff");
 			}

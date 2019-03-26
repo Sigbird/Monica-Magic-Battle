@@ -9,9 +9,25 @@ public class RewardWindow : MonoBehaviour {
 	public Image RankingStatus;
 	public Text RankingPos;
 	public Text PlayerName;
+	public GameObject[] Chests;
+	private int ChestQtd;
 
+
+	void Awake(){
+		ChestQtd = PlayerPrefs.GetInt ("ChestsNumber");
+
+	}
 	// Use this for initialization
 	void Start () {
+
+		if (ChestQtd < 4) {
+			Chests [0].SetActive (true);
+			Chests [1].SetActive (false);
+		} else {
+			Chests [0].SetActive (false);
+			Chests [1].SetActive (true);
+		}
+
 		#if !UNITY_EDITOR
 		PlayerName.text = NetworkSessionManager.Instance.Match.Player.DisplayName;
 		#endif
