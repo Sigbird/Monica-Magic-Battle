@@ -11,7 +11,8 @@ namespace YupiPlay.MMB.Multiplayer {
     public class MenuController : Bolt.GlobalEventListener {
         public int ClientWaitTimeout = 10;
         public int MatchmakingTimeout = 300;
-        public int LaunchDelay = 3;                
+        public int LaunchDelay = 3;         
+        public string MPScene = "GamePlayReviewMulti";
         public UnityEvent OnConnection;
         public UnityEvent OnMatchmakingTimeout;
 
@@ -145,7 +146,7 @@ namespace YupiPlay.MMB.Multiplayer {
         IEnumerator WaitAndLaunchGame() {
             yield return new WaitForSeconds(LaunchDelay);
 
-            BoltNetwork.LoadScene("JogoMulti");
+            BoltNetwork.LoadScene("GamePlayReviewMulti");
         }
 
         IEnumerator WaitForServers() {
