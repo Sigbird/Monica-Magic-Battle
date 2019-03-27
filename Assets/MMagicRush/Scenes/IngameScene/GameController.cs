@@ -298,8 +298,11 @@ public class GameController : MonoBehaviour {
 			}
 		}
 
-
-		Duration -= Time.deltaTime;
+		if (GameOver == false) {
+			Duration -= Time.deltaTime;
+		} else {
+			Duration = 0;
+		}
 
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			OptionsPanel.SetActive (true);

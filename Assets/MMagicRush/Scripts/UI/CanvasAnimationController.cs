@@ -15,8 +15,8 @@ public class CanvasAnimationController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Anim = GetComponent<Animator> ();
-		Anim.SetTrigger ("menuChests");
+		//Anim = GetComponent<Animator> ();
+		//Anim.SetTrigger ("menuChests");
 	}
 	
 	// Update is called once per frame
@@ -38,19 +38,19 @@ public class CanvasAnimationController : MonoBehaviour {
 			Buttons [2].GetComponent<Button> ().interactable = true;
 			Buttons [3].GetComponent<Button> ().interactable = true;
 
-			if (Chests.activeSelf == true) {
-				Anim.SetTrigger ("menuChestsOff");
-			}
-			if (Loja.activeSelf == true) {
-				Anim.SetTrigger ("menuLojaOff");
-			}
-			if (Ranking.activeSelf == true) {
-				Anim.SetTrigger ("menuRankingOff");
-			}
-			if (Opcoes.activeSelf == true) {
-				Anim.SetTrigger ("menuConfigOff");
-			}
-			Anim.SetTrigger ("menuCartas");
+//			if (Chests.activeSelf == true) {
+//				Anim.SetTrigger ("menuChestsOff");
+//			}
+//			if (Loja.activeSelf == true) {
+//				Anim.SetTrigger ("menuLojaOff");
+//			}
+//			if (Ranking.activeSelf == true) {
+//				Anim.SetTrigger ("menuRankingOff");
+//			}
+//			if (Opcoes.activeSelf == true) {
+//				Anim.SetTrigger ("menuConfigOff");
+//			}
+			Anim.SetTrigger ("menuColection");
 		}
 
 		if (bt == "Batalha") {
@@ -65,18 +65,18 @@ public class CanvasAnimationController : MonoBehaviour {
 			Buttons [2].GetComponent<Button> ().interactable = true;
 			Buttons [3].GetComponent<Button> ().interactable = true;
 
-			if (Coleções.activeSelf == true) {
-				Anim.SetTrigger ("menuCartasOff");
-			}
-			if (Loja.activeSelf == true) {
-				Anim.SetTrigger ("menuLojaOff");
-			}
-			if (Ranking.activeSelf == true) {
-				Anim.SetTrigger ("menuRankingOff");
-			}
-			if (Opcoes.activeSelf == true) {
-				Anim.SetTrigger ("menuConfigOff");
-			}
+//			if (Coleções.activeSelf == true) {
+//				Anim.SetTrigger ("menuCartasOff");
+//			}
+//			if (Loja.activeSelf == true) {
+//				Anim.SetTrigger ("menuLojaOff");
+//			}
+//			if (Ranking.activeSelf == true) {
+//				Anim.SetTrigger ("menuRankingOff");
+//			}
+//			if (Opcoes.activeSelf == true) {
+//				Anim.SetTrigger ("menuConfigOff");
+//			}
 			Anim.SetTrigger ("menuChests");
 		}
 
@@ -92,19 +92,19 @@ public class CanvasAnimationController : MonoBehaviour {
 			Buttons [2].GetComponent<Button> ().interactable = false;
 			Buttons [3].GetComponent<Button> ().interactable = true;
 
-			if (Chests.activeSelf == true) {
-				Anim.SetTrigger ("menuChestsOff");
-			}
-			if (Loja.activeSelf == true) {
-				Anim.SetTrigger ("menuLojaOff");
-			}
-			if (Ranking.activeSelf == true) {
-				Anim.SetTrigger ("menuRankingOff");
-			}
-			if (Coleções.activeSelf == true) {
-				Anim.SetTrigger ("menuCartasOff");
-			}
-			Anim.SetTrigger ("menuConfig");
+//			if (Chests.activeSelf == true) {
+//				Anim.SetTrigger ("menuChestsOff");
+//			}
+//			if (Loja.activeSelf == true) {
+//				Anim.SetTrigger ("menuLojaOff");
+//			}
+//			if (Ranking.activeSelf == true) {
+//				Anim.SetTrigger ("menuRankingOff");
+//			}
+//			if (Coleções.activeSelf == true) {
+//				Anim.SetTrigger ("menuCartasOff");
+//			}
+			Anim.SetTrigger ("menuOptions");
 		}
 
 		if (bt == "Ranking") {
@@ -120,20 +120,48 @@ public class CanvasAnimationController : MonoBehaviour {
 			Buttons [3].GetComponent<Button> ().interactable = false;
 
 
-			if (Chests.activeSelf == true) {
-				Anim.SetTrigger ("menuChestsOff");
-			}
-			if (Loja.activeSelf == true) {
-				Anim.SetTrigger ("menuCLojaOff");
-			}
-			if (Coleções.activeSelf == true) {
-				Anim.SetTrigger ("menuCartasOff");
-			}
-			if (Opcoes.activeSelf == true) {
-				Anim.SetTrigger ("menuConfigOff");
-			}
+//			if (Chests.activeSelf == true) {
+//				Anim.SetTrigger ("menuChestsOff");
+//			}
+//			if (Loja.activeSelf == true) {
+//				Anim.SetTrigger ("menuCLojaOff");
+//			}
+//			if (Coleções.activeSelf == true) {
+//				Anim.SetTrigger ("menuCartasOff");
+//			}
+//			if (Opcoes.activeSelf == true) {
+//				Anim.SetTrigger ("menuConfigOff");
+//			}
 			Anim.SetTrigger ("menuRanking");
 		}
-			
+
+
+		if (bt == "Loja") {
+
+			Buttons[0].transform.localScale = new Vector3 (1, 1, 1);
+			Buttons[1].transform.localScale = new Vector3 (1, 1, 1);
+			Buttons[2].transform.localScale = new Vector3 (1, 1, 1);
+			Buttons[3].transform.localScale = new Vector3 (1, 1, 1);
+
+			Buttons [0].GetComponent<Button> ().interactable = true;
+			Buttons [1].GetComponent<Button> ().interactable = true;
+			Buttons [2].GetComponent<Button> ().interactable = true;
+			Buttons [3].GetComponent<Button> ().interactable = true;
+
+
+//			if (Chests.activeSelf == true) {
+//				Anim.SetTrigger ("menuChestsOff");
+//			}
+//			if (Loja.activeSelf == true) {
+//				Anim.SetTrigger ("menuCLojaOff");
+//			}
+//			if (Coleções.activeSelf == true) {
+//				Anim.SetTrigger ("menuCartasOff");
+//			}
+//			if (Opcoes.activeSelf == true) {
+//				Anim.SetTrigger ("menuConfigOff");
+//			}
+			Anim.SetTrigger ("menuShop");
+		}
 	}
 }
