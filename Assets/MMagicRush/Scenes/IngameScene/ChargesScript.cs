@@ -30,7 +30,12 @@ public class ChargesScript : MonoBehaviour {
 	public bool NewMechanic;
 	public GameObject SplashEffect;
 
+	private TowerEntity towerEntity;
 
+
+	void Awake() {
+		towerEntity = GetComponent<TowerEntity>();
+	}
 	// Use this for initialization
 	void Start () {
 
@@ -204,6 +209,8 @@ public class ChargesScript : MonoBehaviour {
 	public void ReceiveDamage(float x){
 
 		this.vida -= x;
+		towerEntity.SetVida(this.vida);
+		
 		if (NewMechanic) {
 			UpdateLife ();
 		}

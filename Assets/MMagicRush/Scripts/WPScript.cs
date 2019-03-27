@@ -216,78 +216,78 @@ public class WPScript : MonoBehaviour {
 		return x;
 	}
 
-	public void ChangeIcon(SpriteRenderer renderer){
+	public void ChangeIcon(SpriteRenderer renderer) {
 //		if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("treasureChest").transform.position) < 0.5f) {
 //			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
 //			renderer.sprite = CaptureIcon; //CAPTURA DE BAU
 //		} else 
-		if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBaseEnemy").transform.position) < 0.5f) {
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
-			if (tutorial == true && GameObject.Find ("TutorialHand") != null && GameObject.Find ("Tut12") != null) {
-				GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
-				GameObject.Find ("Tut12").SetActive(false);
-			}
-			renderer.sprite = CaptureIcon; //CAPTURA DE BASE INIMIGA
-		} else 
-			if (GemNearbyClick()) {
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = true;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
-			renderer.sprite = MineIcon; //CAPTURA DE GEMA
+		// if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBaseEnemy").transform.position) < 0.5f) {
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
+		// 	if (tutorial == true && GameObject.Find ("TutorialHand") != null && GameObject.Find ("Tut12") != null) {
+		// 		GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
+		// 		GameObject.Find ("Tut12").SetActive(false);
+		// 	}
+		// 	renderer.sprite = CaptureIcon; //CAPTURA DE BASE INIMIGA
+		// } else 
+		// 	if (GemNearbyClick()) {
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = true;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
+		// 	renderer.sprite = MineIcon; //CAPTURA DE GEMA
 
-		} else
-			if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBase").transform.position) < 0.5f) {
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = true;
-			renderer.sprite = DefendIcon; //DEFESA DE BASE
-		} else if(Enemy != null && Enemy.GetComponent<WPIASoldierControler>().alive == true && Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Enemy.transform.position) < 1f){
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
-				if (tutorial == true && GameObject.Find ("TutorialHand") != null)
-					GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
-			renderer.sprite = AttackIcon; //ATAQUE DE INIMIGO
-		}else if(EnemyTroop != null && EnemyTroop.GetComponent<SoldierControler>() != null && Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), EnemyTroop.transform.position) < 1f){
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
-			if (tutorial == true && GameObject.Find ("TutorialHand") != null)
-				GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
-			renderer.sprite = AttackIcon; //ATAQUE DE TROPA
-		} else if(EnemyBase != null && Vector3.Distance (new Vector3 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y,0), EnemyBase.transform.position) <= 1f){
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
-			if (tutorial == true && GameObject.Find ("TutorialHand") != null) {
-				GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
-			}
-			renderer.sprite = AttackIcon; //ATAQUE DE BASE INIMIGO
-		} else if(GameObject.Find("EnemyTower1") != null && Vector3.Distance (new Vector3 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y,0), GameObject.Find ("EnemyTower1").transform.position) <= 1f){
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
-			if (tutorial == true && GameObject.Find ("TutorialHand") != null) {
-				GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
-			}
-			renderer.sprite = AttackIcon; //ATAQUE DE BASE INIMIGO
-		} else if(GameObject.Find("EnemyTower2") != null && Vector3.Distance (new Vector3 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y,0), GameObject.Find ("EnemyTower2").transform.position) <= 1f){
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
-			if (tutorial == true && GameObject.Find ("TutorialHand") != null) {
-				GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
-			}
-			renderer.sprite = AttackIcon; //ATAQUE DE BASE INIMIGO
-		} else{
+		// } else
+		// 	if (Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), GameObject.Find ("HeroBase").transform.position) < 0.5f) {
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = true;
+		// 	renderer.sprite = DefendIcon; //DEFESA DE BASE
+		// } else if(Enemy != null && Enemy.GetComponent<WPIASoldierControler>().alive == true && Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Enemy.transform.position) < 1f){
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
+		// 		if (tutorial == true && GameObject.Find ("TutorialHand") != null)
+		// 			GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
+		// 	renderer.sprite = AttackIcon; //ATAQUE DE INIMIGO
+		// }else if(EnemyTroop != null && EnemyTroop.GetComponent<SoldierControler>() != null && Vector3.Distance (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), EnemyTroop.transform.position) < 1f){
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
+		// 	if (tutorial == true && GameObject.Find ("TutorialHand") != null)
+		// 		GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
+		// 	renderer.sprite = AttackIcon; //ATAQUE DE TROPA
+		// } else if(EnemyBase != null && Vector3.Distance (new Vector3 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y,0), EnemyBase.transform.position) <= 1f){
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
+		// 	if (tutorial == true && GameObject.Find ("TutorialHand") != null) {
+		// 		GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
+		// 	}
+		// 	renderer.sprite = AttackIcon; //ATAQUE DE BASE INIMIGO
+		// } else if(GameObject.Find("EnemyTower1") != null && Vector3.Distance (new Vector3 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y,0), GameObject.Find ("EnemyTower1").transform.position) <= 1f){
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
+		// 	if (tutorial == true && GameObject.Find ("TutorialHand") != null) {
+		// 		GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
+		// 	}
+		// 	renderer.sprite = AttackIcon; //ATAQUE DE BASE INIMIGO
+		// } else if(GameObject.Find("EnemyTower2") != null && Vector3.Distance (new Vector3 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y,0), GameObject.Find ("EnemyTower2").transform.position) <= 1f){
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = true;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
+		// 	if (tutorial == true && GameObject.Find ("TutorialHand") != null) {
+		// 		GameObject.Find ("TutorialHand").GetComponent<DestroyAfter> ().DisableObj ();
+		// 	}
+		// 	renderer.sprite = AttackIcon; //ATAQUE DE BASE INIMIGO
+		// } else{
 			
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
-			renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
-			renderer.sprite = MovementIcon; //ICONE DE MOVIMENTO
-		}
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().capture = false;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().targetMarker = false;
+		// 	renderer.gameObject.GetComponent<MovementMarkerScript> ().herobase = false;
+		// 	renderer.sprite = MovementIcon; //ICONE DE MOVIMENTO
+		// }
 
 	}
 

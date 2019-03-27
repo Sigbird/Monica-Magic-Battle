@@ -12,6 +12,9 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
     public RoundStart roundStart;
     public WPScript wpScript;
 
+    public GameObject RiverPassLeft;
+    public GameObject RiverPassRight;
+
     private GameObject playerServer;
     private GameObject playerClient;
     
@@ -22,9 +25,12 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
 
     public override void SceneLoadRemoteDone(BoltConnection connection) {
         if (BoltNetwork.IsServer) {
-            var serverEntinty = BoltNetwork.Instantiate(BoltPrefabs.HeroMPServer, Player1Position.position, Quaternion.identity);
-            playerServer = serverEntinty;
-            serverEntinty.name = playerServer.name = "HeroMPServer";      
+            var serverEntity = BoltNetwork.Instantiate(BoltPrefabs.HeroMPServer, Player1Position.position, Quaternion.identity);
+            playerServer = serverEntity;
+            serverEntity.name = playerServer.name = "HeroMPServer";     
+            
+            bindRiverPass(serverEntity);
+            
             gameController.HeroGameObject = playerServer;        
             wpScript.Hero = playerServer.transform;
             roundStart.Hero = playerServer;        
@@ -33,7 +39,10 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
         if (BoltNetwork.IsClient) {
             var clientEntity = BoltNetwork.Instantiate(BoltPrefabs.HeroMPClient, Player2Position.position, Quaternion.identity);
             playerClient = clientEntity;
-            clientEntity.name = playerServer.name = "HeroMPServer";  
+            clientEntity.name = playerClient.name = "HeroMPClient"; 
+
+            bindRiverPass(clientEntity);
+
             gameController.EnemyGameObject = playerClient;
             wpScript.Enemy = playerClient.transform;
             roundStart.Enemy = playerClient;
@@ -46,12 +55,22 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
         if (entity.tag == "enemysoldier1") {
             gameController.HeroGameObject = entity;        
             wpScript.Hero = entity.transform;
-            roundStart.Hero = entity;            
+            roundStart.Hero = entity;    
+
+            bindRiverPass(entity);
         }
         if (entity.tag == "enemysoldier2") {
             gameController.EnemyGameObject = entity;
             wpScript.Enemy = entity.transform;
             roundStart.Enemy = entity;
+
+            bindRiverPass(entity);
         }        
-    }    
+    }
+
+    private void bindRiverPass(GameObject entity) {        
+        var entityController = entity.GetComponent<WPSoldierControler>();
+        entityController.RiverPassLeft = RiverPassLeft;
+        entityController.RiverPassRight = RiverPassRight;   
+    }
 }

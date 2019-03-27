@@ -2,8 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using YupiPlay.MMB.Lockstep;
 using System;
+using YupiPlay.MMB.Multiplayer;
 
 public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 
@@ -514,7 +514,7 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 
 		//SEGUINDO OS MARCADORES DE MOVIMENTO
 
-		if (GetNewWaypoint () != null && multiplayer == false) {
+		if (GetNewWaypoint () != null) {
 			lockedTarget = false;
 			seeking = false;
 			WaypointMark = GetNewWaypoint ();
@@ -622,6 +622,15 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 
 		if(tutorial==false)
 		GameObject.Find ("HeroPortrait").GetComponent<Image> ().sprite = heroPortraits [heroID];
+
+		if (multiplayer) {
+			if (gameObject.tag == "enemysoldier1") {
+				heroID = MatchData.Instance.Server.Hero;
+			}
+			if (gameObject.tag == "enemysoldier2") {
+				heroID = MatchData.Instance.Client.Hero;
+			}
+		}
 
 		switch (heroID) {
 		case(0): 
@@ -1129,10 +1138,6 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 					this.targetEnemy = null;
 					lockedTarget = false;
 				} else {
-					if (NetGameController.Instance.HasGameStarted()) {
-						CommandController.AttackEnemyHero ();
-						NetClock.Instance.RegisterInputTime();
-					} 
 					if (this.range > 1)
 						TrowArrow ();
 				}
