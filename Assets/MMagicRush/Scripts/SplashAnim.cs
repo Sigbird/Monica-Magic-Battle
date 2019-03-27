@@ -10,8 +10,12 @@ public class SplashAnim : MonoBehaviour {
 	public string firstscene;
 	public GameObject LoadingCanvas;
 	public Scrollbar ProgressionBar;
+	public GameObject VidIntro;
+	public GameObject Logos;
 	// Use this for initialization
 	void Start () {
+		PlayerPrefs.DeleteKey ("VideoIntro");
+
 		PlayerPrefs.SetFloat ("GameVolume", 1);
 		PlayerPrefs.SetFloat ("GameVolumeEffects", 1);
 
@@ -21,7 +25,21 @@ public class SplashAnim : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		
+	}
+
+	public void VideoIntro(){
+
+
+		if (PlayerPrefs.HasKey ("VideoIntro")) {
+			SplashEnd ();
+		}else{
+			Logos.SetActive (false);
+			VidIntro.SetActive (true);
+			PlayerPrefs.SetInt("VideoIntro",1);
+		}
+
+
 	}
 
 	public void SplashEnd(){
