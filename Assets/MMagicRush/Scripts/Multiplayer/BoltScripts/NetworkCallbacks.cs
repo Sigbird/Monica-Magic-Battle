@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +18,12 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
 
     private GameObject playerServer;
     private GameObject playerClient;
-    
+
+    private bool player1Ready;
+    private bool player2Ready;
+    public bool AllPlayersReady;
+
+    public event Action OnPlayersReady;
 
     public override void SceneLoadLocalDone(string map) {       
         
@@ -58,6 +64,7 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
             roundStart.Hero = entity;    
 
             bindRiverPass(entity);
+            player1Ready = true;
         }
         if (entity.tag == "enemysoldier2") {
             gameController.EnemyGameObject = entity;
@@ -65,12 +72,22 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
             roundStart.Enemy = entity;
 
             bindRiverPass(entity);
-        }        
+            player2Ready = true;
+        }
+
+        if (player1Ready && player2Ready) {
+            AllPlayersReady = true;
+            if (OnPlayersReady != null) OnPlayersReady();
+        }
     }
 
     private void bindRiverPass(GameObject entity) {        
         var entityController = entity.GetComponent<WPSoldierControler>();
         entityController.RiverPassLeft = RiverPassLeft;
         entityController.RiverPassRight = RiverPassRight;   
+    }
+    
+    public void ShutdownMultiplayer() {
+        BoltNetwork.Shutdown();
     }
 }

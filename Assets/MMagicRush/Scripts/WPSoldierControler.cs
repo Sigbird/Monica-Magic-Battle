@@ -262,8 +262,13 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 	}
 
 	void Update() {
-		if(multiplayer == false){
-		__Update();
+		if (multiplayer == false) {
+			__Update();
+			return;
+		}
+
+		if (!entity.isOwner) {
+			__Update();
 		}
 	}
 
@@ -513,8 +518,8 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 		//
 
 		//SEGUINDO OS MARCADORES DE MOVIMENTO
-
-		if (GetNewWaypoint () != null) {
+	if (entity.isOwner) {
+			if (GetNewWaypoint () != null) {
 			lockedTarget = false;
 			seeking = false;
 			WaypointMark = GetNewWaypoint ();
@@ -546,21 +551,22 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 				}
 			}
 
-		} else {
-			seeking = true;
 		}
-			
-				if (seeking && cdSeek >= 0.01f) {
-					if (lockedTarget == false) {
-						this.targetEnemy = SeekEnemyTarget ();
-					}
-					if (this.targetEnemy != null) {
-						seeking = false;
-					}
-					cdSeek = 0;
-				} else {
-					cdSeek += Time.deltaTime;
-				}
+	}
+
+	if (velocity <= 0f) seeking = true;
+
+	if (seeking && cdSeek >= 0.01f) {
+		if (lockedTarget == false) {
+			this.targetEnemy = SeekEnemyTarget ();
+		}
+		if (this.targetEnemy != null) {
+			seeking = false;
+		}
+		cdSeek = 0;
+	} else {
+		cdSeek += Time.deltaTime;
+	}
 			
 
 
@@ -899,14 +905,73 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 		}
 	}
 
+	GameObject __seekEnemyTarget(string heroTag, string enemyTag, string enemyTowerTag) {
+		GameObject Emin = null;
+		float minDis = Mathf.Infinity;
+
+		if (this.tag == heroTag) {
+			if (GameObject.FindGameObjectsWithTag (enemyTag) != null) {//PROCURA TROPA
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag (enemyTag)) {
+					float dist = Vector3.Distance (transform.position, obj.transform.position);
+					if (obj.GetComponent<SoldierControler> () != null) {
+						if (dist <= reach) {
+							if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
+								if (this.range > 1) {
+									Emin = obj;
+									minDis = dist;
+								} else if(obj.GetComponent<SoldierControler> ().troopId != 2) {
+									Emin = obj;
+									minDis = dist;
+								}
+							}
+						}
+					} else if (obj.GetComponent<WPSoldierControler> () != null) {
+						if (obj.GetComponent<WPSoldierControler> ().alive == true) {
+							if (dist <= reach) {
+								if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
+									Emin = obj;
+									minDis = dist;
+								}
+							}
+						}
+					}
+				}
+			}
+			if (GameObject.FindGameObjectsWithTag (enemyTowerTag) != null) {//PROCURA BASE
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag (enemyTowerTag)) {
+					float dist = Vector3.Distance (transform.position, obj.transform.position);
+					if (obj.GetComponent<ChargesScriptTowers> () != null) {
+						if (dist <= reach) {
+							if (dist < minDis) {
+								if (obj.GetComponent<ChargesScriptTowers> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+									Emin = obj;
+									minDis = dist;
+								}
+							}
+						}
+					} else if (obj.GetComponent<ChargesScript> () != null) {
+						if (dist <= reach) {
+							if (dist < minDis) {
+								if (obj.GetComponent<ChargesScript> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+									Emin = obj;
+									minDis = dist;
+								}
+							}
+						}
+					}
+				}
+			}			
+		}
+		return Emin;
+	}
 	public GameObject SeekEnemyTarget (){
 
 		GameObject Emin = null;
 		float minDis = Mathf.Infinity;
 
 		//Procura de Jogador 1
-
-		if (this.tag == "enemysoldier1") {
+		if (!StaticController.instance.GameController.multiplayer) {
+			if (this.tag == "enemysoldier1") {
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {//PROCURA TROPA
 				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
 					float dist = Vector3.Distance (transform.position, obj.transform.position);
@@ -1016,108 +1081,22 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 					}
 				}
 			}
+			}
 
-
+			return Emin;
 		}
-		return Emin;
+		
+		if (gameObject.tag == "enemysoldier2") {
+			return __seekEnemyTarget("enemysoldier2", "enemysoldier1", "enemytower1");
+		}			
+		if (gameObject.tag == "enemysoldier1") {
+			return __seekEnemyTarget("enemysoldier1", "enemysoldier2", "enemytower2");
+		}		
 
-//		if (this.tag == "enemysoldier1") { //Procura de Jogador 1
-//			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null ) {//PROCURA TROPA
-//				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
-//					float dist = Vector3.Distance (transform.position, obj.transform.position);
-//					if (dist <= reach) {
-//						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-//							if (obj.GetComponent<SoldierControler> () != null) {
-//								Emin = obj;
-//								minDis = dist;
-//							}
-//						}
-//					}
-//				}
-//			} 
-//			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {//PROCURA HEROI
-//				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
-//					if (obj.GetComponent<SpriteRenderer> ().enabled == true) {
-//						float dist = Vector3.Distance (transform.position, obj.transform.position);
-//						if (dist <= reach) {
-//							if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-//								if (obj.GetComponent<WPIASoldierControler> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
-//									Emin = obj;
-//									minDis = dist;
-//								}else if (obj.GetComponent<EnemyRemoteController> () != null) {
-//									Emin = obj;
-//									minDis = dist;
-//								}
-//							}
-//						}
-//					}
-//				}
-//			} 
-//			if (GameObject.FindGameObjectsWithTag ("enemytower2") != null) {//PROCURA BASE
-//				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower2")) {
-//						float dist = Vector3.Distance (transform.position, obj.transform.position);
-//						if (dist <= reach) {
-//							if (dist < minDis) {
-//								if (obj.GetComponent<ChargesScript> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
-//									Emin = obj;
-//									minDis = dist;
-//								}
-//							}
-//						}
-//				}
-//			} 
-//		
-//
-//		} else if (this.tag == "enemysoldier2") { //Procura de Jogador 2
-//			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//PROCURA TROPA
-//				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
-//					float dist = Vector3.Distance (transform.position, obj.transform.position);
-//					if (dist <= reach) {
-//						if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-//							if (obj.GetComponent<SoldierControler> () != null) {
-//								Emin = obj;
-//								minDis = dist;
-//							}
-//						}
-//					}
-//				}
-//			}
-//			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//PROCURA HEROI
-//				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier1")) {
-//					if (obj.GetComponent<SpriteRenderer> ().enabled == true) {
-//						float dist = Vector3.Distance (transform.position, obj.transform.position);
-//						if (dist <= reach) {
-//							if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
-//								if (obj.GetComponent<WPSoldierControler> ().heroUnity != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
-//									Emin = obj;
-//									minDis = dist;
-//								}
-//							}
-//						}
-//					}
-//				}
-//			}
-//
-//			if (GameObject.FindGameObjectsWithTag ("enemytower1") != null) {//PROCURA BASE
-//				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemytower1")) {
-//					float dist = Vector3.Distance (transform.position, obj.transform.position);
-//					if (dist <= reach) {
-//						if (dist < minDis) {
-//							if (obj.GetComponent<ChargesScript> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
-//								Emin = obj;
-//								minDis = dist;
-//							}
-//						}
-//					}
-//				}
-//			}
-//		
-//		}
-//		return Emin;
+		return null;
 	}
 
-	IEnumerator DealDamage(){
-
+	IEnumerator DealDamage() {		
 		tempdamage = this.damage;
 
 		if (this.heroID == 0 && shotsCounter == 2) {
@@ -1133,15 +1112,23 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 		danoCD = 0;
 		yield return new WaitForSeconds (0.5f);
 		if (targetEnemy != null) {
-			if(multiplayer == true){ //ALVO HEROI MULTIPLAYER
-				if (targetEnemy.GetComponent<EnemyRemoteController> ().alive == false) {
+			if (targetEnemy.GetComponent<WPSoldierControler> () != null) {//ALVO HEROI IA
+				//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
+				//targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife ();
+				//targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
+//				if (this.range > 1)
+//					TrowArrow ();
+				if (targetEnemy.GetComponent<WPSoldierControler> ().alive == false) { // ALVO MORREU
 					this.targetEnemy = null;
 					lockedTarget = false;
 				} else {
-					if (this.range > 1)
+					if (this.range > 1) {
 						TrowArrow ();
+					} else {
+						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (tempdamage);
+					}
 				}
-			}else if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO HEROI IA
+			} else if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {//ALVO HEROI IA
 				//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
 				//targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife ();
 				//targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);

@@ -11,15 +11,15 @@ public class TowerEntity : Bolt.EntityEventListener<ITowerState> {
 		chargesScript = GetComponent<ChargesScript>();
 
 		if (chargesScript != null) {
-			state.Vida = chargesScript.vidaMax;
+			if (entity.isOwner) state.Vida = chargesScript.vidaMax;
 		}
 
 		chargesScriptTowers = GetComponent<ChargesScriptTowers>();
 
 		if (chargesScriptTowers != null) {
-			state.Vida = chargesScriptTowers.vidaMax;
+			if (entity.isOwner) state.Vida = chargesScriptTowers.vidaMax;
 		}
-
+		
 		state.AddCallback("Vida", OnVidaChange);
 	}	
 
@@ -33,7 +33,7 @@ public class TowerEntity : Bolt.EntityEventListener<ITowerState> {
 	}
 
 	public void SetVida(float vida) {
-		state.Vida = vida;
+		if (entity.isOwner) state.Vida = vida;
 	}
 	// Use this for initialization
 	void Start () {
