@@ -162,6 +162,12 @@ namespace YupiPlay.MMB.Multiplayer {
 
             OnMatchmakingTimeout.Invoke();
         }
+
+        public void ShutdownMultiplayer() {
+            BoltNetwork.Shutdown();
+        }
     }
+
+    
 }
 

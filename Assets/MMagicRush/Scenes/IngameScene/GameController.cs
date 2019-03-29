@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour {
 
 	public bool GameOver = false;
+	public bool GameStart = false;
 	private bool tutorialending = false;
 	public bool tutorial;
 	public bool multiplayer;
@@ -73,8 +74,7 @@ public class GameController : MonoBehaviour {
 
 	public GameObject EnemyGameObject;
 	public GameObject HeroGameObject;
-	public GameObject NetClock;
-	public GameObject NetGameController;
+
 	public bool vsIAMode;
 	public bool newMechanicTest;
 	public GameObject[] Player2Towers;
@@ -93,7 +93,11 @@ public class GameController : MonoBehaviour {
 	private int[] zero;
 	private int heroid;
 	// Use this for initialization
+
+	private NetworkCallbacks networkController;
+
 	void Awake() {
+		networkController = GetComponent<NetworkCallbacks>();
 
 		Duration = 240;
 		sd = false;
@@ -104,8 +108,6 @@ public class GameController : MonoBehaviour {
 		} else {
 			heroid = 10;
 		}
-
-
 
 		terraintype = PlayerPrefs.GetString ("TerrainType");
 		if (terraintype == "Forest") {
@@ -299,7 +301,11 @@ public class GameController : MonoBehaviour {
 		}
 
 		if (GameOver == false) {
-			Duration -= Time.deltaTime;
+			if (!multiplayer) {
+				Duration -= Time.deltaTime;				
+			} else if (GameStart) {
+				Duration -= Time.deltaTime;
+			}
 		} else {
 			Duration = 0;
 		}
@@ -862,6 +868,18 @@ public class GameController : MonoBehaviour {
 
 		Application.OpenURL ("https://www.facebook.com/sharer/sharer.php?u=https://play.google.com/store/apps/details?id=com.YupiPlay.MonicaMagicBattle");
 
+	}
+
+	void PlayersReady() {
+		GameStart = true;
+	}
+	
+	void OnEnable() {
+		networkController.OnPlayersReady += PlayersReady;
+	}
+
+	void OnDisable() {
+		networkController.OnPlayersReady -= PlayersReady;
 	}
 
 }

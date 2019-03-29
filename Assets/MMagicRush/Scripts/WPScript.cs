@@ -21,11 +21,16 @@ public class WPScript : MonoBehaviour {
 	public Transform EnemyBaseTower;
 	public Transform EnemyBaseTower2;
 	public Transform Base;
+	public Transform BaseTower;
+	public Transform BaseTower2;
+	public Transform HeroTroop;
 	public GameObject[] EnemiesOnScene;
 
 	public static bool UIopen;
 	public int progress;
 	public int enemyprogress;
+
+	public GameController gameController;
 
 	// Use this for initialization
 	void Start () {
@@ -65,7 +70,8 @@ public class WPScript : MonoBehaviour {
 
 	}
 
-	void OnMouseUp(){
+	void __onMouseUp(Transform Hero, Transform Enemy, Transform EnemyTroop, 
+	Transform EnemyBase, Transform EnemyBaseTower, Transform EnemyBaseTower2) {
 		bool cancel = false;
 		int lastprogress = 0;
 		string lastname = "";
@@ -97,7 +103,8 @@ public class WPScript : MonoBehaviour {
 //			progress--;
 //			cancel = false;
 //		}else 
-		if (/*MovementCounter ()< 1  &&*/  Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Enemy.position) < 1 && UIopen == false && Enemy.GetComponent<WPIASoldierControler>().alive == true) {
+		if (/*MovementCounter ()< 1  &&*/  Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Enemy.position) < 1 && 
+			UIopen == false) {
 	//		Debug.Log ("HeroiInimigo");
 			Hero.GetComponent<WPSoldierControler> ().targetEnemy = Enemy.gameObject;
 			Hero.GetComponent<WPSoldierControler> ().seeking = false;
@@ -175,11 +182,44 @@ public class WPScript : MonoBehaviour {
 			//Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity).gameObject.name = "Waypoint"+progress;
 			progress++;
 		}
-			
+	}
+
+	void OnMouseUp(){
+		if (!gameController.multiplayer) {
+			__onMouseUp(Hero, Enemy, EnemyTroop, EnemyBase, EnemyBaseTower, EnemyBaseTower2);
+			return;
+		}
+
+		if (gameController.multiplayer) {
+			if (BoltNetwork.IsClient) {
+				__onMouseUp(Enemy, Hero, HeroTroop, Base, BaseTower, BaseTower2);
+				return;
+			}
+
+			if (BoltNetwork.IsServer) __onMouseUp(Hero, Enemy, EnemyTroop, EnemyBase, EnemyBaseTower, EnemyBaseTower2);
+		}
 	}
 		
 	IEnumerator CreateWaypoint(Vector2 pos){
 		yield return new WaitForSeconds (0.1f);
+
+		if (gameController.multiplayer) {
+			if (BoltNetwork.IsServer) {
+				__createWaypoint(Hero, pos);
+			}
+			if (BoltNetwork.IsClient) {
+				__createWaypoint(Enemy, pos);
+			}
+
+			yield return null;
+		}
+		
+		if (!gameController.multiplayer) {
+			__createWaypoint(Hero, pos);
+		}
+	}
+
+	void __createWaypoint(Transform Hero, Vector2 pos) {
 		if(pos.y > 0.5f && Hero.transform.position.y<0.5){
 			Instantiate(WaypointMarker, Hero.GetComponent<WPSoldierControler>().NearestPass.transform.position, Quaternion.identity).gameObject.name = "Waypoint"+progress;
 			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
@@ -195,7 +235,6 @@ public class WPScript : MonoBehaviour {
 			WaypointMarker.GetComponent<SpriteRenderer> ().sprite = MovementIcon;
 			Instantiate(WaypointMarker, pos, Quaternion.identity).gameObject.name = "Waypoint"+progress;
 		}
-
 	}
 
 	public int MovementCounter(){
