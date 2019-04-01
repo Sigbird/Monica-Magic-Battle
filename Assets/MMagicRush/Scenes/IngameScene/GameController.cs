@@ -89,6 +89,7 @@ public class GameController : MonoBehaviour {
 	public Image TimeWatch;
 	private bool TimeWatchBlinking;
 	public int ChestsQtd;
+	public GameObject OptionsButton;
 
 	private int[] zero;
 	private int heroid;
@@ -98,6 +99,10 @@ public class GameController : MonoBehaviour {
 
 	void Awake() {
 		networkController = GetComponent<NetworkCallbacks>();
+
+		if (multiplayer) {
+			OptionsButton.SetActive (false);
+		}
 
 		Duration = 240;
 		sd = false;

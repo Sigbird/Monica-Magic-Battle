@@ -17,6 +17,10 @@ public class CanvasAnimationController : MonoBehaviour {
 	void Start () {
 		//Anim = GetComponent<Animator> ();
 		//Anim.SetTrigger ("menuChests");
+		Coleções.SetActive(false);
+		Loja.SetActive (false);
+		Ranking.SetActive (false);
+		Opcoes.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -27,6 +31,12 @@ public class CanvasAnimationController : MonoBehaviour {
 	public void ButtonPressed(string bt){
 	
 		if (bt == "Colecao") {
+
+//			Coleções.SetActive (true);
+//			Chests.SetActive(false);
+//			Loja.SetActive (false);
+//			Ranking.SetActive (false);
+//			Opcoes.SetActive (false);
 			
 			Buttons[0].transform.localScale = new Vector3 (1.2f, 1.2f, 1);
 			Buttons[1].transform.localScale = new Vector3 (1, 1, 1);
@@ -54,7 +64,13 @@ public class CanvasAnimationController : MonoBehaviour {
 		}
 
 		if (bt == "Batalha") {
-			
+
+//			Coleções.SetActive (false);
+//			Chests.SetActive(true);
+//			Loja.SetActive (false);
+//			Ranking.SetActive (false);
+//			Opcoes.SetActive (false);
+
 			Buttons[0].transform.localScale = new Vector3 (1, 1, 1);
 			Buttons[1].transform.localScale = new Vector3 (1.2f, 1.2f, 1);
 			Buttons[2].transform.localScale = new Vector3 (1, 1, 1);
@@ -82,6 +98,12 @@ public class CanvasAnimationController : MonoBehaviour {
 
 		if (bt == "Opcoes") {
 
+//			Coleções.SetActive (false);
+//			Chests.SetActive(false);
+//			Loja.SetActive (false);
+//			Ranking.SetActive (false);
+//			Opcoes.SetActive (true);
+
 			Buttons[0].transform.localScale = new Vector3 (1, 1, 1);
 			Buttons[1].transform.localScale = new Vector3 (1, 1, 1);
 			Buttons[2].transform.localScale = new Vector3 (1.2f, 1.2f, 1);
@@ -108,6 +130,12 @@ public class CanvasAnimationController : MonoBehaviour {
 		}
 
 		if (bt == "Ranking") {
+
+//			Coleções.SetActive (false);
+//			Chests.SetActive(false);
+//			Loja.SetActive (false);
+//			Ranking.SetActive (true);
+//			Opcoes.SetActive (false);
 
 			Buttons[0].transform.localScale = new Vector3 (1, 1, 1);
 			Buttons[1].transform.localScale = new Vector3 (1, 1, 1);
@@ -137,6 +165,12 @@ public class CanvasAnimationController : MonoBehaviour {
 
 
 		if (bt == "Loja") {
+
+//			Coleções.SetActive (false);
+//			Chests.SetActive(false);
+//			Loja.SetActive (true);
+//			Ranking.SetActive (false);
+//			Opcoes.SetActive (false);
 
 			Buttons[0].transform.localScale = new Vector3 (1, 1, 1);
 			Buttons[1].transform.localScale = new Vector3 (1, 1, 1);

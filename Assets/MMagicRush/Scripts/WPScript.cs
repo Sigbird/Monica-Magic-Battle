@@ -129,33 +129,56 @@ public class WPScript : MonoBehaviour {
 			Instantiate (WaypointMarker, EnemyTroop).transform.position = EnemyTroop.transform.position;
 			//Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity);
 		}else if (/*MovementCounter ()< 1  &&*/  Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),EnemyBase.position) < 1 && UIopen == false /*&& Enemy.GetComponent<WPIASoldierControler>().alive == true*/) {
-			Hero.GetComponent<WPSoldierControler> ().targetEnemy = EnemyBase.gameObject;
-			Hero.GetComponent<WPSoldierControler> ().seeking = false;
-			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
+//			Hero.GetComponent<WPSoldierControler> ().targetEnemy = EnemyBase.gameObject;
+//			Hero.GetComponent<WPSoldierControler> ().seeking = false;
+//			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
+//			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
+//				Destroy (o.gameObject);
+//			}
+//			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
+//			Instantiate (WaypointMarker, EnemyBase).transform.position = EnemyBase.transform.position;
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
 				Destroy (o.gameObject);
 			}
-			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
-			Instantiate (WaypointMarker, EnemyBase).transform.position = EnemyBase.transform.position;
+			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
+			WaypointMarker.GetComponent<SpriteRenderer> ().sprite = null;
+			StartCoroutine (CreateWaypoint (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y)));
+			//Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity).gameObject.name = "Waypoint"+progress;
+			progress++;
 		}else if(EnemyBaseTower != null && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),EnemyBaseTower.position) < 1 && UIopen == false /*&& Enemy.GetComponent<SpriteRenderer>().enabled == true*/) {
-			Hero.GetComponent<WPSoldierControler> ().targetEnemy = EnemyBaseTower.gameObject;
-			Hero.GetComponent<WPSoldierControler> ().seeking = false;
-			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
+//			Hero.GetComponent<WPSoldierControler> ().targetEnemy = EnemyBaseTower.gameObject;
+//			Hero.GetComponent<WPSoldierControler> ().seeking = false;
+//			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
+//			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
+//				Destroy (o.gameObject);
+//			}
+//			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
+//			Instantiate (WaypointMarker, EnemyBaseTower).transform.position = EnemyBaseTower.transform.position;
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
 				Destroy (o.gameObject);
 			}
-			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
-			Instantiate (WaypointMarker, EnemyBaseTower).transform.position = EnemyBaseTower.transform.position;
-
+			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
+			WaypointMarker.GetComponent<SpriteRenderer> ().sprite = null;
+			StartCoroutine (CreateWaypoint (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y)));
+			//Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity).gameObject.name = "Waypoint"+progress;
+			progress++;
 		}else if(EnemyBaseTower2 != null && Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),EnemyBaseTower2.position) < 1 && UIopen == false /*&& Enemy.GetComponent<SpriteRenderer>().enabled == true*/) {
-			Hero.GetComponent<WPSoldierControler> ().targetEnemy = EnemyBaseTower2.gameObject;
-			Hero.GetComponent<WPSoldierControler> ().seeking = false;
-			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
+//			Hero.GetComponent<WPSoldierControler> ().targetEnemy = EnemyBaseTower2.gameObject;
+//			Hero.GetComponent<WPSoldierControler> ().seeking = false;
+//			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
+//			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
+//				Destroy (o.gameObject);
+//			}
+//			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
+//			Instantiate (WaypointMarker, EnemyBaseTower2).transform.position = EnemyBaseTower2.transform.position;
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
 				Destroy (o.gameObject);
 			}
-			ChangeIcon (WaypointMarker.GetComponent<SpriteRenderer>());
-			Instantiate (WaypointMarker, EnemyBaseTower2).transform.position = EnemyBaseTower2.transform.position;
+			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
+			WaypointMarker.GetComponent<SpriteRenderer> ().sprite = null;
+			StartCoroutine (CreateWaypoint (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y)));
+			//Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity).gameObject.name = "Waypoint"+progress;
+			progress++;
 
 		}else if(Vector2.Distance(Camera.main.ScreenToWorldPoint (Input.mousePosition),Base.position) < 1 && UIopen == false){
 

@@ -518,41 +518,78 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 		//
 
 		//SEGUINDO OS MARCADORES DE MOVIMENTO
-	if (entity.isOwner) {
-			if (GetNewWaypoint () != null) {
-			lockedTarget = false;
-			seeking = false;
-			WaypointMark = GetNewWaypoint ();
-			//targetEnemy = null;
-			if(Vector3.Distance (transform.position, WaypointMark.transform.position) > range && WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == true ) {
-				transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
-			} else if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f && WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == false) {
-				//anim.SetTrigger ("Walk");
-				if (WaypointMark.transform.position.x < transform.position.x) {
-					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = true;
-					anim.gameObject.transform.localPosition = new Vector3 (0.03f, 0.2f, 0f);
-				} else if (WaypointMark.transform.position.x > transform.position.x) {
-					anim.gameObject.GetComponent<SpriteRenderer> ().flipX = false;
-					anim.gameObject.transform.localPosition = new Vector3 (-0.05f, 0.2f, 0f);
-				}
-				transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
-			} else {
-				if (WaypointMark.GetComponent<MovementMarkerScript> ().capture == true && WaypointMark.GetComponent<MovementMarkerScript> ().enabled == true) {
-					if (captureMarkerTimer >= 0.7f) {
-						captureMarkerTimer = 0;
-						Destroy (WaypointMark.gameObject);
-						StartCoroutine (RedrawLine ());
+		if (multiplayer == true) {
+			if (entity.isOwner) {
+				if (GetNewWaypoint () != null) {
+					lockedTarget = false;
+					seeking = false;
+					WaypointMark = GetNewWaypoint ();
+					//targetEnemy = null;
+					if (Vector3.Distance (transform.position, WaypointMark.transform.position) > range && WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == true) {
+						transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
+					} else if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f && WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == false) {
+						//anim.SetTrigger ("Walk");
+						if (WaypointMark.transform.position.x < transform.position.x) {
+							anim.gameObject.GetComponent<SpriteRenderer> ().flipX = true;
+							anim.gameObject.transform.localPosition = new Vector3 (0.03f, 0.2f, 0f);
+						} else if (WaypointMark.transform.position.x > transform.position.x) {
+							anim.gameObject.GetComponent<SpriteRenderer> ().flipX = false;
+							anim.gameObject.transform.localPosition = new Vector3 (-0.05f, 0.2f, 0f);
+						}
+						transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
 					} else {
-						captureMarkerTimer += Time.deltaTime;
+						if (WaypointMark.GetComponent<MovementMarkerScript> ().capture == true && WaypointMark.GetComponent<MovementMarkerScript> ().enabled == true) {
+							if (captureMarkerTimer >= 0.7f) {
+								captureMarkerTimer = 0;
+								Destroy (WaypointMark.gameObject);
+								StartCoroutine (RedrawLine ());
+							} else {
+								captureMarkerTimer += Time.deltaTime;
+							}
+						} else if (WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == false) {
+							Destroy (WaypointMark.gameObject);
+							StartCoroutine (RedrawLine ());
+						}
 					}
-				} else if(WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == false) {
-					Destroy (WaypointMark.gameObject);
-					StartCoroutine (RedrawLine ());
+
 				}
 			}
+		} else {
+			if (GetNewWaypoint () != null) {
+				lockedTarget = false;
+				seeking = false;
+				WaypointMark = GetNewWaypoint ();
+				//targetEnemy = null;
+				if (Vector3.Distance (transform.position, WaypointMark.transform.position) > range && WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == true) {
+					transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
+				} else if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f && WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == false) {
+					//anim.SetTrigger ("Walk");
+					if (WaypointMark.transform.position.x < transform.position.x) {
+						anim.gameObject.GetComponent<SpriteRenderer> ().flipX = true;
+						anim.gameObject.transform.localPosition = new Vector3 (0.03f, 0.2f, 0f);
+					} else if (WaypointMark.transform.position.x > transform.position.x) {
+						anim.gameObject.GetComponent<SpriteRenderer> ().flipX = false;
+						anim.gameObject.transform.localPosition = new Vector3 (-0.05f, 0.2f, 0f);
+					}
+					transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
+				} else {
+					if (WaypointMark.GetComponent<MovementMarkerScript> ().capture == true && WaypointMark.GetComponent<MovementMarkerScript> ().enabled == true) {
+						if (captureMarkerTimer >= 0.7f) {
+							captureMarkerTimer = 0;
+							Destroy (WaypointMark.gameObject);
+							StartCoroutine (RedrawLine ());
+						} else {
+							captureMarkerTimer += Time.deltaTime;
+						}
+					} else if (WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == false) {
+						Destroy (WaypointMark.gameObject);
+						StartCoroutine (RedrawLine ());
+					}
+				}
 
+			}
 		}
-	}
+
 
 	if (velocity <= 0f) seeking = true;
 

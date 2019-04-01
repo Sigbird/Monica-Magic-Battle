@@ -221,6 +221,10 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	private float count; 
 
+	public RandomEnemySpawner enemySpawner;
+
+	public WPSoldierControler enemycontroler;
+
 
 	// Use this for initialization
 	void Start () {
@@ -241,6 +245,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			
 		}
 		gc = GameObject.Find ("GameController").GetComponent<GameController> ();
+		enemycontroler = GameObject.Find ("Hero").GetComponent<WPSoldierControler> ();
 
 		if (heroUnity) {// CONFIGURAÇÃO DE HEROIS
 			SetupHero();
@@ -267,7 +272,7 @@ public class WPIASoldierControler : MonoBehaviour {
 //			anim = GetComponent<Animator> ();
 //		}
 		respawningTimer = 0.5f;
-		StartCoroutine (Respawning ());
+		StartCoroutine (Respawning (0.5f));
 
 		this.effects = "default";
 		this.speed = speed /1.5f;
@@ -347,7 +352,7 @@ public class WPIASoldierControler : MonoBehaviour {
 
 		//ALTERAÇÔES DE CHANCE DE ESCOLHAS NO TWIST
 
-		if (this.vida < (this.vidaMax/2)) {
+		if (this.vida < (this.vidaMax/1.5f)) {
 			retreatChance = 90;
 		} else {
 			retreatChance = 0;
@@ -367,10 +372,10 @@ public class WPIASoldierControler : MonoBehaviour {
 
 		if (GameObject.Find ("HeroBaseEnemy").GetComponent<ChargesScript> ().inCombat == true) {
 			retreatChance = 90;
-		} else if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == true && GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().vida <= 20) {
+		} else if (enemycontroler.alive == true && enemycontroler.vida < enemycontroler.vida/2) {
 			heroHarassChance = 75;
-		} else if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == true && GameObject.Find ("Hero").transform.position.y > 0) {
-			heroHarassChance = 60;
+		} else if (enemycontroler.alive == true && enemycontroler.gameObject.transform.position.y > 0) {
+			heroHarassChance = 90;
 		} else if (this.vida >= 100) {
 			heroHarassChance = 20;
 		} else {
@@ -382,13 +387,16 @@ public class WPIASoldierControler : MonoBehaviour {
 //			gemColectorChance = 15;
 //		}
 
-		if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == false) {
-			pushHatChance = 50;
-		} else if (this.vida >= 100) {
-			pushHatChance = 25;
-		} else if (this.vida >= 50) { 
-			pushHatChance = 10;
-		}else{
+		if (enemySpawner.EnemiesOnScene.Length >= 2) {
+			pushHatChance = 90;
+		}
+
+
+		if (enemycontroler.alive == false) {
+			//pushHatChance = 50;
+		} else if (this.vida >= this.vidaMax) {
+			//pushHatChance = 15;
+		} else{
 				pushHatChance = 0;
 		}
 
@@ -404,8 +412,29 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.speed = 0;
 			Instantiate (deathAngel, this.transform.position, Quaternion.identity).transform.parent = this.transform;
 			if (tutorial == false) {
-				GameObject.Find ("RespawnTimerEnemy").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
-				StartCoroutine (Respawning ());
+				GameObject.Find ("RespawnTimerEnemy").GetComponent<RespawnTimer> ().ActiveRespawnTimer (5);
+				//EVENTO DE MORTE
+				this.speed = -(this.maxSpeed);
+				this.alive = false;
+				this.ColliderComponent.enabled = false;
+				this.GetComponent<SpriteRenderer> ().enabled = false;
+				this.anim.GetComponent<SpriteRenderer> ().enabled = false;
+				this.platform.GetComponent<SpriteRenderer> ().enabled = false;
+				if (healtbarSoldierSolid != null) {
+					this.healtbarSoldierSolid.transform.gameObject.SetActive (false);
+					//this.specialBar.SetActive (false);
+				}
+				//this.energybarSoldier.SetActive (false);
+				this.skill1.gameObject.SetActive (false);
+				this.skill2.gameObject.SetActive (false);
+				this.vida = this.vidaMax;
+				//		UpdateLife ();
+				//		if(heroUnity)
+				//			this.energy = this.energyMax;
+				this.seeking = false;
+				this.transform.position = new Vector3(0,7.5f,0);
+				//FIM EVENTO DE MORTE
+				StartCoroutine (Respawning (5));
 			} else {
 				transform.position = new Vector2 (200, 200);
 				gameObject.SetActive (false);
@@ -545,7 +574,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			}
 		}
 
-		if(Vector3.Distance (transform.position, RiverPassLeft.transform.position)>Vector3.Distance (transform.position, RiverPassRight.transform.position)){
+		if(Vector3.Distance (transform.position, RiverPassLeft.transform.position)>=Vector3.Distance (transform.position, RiverPassRight.transform.position)){
 			NearestPass = RiverPassRight;
 		}else{
 			NearestPass = RiverPassLeft;
@@ -645,18 +674,20 @@ public class WPIASoldierControler : MonoBehaviour {
 
 			//DESLOCAMENTO ATE INIMIGO
 			if (Vector3.Distance (transform.position, targetEnemy.transform.position) > range) { //MOVE EM DIRECAO
-				//anim.SetTrigger ("Walk");
+				anim.SetTrigger ("Walk");
 				//SpendingEnergy ();
 				transform.position = Vector3.MoveTowards (transform.position, targetEnemy.transform.position, Time.deltaTime * speed);
-
-			} else if (targetEnemy != null && this.anim.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
-					if (targetEnemy.transform.position.x < transform.position.x) {
+				Debug.Log ("Atacando");	
+			} else 
+			if (targetEnemy != null && this.anim.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
+				Debug.Log ("Atacando");	
+				if (targetEnemy.transform.position.x < transform.position.x) {
 						anim.GetComponent<SpriteRenderer> ().flipX = true;
 					} else if (targetEnemy.transform.position.x > transform.position.x) {
 						anim.GetComponent<SpriteRenderer> ().flipX = false;
 					}
 
-					if (targetEnemy.transform.Find ("MovementMarker(Clone)"))
+					//if (targetEnemy.transform.Find ("MovementMarker(Clone)"))
 					//	Destroy (targetEnemy.transform.Find ("MovementMarker(Clone)").gameObject);
 				
 					if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
@@ -761,7 +792,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.reach = 2f;
 			this.damage = PlayerPrefs.GetFloat ("MagaliAtrib1");//14;  //Baixo
 			this.damageSpeed = PlayerPrefs.GetFloat ("MagaliAtrib2");//1; //Medio
-			this.range = PlayerPrefs.GetFloat ("MagaliAtrib3");//0.5f; //Baixissimo
+			this.range = 2;//PlayerPrefs.GetFloat ("MagaliAtrib3");//0.5f; //Baixissimo
 			this.speed = PlayerPrefs.GetFloat ("MagaliAtrib5");//1.3f; //medio
 			this.energyMax = 4;
 			this.energy = 4;
@@ -1129,31 +1160,31 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	}
 
-	IEnumerator Respawning(){
-		this.speed = 0;
-		yield return new WaitForSeconds (0.01f);
-		this.alive = false;
-		this.ColliderComponent.enabled = false;
-		this.GetComponent<SpriteRenderer> ().enabled = false;
-		this.anim.GetComponent<SpriteRenderer> ().enabled = false;
-		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
-		if (healtbarSoldierSolid != null) {
-			this.healtbarSoldierSolid.transform.gameObject.SetActive (false);
-			//this.specialBar.SetActive (false);
-		}
-		//this.energybarSoldier.SetActive (false);
-		this.skill1.gameObject.SetActive (false);
-		this.skill2.gameObject.SetActive (false);
-		this.vida = this.vidaMax;
-//		UpdateLife ();
-//		if(heroUnity)
-//			this.energy = this.energyMax;
-		this.seeking = false;
-		this.transform.position = new Vector3(0,7.5f,0);
+	IEnumerator Respawning(float x){
+//		this.speed = 0;
+//		yield return new WaitForSeconds (0.01f);
+//		this.alive = false;
+//		this.ColliderComponent.enabled = false;
+//		this.GetComponent<SpriteRenderer> ().enabled = false;
+//		this.anim.GetComponent<SpriteRenderer> ().enabled = false;
+//		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
+//		if (healtbarSoldierSolid != null) {
+//			this.healtbarSoldierSolid.transform.gameObject.SetActive (false);
+//			//this.specialBar.SetActive (false);
+//		}
+//		//this.energybarSoldier.SetActive (false);
+//		this.skill1.gameObject.SetActive (false);
+//		this.skill2.gameObject.SetActive (false);
+//		this.vida = this.vidaMax;
+////		UpdateLife ();
+////		if(heroUnity)
+////			this.energy = this.energyMax;
+//		this.seeking = false;
+//		this.transform.position = new Vector3(0,7.5f,0);
 
-		yield return new WaitForSeconds (respawningTimer);
+		yield return new WaitForSeconds (x);
 		audioManager.PlayAudio ("spawn");
-		this.alive = true;
+		alive = true;
 		if(heroUnity)
 			//transform.position = heroBase.transform.position;
 		this.ColliderComponent.enabled = true;
@@ -1535,13 +1566,13 @@ public class WPIASoldierControler : MonoBehaviour {
 			break;
 		case 5://HERO HARASS
 			if (GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().alive == true) {
-				if (Vector2.Distance (GameObject.Find ("Hero").transform.position, transform.position) > 1f) {
-					waypoint.EnemyMovementPlacement (new Vector2(GameObject.Find ("Hero").transform.position.x,GameObject.Find ("Hero").transform.position.y));
+				if (Vector2.Distance (enemycontroler.gameObject.transform.position, transform.position) > 1f) {
+					waypoint.EnemyMovementPlacement (new Vector2(enemycontroler.gameObject.transform.position.x,enemycontroler.gameObject.transform.position.y));
 					//waypoint.EnemyMovementPlacement (GameObject.Find ("Hero").transform.position);
-					targetEnemy = GameObject.Find ("Hero");
+					targetEnemy = enemycontroler.gameObject;
 					StartCoroutine (WaitMethod (3));
 				} else {
-					targetEnemy = GameObject.Find ("Hero");
+					targetEnemy = enemycontroler.gameObject;
 					StartCoroutine( WaitMethod (2));
 				} 
 			} else {
@@ -1618,7 +1649,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			if (Vector2.Distance (GameObject.Find ("HeroBaseEnemy").transform.position, transform.position) > 1f) {
 				waypoint.EnemyMovementPlacement (GameObject.Find ("HeroBaseEnemy").transform.position);
 				StartCoroutine (WaitMethod (3));
-				pushHatChance += 10;
+				//pushHatChance += 10;
 			} else {
 				twisted = true;
 			}  
@@ -1641,8 +1672,8 @@ public class WPIASoldierControler : MonoBehaviour {
 			break;
 		case 11://RANDON MOVEMENT
 			//gemColectorChance += 10;
-			heroHarassChance += 10;
-			pushHatChance += 10;
+			//heroHarassChance += 10;
+			//pushHatChance += 10;
 			twisted = true;
 			//StartCoroutine (WaitForTwist ());
 			break;
