@@ -151,11 +151,11 @@ public class AudioManager : MonoBehaviour {
 		}
 		if (MusicVolume > 0) {
 			if (track == "victory") { //ok
-				source.Stop();
+				source.clip = null;
 				source.PlayOneShot (audios [7],MusicVolume-0.6f);
 			}
 			if (track == "defeat") { //ok
-				source.Stop();
+				source.clip = null;
 				source.PlayOneShot (audios [2],MusicVolume-0.6f);
 //				source.Stop();
 //				source.loop = true;

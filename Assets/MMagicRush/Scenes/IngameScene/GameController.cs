@@ -89,7 +89,6 @@ public class GameController : MonoBehaviour {
 	public Image TimeWatch;
 	private bool TimeWatchBlinking;
 	public int ChestsQtd;
-	public GameObject OptionsButton;
 
 	private int[] zero;
 	private int heroid;
@@ -100,9 +99,6 @@ public class GameController : MonoBehaviour {
 	void Awake() {
 		networkController = GetComponent<NetworkCallbacks>();
 
-		if (multiplayer) {
-			OptionsButton.SetActive (false);
-		}
 
 		Duration = 240;
 		sd = false;
@@ -501,59 +497,60 @@ public class GameController : MonoBehaviour {
 	IEnumerator endGame(){
 		CardInfoWindow.SetActive (false);
 		yield return new WaitForSeconds (1);
-
-		if (newMechanicTest) {
-			if (Player1Score >= Player2Score) {
-				this.GetComponent<AudioManager> ().StopAudio ();
-				this.GetComponent<AudioManager> ().SetVolume (1);
-				this.GetComponent<AudioManager> ().PlayAudio ("victory");
-				victory = true;
-				endGamePanel [0].SetActive (true);
-				if (tutorial == true) {
-					GetComponent<TutorialController> ().tutorialPanels [0].SetActive (false);
-					GetComponent<TutorialController> ().tutorialPanels [1].SetActive (false);
-					GetComponent<TutorialController> ().tutorialPanels [2].SetActive (false);
+		if (GameOver != true) {
+			if (newMechanicTest) {
+				if (Player1Score >= Player2Score) {
+					this.GetComponent<AudioManager> ().StopAudio ();
+					this.GetComponent<AudioManager> ().SetVolume (1);
+					this.GetComponent<AudioManager> ().PlayAudio ("victory");
+					victory = true;
+					endGamePanel [0].SetActive (true);
+					if (tutorial == true) {
+						GetComponent<TutorialController> ().tutorialPanels [0].SetActive (false);
+						GetComponent<TutorialController> ().tutorialPanels [1].SetActive (false);
+						GetComponent<TutorialController> ().tutorialPanels [2].SetActive (false);
+					}
+				} else {
+					this.GetComponent<AudioManager> ().StopAudio ();
+					this.GetComponent<AudioManager> ().SetVolume (1);
+					this.GetComponent<AudioManager> ().PlayAudio ("defeat");
+					victory = false;
+					//GameObject.Find ("Chest2").GetComponent<Button> ().interactable = false;
+					//GameObject.Find ("Chest2").transform.Find ("Closed").GetComponent<Image> ().color = Color.gray;
+					endGamePanel [1].SetActive (true);
 				}
+				GameOver = true;
 			} else {
-				this.GetComponent<AudioManager> ().StopAudio ();
-				this.GetComponent<AudioManager> ().SetVolume (1);
-				this.GetComponent<AudioManager> ().PlayAudio ("defeat");
-				victory = false;
-				//GameObject.Find ("Chest2").GetComponent<Button> ().interactable = false;
-				//GameObject.Find ("Chest2").transform.Find ("Closed").GetComponent<Image> ().color = Color.gray;
-				endGamePanel [1].SetActive (true);
-			}
-			GameOver = true;
-		} else {
-			if (playerCharges == 1 && enemyCharges <= 0) {//3 2
-				this.GetComponent<AudioManager> ().StopAudio ();
-				this.GetComponent<AudioManager> ().SetVolume (1);
-				this.GetComponent<AudioManager> ().PlayAudio ("victory");
-				victory = true;
-				endGamePanel [0].SetActive (true);
-				if (tutorial == true) {
-					GetComponent<TutorialController> ().tutorialPanels [0].SetActive (false);
-					GetComponent<TutorialController> ().tutorialPanels [1].SetActive (false);
-					GetComponent<TutorialController> ().tutorialPanels [2].SetActive (false);
-				}
-			} else if (enemyCharges == 1 && playerCharges <= 0) {//3 2
-				this.GetComponent<AudioManager> ().StopAudio ();
-				this.GetComponent<AudioManager> ().SetVolume (1);
-				this.GetComponent<AudioManager> ().PlayAudio ("defeat");
-				victory = false;
-				//GameObject.Find ("Chest2").GetComponent<Button> ().interactable = false;
-				//GameObject.Find ("Chest2").transform.Find ("Closed").GetComponent<Image> ().color = Color.gray;
-				endGamePanel [1].SetActive (true);
-			} else { // EMPATE
+				if (playerCharges == 1 && enemyCharges <= 0) {//3 2
+					this.GetComponent<AudioManager> ().StopAudio ();
+					this.GetComponent<AudioManager> ().SetVolume (1);
+					this.GetComponent<AudioManager> ().PlayAudio ("victory");
+					victory = true;
+					endGamePanel [0].SetActive (true);
+					if (tutorial == true) {
+						GetComponent<TutorialController> ().tutorialPanels [0].SetActive (false);
+						GetComponent<TutorialController> ().tutorialPanels [1].SetActive (false);
+						GetComponent<TutorialController> ().tutorialPanels [2].SetActive (false);
+					}
+				} else if (enemyCharges == 1 && playerCharges <= 0) {//3 2
+					this.GetComponent<AudioManager> ().StopAudio ();
+					this.GetComponent<AudioManager> ().SetVolume (1);
+					this.GetComponent<AudioManager> ().PlayAudio ("defeat");
+					victory = false;
+					//GameObject.Find ("Chest2").GetComponent<Button> ().interactable = false;
+					//GameObject.Find ("Chest2").transform.Find ("Closed").GetComponent<Image> ().color = Color.gray;
+					endGamePanel [1].SetActive (true);
+				} else { // EMPATE
 //			Debug.Log ("EMPATE");
-				this.GetComponent<AudioManager> ().StopAudio ();
-				this.GetComponent<AudioManager> ().SetVolume (1);
-				this.GetComponent<AudioManager> ().PlayAudio ("selecaocarta");
-				victory = true;
-				endGamePanel [0].SetActive (true);
+					this.GetComponent<AudioManager> ().StopAudio ();
+					this.GetComponent<AudioManager> ().SetVolume (1);
+					this.GetComponent<AudioManager> ().PlayAudio ("selecaocarta");
+					victory = true;
+					endGamePanel [0].SetActive (true);
 
+				}
+				GameOver = true;
 			}
-			GameOver = true;
 		}
 		GameOver = true;
 		Time.timeScale = 0;
@@ -609,6 +606,9 @@ public class GameController : MonoBehaviour {
 
 
 	public void OpenReward(int x){
+
+		GameOver = true;
+
 		GameObject.Find ("Hero").SetActive (false);
 		if(GameObject.Find ("HeroEnemy") != null)
 		GameObject.Find ("HeroEnemy").SetActive (false);
@@ -753,6 +753,7 @@ public class GameController : MonoBehaviour {
 		}else if (scene == "start") {
 			Time.timeScale = 1;
 		} else {
+			Time.timeScale = 1;
 			SceneManager.LoadScene(scene);
 		}
 	}
@@ -802,7 +803,8 @@ public class GameController : MonoBehaviour {
 				SceneManager.LoadScene ("Level Select");
 			} else {
 				PlayerPrefs.DeleteKey ("TerrainType");
-				SceneManager.LoadScene ("GamePlayReview");
+				SceneManager.LoadScene ("MainNewCoreloop");
+				Time.timeScale = 1;
 			}
 		}
 			

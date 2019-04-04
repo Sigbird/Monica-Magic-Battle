@@ -15,8 +15,37 @@ public class HeroSelectionScreen : MonoBehaviour {
 	public Button cebolinha2;
 	public Button cascao;
 	public Button cascao2;
+	public Sprite SelectedHalo;
 
 	public void Start(){
+		if (PlayerPrefs.GetInt ("SelectedCharacter") != null) {
+			int x = PlayerPrefs.GetInt ("SelectedCharacter");
+			switch (x) {
+			case 0:
+				monica2.image.sprite = SelectedHalo;
+				break;
+			case 1:
+				cebolinha2.image.sprite = SelectedHalo;
+				break;
+			case 2:
+				magali2.image.sprite = SelectedHalo;
+				break;
+			case 3:
+				cascao2.image.sprite = SelectedHalo;
+				break;
+			case 4:
+				chico2.image.sprite = SelectedHalo;
+				break;
+			default:
+				monica2.image.sprite = SelectedHalo;
+				break;
+			}
+
+		} else {
+			monica2.image.sprite = SelectedHalo;
+			PlayerPrefs.SetInt ("SelectedCharacter", 0);
+		}
+
 		
 	}
 

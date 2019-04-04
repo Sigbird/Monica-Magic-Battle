@@ -12,6 +12,7 @@ public class SplashAnim : MonoBehaviour {
 	public Scrollbar ProgressionBar;
 	public GameObject VidIntro;
 	public GameObject Logos;
+	public GameObject SkipPannel;
 	// Use this for initialization
 	void Start () {
 		PlayerPrefs.DeleteKey ("VideoIntro");
@@ -36,6 +37,7 @@ public class SplashAnim : MonoBehaviour {
 		}else{
 			Logos.SetActive (false);
 			VidIntro.SetActive (true);
+			SkipPannel.SetActive (true);
 			PlayerPrefs.SetInt("VideoIntro",1);
 		}
 
@@ -43,6 +45,7 @@ public class SplashAnim : MonoBehaviour {
 	}
 
 	public void SplashEnd(){
+		SkipPannel.SetActive (false);
 		if (noLoading) {
 			SceneManager.LoadScene (firstscene);
 		} else {

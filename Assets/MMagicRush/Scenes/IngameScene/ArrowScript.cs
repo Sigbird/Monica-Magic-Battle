@@ -48,18 +48,22 @@ public class ArrowScript : MonoBehaviour {
 //				Destroy (gameObject);
 //			}
 //		}
-		if(target.GetComponent<WPIASoldierControler>() != null){
-			if(target.GetComponent<WPIASoldierControler>().alive == false){
-				Destroy (this.gameObject);
-			}
-		}
+		if (target != null) {
 
-		if(target.GetComponent<WPSoldierControler>() != null){
-			if(target.GetComponent<WPSoldierControler>().alive == false){
-				Destroy (this.gameObject);
+			if (target.GetComponent<WPIASoldierControler> () != null) {
+				if (target.GetComponent<WPIASoldierControler> ().alive == false) {
+					Destroy (this.gameObject);
+				}
 			}
-		}
 
+			if (target.GetComponent<WPSoldierControler> () != null) {
+				if (target.GetComponent<WPSoldierControler> ().alive == false) {
+					Destroy (this.gameObject);
+				}
+			}
+		} else {
+			Destroy (this.gameObject);
+		}
 
 
 

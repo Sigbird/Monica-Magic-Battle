@@ -84,11 +84,12 @@ public class FilterScript : MonoBehaviour {
 	}
 
 	public void UpdatePlayerCardList(){
-		
-		cs = new int[30];
-		for (int i = 1; i <= 20; i++) {
-			cs [i] = i;
-			//Debug.Log (i);
+
+		cs = new int[6];
+
+		for (int i = 0; i < cs.Length; i++) {
+			cs [i] = Random.Range(1,18);
+			//Random da Loja;
 		}
 
 		if (CardShop) {

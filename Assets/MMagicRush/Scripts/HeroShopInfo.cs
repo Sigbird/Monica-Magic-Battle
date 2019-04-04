@@ -8,6 +8,7 @@ public class HeroShopInfo : MonoBehaviour {
 	public Button purchaseButton;
 	public GameObject purchasedImage;
 	public Button purchaseable;
+	public bool colection;
 	// Use this for initialization
 	void Start () {
 	//	PlayerPrefs.SetInt ("magali", 0);
@@ -36,33 +37,33 @@ public class HeroShopInfo : MonoBehaviour {
 			break;
 		case 3: 
 			if (PlayerPrefs.GetInt ("magali") == 1) {
-				purchaseable.interactable = false;
+				if(colection = false)purchaseable.interactable = false;
 				purchaseButton.interactable = true;
 				purchasedImage.SetActive (true);
 			} else if (PlayerPrefs.GetInt ("magali") != 1 ){
-				purchaseable.interactable = true;
+				if(colection = false)purchaseable.interactable = true;
 				purchaseButton.interactable = false;
 				purchasedImage.SetActive (false);
 			}
 			break;
 		case 4: 
 			if (PlayerPrefs.GetInt ("cascao") == 1) {
-				purchaseable.interactable = false;
+				if(colection = false)purchaseable.interactable = false;
 				purchaseButton.interactable = true;
 				purchasedImage.SetActive (true);
 			} else if (PlayerPrefs.GetInt ("cascao") != 1) {
-				purchaseable.interactable = true;
+				if(colection = false)purchaseable.interactable = true;
 				purchaseButton.interactable = false;
 				purchasedImage.SetActive (false);
 			}
 			break;
 		case 5:
 			if (PlayerPrefs.GetInt ("chico") == 1) {
-				purchaseable.interactable = false;
+				if(colection = false)purchaseable.interactable = false;
 				purchaseButton.interactable = true;
 				purchasedImage.SetActive (true);
 			} else {
-				purchaseable.interactable = true;
+				if(colection = false)purchaseable.interactable = true;
 				purchaseButton.interactable = false;
 				purchasedImage.SetActive (false);
 			}

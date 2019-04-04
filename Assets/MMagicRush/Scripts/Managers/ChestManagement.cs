@@ -16,7 +16,7 @@ public class ChestManagement : MonoBehaviour {
 
 	void Awake(){
 
-		//PlayerPrefs.SetInt ("ChestsNumber", 3);
+		PlayerPrefs.SetInt ("ChestsNumber", 3);
 
 
 		if(PlayerPrefs.HasKey("ChestsNumber")){
