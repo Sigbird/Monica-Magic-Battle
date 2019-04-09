@@ -75,6 +75,10 @@ public class CardSlotScript : MonoBehaviour {
 
 	public GameObject HoveringObject;
 
+	public bool multiplayer;
+
+	public GameController controller;
+
 
 	//PREFABS
 	public GameObject movementMarker;
@@ -96,6 +100,12 @@ public class CardSlotScript : MonoBehaviour {
 
 	private bool projectileCreated;
 	// Use this for initialization
+
+	void Awake(){
+		controller = GameObject.Find ("GameController").GetComponent<GameController> ();
+		multiplayer = controller.multiplayer;
+	}
+
 	void Start () {
 		//defaultUiBG = Uibg.color;
 		defaultUIilustration = UIilustration.color; 
@@ -105,7 +115,7 @@ public class CardSlotScript : MonoBehaviour {
 		//defaultUIgems = UIgems.color;
 
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
-		cardInfo = GameObject.Find ("GameController").GetComponent<GameController> ().cardInfo;
+		cardInfo = controller.cardInfo;
 		//Pegar lista de cartas via playerprefs
 //		cardlistIngame = PlayerPrefsX.GetIntArray ("CardsList");
 //		cardID = cardlistIngame [Random.Range (0, cardlistIngame.Length)];
@@ -210,7 +220,15 @@ public class CardSlotScript : MonoBehaviour {
 			//UIribbon.color = new Color (1, 1, 1, 1);
 			//UIgems.color = new Color (1, 1, 1, 1);
 			//UIcategory.color = new Color (1, 1, 1, 1);
-			UpdatePosition ();
+			if (multiplayer == false) {
+				UpdatePosition ();
+			} else {
+				if (BoltNetwork.IsClient) {
+					UpdatePositionInverse ();
+				} else {
+					UpdatePosition ();
+				}
+			}
 			//updated = true;
 		} else if(beeingDraged == true){
 			transform.localScale = new Vector3(0.15f,0.09f,1);
@@ -912,49 +930,25 @@ public class CardSlotScript : MonoBehaviour {
 	}
 
 	public void UpdatePosition(){
-		
 
 		switch (CardPosition) {
 		case 0:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.2f, Camera.main.transform.position.y -4.4f), Time.deltaTime * 3);
-				//Uibg.sprite = cardFront [2];
 				UIilustration.sprite = cardsImages[cardID];
-				//UIilustration.color = defaultUIilustration;
-				//UIilustrationAnim.color = defaultUIilustrationAnim;
-				//UIframe.sprite = cardFront [1];
-				//UIribbon.sprite = cardFront [0];
-				//UIgems.color = defaultUIgems;
 			} else {
-				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.2f, Camera.main.transform.position.y -4.4f), Time.deltaTime * 3);	
-				//Uibg.sprite = cardFrontBW [2];
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -1.2f, Camera.main.transform.position.y -4.4f), Time.deltaTime * 3);
 				UIilustration.sprite = cardsImagesBW[cardID];
-				//UIilustration.color = Color.gray;//
-				//UIilustrationAnim.color = Color.gray;
-				//UIframe.sprite = cardFrontBW [1];
-				//UIribbon.sprite = cardFrontBW [0];
-				//UIgems.color = Color.gray;		
+					
 			}
 			break;
 		case 10:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x - 0.05f, Camera.main.transform.position.y -4.4f), Time.deltaTime * 3);
-				//Uibg.sprite = cardFront [2];
 				UIilustration.sprite = cardsImages[cardID];
-				//UIilustration.color = defaultUIilustration;
-				//UIilustrationAnim.color = defaultUIilustrationAnim;
-				//UIframe.sprite = cardFront [1];
-				//UIribbon.sprite = cardFront [0];
-				//UIgems.color = defaultUIgems;
 			} else {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x - 0.05f, Camera.main.transform.position.y -4.4f), Time.deltaTime * 3);
-				//Uibg.sprite = cardFrontBW [2];
-				UIilustration.sprite = cardsImagesBW[cardID];
-				//UIilustration.color = Color.gray;//
-				//UIilustrationAnim.color = Color.gray;
-				//UIframe.sprite = cardFrontBW [1];
-				//UIribbon.sprite = cardFrontBW [0];
-				//UIgems.color = Color.gray;		
+				UIilustration.sprite = cardsImagesBW[cardID];	
 			}
 			break;
 		case 20:
@@ -962,84 +956,20 @@ public class CardSlotScript : MonoBehaviour {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 1.1f, Camera.main.transform.position.y -4.4f), Time.deltaTime * 3);
 				//Uibg.sprite = cardFront [2];
 				UIilustration.sprite = cardsImages[cardID];
-				//UIilustration.color = defaultUIilustration;
-				//UIilustrationAnim.color = defaultUIilustrationAnim;
-				//UIframe.sprite = cardFront [1];
-				//UIribbon.sprite = cardFront [0];
-				//UIgems.color = defaultUIgems;
 			} else {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 1.1f, Camera.main.transform.position.y -4.4f), Time.deltaTime * 3);
-				//Uibg.sprite = cardFrontBW [2];
-				UIilustration.sprite = cardsImagesBW[cardID];
-				//UIilustration.color = Color.gray;//
-				//UIilustrationAnim.color = Color.gray;
-				//UIframe.sprite = cardFrontBW [1];
-				//UIribbon.sprite = cardFrontBW [0];
-				//UIgems.color = Color.gray;	
+				UIilustration.sprite = cardsImagesBW[cardID];	
 			}
 			break;
 		case 30:
 			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 2.25f, Camera.main.transform.position.y -4.4f), Time.deltaTime * 3);
-				//Uibg.sprite = cardFront [2];
 				UIilustration.sprite = cardsImages[cardID];
-				//UIilustration.color = defaultUIilustration;
-				//UIilustrationAnim.color = defaultUIilustrationAnim;
-				//UIframe.sprite = cardFront [1];
-				//UIribbon.sprite = cardFront [0];
-				//UIgems.color = defaultUIgems;
 			} else {
 				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x + 2.25f, Camera.main.transform.position.y -4.4f), Time.deltaTime * 3);
-				//Uibg.sprite = cardFrontBW [2];
-				UIilustration.sprite = cardsImagesBW[cardID];
-				//UIilustration.color = Color.gray;//
-				//UIilustrationAnim.color = Color.gray;
-				//UIframe.sprite = cardFrontBW [1];
-				//UIribbon.sprite = cardFrontBW [0];
-				//UIgems.color = Color.gray;		
+				UIilustration.sprite = cardsImagesBW[cardID];		
 			}
-//			break;
-//		case 40:
-//			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-//				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -0.3f, Camera.main.transform.position.y -4.2f), Time.deltaTime * 3);
-//				//Uibg.sprite = cardFront [2];
-//				UIilustration.sprite = cardsImages[cardID];
-//				//UIilustration.color = defaultUIilustration;
-//				//UIilustrationAnim.color = defaultUIilustrationAnim;
-//				//UIframe.sprite = cardFront [1];
-//				//UIribbon.sprite = cardFront [0];
-//				//UIgems.color = defaultUIgems;
-//			} else {
-//				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (Camera.main.transform.position.x -0.3f, Camera.main.transform.position.y -4.4f), Time.deltaTime * 3);
-//				//Uibg.sprite = cardFrontBW [2];
-//				UIilustration.sprite = cardsImagesBW[cardID];
-//				//UIilustration.color = Color.gray;//
-//				//UIilustrationAnim.color = Color.gray;
-//				//UIframe.sprite = cardFrontBW [1];
-//				//UIribbon.sprite = cardFrontBW [0];
-//				//UIgems.color = Color.gray;	
-//			}
-//			break;
-//		case 50:
-//			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
-//				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (0.3f, -4), Time.deltaTime * 3);
-//				//Uibg.sprite = cardFront [2];
-//				UIilustration.sprite = cardsImages[cardID];
-//				//UIilustration.color = defaultUIilustration;
-//				//UIilustrationAnim.color = defaultUIilustrationAnim;
-//				//UIframe.sprite = cardFront [1];
-//				//UIribbon.sprite = cardFront [0];
-//				//UIgems.color = defaultUIgems;
-//			} else {
-//				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (0.3f, -47.1f), Time.deltaTime * 3);
-//				//Uibg.sprite = cardFrontBW [2];
-//				UIilustration.sprite = cardsImagesBW[cardID];
-//				//UIilustration.color = Color.gray;//
-//				//UIilustrationAnim.color = Color.gray;
-//				//UIframe.sprite = cardFrontBW [1];
-//				//UIribbon.sprite = cardFrontBW [0];
-//				//UIgems.color = Color.gray;	
-//			}
+
 			break;
 		default:
 			break;
@@ -1054,6 +984,64 @@ public class CardSlotScript : MonoBehaviour {
 		//UIcategory.sortingOrder = 105 - CardPosition;
 		//StartCoroutine (SwitchCollider ());
 		 
+		released = true;
+
+	}
+
+	public void UpdatePositionInverse(){
+
+		switch (CardPosition) {
+		case 0:
+			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (1, 5.5f), Time.deltaTime * 3);
+				UIilustration.sprite = cardsImages[cardID];
+			} else {
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (1, 5.5f), Time.deltaTime * 3);
+				UIilustration.sprite = cardsImagesBW[cardID];
+
+			}
+			break;
+		case 10:
+			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (0,  5.5f), Time.deltaTime * 3);
+				UIilustration.sprite = cardsImages[cardID];
+			} else {
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (0,  5.5f), Time.deltaTime * 3);
+				UIilustration.sprite = cardsImagesBW[cardID];	
+			}
+			break;
+		case 20:
+			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (-1,  5.5f), Time.deltaTime * 3);
+				UIilustration.sprite = cardsImages[cardID];
+			} else {
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (-1, 5.5f), Time.deltaTime * 3);
+				UIilustration.sprite = cardsImagesBW[cardID];	
+			}
+			break;
+		case 30:
+			if (cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (-2,  5.5f), Time.deltaTime * 3);
+				UIilustration.sprite = cardsImages[cardID];
+			} else {
+				transform.position = Vector2.MoveTowards (this.transform.position, new Vector2 (-2,  5.5f), Time.deltaTime * 3);
+				UIilustration.sprite = cardsImagesBW[cardID];		
+			}
+
+			break;
+		default:
+			break;
+		}
+		//Uibg.sortingOrder = 98 - CardPosition;
+		UIilustration.sortingOrder = 99 - CardPosition;
+		//UIilustrationAnim.sortingOrder = 100 - CardPosition;
+		//UIframe.sortingOrder = 101 - CardPosition;
+		//UIribbon.sortingOrder = 102 - CardPosition;
+		//UIgems.sortingOrder = 103 - CardPosition;
+		UItexts.sortingOrder = 104 - CardPosition;
+		//UIcategory.sortingOrder = 105 - CardPosition;
+		//StartCoroutine (SwitchCollider ());
+		transform.rotation = Quaternion.Euler(0,0,180);
 		released = true;
 
 	}

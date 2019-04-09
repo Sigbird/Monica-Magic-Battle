@@ -9,13 +9,15 @@ public class MenuTestesVariables : MonoBehaviour {
 	public GameObject EnemyTroops;
 	public WPIASoldierControler ControllerInimigo;
 	public WPSoldierControler ControllerHeroi;
+	public GameObject BaseModel;
+	public GameObject TowerModel;
 	public InputField[] InputTexts;
 	public Text TroopName;
 	public int selectedtroop;
 	public int selectedHero;
 	// Use this for initialization
 	void Start () {
-
+		
 		//ControllerHeroi = GameObject.Find ("Hero").GetComponent<WPSoldierControler> ();
 		//ControllerInimigo = GameObject.Find ("HeroEnemy").GetComponent<WPIASoldierControler> ();
 
@@ -40,6 +42,18 @@ public class MenuTestesVariables : MonoBehaviour {
 		case 3://TropaAliada
 			break;
 		case 4://TropaInimiga
+			break;
+		case 5://Torres
+			InputTexts [0].text = TowerModel.GetComponent<ChargesScriptTowers>().vidaMax.ToString ();
+			InputTexts [1].text = TowerModel.GetComponent<BaseDefense>(). damage.ToString ();
+			InputTexts [2].text = TowerModel.GetComponent<BaseDefense>().damageSpeed.ToString ();
+			InputTexts [3].text = TowerModel.GetComponent<BaseDefense>().reach.ToString ();
+			break;
+		case 6://Bases
+			InputTexts [0].text = BaseModel.GetComponent<ChargesScript>().vidaMax.ToString ();
+			InputTexts [1].text = BaseModel.GetComponent<BaseDefense>().damage.ToString ();
+			InputTexts [2].text = BaseModel.GetComponent<BaseDefense>().damageSpeed.ToString ();
+			InputTexts [3].text = BaseModel.GetComponent<BaseDefense>().reach.ToString ();
 			break;
 		default:
 			break;
@@ -97,6 +111,48 @@ public class MenuTestesVariables : MonoBehaviour {
 			EnemyTroops.GetComponent<SoldierControler> ().range = float.Parse(InputTexts [3].text);
 			EnemyTroops.GetComponent<SoldierControler> ().speed = float.Parse(InputTexts [4].text);
 			Instantiate (EnemyTroops, GameObject.Find("HeroBaseEnemy").transform.position, Quaternion.identity);
+			break;
+		case 5://Torres
+			foreach (GameObject item in GameObject.FindGameObjectsWithTag("enemytower1")) {
+				if (item.GetComponent <ChargesScriptTowers>() != null) {
+					item.GetComponent<ChargesScriptTowers> ().vida = float.Parse(InputTexts [0].text);
+					item.GetComponent<ChargesScriptTowers> ().vidaMax = float.Parse(InputTexts [0].text);
+					item.GetComponent<BaseDefense>().damage = int.Parse(InputTexts [1].text);
+					item.GetComponent<BaseDefense>().damageSpeed = float.Parse(InputTexts [2].text);
+					item.GetComponent<BaseDefense>().reach = float.Parse(InputTexts [3].text);
+				}
+			}
+			foreach (GameObject item in GameObject.FindGameObjectsWithTag("enemytower2")) {
+				if (item.GetComponent <ChargesScriptTowers>() != null) {
+					item.GetComponent<ChargesScriptTowers> ().vida = float.Parse(InputTexts [0].text);
+					item.GetComponent<ChargesScriptTowers> ().vidaMax = float.Parse(InputTexts [0].text);
+					item.GetComponent<BaseDefense>().damage = int.Parse(InputTexts [1].text);
+					item.GetComponent<BaseDefense>().damageSpeed = float.Parse(InputTexts [2].text);
+					item.GetComponent<BaseDefense>().reach = float.Parse(InputTexts [3].text);
+				}
+			}
+
+
+			break;
+		case 6://Bases
+			foreach (GameObject item in GameObject.FindGameObjectsWithTag("enemytower1")) {
+				if (item.GetComponent <ChargesScript>() != null) {
+					item.GetComponent<ChargesScript> ().vida = float.Parse(InputTexts [0].text);
+					item.GetComponent<ChargesScript> ().vidaMax = float.Parse(InputTexts [0].text);
+					item.GetComponent<BaseDefense>().damage = int.Parse(InputTexts [1].text);
+					item.GetComponent<BaseDefense>().damageSpeed = float.Parse(InputTexts [2].text);
+					item.GetComponent<BaseDefense>().reach = float.Parse(InputTexts [3].text);
+				}
+			}
+			foreach (GameObject item in GameObject.FindGameObjectsWithTag("enemytower2")) {
+				if (item.GetComponent <ChargesScript>() != null) {
+					item.GetComponent<ChargesScript> ().vida = float.Parse(InputTexts [0].text);
+					item.GetComponent<ChargesScript> ().vidaMax = float.Parse(InputTexts [0].text);
+					item.GetComponent<BaseDefense>().damage = int.Parse(InputTexts [1].text);
+					item.GetComponent<BaseDefense>().damageSpeed = float.Parse(InputTexts [2].text);
+					item.GetComponent<BaseDefense>().reach = float.Parse(InputTexts [3].text);
+				}
+			}
 			break;
 		default:
 			break;

@@ -21,13 +21,13 @@ public class ChestOpeningSequence : MonoBehaviour {
 
 
 	IEnumerator DeliverRewards(){
-		yield return new WaitForSeconds (0.5f);
+		yield return new WaitForSeconds (1f);
 		RewardPrefab[0].GetComponent<RewardPrefabScript> ().IdPos = 0;
 		RewardPrefab[3] = Instantiate (RewardPrefab[0], new Vector3(0,-2,0), Quaternion.identity);
-		yield return new WaitForSeconds (0.2f);
+		yield return new WaitForSeconds (0.5f);
 		RewardPrefab[1].GetComponent<RewardPrefabScript> ().IdPos = 1;
 		RewardPrefab[4] = Instantiate (RewardPrefab[1], new Vector3(0,-2,0), Quaternion.identity);
-		yield return new WaitForSeconds (0.2f);
+		yield return new WaitForSeconds (0.5f);
 		RewardPrefab[2].GetComponent<RewardPrefabScript> ().IdPos = 2;
 		RewardPrefab[5] =(GameObject) Instantiate (RewardPrefab[2], new Vector3(0,-2,0), Quaternion.identity);
 	}

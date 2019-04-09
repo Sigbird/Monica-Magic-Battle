@@ -895,6 +895,7 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 	}
 
 	IEnumerator Respawning(){
+		
 		GameObject.Find ("RespawnTimerHero").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
 		yield return new WaitForSeconds (0.01f);
 		alive = false;

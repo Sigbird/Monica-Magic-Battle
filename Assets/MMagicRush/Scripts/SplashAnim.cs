@@ -13,6 +13,7 @@ public class SplashAnim : MonoBehaviour {
 	public GameObject VidIntro;
 	public GameObject Logos;
 	public GameObject SkipPannel;
+	public AudioClip IntroAudio;
 	// Use this for initialization
 	void Start () {
 		PlayerPrefs.DeleteKey ("VideoIntro");
@@ -27,6 +28,10 @@ public class SplashAnim : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public void PlayAnimAudio(){
+		GetComponent<AudioSource> ().PlayOneShot (IntroAudio);
 	}
 
 	public void VideoIntro(){
@@ -49,6 +54,8 @@ public class SplashAnim : MonoBehaviour {
 		if (noLoading) {
 			SceneManager.LoadScene (firstscene);
 		} else {
+			GetComponent<AudioSource> ().clip = null;
+			GetComponent<AudioSource> ().Stop ();
 			StartCoroutine (AsynchronousLoad (firstscene));
 			//SceneLoadingManager.LoadScene (firstscene);
 		}

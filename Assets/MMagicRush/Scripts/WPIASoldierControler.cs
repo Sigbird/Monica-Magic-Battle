@@ -1181,7 +1181,10 @@ public class WPIASoldierControler : MonoBehaviour {
 ////			this.energy = this.energyMax;
 //		this.seeking = false;
 //		this.transform.position = new Vector3(0,7.5f,0);
-
+		if (multiplayer) {
+			if (BoltNetwork.IsClient)
+				this.transform.rotation = Quaternion.Euler (0, 0, 180);
+		}
 		yield return new WaitForSeconds (x);
 		audioManager.PlayAudio ("spawn");
 		alive = true;

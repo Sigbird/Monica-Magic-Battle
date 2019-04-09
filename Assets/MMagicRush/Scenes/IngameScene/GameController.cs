@@ -770,6 +770,7 @@ public class GameController : MonoBehaviour {
 				x += 1;
 				PlayerPrefs.SetInt ("ClearedLevels", x);
 			}
+			Time.timeScale = 1;
 			PlayerPrefs.DeleteKey ("TerrainType");
 			SceneManager.LoadScene ("Cinematics");
 
@@ -780,6 +781,7 @@ public class GameController : MonoBehaviour {
 				x += 1;
 				PlayerPrefs.SetInt ("ClearedLevels", x);
 			}
+			Time.timeScale = 1;
 			PlayerPrefs.DeleteKey ("TerrainType");
 			SceneManager.LoadScene ("Cinematics");
 
@@ -790,8 +792,10 @@ public class GameController : MonoBehaviour {
 				x += 1;
 				PlayerPrefs.SetInt ("ClearedLevels", x);
 			}
+			Time.timeScale = 1;
 			PlayerPrefs.DeleteKey ("TerrainType");
 			SceneManager.LoadScene ("Cinematics");
+
 
 		} else {
 			if (vsIAMode == false) {
@@ -799,12 +803,15 @@ public class GameController : MonoBehaviour {
 					x += 1;
 					PlayerPrefs.SetInt ("ClearedLevels", x);
 				}
+				Time.timeScale = 1;
 				PlayerPrefs.DeleteKey ("TerrainType");
 				SceneManager.LoadScene ("Level Select");
+
 			} else {
+				Time.timeScale = 1;
 				PlayerPrefs.DeleteKey ("TerrainType");
 				SceneManager.LoadScene ("MainNewCoreloop");
-				Time.timeScale = 1;
+
 			}
 		}
 			

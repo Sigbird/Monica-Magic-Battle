@@ -23,11 +23,36 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
     private bool player2Ready;
     public bool AllPlayersReady;
 
+	public GameObject TerrainVisual;
+	public GameObject SceneCamera;
+	public GameObject CardSpawner;
+
     public event Action OnPlayersReady;
 
     public override void SceneLoadLocalDone(string map) {       
         
     }
+
+	void Awake(){
+		if (BoltNetwork.IsClient) {
+			
+			//Flip de Camera e Terreno no Cliente
+			CardSpawner.transform.position = new Vector3(3, 5.5f,0);
+			SceneCamera.transform.rotation = Quaternion.Euler (0, 0, 180);
+			SceneCamera.transform.position = new Vector3 (SceneCamera.transform.position.x, 1.05f, SceneCamera.transform.position.z);
+			TerrainVisual.transform.rotation = Quaternion.Euler (0, 0, 180);
+			TerrainVisual.transform.position = new Vector3 (TerrainVisual.transform.position.x, 1.05f, TerrainVisual.transform.position.z);    
+
+			foreach (GameObject g in GameObject.FindGameObjectsWithTag("enemytower1")) {
+				g.transform.rotation = Quaternion.Euler (0, 0, 180);
+				//g.transform.position = new Vector3 (g.transform.position.x, g.transform.position.y - 1f, g.transform.position.z);    
+			}
+			foreach (GameObject g in GameObject.FindGameObjectsWithTag("enemytower2")) {
+				g.transform.rotation = Quaternion.Euler (0, 0, 180);
+				//g.transform.position = new Vector3 (g.transform.position.x, g.transform.position.y - 2f, g.transform.position.z);    
+			}
+		}
+	}
 
     public override void SceneLoadRemoteDone(BoltConnection connection) {
         if (BoltNetwork.IsServer) {
@@ -39,8 +64,10 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
             
             gameController.HeroGameObject = playerServer;        
             wpScript.Hero = playerServer.transform;
-            roundStart.Hero = playerServer;        
-        }   
+            roundStart.Hero = playerServer;      
+
+
+		}   
     
         if (BoltNetwork.IsClient) {
             var clientEntity = BoltNetwork.Instantiate(BoltPrefabs.HeroMPClient, Player2Position.position, Quaternion.identity);
@@ -52,6 +79,12 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
             gameController.EnemyGameObject = playerClient;
             wpScript.Enemy = playerClient.transform;
             roundStart.Enemy = playerClient;
+
+			gameController.HeroGameObject.transform.rotation = Quaternion.Euler (0, 0, 180);if (multiplayer) {
+			gameController.EnemyGameObject.transform.rotation = Quaternion.Euler (0, 0, 180);if (multiplayer) {
+					
+			}
+
         }        
     }
 

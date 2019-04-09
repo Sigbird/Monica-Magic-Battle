@@ -146,6 +146,9 @@ public class AudioManager : MonoBehaviour {
 			if (track == "cinematics3") {
 				source.PlayOneShot (audios [29],EffectVolume);
 			}
+			if (track == "openChest") {
+				source.PlayOneShot (audios [30],EffectVolume);
+			}
 
 
 		}
