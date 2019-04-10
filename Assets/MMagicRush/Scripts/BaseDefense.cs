@@ -26,11 +26,19 @@ public class BaseDefense : MonoBehaviour {
 	public bool lockedTarget;
 	public GameObject targetEnemy;
 	public GameObject arrowModel;
+	public bool tower;
 
 	public GameObject HitAnimationObject;
 	// Use this for initialization
 	void Start () {
-		this.damage = 22;
+		if (tower) {
+			this.damage = 17;
+			this.reach = 3;
+		} else {
+			this.damage = 22;
+			this.reach = 2.5f;
+		}
+		this.damageSpeed = 3;
 		this.haveAmmo = true;
 		this.seeking = true;
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();

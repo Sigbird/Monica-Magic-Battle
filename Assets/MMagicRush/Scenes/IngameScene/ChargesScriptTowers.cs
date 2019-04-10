@@ -41,8 +41,8 @@ public class ChargesScriptTowers : MonoBehaviour {
 		progress = 0;
 		manager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		if (Tower) {
-			vidaMax = 120;
-			vida = 120;
+			vidaMax = 400;
+			vida = 400;
 		}else{
 			vidaMax = 12;
 			vida = 12;

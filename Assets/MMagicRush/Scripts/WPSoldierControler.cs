@@ -137,7 +137,7 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 
 	public float danoCD = 0;
 
-	[HideInInspector]
+
 	public float range;
 
 
@@ -560,7 +560,8 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 				seeking = false;
 				WaypointMark = GetNewWaypoint ();
 				//targetEnemy = null;
-				if (Vector3.Distance (transform.position, WaypointMark.transform.position) > range && WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == true) {
+				if (Vector3.Distance (transform.position, WaypointMark.transform.position) > range/2 && WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == true) {
+					Debug.Log ("MOVENDO " + Vector3.Distance (transform.position, WaypointMark.transform.position));
 					transform.position = Vector3.MoveTowards (transform.position, WaypointMark.transform.position, Time.deltaTime * speed);
 				} else if (Vector3.Distance (transform.position, WaypointMark.transform.position) > 0.2f && WaypointMark.GetComponent<MovementMarkerScript> ().targetMarker == false) {
 					//anim.SetTrigger ("Walk");
@@ -657,11 +658,11 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 	public void SetupHero(){
 		//CONFIGURAÇÃO DE TIPO DE HEROI
 		int id = 0;
-		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1) {
-			heroID =  PlayerPrefs.GetInt ("SelectedCharacter");
-		} else {
-			heroID = 1;
-		}
+//		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1) {
+//			heroID =  PlayerPrefs.GetInt ("SelectedCharacter");
+//		} else {
+//			heroID = 1;
+//		}
 
 		if(tutorial==false)
 		GameObject.Find ("HeroPortrait").GetComponent<Image> ().sprite = heroPortraits [heroID];

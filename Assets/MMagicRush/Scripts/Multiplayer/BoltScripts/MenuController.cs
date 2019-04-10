@@ -6,6 +6,8 @@ using UdpKit;
 using Bolt;
 using YupiPlay.MMB;
 using Bolt.Utils;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace YupiPlay.MMB.Multiplayer {
     public class MenuController : Bolt.GlobalEventListener {
@@ -15,7 +17,10 @@ namespace YupiPlay.MMB.Multiplayer {
         public string MPScene = "GamePlayReviewMulti";
         public UnityEvent OnConnection;
         public UnityEvent OnMatchmakingTimeout;
-		public bool Shutdown;
+		public GameObject LoadingCanvas;
+		public Scrollbar ProgressionBar;
+		public bool MultiPlayerOnly;
+		public bool connectingtoSomeone;
 
         public event Action<string, int> OnOpponentInfoEvent;
 
@@ -37,22 +42,21 @@ namespace YupiPlay.MMB.Multiplayer {
         int mySkill = 0;
 
         void Awake() {
+			connectingtoSomeone = false;
             limit = BoltRuntimeSettings.instance.GetConfigCopy().serverConnectionLimit;
-			Shutdown = false;
+
         }
 
 		void Update(){
 
-			if (Shutdown == true) {
-				if (BoltNetwork.IsRunning) {
-					BoltLauncher.Shutdown ();
-				}
-			}
+			//Debug.Log ("CONECTED: " + BoltNetwork.);
+
 
 		}
 
+
+
         public void StartServer() {
-			Shutdown = false;
 
             MatchData.Instance.Reset();
 
@@ -72,7 +76,6 @@ namespace YupiPlay.MMB.Multiplayer {
 		}
 
         public void StartClient() {
-			Shutdown = false;
             MatchData.Instance.Reset();
 
             myUsername = PlayerInfo.Instance.Username;
@@ -106,6 +109,7 @@ namespace YupiPlay.MMB.Multiplayer {
 
         // Só carrega a cena após um oponente conectar
         public override void Connected(BoltConnection connection) {
+			connectingtoSomeone = true;
             OnConnection.Invoke();
 
             if (BoltNetwork.IsServer) {
@@ -168,6 +172,55 @@ namespace YupiPlay.MMB.Multiplayer {
             registerDoneCallback(StartServer2);
         }
 
+		public void StartOffilne(){
+			if (MultiPlayerOnly == true) {
+				StartCoroutine (TrySearchingOpponents ());
+			} else {
+				Debug.Log ("STARTING OFFLINE");
+				PlayerPrefs.SetString ("Multiplayer", "False");
+				PlayerPrefs.SetInt ("round",1);
+				PlayerPrefs.SetInt ("playerCharges",0);
+				PlayerPrefs.SetInt ("enemyCharges",0);
+				StartCoroutine (AsynchronousLoad ("GamePlayReview"));
+			}
+		}
+
+		public void UniquePlayButton(){
+			StartCoroutine (TrySearchingOpponents ());
+
+		}
+			
+		IEnumerator AsynchronousLoad (string scene)
+		{
+			yield return null;
+
+			AsyncOperation ao = SceneManager.LoadSceneAsync(scene);
+			ao.allowSceneActivation = false;
+
+			while (! ao.isDone)
+			{
+				LoadingCanvas.SetActive (true);
+				// [0, 0.9] > [0, 1]
+				float progress = Mathf.Clamp01(ao.progress / 0.9f);
+				Debug.Log("Loading progress: " + (progress * 100) + "%");
+				ProgressionBar.size = progress;
+				// Loading completed
+				if (ao.progress == 0.9f)
+				{
+					yield return new WaitForSeconds(1.0f);
+					Debug.Log("Press a key to start");
+					//if (Input.GetKeyDown(KeyCode.A))
+					//				if (LoadingCanvas != null) {
+					//					Destroy (LoadingCanvas.gameObject);
+					//				}
+					ao.allowSceneActivation = true;
+					//ao.isDone = true;
+				}
+
+				yield return null;
+			}
+		}
+
         IEnumerator WaitAndLaunchGame() {
             yield return new WaitForSeconds(LaunchDelay);
 
@@ -181,6 +234,29 @@ namespace YupiPlay.MMB.Multiplayer {
             BoltLauncher.Shutdown();
             //BoltLauncher.StartServer();
         }
+
+		IEnumerator TrySearchingOpponents() {
+			Debug.Log ("STARTING SERVER");
+			StartServer ();
+			yield return new WaitForSeconds(20);
+			if (connectingtoSomeone == false) {
+				
+				BoltLauncher.Shutdown ();
+				yield return new WaitForSeconds (2);
+				Debug.Log ("STARTING CLIENT");
+				StartClient ();
+				yield return new WaitForSeconds (20);
+				if (connectingtoSomeone == false) {
+					BoltLauncher.Shutdown ();
+
+					yield return new WaitForSeconds (2);
+					StartOffilne ();
+				}
+			}
+			// BoltNetwork.ShutdownImmediate();
+
+			//BoltLauncher.StartServer();
+		}
 
         IEnumerator WaitForTimeout() {
             yield return new WaitForSeconds(MatchmakingTimeout);

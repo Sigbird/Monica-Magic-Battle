@@ -8,11 +8,16 @@ public class MovementMarkerScript : MonoBehaviour {
 	public bool capture;
 	public bool targetMarker;
 	public bool herobase;
+	public GameObject Hero;
+	private float minDistance;
+
 
 	public bool reached;
 	// Use this for initialization
 	void Awake(){
+		Hero = GameObject.Find ("GameController").GetComponent<GameController> ().HeroGameObject;
 		reached = false;
+		minDistance = Hero.GetComponent<WPSoldierControler> ().range -2;
 	}
 
 	void Start () {
@@ -30,9 +35,16 @@ public class MovementMarkerScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(GameObject.Find ("Hero") != null)
-		if (Vector2.Distance (GameObject.Find ("Hero").transform.position, this.transform.position) <= 0.5) {
-			reached = true;
+		if (Hero != null) {
+			if (this.targetMarker == true) {
+				if(Vector2.Distance (Hero.transform.position, this.transform.position) < minDistance){
+					//Destroy (this.gameObject);
+				}
+			} else {
+				if (Vector2.Distance (GameObject.Find ("Hero").transform.position, this.transform.position) <= 0.5) {
+					Destroy (this.gameObject);
+				}
+			}
 		}
 	}
 

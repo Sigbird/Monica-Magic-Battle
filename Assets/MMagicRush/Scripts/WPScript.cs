@@ -109,6 +109,7 @@ public class WPScript : MonoBehaviour {
 			Hero.GetComponent<WPSoldierControler> ().targetEnemy = Enemy.gameObject;
 			Hero.GetComponent<WPSoldierControler> ().seeking = false;
 			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
+			WaypointMarker.GetComponent<MovementMarkerScript> ().targetMarker = true;
 		//	Debug.Log ("Oi");
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
 					Destroy (o.gameObject);
@@ -121,6 +122,7 @@ public class WPScript : MonoBehaviour {
 			Hero.GetComponent<WPSoldierControler> ().targetEnemy = EnemyTroop.gameObject;
 			Hero.GetComponent<WPSoldierControler> ().seeking = false;
 			Hero.GetComponent<WPSoldierControler> ().lockedTarget = true;
+			WaypointMarker.GetComponent<MovementMarkerScript> ().targetMarker = true;
 				Debug.Log ("TroopDetected");
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
 				Destroy (o.gameObject);
@@ -142,6 +144,7 @@ public class WPScript : MonoBehaviour {
 			}
 			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
 			WaypointMarker.GetComponent<SpriteRenderer> ().sprite = null;
+			WaypointMarker.GetComponent<MovementMarkerScript> ().targetMarker = true;
 			StartCoroutine (CreateWaypoint (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y)));
 			//Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity).gameObject.name = "Waypoint"+progress;
 			progress++;
@@ -157,6 +160,7 @@ public class WPScript : MonoBehaviour {
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
 				Destroy (o.gameObject);
 			}
+			WaypointMarker.GetComponent<MovementMarkerScript> ().targetMarker = true;
 			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
 			WaypointMarker.GetComponent<SpriteRenderer> ().sprite = null;
 			StartCoroutine (CreateWaypoint (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y)));
@@ -174,6 +178,7 @@ public class WPScript : MonoBehaviour {
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
 				Destroy (o.gameObject);
 			}
+			WaypointMarker.GetComponent<MovementMarkerScript> ().targetMarker = true;
 			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
 			WaypointMarker.GetComponent<SpriteRenderer> ().sprite = null;
 			StartCoroutine (CreateWaypoint (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y)));
@@ -187,6 +192,7 @@ public class WPScript : MonoBehaviour {
 			WaypointMarker.GetComponent<SpriteRenderer> ().sprite = DefendIcon;
 			//WaypointMarker.GetComponent<MovementMarkerScript> ().herobase = true;
 			//Instantiate (WaypointMarker, new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Quaternion.identity);
+			WaypointMarker.GetComponent<MovementMarkerScript> ().targetMarker = false;
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
 				if(o.GetComponent<MovementMarkerScript>().herobase == false)
 					Destroy (o.gameObject);
@@ -199,6 +205,7 @@ public class WPScript : MonoBehaviour {
 			foreach (GameObject o in GameObject.FindGameObjectsWithTag ("herowaypoint")) {
 				Destroy (o.gameObject);
 			}
+			WaypointMarker.GetComponent<MovementMarkerScript> ().targetMarker = false;
 			WaypointMarker.GetComponent<MovementMarkerScript> ().progress = progress;
 			WaypointMarker.GetComponent<SpriteRenderer> ().sprite = null;
 			StartCoroutine (CreateWaypoint (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y)));
