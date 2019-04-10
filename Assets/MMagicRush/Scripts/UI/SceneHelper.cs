@@ -22,7 +22,7 @@ public class SceneHelper : MonoBehaviour {
 
 	public int[] zero;
 
-	public float[][] cards = new float[19][];
+	public float[][] cards = new float[20][];
 	// Use this for initialization
 
  	// Use this for initialization
@@ -61,14 +61,15 @@ public class SceneHelper : MonoBehaviour {
 			cards [8] = new float[6]{ 0, 0, 0, 0, 0, 0 };
 			cards [9] = new float[6]{ 0, 0, 0, 0, 0, 0 };
 			cards [10] = new float[6]{ 0, 0, 0, 0, 0, 0 };
-			cards [11] = new float[6]{ 3, 0, 1, 1, 5, 1 };
-			cards [12] = new float[6]{ 2, 0, 1, 1, 5, 1 };
-			cards [13] = new float[6]{ 2, 1, 1, 0, 2, 1 };
-			cards [14] = new float[6]{ 2, 1, 1, 0, 4, 1 };
-			cards [15] = new float[6]{ 2, 0, 1, 1, 4, 1 };
-			cards [16] = new float[6]{ 6, 3, 1, 0, 4, 1 };
-			cards [17] = new float[6]{ 6, 0, 1, 6, 4, 1 };
-			cards [18] = new float[6]{ 6, 0, 1, 6, 4, 1 };
+			cards [11] = new float[6]{ 90, 25, 1, 0.5f, 0.85f, 1 }; //Bidu(Life Medio, Dano Medio, Atkspd Medio, Alcance Baixissiomo, Movimento Medio)
+			cards [12] = new float[6]{ 35, 25, 1.5f, 4, 0.85f, 1 }; //Astro(Life Baixo, Dano Medio, Atkspd Baixo, Alcance Alto, Movimento Medio)
+			cards [13] = new float[6]{ 400, 50, 1.5f, 0.5f, 0.55f, 1 }; //Jotalh(Life Altissimo, Dano Alto, Atkspd Baixo, Alcance Baixissiomo, Movimento Baixo)
+			cards [14] = new float[6]{ 35, 25, 1, 2.5f, 0.85f, 1 }; //Piteco(Life Baixo, Dano Medio, Atkspd Medio, Alcance Medio, Movimento Medio)
+			cards [15] = new float[6]{ 90, 25, 1, 2.5f, 0.55f, 1 }; //Penadin(Life Medio, Dano Medio, Atkspd Medio, Alcance Medio, Movimento Baixo)
+			cards [16] = new float[6]{ 35, 16, 1, 0.5f, 0.85f, 1 }; //Sansão(Life Baixo, Dano Baixo, Atkspd Medio, Alcance Baixissiomo, Movimento Medio)
+			cards [17] = new float[6]{ 35, 25, 0.75f, 0.5f, 1.1f, 1 }; //Mingau(Life Medio, Dano Medio, Atkspd Alto, Alcance Baixissimo, Movimento Alto)
+			cards [18] = new float[6]{ 35, 25, 0.75f, 0.5f, 1.1f, 1 }; //Mingau(Life Medio, Dano Medio, Atkspd Alto, Alcance Baixissimo, Movimento Alto)
+			cards [19] = new float[6]{ 17, 25, 0.55f, 0.5f, 1.1f, 1 }; //Cranicola(Life Baixissimo, Dano Medio, Atkspd Altissimo, Alcance Baixissimo, Movimento Alt)
 
 
 
@@ -450,28 +451,28 @@ public class SceneHelper : MonoBehaviour {
 		PlayerPrefs.SetInt ("CustomValues", 1);
 		
 		PlayerPrefs.SetFloat ("MonicaAtrib1", 50); //Dano = Alto
-		PlayerPrefs.SetFloat ("MonicaAtrib2", 1.4f); //VelDano = Baixo
+		PlayerPrefs.SetFloat ("MonicaAtrib2", 1.5f); //VelDano = Baixo
 		PlayerPrefs.SetFloat ("MonicaAtrib3", 2.5f); //AlcanceDano = Medio
 		PlayerPrefs.SetFloat ("MonicaAtrib4", 250); //Life = Alto
-		PlayerPrefs.SetFloat ("MonicaAtrib5", 0.7f); //Movimento = Baixo
+		PlayerPrefs.SetFloat ("MonicaAtrib5", 0.55f); //Movimento = Baixo
 
 		PlayerPrefs.SetFloat ("CebolinhaAtrib1", 25); //Dano = Medio
-		PlayerPrefs.SetFloat ("CebolinhaAtrib2", 0.6f); //VelDano = Alto
+		PlayerPrefs.SetFloat ("CebolinhaAtrib2", 0.75f); //VelDano = Alto
 		PlayerPrefs.SetFloat ("CebolinhaAtrib3", 0.5f); //AlcanceDano = Baixissimo
-		PlayerPrefs.SetFloat ("CebolinhaAtrib4", 85); //Life = Medio
-		PlayerPrefs.SetFloat ("CebolinhaAtrib5", 1.3f); //Movimento = Alto
+		PlayerPrefs.SetFloat ("CebolinhaAtrib4", 90); //Life = Medio
+		PlayerPrefs.SetFloat ("CebolinhaAtrib5", 1.1f); //Movimento = Alto
 
 		PlayerPrefs.SetFloat ("MagaliAtrib1", 16); //Dano = Baixo
 		PlayerPrefs.SetFloat ("MagaliAtrib2", 1); //VelDano = Medio
 		PlayerPrefs.SetFloat ("MagaliAtrib3", 0.5f); //AlcanceDano = Baixissimo
-		PlayerPrefs.SetFloat ("MagaliAtrib4", 85); //Life = Medio
-		PlayerPrefs.SetFloat ("MagaliAtrib5", 1); //Movimento = Medio
+		PlayerPrefs.SetFloat ("MagaliAtrib4", 90); //Life = Medio
+		PlayerPrefs.SetFloat ("MagaliAtrib5", 0.85f); //Movimento = Medio
 
 		PlayerPrefs.SetFloat ("CascaoAtrib1", 16); //Dano = Baixo
 		PlayerPrefs.SetFloat ("CascaoAtrib2", 1); //VelDano = Medio
 		PlayerPrefs.SetFloat ("CascaoAtrib3", 0.5f); //AlcanceDano = Baixissimo
-		PlayerPrefs.SetFloat ("CascaoAtrib4", 85); //Life = Medio
-		PlayerPrefs.SetFloat ("CascaoAtrib5",  1.3f); //Movimento = Alto
+		PlayerPrefs.SetFloat ("CascaoAtrib4", 90); //Life = Medio
+		PlayerPrefs.SetFloat ("CascaoAtrib5",  1.1f); //Movimento = Alto
 
 		}
 
@@ -480,28 +481,28 @@ public class SceneHelper : MonoBehaviour {
 	public void ResetHeroesToOriginal(){
 
 		PlayerPrefs.SetFloat ("MonicaAtrib1", 50); //Dano = Alto
-		PlayerPrefs.SetFloat ("MonicaAtrib2", 1.4f); //VelDano = Baixo
+		PlayerPrefs.SetFloat ("MonicaAtrib2", 1.5f); //VelDano = Baixo
 		PlayerPrefs.SetFloat ("MonicaAtrib3", 2.5f); //AlcanceDano = Medio
 		PlayerPrefs.SetFloat ("MonicaAtrib4", 250); //Life = Alto
-		PlayerPrefs.SetFloat ("MonicaAtrib5", 0.7f); //Movimento = Baixo
+		PlayerPrefs.SetFloat ("MonicaAtrib5", 0.55f); //Movimento = Baixo
 
 		PlayerPrefs.SetFloat ("CebolinhaAtrib1", 25); //Dano = Medio
-		PlayerPrefs.SetFloat ("CebolinhaAtrib2", 0.6f); //VelDano = Alto
+		PlayerPrefs.SetFloat ("CebolinhaAtrib2", 0.75f); //VelDano = Alto
 		PlayerPrefs.SetFloat ("CebolinhaAtrib3", 0.5f); //AlcanceDano = Baixissimo
-		PlayerPrefs.SetFloat ("CebolinhaAtrib4", 85); //Life = Medio
-		PlayerPrefs.SetFloat ("CebolinhaAtrib5", 1.3f); //Movimento = Alto
+		PlayerPrefs.SetFloat ("CebolinhaAtrib4", 90); //Life = Medio
+		PlayerPrefs.SetFloat ("CebolinhaAtrib5", 1.1f); //Movimento = Alto
 
 		PlayerPrefs.SetFloat ("MagaliAtrib1", 16); //Dano = Baixo
 		PlayerPrefs.SetFloat ("MagaliAtrib2", 1); //VelDano = Medio
 		PlayerPrefs.SetFloat ("MagaliAtrib3", 0.5f); //AlcanceDano = Baixissimo
-		PlayerPrefs.SetFloat ("MagaliAtrib4", 85); //Life = Medio
-		PlayerPrefs.SetFloat ("MagaliAtrib5", 1); //Movimento = Medio
+		PlayerPrefs.SetFloat ("MagaliAtrib4", 90); //Life = Medio
+		PlayerPrefs.SetFloat ("MagaliAtrib5", 0.85f); //Movimento = Medio
 
 		PlayerPrefs.SetFloat ("CascaoAtrib1", 16); //Dano = Baixo
 		PlayerPrefs.SetFloat ("CascaoAtrib2", 1); //VelDano = Medio
 		PlayerPrefs.SetFloat ("CascaoAtrib3", 0.5f); //AlcanceDano = Baixissimo
-		PlayerPrefs.SetFloat ("CascaoAtrib4", 85); //Life = Medio
-		PlayerPrefs.SetFloat ("CascaoAtrib5",  1.3f); //Movimento = Alto
+		PlayerPrefs.SetFloat ("CascaoAtrib4", 90); //Life = Medio
+		PlayerPrefs.SetFloat ("CascaoAtrib5",  1.1f); //Movimento = Alto
 
 	}
 
@@ -668,6 +669,15 @@ public class SceneHelper : MonoBehaviour {
 			PlayerPrefs.SetFloat ("Card184", cards [18][3]);
 			PlayerPrefs.SetFloat ("Card185", cards [18][4]);
 			PlayerPrefs.SetFloat ("Card186", cards [18][5]);
+		}
+
+		if (PlayerPrefs.GetFloat  ("Card191")  == 0) {
+			PlayerPrefs.SetFloat ("Card191", cards [19][0]);
+			PlayerPrefs.SetFloat ("Card192", cards [19][1]);
+			PlayerPrefs.SetFloat ("Card193", cards [19][2]);
+			PlayerPrefs.SetFloat ("Card194", cards [19][3]);
+			PlayerPrefs.SetFloat ("Card195", cards [19][4]);
+			PlayerPrefs.SetFloat ("Card196", cards [19][5]);
 		}
 			
 	}

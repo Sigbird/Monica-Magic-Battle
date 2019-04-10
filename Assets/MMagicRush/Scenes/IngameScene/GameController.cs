@@ -257,7 +257,12 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-
+		if (multiplayer) {
+			if (BoltNetwork.IsClient) {
+				if(HeroGameObject != null)HeroGameObject.transform.rotation = Quaternion.Euler (0, 0, 180);
+				if(EnemyGameObject != null)EnemyGameObject.transform.rotation = Quaternion.Euler (0, 0, 180);
+			}
+		}
 
 	
 		if (newMechanicTest) {
@@ -495,6 +500,7 @@ public class GameController : MonoBehaviour {
 
 
 	IEnumerator endGame(){
+		BoltLauncher.Shutdown ();
 		CardInfoWindow.SetActive (false);
 		yield return new WaitForSeconds (1);
 		if (GameOver != true) {

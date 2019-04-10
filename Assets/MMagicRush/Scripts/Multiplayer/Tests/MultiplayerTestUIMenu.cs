@@ -34,7 +34,7 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
 	}
 
     public void OnQuickGameClick() {
-        QuickGameText.text = "Searching...";
+       // QuickGameText.text = "Searching...";
 		//StartCoroutine (TimeLimit());
         //QuickGame.interactable = false;
     }

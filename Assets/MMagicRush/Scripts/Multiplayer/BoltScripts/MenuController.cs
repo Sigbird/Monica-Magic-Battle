@@ -15,6 +15,7 @@ namespace YupiPlay.MMB.Multiplayer {
         public string MPScene = "GamePlayReviewMulti";
         public UnityEvent OnConnection;
         public UnityEvent OnMatchmakingTimeout;
+		public bool Shutdown;
 
         public event Action<string, int> OnOpponentInfoEvent;
 
@@ -37,9 +38,22 @@ namespace YupiPlay.MMB.Multiplayer {
 
         void Awake() {
             limit = BoltRuntimeSettings.instance.GetConfigCopy().serverConnectionLimit;
+			Shutdown = false;
         }
 
+		void Update(){
+
+			if (Shutdown == true) {
+				if (BoltNetwork.IsRunning) {
+					BoltLauncher.Shutdown ();
+				}
+			}
+
+		}
+
         public void StartServer() {
+			Shutdown = false;
+
             MatchData.Instance.Reset();
 
             myUsername = PlayerInfo.Instance.Username;
@@ -47,7 +61,18 @@ namespace YupiPlay.MMB.Multiplayer {
             BoltLauncher.StartServer();
         }
 
+		public void StartServer2() {
+//			Shutdown = false;
+//
+//			MatchData.Instance.Reset();
+//
+//			myUsername = PlayerInfo.Instance.Username;
+//			myHero = PlayerPrefs.GetInt("SelectedCharacter", 0);
+//			BoltLauncher.StartServer();
+		}
+
         public void StartClient() {
+			Shutdown = false;
             MatchData.Instance.Reset();
 
             myUsername = PlayerInfo.Instance.Username;
@@ -140,7 +165,7 @@ namespace YupiPlay.MMB.Multiplayer {
         }
 
         public override void BoltShutdownBegin(AddCallback registerDoneCallback) {
-            registerDoneCallback(StartServer);
+            registerDoneCallback(StartServer2);
         }
 
         IEnumerator WaitAndLaunchGame() {
@@ -152,7 +177,7 @@ namespace YupiPlay.MMB.Multiplayer {
         IEnumerator WaitForServers() {
             yield return new WaitForSeconds(10);
 
-            //BoltNetwork.ShutdownImmediate();
+           // BoltNetwork.ShutdownImmediate();
             BoltLauncher.Shutdown();
             //BoltLauncher.StartServer();
         }
@@ -164,7 +189,9 @@ namespace YupiPlay.MMB.Multiplayer {
         }
 
         public void ShutdownMultiplayer() {
-            BoltNetwork.Shutdown();
+			BoltLauncher.Shutdown();
+			//Shutdown = true;
+			//BoltNetwork.Server.Disconnect();
         }
     }
 

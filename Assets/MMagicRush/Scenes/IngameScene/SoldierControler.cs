@@ -724,12 +724,12 @@ public class SoldierControler : MonoBehaviour {
 		switch (id) {
 		case(1): // BIDU
 			if(Custom == false){
-			this.vidaMax = 75;//Medio
-			this.vida = 75;//Medio
-			this.damage = 22;//Medio
-			this.damageSpeed = 0.5f;//Medio
-			this.range = 1; //Baixissimo
-			this.speed = 1.3f; //Medio
+			this.vidaMax = PlayerPrefs.GetFloat ("Card111");//75;//Medio
+			this.vida = PlayerPrefs.GetFloat ("Card111");//75;//Medio
+			this.damage = PlayerPrefs.GetFloat ("Card112");//22;//Medio
+			this.damageSpeed = PlayerPrefs.GetFloat ("Card113");//0.5f;//Medio
+			this.range = PlayerPrefs.GetFloat ("Card114");//1; //Baixissimo
+			this.speed = PlayerPrefs.GetFloat ("Card115");//1.3f; //Medio
 			}
 			this.reach = 2;
 			this.energyMax = 1;
@@ -744,12 +744,12 @@ public class SoldierControler : MonoBehaviour {
 			break;
 		case(2): // ASTRONAUTA
 			if(Custom == false){
-			this.vidaMax = 35;//Baixo
-			this.vida = 35;//Baixo
-			this.damage = 22; //Medio
-			this.damageSpeed = 1; //Baixo
-			this.range = 3; //Alto
-			this.speed = 1.3f; //Medio
+			this.vidaMax = PlayerPrefs.GetFloat ("Card121");//35;//Baixo
+			this.vida = PlayerPrefs.GetFloat ("Card121");//35;//Baixo
+			this.damage = PlayerPrefs.GetFloat ("Card122");//22; //Medio
+			this.damageSpeed = PlayerPrefs.GetFloat ("Card123");//1; //Baixo
+			this.range = PlayerPrefs.GetFloat ("Card124");//3; //Alto
+			this.speed = PlayerPrefs.GetFloat ("Card125");//1.3f; //Medio
 			}
 			this.reach = 1.5f;
 			this.energyMax = 1;
@@ -764,12 +764,12 @@ public class SoldierControler : MonoBehaviour {
 			break;
 		case(3): //ANJINHO -> Cranicola
 			if(Custom == false){
-			this.vidaMax = 15; //Baixissimo
-			this.vida = 15; //Baixissimo
-			this.damage = 50; //Alto
-			this.damageSpeed = 0.25f; //Altissimo
-			this.range = 1; //Baixissimo
-			this.speed = 1.7f; //Alto
+			this.vidaMax = PlayerPrefs.GetFloat ("Card131");//15; //Baixissimo
+			this.vida = PlayerPrefs.GetFloat ("Card131");//15; //Baixissimo
+			this.damage = PlayerPrefs.GetFloat ("Card132");//50; //Alto
+			this.damageSpeed = PlayerPrefs.GetFloat ("Card133");//0.25f; //Altissimo
+			this.range = PlayerPrefs.GetFloat ("Card134");//1; //Baixissimo
+			this.speed = PlayerPrefs.GetFloat ("Card135");//1.7f; //Alto
 			}
 			this.reach = 1.5f;
 			this.energyMax = 1;
@@ -783,12 +783,12 @@ public class SoldierControler : MonoBehaviour {
 			break;
 		case(4): //JOTALHÃO
 			if(Custom == false){
-			this.vidaMax = 200; //Alto
-			this.vida = 200; //Alto
-			this.damage = 50; //Alto
-			this.damageSpeed = 1; //Baixo
-			this.range = 1; //Baixissimo
-			this.speed = 0.8f; //Baixo
+			this.vidaMax = PlayerPrefs.GetFloat ("Card141");//200; //Alto
+			this.vida = PlayerPrefs.GetFloat ("Card141");//200; //Alto
+			this.damage = PlayerPrefs.GetFloat ("Card142");//50; //Alto
+			this.damageSpeed = PlayerPrefs.GetFloat ("Card143");//1; //Baixo
+			this.range = PlayerPrefs.GetFloat ("Card144");//1; //Baixissimo
+			this.speed = PlayerPrefs.GetFloat ("Card145");//0.8f; //Baixo
 			}
 			this.reach = 1.5f;
 			this.energyMax = 1;
@@ -802,13 +802,12 @@ public class SoldierControler : MonoBehaviour {
 			break;
 		case(5): //PITECO
 			if(Custom == false){
-			this.vidaMax = 35; //Baixo
-			this.vida = 35; //Baixo
-			
-			this.damage = 22; // Medio
-			this.damageSpeed = 0.5f; //medio
-			this.range = 2; //Medio
-			this.speed = 1.3f; //Medio
+			this.vidaMax = PlayerPrefs.GetFloat ("Card151");//35; //Baixo
+			this.vida = PlayerPrefs.GetFloat ("Card151");//35; //Baixo
+			this.damage = PlayerPrefs.GetFloat ("Card152");//22; // Medio
+			this.damageSpeed = PlayerPrefs.GetFloat ("Card153");//0.5f; //medio
+			this.range = PlayerPrefs.GetFloat ("Card154");//2; //Medio
+			this.speed = PlayerPrefs.GetFloat ("Card155");//1.3f; //Medio
 			}
 			this.reach = 1.5f;
 			this.energyMax = 1;
@@ -822,13 +821,12 @@ public class SoldierControler : MonoBehaviour {
 			break;
 		case(6): //PENADINHO
 			if(Custom == false){
-			this.vidaMax =75; //Medio
-			this.vida = 75; //Medio
-			
-			this.damage = 22; //Medio
-			this.damageSpeed = 0.5f; //Medio
-			this.range = 2; //Medio
-			this.speed = 0.8f; //Baixo
+			this.vidaMax =PlayerPrefs.GetFloat ("Card161");//75; //Medio
+			this.vida = PlayerPrefs.GetFloat ("Card161");//75; //Medio
+			this.damage = PlayerPrefs.GetFloat ("Card162");//22; //Medio
+			this.damageSpeed = PlayerPrefs.GetFloat ("Card163");//0.5f; //Medio
+			this.range = PlayerPrefs.GetFloat ("Card164");//2; //Medio
+			this.speed = PlayerPrefs.GetFloat ("Card165");// 0.8f; //Baixo
 			}
 			this.reach = 1.5f;
 			this.energyMax = 1;
@@ -850,6 +848,7 @@ public class SoldierControler : MonoBehaviour {
 			this.damageSpeed = 3;
 			this.range = 2;
 			this.speed = 3;
+
 			this.energyMax = 1;
 			this.energy = 200;
 			this.summon = false;
@@ -857,13 +856,12 @@ public class SoldierControler : MonoBehaviour {
 			break;
 		case(8): //SANSAO
 			if(Custom == false){
-			this.vidaMax = 35; //Baixo
-			this.vida = 35; //Baixo
-			
-			this.damage = 14; //Baixo
-			this.damageSpeed = 0.5f; //Medio
-			this.range = 1; //Baixissimo
-			this.speed = 1.3f; //Medio
+			this.vidaMax = PlayerPrefs.GetFloat ("Card181");//35; //Baixo
+			this.vida = PlayerPrefs.GetFloat ("Card181");//35; //Baixo
+			this.damage =PlayerPrefs.GetFloat ("Card182");// 14; //Baixo
+			this.damageSpeed =PlayerPrefs.GetFloat ("Card183");// 0.5f; //Medio
+			this.range =PlayerPrefs.GetFloat ("Card184"); ///1; //Baixissimo
+			this.speed =PlayerPrefs.GetFloat ("Card185"); //1.3f; //Medio
 			}
 			this.reach =  1.5f;
 			this.energyMax = 1;
@@ -877,13 +875,12 @@ public class SoldierControler : MonoBehaviour {
 			break;
 		case(9): //MINGAU
 			if(Custom == false){
-			this.vidaMax = 75; //Medio
-			this.vida = 75; //Medio
-			
-			this.damage = 22; //Medio
-			this.damageSpeed = 0.33f;  //Alto
-			this.range = 1; //Baixissimo
-			this.speed = 1.7f; //Alto
+			this.vidaMax = PlayerPrefs.GetFloat ("Card191");//75; //Medio
+			this.vida = PlayerPrefs.GetFloat ("Card191");//75; //Medio
+			this.damage = PlayerPrefs.GetFloat ("Card192"); //22; //Medio
+			this.damageSpeed = PlayerPrefs.GetFloat ("Card193");//0.33f;  //Alto
+			this.range = PlayerPrefs.GetFloat ("Card194");//1; //Baixissimo
+			this.speed = PlayerPrefs.GetFloat ("Card195");//1.7f; //Alto
 			}
 			this.reach = 1.5f;
 			this.energyMax = 1;

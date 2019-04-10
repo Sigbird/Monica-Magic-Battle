@@ -26,6 +26,8 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
 	public GameObject TerrainVisual;
 	public GameObject SceneCamera;
 	public GameObject CardSpawner;
+	public GameObject WaitForPlayers;
+	public GameObject Inicio;
 
     public event Action OnPlayersReady;
 
@@ -34,6 +36,8 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
     }
 
 	void Awake(){
+
+
 		if (BoltNetwork.IsClient) {
 			
 			//Flip de Camera e Terreno no Cliente
@@ -79,14 +83,13 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
             gameController.EnemyGameObject = playerClient;
             wpScript.Enemy = playerClient.transform;
             roundStart.Enemy = playerClient;
-
-			gameController.HeroGameObject.transform.rotation = Quaternion.Euler (0, 0, 180);if (multiplayer) {
-			gameController.EnemyGameObject.transform.rotation = Quaternion.Euler (0, 0, 180);if (multiplayer) {
 					
 			}
 
-        }        
-    }
+		WaitForPlayers.SetActive (false);
+		Inicio.SetActive (true);
+     }        
+    
 
     public override void EntityAttached(BoltEntity entity) { 
         Debug.Log(entity.name);
