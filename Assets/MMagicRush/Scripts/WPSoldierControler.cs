@@ -352,10 +352,35 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 		if (this.vida <= 0 && heroUnity && this.GetComponent<SpriteRenderer>().enabled == true && gameBegin == true) {
 			this.speed = 0;
 			Instantiate (deathAngel, this.transform.position, Quaternion.identity).transform.parent = this.transform;
-			GameObject.Find ("RespawnTimerHero").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
-			foreach (GameObject o in GameObject.FindGameObjectsWithTag("herowaypoint")) {
-				Destroy (o.gameObject);
+			if (this.tag == "enemysoldier1") {
+				GameObject.Find ("RespawnTimerHero").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
+			}else{
+				GameObject.Find ("RespawnTimerEnemy").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
 			}
+			foreach (GameObject o in GameObject.FindGameObjectsWithTag("herowaypoint")) {
+			Destroy (o.gameObject);
+			}
+
+			//TESTE DE RESPAWN PRO MULTIPLAYER
+			alive = false;
+			this.gameObject.GetComponent<SpriteRenderer> ().enabled = false;
+			this.anim.GetComponent<SpriteRenderer>().enabled = false;
+			this.platform.SetActive (false);
+			if (healtbarSoldierSolid != null) {
+				this.healtbarSoldierSolid.transform.gameObject.SetActive (false);
+				//this.specialBar.SetActive (false);
+			}
+			//this.energybarSoldier.SetActive (false);
+			this.skill1.gameObject.SetActive (false);
+			this.skill2.gameObject.SetActive (false);
+			this.vida = this.vidaMax;
+
+			this.seeking = false;
+			//if(multiplayer == false){
+				this.transform.position = new Vector3(0,-6.5f,0);
+			//}
+			//TESTE DE RESPAWN PRO MULTIPLAYER
+
 			StartCoroutine (Respawning ());
 			Camera.main.gameObject.GetComponent<CameraShake> ().ShakeCamera ();
 			audioManager.PlayAudio ("death");
@@ -658,11 +683,11 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 	public void SetupHero(){
 		//CONFIGURAÇÃO DE TIPO DE HEROI
 		int id = 0;
-//		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1) {
-//			heroID =  PlayerPrefs.GetInt ("SelectedCharacter");
-//		} else {
-//			heroID = 1;
-//		}
+		if (PlayerPrefs.GetInt ("SelectedCharacter") != null && this.team == 1) {
+			heroID =  PlayerPrefs.GetInt ("SelectedCharacter");
+		} else {
+			heroID = 1;
+		}
 
 		if(tutorial==false)
 		GameObject.Find ("HeroPortrait").GetComponent<Image> ().sprite = heroPortraits [heroID];
@@ -897,25 +922,26 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 
 	IEnumerator Respawning(){
 		
-		GameObject.Find ("RespawnTimerHero").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
-		yield return new WaitForSeconds (0.01f);
-		alive = false;
-		this.gameObject.GetComponent<SpriteRenderer> ().enabled = false;
-		this.anim.GetComponent<SpriteRenderer>().enabled = false;
-		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
-		if (healtbarSoldierSolid != null) {
-			this.healtbarSoldierSolid.transform.gameObject.SetActive (false);
-			//this.specialBar.SetActive (false);
-		}
-		//this.energybarSoldier.SetActive (false);
-		this.skill1.gameObject.SetActive (false);
-		this.skill2.gameObject.SetActive (false);
-		this.vida = this.vidaMax;
+		//GameObject.Find ("RespawnTimerHero").GetComponent<RespawnTimer> ().ActiveRespawnTimer (respawningTimer);
+		//yield return new WaitForSeconds (0.01f);
+//		alive = false;
+//		this.gameObject.GetComponent<SpriteRenderer> ().enabled = false;
+//		this.anim.GetComponent<SpriteRenderer>().enabled = false;
+//		this.platform.GetComponent<SpriteRenderer> ().enabled = false;
+//		if (healtbarSoldierSolid != null) {
+//			this.healtbarSoldierSolid.transform.gameObject.SetActive (false);
+//			//this.specialBar.SetActive (false);
+//		}
+//		//this.energybarSoldier.SetActive (false);
+//		this.skill1.gameObject.SetActive (false);
+//		this.skill2.gameObject.SetActive (false);
+//		this.vida = this.vidaMax;
+//
+//		this.seeking = false;
+//		if(multiplayer == false){
+//			this.transform.position = new Vector3(0,-6.5f,0);
+//		}
 
-		this.seeking = false;
-		if(multiplayer == false){
-			this.transform.position = new Vector3(0,-6.5f,0);
-		}
 		yield return new WaitForSeconds (respawningTimer);
 
 		audioManager.PlayAudio ("spawn");
@@ -923,7 +949,7 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 		
 		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
 		this.anim.GetComponent<SpriteRenderer>().enabled = true;
-		this.platform.GetComponent<SpriteRenderer> ().enabled = true;
+		this.platform.SetActive (true);
 		if (healtbarSoldierSolid != null) {
 			this.healtbarSoldierSolid.transform.gameObject.SetActive (true);
 			//this.specialBar.SetActive (true);
@@ -933,14 +959,21 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 		this.skill2.gameObject.SetActive (true);
 //		this.damage = 1;
 		this.speed = maxSpeed;
+		this.vida = vidaMax;
 		this.seeking = true;
 		//this.targetEnemy = SeekEnemyTarget();
 		respawningTimer = 12;
 		Arrival.Play ();
 		alive = true;
 		gameBegin = true;
-		if(multiplayer == false){
-		this.transform.position = new Vector3(0,-1.5f,0);
+		if (multiplayer == false) {
+			this.transform.position = new Vector3 (0, -1.5f, 0);
+		} else {
+			if(tag == "enemysoldier1"){
+				this.transform.position = GameObject.Find ("Player1Position").transform.position;
+			}else{
+				this.transform.position = GameObject.Find ("Player2Position").transform.position;
+			}
 		}
 	}
 
@@ -1138,7 +1171,7 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 	IEnumerator DealDamage() {		
 		tempdamage = this.damage;
 
-		if (this.heroID == 0 && shotsCounter == 2) {
+		if (this.heroID == 0 && shotsCounter == 3) {
 			tempdamage = this.damage * 2;
 			shotsCounter = 0;
 		} 
@@ -1312,6 +1345,7 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 			}
 
 			if (targetEnemy.GetComponent<ChargesScriptTowers> () != null) {
+				Debug.Log ("CAUSOU DANO: " + tempdamage);
 				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (tempdamage);
 			}
 		}

@@ -92,17 +92,30 @@ public class GameController : MonoBehaviour {
 
 	private int[] zero;
 	private int heroid;
+	public int MyTeam;
+
+	public GameObject[] CountDownNumbers;
 	// Use this for initialization
 
-	private NetworkCallbacks networkController;
+	public NetworkCallbacks networkController;
 
 	void Awake() {
 		networkController = GetComponent<NetworkCallbacks>();
 
+		if (multiplayer) {
+			if (BoltNetwork.IsClient) {
+				MyTeam = 2;
+				CountDownNumbers [1].transform.rotation = Quaternion.Euler (0, 0, 180);
+				CountDownNumbers [2].transform.rotation = Quaternion.Euler (0, 0, 180);
+			} else {
+				MyTeam = 1;
+			}
+		}
 
 		Duration = 240;
 		sd = false;
 		overtime = false;
+		GameOver = false;
 		
 		if (PlayerPrefs.HasKey ("Enemy")) {
 			heroid = PlayerPrefs.GetInt ("Enemy");
@@ -257,12 +270,19 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (multiplayer) {
-			if (BoltNetwork.IsClient) {
-				if(HeroGameObject != null)HeroGameObject.transform.rotation = Quaternion.Euler (0, 0, 180);
-				if(EnemyGameObject != null)EnemyGameObject.transform.rotation = Quaternion.Euler (0, 0, 180);
-			}
-		}
+//		if (multiplayer) {
+//			if (BoltNetwork.IsClient) {
+//				if (HeroGameObject != null)
+//					HeroGameObject.transform.rotation = Quaternion.Euler (0, 0, 180);
+//				if (EnemyGameObject != null)
+//					EnemyGameObject.transform.rotation = Quaternion.Euler (0, 0, 180);
+//			} else {
+//				if (HeroGameObject != null)
+//					HeroGameObject.transform.rotation = Quaternion.Euler (0, 0, 0);
+//				if (EnemyGameObject != null)
+//					EnemyGameObject.transform.rotation = Quaternion.Euler (0, 0, 0);
+//			}
+//		}
 
 	
 		if (newMechanicTest) {
@@ -469,6 +489,9 @@ public class GameController : MonoBehaviour {
 //	}
 
 	public void NextRound(){
+		if (multiplayer) {
+			BoltLauncher.Shutdown ();
+		}
 //		Debug.Log ("xp: "+GameController.playerXp);
 		PlayerPrefs.SetFloat ("PlayerXP", GameController.playerXp);
 		PlayerPrefs.SetFloat ("EnemyXP", GameController.enemyXp);
@@ -478,7 +501,11 @@ public class GameController : MonoBehaviour {
 
 	IEnumerator newRound(){
 		yield return new WaitForSeconds (0.1f);
-		StartCoroutine (endGame());
+		if (multiplayer) {
+			StartCoroutine (endGameMulti ());
+		} else {
+			StartCoroutine (endGame ());
+		}
 //		Debug.Log (enemyCharges);
 //		if (enemyCharges == 1) {//3
 //			PlayerPrefs.SetInt ("round", 1);
@@ -500,7 +527,7 @@ public class GameController : MonoBehaviour {
 
 
 	IEnumerator endGame(){
-		BoltLauncher.Shutdown ();
+		
 		CardInfoWindow.SetActive (false);
 		yield return new WaitForSeconds (1);
 		if (GameOver != true) {
@@ -562,11 +589,90 @@ public class GameController : MonoBehaviour {
 		Time.timeScale = 0;
 	}
 
-	public void EndGameMulti(int x){
-		StartCoroutine (endGameMulti (x));
+	IEnumerator endGameMulti(){
+
+		CardInfoWindow.SetActive (false);
+		yield return new WaitForSeconds (1);
+		if (GameOver != true) {
+			if (newMechanicTest) {
+				if (Player1Score > Player2Score) {
+					if (MyTeam == 1) {
+						this.GetComponent<AudioManager> ().StopAudio ();
+						this.GetComponent<AudioManager> ().SetVolume (1);
+						this.GetComponent<AudioManager> ().PlayAudio ("victory");
+						victory = true;
+						endGamePanel [0].SetActive (true);
+					} else {
+						this.GetComponent<AudioManager> ().StopAudio ();
+						this.GetComponent<AudioManager> ().SetVolume (1);
+						this.GetComponent<AudioManager> ().PlayAudio ("defeat");
+						victory = false;
+						endGamePanel [1].SetActive (true);
+					}
+				} else if(Player2Score > Player1Score) {
+					if (MyTeam == 2) {
+						this.GetComponent<AudioManager> ().StopAudio ();
+						this.GetComponent<AudioManager> ().SetVolume (1);
+						this.GetComponent<AudioManager> ().PlayAudio ("victory");
+						victory = true;
+						endGamePanel [0].SetActive (true);
+					} else {
+						this.GetComponent<AudioManager> ().StopAudio ();
+						this.GetComponent<AudioManager> ().SetVolume (1);
+						this.GetComponent<AudioManager> ().PlayAudio ("defeat");
+						victory = false;
+						endGamePanel [1].SetActive (true);
+					}
+				} else {
+					//EMPATE
+						this.GetComponent<AudioManager> ().StopAudio ();
+						this.GetComponent<AudioManager> ().SetVolume (1);
+						this.GetComponent<AudioManager> ().PlayAudio ("victory");
+						victory = true;
+						endGamePanel [0].SetActive (true);
+				}
+				GameOver = true;
+			} else {
+				if (playerCharges == 1 && enemyCharges <= 0) {//3 2
+					this.GetComponent<AudioManager> ().StopAudio ();
+					this.GetComponent<AudioManager> ().SetVolume (1);
+					this.GetComponent<AudioManager> ().PlayAudio ("victory");
+					victory = true;
+					endGamePanel [0].SetActive (true);
+					if (tutorial == true) {
+						GetComponent<TutorialController> ().tutorialPanels [0].SetActive (false);
+						GetComponent<TutorialController> ().tutorialPanels [1].SetActive (false);
+						GetComponent<TutorialController> ().tutorialPanels [2].SetActive (false);
+					}
+				} else if (enemyCharges == 1 && playerCharges <= 0) {//3 2
+					this.GetComponent<AudioManager> ().StopAudio ();
+					this.GetComponent<AudioManager> ().SetVolume (1);
+					this.GetComponent<AudioManager> ().PlayAudio ("defeat");
+					victory = false;
+					//GameObject.Find ("Chest2").GetComponent<Button> ().interactable = false;
+					//GameObject.Find ("Chest2").transform.Find ("Closed").GetComponent<Image> ().color = Color.gray;
+					endGamePanel [1].SetActive (true);
+				} else { // EMPATE
+					//			Debug.Log ("EMPATE");
+					this.GetComponent<AudioManager> ().StopAudio ();
+					this.GetComponent<AudioManager> ().SetVolume (1);
+					this.GetComponent<AudioManager> ().PlayAudio ("selecaocarta");
+					victory = true;
+					endGamePanel [0].SetActive (true);
+
+				}
+				GameOver = true;
+			}
+		}
+		GameOver = true;
+		Time.timeScale = 0;
 	}
 
-	IEnumerator endGameMulti(int x){
+//	public void EndGameMulti(int x){
+//		StartCoroutine (endGameMulti (x));
+//	}
+
+	IEnumerator endGameMultipl(int x){
 		CardInfoWindow.SetActive (false);
 		yield return new WaitForSeconds (1);
 
@@ -615,38 +721,40 @@ public class GameController : MonoBehaviour {
 
 		GameOver = true;
 
-		GameObject.Find ("Hero").SetActive (false);
-		if(GameObject.Find ("HeroEnemy") != null)
-		GameObject.Find ("HeroEnemy").SetActive (false);
-		GameObject.Find ("HeroBase").SetActive (false);
-		GameObject.Find ("HeroBaseEnemy").SetActive (false);
+		if (multiplayer == false) {
+			HeroGameObject.SetActive (false);
+			if (GameObject.Find ("HeroEnemy") != null)
+				EnemyGameObject.SetActive (false);
+			GameObject.Find ("HeroBase").SetActive (false);
+			GameObject.Find ("HeroBaseEnemy").SetActive (false);
+		}
 
 		Time.timeScale = 1;
 
 		foreach(GameObject o in GameObject.FindGameObjectsWithTag("herowaypoint")){
 			Destroy (o.gameObject);
 		}
-		if (multiplayer == true && tutorial==false) {
-			rewardWindows [1].SetActive (true);
-			if (x == 5) {
-				StartCoroutine (IncrementRanking (Random.Range(-25,-50)));
-				//IncrementLeaderBoard (-50);
-			} else {
-				StartCoroutine (IncrementRanking (Random.Range(25,50)));
-				//IncrementLeaderBoard (50);
-			}
-			//CheckPlayerPos ();
-		} else if (tutorial == true) {
-			rewardWindows [x].SetActive (true);
-			if (x == 0) {
-				//GiveReward (3);
-				//Debug.Log ("Deu Bidu");
-			} else {
-				GiveReward (4);
-			}
-		} else {
+//		if (multiplayer == true && tutorial==false) {
+//			rewardWindows [1].SetActive (true);
+//			if (x == 5) {
+//				StartCoroutine (IncrementRanking (Random.Range(-25,-50)));
+//				//IncrementLeaderBoard (-50);
+//			} else {
+//				StartCoroutine (IncrementRanking (Random.Range(25,50)));
+//				//IncrementLeaderBoard (50);
+//			}
+//			//CheckPlayerPos ();
+//		} else if (tutorial == true) {
+//			rewardWindows [x].SetActive (true);
+//			if (x == 0) {
+//				//GiveReward (3);
+//				//Debug.Log ("Deu Bidu");
+//			} else {
+//				GiveReward (4);
+//			}
+//		} else {
 			rewardWindows [2].SetActive (true);
-		}
+		//}
 	}
 
 	IEnumerator IncrementRanking(int x){
@@ -770,6 +878,13 @@ public class GameController : MonoBehaviour {
 //			x += 1;
 //			PlayerPrefs.SetInt ("ClearedLevels", x);
 //		}
+
+		if (multiplayer) {
+			Time.timeScale = 1;
+			PlayerPrefs.DeleteKey ("TerrainType");
+			SceneManager.LoadScene ("MainNewCoreloop");
+		}
+
 		if (terrain == 1 && EnemyGameObject.GetComponent<WPIASoldierControler> ().heroID == 2 && victory == true && vsIAMode == false ){
 			PlayerPrefs.SetInt ("AnimationToPlay", terrain);
 			if (x < 12 && victory == true) {

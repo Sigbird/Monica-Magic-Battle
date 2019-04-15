@@ -377,7 +377,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		} else if (enemycontroler.alive == true && enemycontroler.gameObject.transform.position.y > 0) {
 			heroHarassChance = 90;
 		} else if (this.vida >= 100) {
-			heroHarassChance = 20;
+			heroHarassChance = 10;
 		} else {
 			heroHarassChance = 0;
 		}

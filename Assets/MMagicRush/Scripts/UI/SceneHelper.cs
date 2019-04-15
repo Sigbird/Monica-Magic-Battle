@@ -49,7 +49,7 @@ public class SceneHelper : MonoBehaviour {
 
 		SetHeroesValues ();
 
-		if (tutorial == false) {
+		//if (tutorial == false) {
 			cards [0] = new float[6]{ 0, 0, 0, 0, 0, 0 };
 			cards [1] = new float[6]{ 0, 0, 0, 0, 0, 0 };
 			cards [2] = new float[6]{ 0, 0, 0, 0, 0, 0 };
@@ -63,19 +63,19 @@ public class SceneHelper : MonoBehaviour {
 			cards [10] = new float[6]{ 0, 0, 0, 0, 0, 0 };
 			cards [11] = new float[6]{ 90, 25, 1, 0.5f, 0.85f, 1 }; //Bidu(Life Medio, Dano Medio, Atkspd Medio, Alcance Baixissiomo, Movimento Medio)
 			cards [12] = new float[6]{ 35, 25, 1.5f, 4, 0.85f, 1 }; //Astro(Life Baixo, Dano Medio, Atkspd Baixo, Alcance Alto, Movimento Medio)
-			cards [13] = new float[6]{ 400, 50, 1.5f, 0.5f, 0.55f, 1 }; //Jotalh(Life Altissimo, Dano Alto, Atkspd Baixo, Alcance Baixissiomo, Movimento Baixo)
-			cards [14] = new float[6]{ 35, 25, 1, 2.5f, 0.85f, 1 }; //Piteco(Life Baixo, Dano Medio, Atkspd Medio, Alcance Medio, Movimento Medio)
-			cards [15] = new float[6]{ 90, 25, 1, 2.5f, 0.55f, 1 }; //Penadin(Life Medio, Dano Medio, Atkspd Medio, Alcance Medio, Movimento Baixo)
-			cards [16] = new float[6]{ 35, 16, 1, 0.5f, 0.85f, 1 }; //Sansão(Life Baixo, Dano Baixo, Atkspd Medio, Alcance Baixissiomo, Movimento Medio)
-			cards [17] = new float[6]{ 35, 25, 0.75f, 0.5f, 1.1f, 1 }; //Mingau(Life Medio, Dano Medio, Atkspd Alto, Alcance Baixissimo, Movimento Alto)
-			cards [18] = new float[6]{ 35, 25, 0.75f, 0.5f, 1.1f, 1 }; //Mingau(Life Medio, Dano Medio, Atkspd Alto, Alcance Baixissimo, Movimento Alto)
-			cards [19] = new float[6]{ 17, 25, 0.55f, 0.5f, 1.1f, 1 }; //Cranicola(Life Baixissimo, Dano Medio, Atkspd Altissimo, Alcance Baixissimo, Movimento Alt)
+			cards [13] = new float[6]{ 17, 25, 0.55f, 0.5f, 1.1f, 1 }; //Cranicola(Life Baixissimo, Dano Medio, Atkspd Altissimo, Alcance Baixissimo, Movimento Alt)
+			cards [14] = new float[6]{ 400, 50, 1.5f, 0.5f, 0.55f, 1 }; //Jotalh(Life Altissimo, Dano Alto, Atkspd Baixo, Alcance Baixissiomo, Movimento Baixo)
+			cards [15] = new float[6]{ 35, 25, 1, 2.5f, 0.85f, 1 }; //Piteco(Life Baixo, Dano Medio, Atkspd Medio, Alcance Medio, Movimento Medio)
+			cards [16] = new float[6]{ 90, 25, 1, 2.5f, 0.55f, 1 }; //Penadin(Life Medio, Dano Medio, Atkspd Medio, Alcance Medio, Movimento Baixo)
+			cards [17] = new float[6]{ 35, 16, 1, 0.5f, 0.85f, 1 }; //Sansão(Life Baixo, Dano Baixo, Atkspd Medio, Alcance Baixissiomo, Movimento Medio)
+			cards [18] = new float[6]{ 35, 16, 1, 0.5f, 0.85f, 1 }; //Sansão(Life Baixo, Dano Baixo, Atkspd Medio, Alcance Baixissiomo, Movimento Medio)
+			cards [19] = new float[6]{ 35, 25, 0.75f, 0.5f, 1.1f, 1 }; //Mingau(Life Medio, Dano Medio, Atkspd Alto, Alcance Baixissimo, Movimento Alto)
 
-
+			PlayerPrefs.SetString ("Tutorial", "True");
 
 
 			GetCardValues ();
-		}
+		//}
 		//PlayerPrefsX.SetIntArray ("PlayerCardsIDs", zero);
 		//fPlayerPrefsX.SetIntArray ("SelectedCardsIDs", zero);
 
@@ -444,6 +444,8 @@ public class SceneHelper : MonoBehaviour {
 
 	public void SetHeroesValues(){
 
+		PlayerPrefs.DeleteKey ("CustomValues");
+
 		if (PlayerPrefs.HasKey ("CustomValues")) {
 			
 		}else{
@@ -459,19 +461,19 @@ public class SceneHelper : MonoBehaviour {
 		PlayerPrefs.SetFloat ("CebolinhaAtrib1", 25); //Dano = Medio
 		PlayerPrefs.SetFloat ("CebolinhaAtrib2", 0.75f); //VelDano = Alto
 		PlayerPrefs.SetFloat ("CebolinhaAtrib3", 0.5f); //AlcanceDano = Baixissimo
-		PlayerPrefs.SetFloat ("CebolinhaAtrib4", 90); //Life = Medio
+		PlayerPrefs.SetFloat ("CebolinhaAtrib4", 180); //Life = Medio x2
 		PlayerPrefs.SetFloat ("CebolinhaAtrib5", 1.1f); //Movimento = Alto
 
 		PlayerPrefs.SetFloat ("MagaliAtrib1", 16); //Dano = Baixo
 		PlayerPrefs.SetFloat ("MagaliAtrib2", 1); //VelDano = Medio
 		PlayerPrefs.SetFloat ("MagaliAtrib3", 0.5f); //AlcanceDano = Baixissimo
-		PlayerPrefs.SetFloat ("MagaliAtrib4", 90); //Life = Medio
+		PlayerPrefs.SetFloat ("MagaliAtrib4", 180); //Life = Medio x2
 		PlayerPrefs.SetFloat ("MagaliAtrib5", 0.85f); //Movimento = Medio
 
 		PlayerPrefs.SetFloat ("CascaoAtrib1", 16); //Dano = Baixo
 		PlayerPrefs.SetFloat ("CascaoAtrib2", 1); //VelDano = Medio
 		PlayerPrefs.SetFloat ("CascaoAtrib3", 0.5f); //AlcanceDano = Baixissimo
-		PlayerPrefs.SetFloat ("CascaoAtrib4", 90); //Life = Medio
+		PlayerPrefs.SetFloat ("CascaoAtrib4", 180); //Life = Medio x2
 		PlayerPrefs.SetFloat ("CascaoAtrib5",  1.1f); //Movimento = Alto
 
 		}
@@ -489,25 +491,46 @@ public class SceneHelper : MonoBehaviour {
 		PlayerPrefs.SetFloat ("CebolinhaAtrib1", 25); //Dano = Medio
 		PlayerPrefs.SetFloat ("CebolinhaAtrib2", 0.75f); //VelDano = Alto
 		PlayerPrefs.SetFloat ("CebolinhaAtrib3", 0.5f); //AlcanceDano = Baixissimo
-		PlayerPrefs.SetFloat ("CebolinhaAtrib4", 90); //Life = Medio
+		PlayerPrefs.SetFloat ("CebolinhaAtrib4", 180); //Life = Medio x2
 		PlayerPrefs.SetFloat ("CebolinhaAtrib5", 1.1f); //Movimento = Alto
 
 		PlayerPrefs.SetFloat ("MagaliAtrib1", 16); //Dano = Baixo
 		PlayerPrefs.SetFloat ("MagaliAtrib2", 1); //VelDano = Medio
 		PlayerPrefs.SetFloat ("MagaliAtrib3", 0.5f); //AlcanceDano = Baixissimo
-		PlayerPrefs.SetFloat ("MagaliAtrib4", 90); //Life = Medio
+		PlayerPrefs.SetFloat ("MagaliAtrib4", 180); //Life = Medio x2
 		PlayerPrefs.SetFloat ("MagaliAtrib5", 0.85f); //Movimento = Medio
 
 		PlayerPrefs.SetFloat ("CascaoAtrib1", 16); //Dano = Baixo
 		PlayerPrefs.SetFloat ("CascaoAtrib2", 1); //VelDano = Medio
 		PlayerPrefs.SetFloat ("CascaoAtrib3", 0.5f); //AlcanceDano = Baixissimo
-		PlayerPrefs.SetFloat ("CascaoAtrib4", 90); //Life = Medio
+		PlayerPrefs.SetFloat ("CascaoAtrib4", 180); //Life = Medio x2
 		PlayerPrefs.SetFloat ("CascaoAtrib5",  1.1f); //Movimento = Alto
 
 	}
 
 	public void GetCardValues(){
 		Debug.Log("card3 ");
+
+
+		PlayerPrefs.SetFloat ("Card11", 0);
+		PlayerPrefs.SetFloat ("Card21", 0);
+		PlayerPrefs.SetFloat ("Card31", 0);
+		PlayerPrefs.SetFloat ("Card41", 0);
+		PlayerPrefs.SetFloat ("Card51", 0);
+		PlayerPrefs.SetFloat ("Card61", 0);
+		PlayerPrefs.SetFloat ("Card71", 0);
+		PlayerPrefs.SetFloat ("Card81", 0);
+		PlayerPrefs.SetFloat ("Card91", 0);
+		PlayerPrefs.SetFloat ("Card101", 0);
+		PlayerPrefs.SetFloat ("Card111", 0);
+		PlayerPrefs.SetFloat ("Card121", 0);
+		PlayerPrefs.SetFloat ("Card131", 0);
+		PlayerPrefs.SetFloat ("Card141", 0);
+		PlayerPrefs.SetFloat ("Card151", 0);
+		PlayerPrefs.SetFloat ("Card161", 0);
+		PlayerPrefs.SetFloat ("Card171", 0);
+		PlayerPrefs.SetFloat ("Card181", 0);
+		PlayerPrefs.SetFloat ("Card191", 0);  
 
 		if (PlayerPrefs.GetFloat  ("Card11") == 0) {
 			PlayerPrefs.SetFloat ("Card11", cards [1][0]);

@@ -56,14 +56,14 @@ public class BaseDefense : MonoBehaviour {
 		
 		heroHealingCD += Time.deltaTime;
 
-		if (heroHealingCD >= 10 && HeroNearby()) {
-			heroHealingCD = 0;
-			if (team == 1) {
-				GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().vida += 1;
-			} else {
-				GameObject.Find ("HeroEnemy").GetComponent<WPIASoldierControler> ().vida += 1;
-			}
-		}
+//		if (heroHealingCD >= 10 && HeroNearby()) {
+//			heroHealingCD = 0;
+//			if (team == 1) {
+//				GameObject.Find ("Hero").GetComponent<WPSoldierControler> ().vida += 1;
+//			} else {
+//				GameObject.Find ("HeroEnemy").GetComponent<WPIASoldierControler> ().vida += 1;
+//			}
+//		}
 
 		if (seeking && cdSeek >= 0.01f) {
 			if (lockedTarget == false) {
@@ -101,18 +101,19 @@ public class BaseDefense : MonoBehaviour {
 					}else if (targetEnemy.GetComponent<WPIASoldierControler> () != null && targetEnemy.GetComponent<SpriteRenderer> ().enabled == true) {//ALVO HEROI
 						//targetEnemy.GetComponent<WPIASoldierControler> ().vida -= damage;
 						//targetEnemy.GetComponent<WPIASoldierControler> ().UpdateLife ();
-						targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
-						if (this.reach > 1)
+						//targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
+						//if (this.reach > 1)
+
 							TrowArrow ();
-						if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
+						if (targetEnemy.GetComponent<WPIASoldierControler> ().alive == false) { // ALVO MORREU
 							this.targetEnemy = null;
 							lockedTarget = false;
 						}
 					} else if (targetEnemy.GetComponent<SoldierControler> () != null && targetEnemy.GetComponent<SpriteRenderer> ().enabled == true) {//ALVO TROPA
 						//targetEnemy.GetComponent<SoldierControler> ().vida -= damage;
 						//targetEnemy.GetComponent<SoldierControler> ().UpdateLife ();
-						targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
-						if (this.reach > 1)
+						//targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
+						//if (this.reach > 1)
 							TrowArrow ();
 						if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == false) { // ALVO MORREU
 							this.targetEnemy = null;
@@ -121,20 +122,21 @@ public class BaseDefense : MonoBehaviour {
 					} else if (targetEnemy.GetComponent<WPSoldierControler> () != null && targetEnemy.GetComponent<SpriteRenderer> ().enabled == true) {//ALVO HEROI
 						//targetEnemy.GetComponent<WPSoldierControler> ().vida -= damage;
 						//targetEnemy.GetComponent<WPSoldierControler> ().UpdateLife ();
-						targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
-						if (this.reach > 1)
+
+						//if (this.reach > 1)
+						Debug.Log("CAUSOU DANO!");
 							TrowArrow ();
-						if (targetEnemy.GetComponent<WPSoldierControler> ().vida <= -1) // ALVO MORREU
+						if (targetEnemy.GetComponent<WPSoldierControler> ().alive == false) // ALVO MORREU
 							this.targetEnemy = null;
 					}
 					danoCD = 0;
 					if (targetEnemy != null && targetEnemy.GetComponent<SpriteRenderer> () != null) {
 						if (targetEnemy.GetComponent<SpriteRenderer> ().enabled == true) {
-							if (this.reach > 1) {
+							//if (this.reach > 1) {
 								audioManager.PlayAudio ("shot");
-							} else {
-								audioManager.PlayAudio ("atack");
-							}
+//							} else {
+//								audioManager.PlayAudio ("atack");
+//							}
 						}
 					}
 				} else {
@@ -144,7 +146,7 @@ public class BaseDefense : MonoBehaviour {
 		} else {
 			seeking = true;
 		}
-		danoCD += Time.deltaTime * 2;
+		danoCD += Time.deltaTime;
 
 	}
 
@@ -212,6 +214,25 @@ public class BaseDefense : MonoBehaviour {
 				}
 			} 
 
+			if (GameObject.FindGameObjectsWithTag ("enemysoldier2") != null) {//PROCURA HEROI
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag ("enemysoldier2")) {
+					if (obj.GetComponent<SpriteRenderer> ().enabled == true) {
+						float dist = Vector3.Distance (transform.position, obj.transform.position);
+						if (dist <= reach) {
+							if (dist < minDis && obj.GetComponent<SpriteRenderer> ().enabled == true) {
+								if (obj.GetComponent<WPSoldierControler> () != null /*&& obj.GetComponent<SoldierControler> ().LaneName == this.LaneName*/) {
+									Emin = obj;
+									minDis = dist;
+								} else if (obj.GetComponent<EnemyRemoteController> () != null) {
+									Emin = obj;
+									minDis = dist;
+								}
+							}
+						}
+					}
+				}
+			} 
+
 
 		} else if (this.team == 2) { //Procura de Jogador 2
 			if (GameObject.FindGameObjectsWithTag ("enemysoldier1") != null) {//PROCURA TROPA
@@ -260,8 +281,37 @@ public class BaseDefense : MonoBehaviour {
 
 	IEnumerator DelayedHitEffect(){
 		yield return new WaitForSeconds (reach/4.5f);
+//		if (targetEnemy != null) {
+//			Instantiate (HitAnimationObject, targetEnemy.transform.position, Quaternion.identity);
+//			targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
+//		}
+
 		if (targetEnemy != null) {
-			Instantiate (HitAnimationObject, targetEnemy.transform.position, Quaternion.identity);
+
+				Instantiate (HitAnimationObject, targetEnemy.transform.position, Quaternion.identity);	
+
+			if (targetEnemy.GetComponent<SoldierControler> () != null) {
+				targetEnemy.GetComponent<SoldierControler> ().ReceiveDamage (damage);
+			}
+
+			if (targetEnemy.GetComponent<WPIASoldierControler> () != null) {
+				targetEnemy.GetComponent<WPIASoldierControler> ().ReceiveDamage (damage);
+			}
+
+			if (targetEnemy.GetComponent<WPSoldierControler> () != null) {
+				targetEnemy.GetComponent<WPSoldierControler> ().ReceiveDamage (damage);
+			}
+
+			if (targetEnemy.GetComponent<ChargesScript> () != null) {
+				targetEnemy.GetComponent<ChargesScript> ().ReceiveDamage (damage);
+			}
+
+			if (targetEnemy.GetComponent<ChargesScriptTowers> () != null) {
+				targetEnemy.GetComponent<ChargesScriptTowers> ().ReceiveDamage (damage);
+			}
+
+
+
 		}
 	}
 

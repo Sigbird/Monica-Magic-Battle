@@ -33,9 +33,9 @@ public class RespawnTimer : MonoBehaviour {
 		if (timerCounter > 0) {
 			yield return new WaitForSeconds (1);
 			if (team == 1) {
-				timerCounter -= 0.25f;
+				timerCounter -= 1;
 			} else {
-				timerCounter -= 0.5f;
+				timerCounter -= 1;
 			}
 			StartCoroutine (Timer ());
 		} else {

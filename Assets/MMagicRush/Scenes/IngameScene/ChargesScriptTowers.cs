@@ -156,7 +156,7 @@ public class ChargesScriptTowers : MonoBehaviour {
 	public void ReceiveDamage(float x){
 
 		this.vida -= x;
-		UpdateLife ();
+		//UpdateLife ();
 
 		//Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
 

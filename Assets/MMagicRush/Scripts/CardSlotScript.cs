@@ -79,6 +79,8 @@ public class CardSlotScript : MonoBehaviour {
 
 	public GameController controller;
 
+	public NetworkCallbacks callbacks;
+
 
 	//PREFABS
 	public GameObject movementMarker;
@@ -104,6 +106,7 @@ public class CardSlotScript : MonoBehaviour {
 	void Awake(){
 		controller = GameObject.Find ("GameController").GetComponent<GameController> ();
 		multiplayer = controller.multiplayer;
+		callbacks = GameObject.Find ("GameController").GetComponent<NetworkCallbacks> ();
 	}
 
 	void Start () {
@@ -720,10 +723,20 @@ public class CardSlotScript : MonoBehaviour {
 											//TROPAS
 
 		case 11:// TROPA: BIDU
-			if(GameObject.Find ("GameController").GetComponent<GameController> ().tutorial == true){
+			if (GameObject.Find ("GameController").GetComponent<GameController> ().tutorial == true) {
 				GameObject.Find ("GameController").GetComponent<TutorialController> ().tutorialArrows.SetActive (true);
 			}
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			if (multiplayer) {
+				if (Movable != null) {
+					callbacks.InstanciarTropa(Movable.transform.position, 1);
+				} else {
+					callbacks.InstanciarTropa(GameObject.Find("HeroBase").transform.position, 1);
+				}
+				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
+				Destroy (this.gameObject);
+				break;
+			}
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 1;//BIDU
 			if (Movable != null) {
@@ -741,6 +754,16 @@ public class CardSlotScript : MonoBehaviour {
 			break;
 		case 12:// TROPA: ASTRONAUTA
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			if (multiplayer) {
+				if (Movable != null) {
+					callbacks.InstanciarTropa(Movable.transform.position, 2);
+				} else {
+					callbacks.InstanciarTropa(GameObject.Find("HeroBase").transform.position, 2);
+				}
+				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
+				Destroy (this.gameObject);
+				break;
+			}
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 2;
 			if (Movable != null) {
@@ -758,6 +781,16 @@ public class CardSlotScript : MonoBehaviour {
 			break;
 		case 13:// TROPA: JOTALHÃO
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			if (multiplayer) {
+				if (Movable != null) {
+					callbacks.InstanciarTropa(Movable.transform.position, 4);
+				} else {
+					callbacks.InstanciarTropa(GameObject.Find("HeroBase").transform.position, 4);
+				}
+				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
+				Destroy (this.gameObject);
+				break;
+			}
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 4;
 			if (Movable != null) {
@@ -775,6 +808,16 @@ public class CardSlotScript : MonoBehaviour {
 			break;
 		case 14:// TROPA: PITECO
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			if (multiplayer) {
+				if (Movable != null) {
+					callbacks.InstanciarTropa(Movable.transform.position, 5);
+				} else {
+					callbacks.InstanciarTropa(GameObject.Find("HeroBase").transform.position, 5);
+				}
+				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
+				Destroy (this.gameObject);
+				break;
+			}
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 5;
 			Instantiate(t,Movable.transform.position, Quaternion.identity);
@@ -788,6 +831,16 @@ public class CardSlotScript : MonoBehaviour {
 			break;
 		case 15:// TROPA: PENADINHO
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			if (multiplayer) {
+				if (Movable != null) {
+					callbacks.InstanciarTropa(Movable.transform.position, 6);
+				} else {
+					callbacks.InstanciarTropa(GameObject.Find("HeroBase").transform.position, 6);
+				}
+				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
+				Destroy (this.gameObject);
+				break;
+			}
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 6;//PENADINHO
 			if (Movable != null) {
@@ -805,6 +858,16 @@ public class CardSlotScript : MonoBehaviour {
 			break;
 		case 16:// TROPA: SANSAO
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			if (multiplayer) {
+				if (Movable != null) {
+					callbacks.InstanciarTropa(Movable.transform.position, 8);
+				} else {
+					callbacks.InstanciarTropa(GameObject.Find("HeroBase").transform.position, 8);
+				}
+				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
+				Destroy (this.gameObject);
+				break;
+			}
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 8;
 			if (Movable != null) {
@@ -822,6 +885,16 @@ public class CardSlotScript : MonoBehaviour {
 			break;
 		case 17:// TROPA: MINGAU
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			if (multiplayer) {
+				if (Movable != null) {
+					callbacks.InstanciarTropa(Movable.transform.position, 9);
+				} else {
+					callbacks.InstanciarTropa(GameObject.Find("HeroBase").transform.position, 9);
+				}
+				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
+				Destroy (this.gameObject);
+				break;
+			}
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 9;
 			if (Movable != null) {
@@ -840,6 +913,16 @@ public class CardSlotScript : MonoBehaviour {
 
 		case 18:// TROPA: CRANICOLA
 			GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds -= cardCost;
+			if (multiplayer) {
+				if (Movable != null) {
+					callbacks.InstanciarTropa(Movable.transform.position, 3);
+				} else {
+					callbacks.InstanciarTropa(GameObject.Find("HeroBase").transform.position, 3);
+				}
+				GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
+				Destroy (this.gameObject);
+				break;
+			}
 			t = troop;
 			t.GetComponent<SoldierControler> ().troopId = 3;
 			if (Movable != null) {

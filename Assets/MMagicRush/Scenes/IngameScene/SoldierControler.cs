@@ -2,8 +2,9 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using YupiPlay.MMB.Multiplayer;
 
-public class SoldierControler : MonoBehaviour {
+public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 
 	//public enum TipoSoldado {Guerreiro, Mago, Lanceiro, General};
 
@@ -18,6 +19,8 @@ public class SoldierControler : MonoBehaviour {
 	public bool heroUnity;
 
 	public int troopId;
+
+	public bool multiplayer;
 
 	public float topPreference;
 	public float midPreference;
@@ -309,8 +312,22 @@ public class SoldierControler : MonoBehaviour {
 
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	void Update() {
+		if (multiplayer == false) {
+			__Update();
+			return;
+		}
+
+		if (!entity.isOwner) {
+			__Update();
+		}
+	}
+
+	public override void SimulateOwner() {
+		__Update();
+	}
+
+	void __Update () {
 
 		if (GameObject.Find ("GameController").GetComponent<GameController> ().GameOver) {
 			Destroy (this.gameObject);

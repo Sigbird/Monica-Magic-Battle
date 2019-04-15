@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class NetworkCallbacks : Bolt.GlobalEventListener {
     public Camera MainCamera;
@@ -16,8 +18,8 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
     public GameObject RiverPassLeft;
     public GameObject RiverPassRight;
 
-    private GameObject playerServer;
-    private GameObject playerClient;
+	public GameObject playerServer;
+	public GameObject playerClient;
 
     private bool player1Ready;
     private bool player2Ready;
@@ -29,6 +31,7 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
 	public GameObject WaitForPlayers;
 	public GameObject Inicio;
 
+
     public event Action OnPlayersReady;
 
     public override void SceneLoadLocalDone(string map) {       
@@ -39,7 +42,7 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
 
 
 		if (BoltNetwork.IsClient) {
-			
+			//gameController.enabled = true;
 			//Flip de Camera e Terreno no Cliente
 			CardSpawner.transform.position = new Vector3(3, 5.5f,0);
 			SceneCamera.transform.rotation = Quaternion.Euler (0, 0, 180);
@@ -58,6 +61,20 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
 		}
 	}
 
+	void Update(){
+		if (BoltNetwork.IsServer) {
+			if(playerClient != null && playerServer != null){
+				playerServer.transform.rotation = Quaternion.Euler (0, 0, 0);
+				playerClient.transform.rotation = Quaternion.Euler (0, 0, 0);
+			}
+		} else {
+			if (playerClient != null && playerServer != null) {
+				playerServer.transform.rotation = Quaternion.Euler (0, 0, 180);
+				playerClient.transform.rotation = Quaternion.Euler (0, 0, 180);
+			}
+		}
+	}
+
     public override void SceneLoadRemoteDone(BoltConnection connection) {
         if (BoltNetwork.IsServer) {
             var serverEntity = BoltNetwork.Instantiate(BoltPrefabs.HeroMPServer, Player1Position.position, Quaternion.identity);
@@ -69,6 +86,7 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
             gameController.HeroGameObject = playerServer;        
             wpScript.Hero = playerServer.transform;
             roundStart.Hero = playerServer;      
+
 
 
 		}   
@@ -83,7 +101,8 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
             gameController.EnemyGameObject = playerClient;
             wpScript.Enemy = playerClient.transform;
             roundStart.Enemy = playerClient;
-					
+
+
 			}
 
 		WaitForPlayers.SetActive (false);
@@ -94,22 +113,50 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
     public override void EntityAttached(BoltEntity entity) { 
         Debug.Log(entity.name);
         // Começa a countdown de Início partida após o Player der spawn
-        if (entity.tag == "enemysoldier1") {
-            gameController.HeroGameObject = entity;        
-            wpScript.Hero = entity.transform;
-            roundStart.Hero = entity;    
-
-            bindRiverPass(entity);
-            player1Ready = true;
-        }
-        if (entity.tag == "enemysoldier2") {
-            gameController.EnemyGameObject = entity;
-            wpScript.Enemy = entity.transform;
-            roundStart.Enemy = entity;
-
-            bindRiverPass(entity);
-            player2Ready = true;
-        }
+		if (BoltNetwork.IsClient) {
+			if (entity.tag == "enemysoldier1") {
+				gameController.HeroGameObject = entity;
+				entity.transform.rotation = Quaternion.Euler (0, 0, 180);
+				wpScript.Hero = entity.transform;
+				roundStart.Hero = entity;    
+//				entity.GetComponent<WPSoldierControler>().RiverPassLeft = RiverPassLeft;
+//				entity.GetComponent<WPSoldierControler>().RiverPassLeft = RiverPassLeft;
+				bindRiverPass (entity);
+				player1Ready = true;
+			}
+			if (entity.tag == "enemysoldier2") {
+				gameController.EnemyGameObject = entity;
+				entity.transform.rotation = Quaternion.Euler (0, 0, 180);
+				wpScript.Enemy = entity.transform;
+				roundStart.Enemy = entity;
+//				entity.GetComponent<WPSoldierControler>().RiverPassLeft = RiverPassLeft;
+//				entity.GetComponent<WPSoldierControler>().RiverPassLeft = RiverPassLeft;
+				bindRiverPass (entity);
+				player2Ready = true;
+			}
+		}
+//		} else {
+//			if (entity.tag == "enemysoldier1") {
+//				gameController.HeroGameObject = entity;
+//				entity.transform.rotation = Quaternion.Euler (0, 0, 0);
+//				wpScript.Hero = entity.transform;
+//				roundStart.Hero = entity;    
+////				entity.GetComponent<WPSoldierControler>().RiverPassLeft = RiverPassLeft;
+////				entity.GetComponent<WPSoldierControler>().RiverPassLeft = RiverPassLeft;
+//				bindRiverPass (entity);
+//				player1Ready = true;
+//			}
+//			if (entity.tag == "enemysoldier2") {
+//				gameController.EnemyGameObject = entity;
+//				entity.transform.rotation = Quaternion.Euler (0, 0, 0);
+//				wpScript.Enemy = entity.transform;
+//				roundStart.Enemy = entity;
+////				entity.GetComponent<WPSoldierControler>().RiverPassLeft = RiverPassLeft;
+////				entity.GetComponent<WPSoldierControler>().RiverPassLeft = RiverPassLeft;
+//				bindRiverPass (entity);
+//				player2Ready = true;
+//			}
+//		}
 
         if (player1Ready && player2Ready) {
             AllPlayersReady = true;
@@ -126,4 +173,25 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
     public void ShutdownMultiplayer() {
         BoltNetwork.Shutdown();
     }
+
+	public void NextLevel(){
+
+			Time.timeScale = 1;
+			PlayerPrefs.DeleteKey ("TerrainType");
+			SceneManager.LoadScene ("MainNewCoreloop");
+		}
+
+	public void InstanciarTropa(Vector3 pos, int id){
+		if (BoltNetwork.IsClient) {
+
+				BoltNetwork.Instantiate (BoltPrefabs.TroopMultiClient, pos, Quaternion.Euler (0, 0, 180)).GetComponent<SoldierControler>().troopId = id;
+
+
+		} else {
+
+				BoltNetwork.Instantiate (BoltPrefabs.TroopMultiServer, pos, Quaternion.Euler(0,0,0)).GetComponent<SoldierControler>().troopId = id;
+
+		}
+	}
+
 }

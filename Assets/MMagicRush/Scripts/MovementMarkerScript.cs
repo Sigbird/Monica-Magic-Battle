@@ -41,7 +41,7 @@ public class MovementMarkerScript : MonoBehaviour {
 					//Destroy (this.gameObject);
 				}
 			} else {
-				if (Vector2.Distance (GameObject.Find ("Hero").transform.position, this.transform.position) <= 0.5) {
+				if (Vector2.Distance (Hero.transform.position, this.transform.position) <= 0.5) {
 					Destroy (this.gameObject);
 				}
 			}
