@@ -34,6 +34,12 @@ public class ChargesScriptTowers : MonoBehaviour {
 	public GameObject SplashEffect;
 	public int heroid;
 
+	private TowerEntity towerEntity;
+
+	void Awake(){
+		towerEntity = GetComponent<TowerEntity>();
+
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -157,7 +163,7 @@ public class ChargesScriptTowers : MonoBehaviour {
 
 		this.vida -= x;
 		//UpdateLife ();
-
+		towerEntity.SetVida(this.vida);
 		//Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
 
 		if (this.vida <= 0) {

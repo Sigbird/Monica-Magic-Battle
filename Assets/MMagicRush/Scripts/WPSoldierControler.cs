@@ -197,6 +197,8 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 
 	private bool gameBegin;
 
+	public bool fliped = false;
+
 	public WPIASoldierControler enemycontroller;
 
 	public GameObject RiverPassLeft;
@@ -206,6 +208,17 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 	public override void Attached() {
 		state.SetTransforms(state.Transform, transform);
 		//__Start();
+
+
+		state.AddCallback ("HealtPlayer", OnHealthChange);
+//		state = this.vidaMax;
+//
+//		state
+
+	}
+
+	void OnHealthChange (){
+		this.vida = state.HealthPlayer;
 	}
 
 	void Start() {
@@ -258,7 +271,7 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		//audioManager.PlayAudio ("spawn");
 
-
+		state.HealthPlayer = this.vidaMax;
 	}
 
 	void Update() {
@@ -278,6 +291,7 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 
 	void __Update () {
 
+
 		if (GameObject.Find ("GameController").GetComponent<GameController> ().GameOver) {
 			this.alive = false;
 		}
@@ -294,11 +308,12 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 		}
 
 		// VELOCIDADE
-		if (previous.x < transform.position.x) {
-			GetComponent<SpriteRenderer> ().flipX = false;
-		} else if (previous.x > transform.position.x) {
-			GetComponent<SpriteRenderer> ().flipX = true;
-		}
+
+			if (previous.x < transform.position.x) {
+				GetComponent<SpriteRenderer> ().flipX = false;
+			} else if (previous.x > transform.position.x) {
+				GetComponent<SpriteRenderer> ().flipX = true;
+			}
 
 		velocity = ((transform.position - previous).magnitude) / Time.deltaTime;
 		previous = transform.position;
@@ -313,8 +328,27 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 			anim.SetBool ("Idle", false);
 		}
 
+		if (multiplayer) {
+			if (BoltNetwork.IsClient) {
+				if (anim.gameObject != null) {
+					anim.gameObject.transform.rotation = Quaternion.Euler (180, 0, 0);
+				}
+			} else {
+				if (anim.gameObject != null) {
+					anim.gameObject.transform.rotation = Quaternion.Euler (0, 0, 0);
+				}
+			}
+		}
 
+		if(multiplayer && fliped == false && anim.gameObject != null){
+			if (BoltNetwork.IsClient) {
+				transform.rotation = Quaternion.Euler (0, 0, 180);
 
+			} else {
+				transform.rotation = Quaternion.Euler (0, 0, 0);
+			}
+			fliped = true;
+		}
 
 
 		// COLISÕES COM TROPAS E ADVERSÁRIOS

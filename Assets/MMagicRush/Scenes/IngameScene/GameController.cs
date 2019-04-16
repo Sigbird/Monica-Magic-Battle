@@ -490,6 +490,7 @@ public class GameController : MonoBehaviour {
 
 	public void NextRound(){
 		if (multiplayer) {
+
 			BoltLauncher.Shutdown ();
 		}
 //		Debug.Log ("xp: "+GameController.playerXp);

@@ -185,6 +185,15 @@ namespace YupiPlay.MMB.Multiplayer {
 			}
 		}
 
+		public void PlayOffline(){
+			Debug.Log ("STARTING OFFLINE");
+			PlayerPrefs.SetString ("Multiplayer", "False");
+			PlayerPrefs.SetInt ("round",1);
+			PlayerPrefs.SetInt ("playerCharges",0);
+			PlayerPrefs.SetInt ("enemyCharges",0);
+			StartCoroutine (AsynchronousLoad ("GamePlayReview"));
+		}
+
 		public void UniquePlayButton(){
 			StartCoroutine (TrySearchingOpponents ());
 
@@ -238,14 +247,14 @@ namespace YupiPlay.MMB.Multiplayer {
 		IEnumerator TrySearchingOpponents() {
 			Debug.Log ("STARTING SERVER");
 			StartServer ();
-			yield return new WaitForSeconds(20);
+			yield return new WaitForSeconds(30);
 			if (connectingtoSomeone == false) {
 				
 				BoltLauncher.Shutdown ();
 				yield return new WaitForSeconds (2);
 				Debug.Log ("STARTING CLIENT");
 				StartClient ();
-				yield return new WaitForSeconds (20);
+				yield return new WaitForSeconds (30);
 				if (connectingtoSomeone == false) {
 					BoltLauncher.Shutdown ();
 

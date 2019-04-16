@@ -2,17 +2,18 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 using YupiPlay.MMB.Multiplayer;
 
 public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 
 	//public enum TipoSoldado {Guerreiro, Mago, Lanceiro, General};
 
-	public enum STATE
-	{
-		DEFAULT,
-		RETREAT,
-	}
+//	public enum STATE
+//	{
+//		DEFAULT,
+//		RETREAT,
+//	}
 
 	//public TipoSoldado Tipo;
 
@@ -26,7 +27,7 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 	public float midPreference;
 	public float botPreference;
 
-	public STATE state = STATE.DEFAULT;
+	//public STATE state = STATE.DEFAULT;
 
 	public int team;
 
@@ -215,6 +216,20 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 	public float desloc;
 	public float deslocTimer;
 
+	public override void Attached() {
+		
+		state.SetTransforms(state.TroopTransform, transform);
+
+
+		state.AddCallback ("Healt", OnHealthChange);
+		//__Start();
+	}
+
+	void OnHealthChange (){
+		this.vida = state.Healt;
+	}
+		
+
 	// Use this for initialization
 	void Start () {
 		if(step == 0)
@@ -300,7 +315,7 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 		if (healtbarSoldierSolid != null) {
 			this.healtbarSoldierSolid.transform.gameObject.SetActive (true);
 		}
-		this.state = STATE.DEFAULT;
+
 
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		audioManager.PlayAudio ("spawn");
@@ -309,7 +324,7 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 		HeroCharacter = GameObject.Find("HeroSpritezone");
 		EnemyCharacter = GameObject.Find ("EnemySpritezone");
 	
-
+		state.Healt = this.vidaMax;
 	}
 	
 	void Update() {
@@ -338,7 +353,13 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 			healtbarSoldierSolid.atualValue = vida;
 		}
 
-
+		if (multiplayer) {
+			if (BoltNetwork.IsClient) {
+				transform.rotation = Quaternion.Euler (0, 180, 180);
+			} else {
+				transform.rotation = Quaternion.Euler (0, 0, 0);
+			}
+		}
 		//
 		//ORDEM DE LAYER
 		//
@@ -512,9 +533,9 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 				//transform.position = Vector2.MoveTowards (transform.position, RightExit [2].transform.position, Time.deltaTime * speed);
 			}
 			if (t.position.x > transform.position.x) {
-				transform.eulerAngles = new Vector3 (0, 180, 0);
+				GetComponent<SpriteRenderer> ().flipX = true;
 			} else {
-				transform.eulerAngles = new Vector3 (0, 0, 0);
+				GetComponent<SpriteRenderer> ().flipX = false;
 			}
 			transform.position = Vector2.MoveTowards (transform.position, t.position, Time.deltaTime * speed);
 			if (haveAnimation)
@@ -736,6 +757,9 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 	}
 
 	public void SetupTroop(int id){
+
+
+
 
 
 		switch (id) {
@@ -1338,6 +1362,7 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 	public void ReceiveDamage(float x){
 
 		this.vida -= x;
+		state.Healt = vida;
 		//UpdateLife ();
 	
 		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);

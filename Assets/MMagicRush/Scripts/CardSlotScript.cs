@@ -312,12 +312,25 @@ public class CardSlotScript : MonoBehaviour {
 //					GameObject.Find("DeckPile").GetComponent<DeckPileScript>().DrawNewCard(CardPosition);
 //					Movable.GetComponent<sparkScript> ().DestroyItself ();
 //				} else 
-				if(Movable.transform.position.y> -3f && Movable.transform.position.y < 0.5f && cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+				if (multiplayer == false) {
+					if (Movable.transform.position.y > -3f && Movable.transform.position.y < 0.5f && cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
 //					if (PlayerPrefs.GetString ("Tutorial") == "False") {
 						ActivateCardEffect ();
 //					} else {
 //						SendCard ();
 //					}
+					}
+				} else {
+					if (BoltNetwork.IsClient) {
+						if (Movable.transform.position.y < 3f && Movable.transform.position.y > 0.5f && cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+							ActivateCardEffect ();
+						}
+					} else {
+						if (Movable.transform.position.y > -3f && Movable.transform.position.y < 0.5f && cardCost <= GameObject.Find ("GameController").GetComponent<GameController> ().Diamonds) {
+							ActivateCardEffect ();
+						}
+					}
+				
 				}
 //			if (HoveringObject.tag == "enemysoldier1") {
 //				ActivateCardEffect (HoveringObject);
