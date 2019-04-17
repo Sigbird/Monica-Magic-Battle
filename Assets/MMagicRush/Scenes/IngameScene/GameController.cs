@@ -105,8 +105,9 @@ public class GameController : MonoBehaviour {
 		if (multiplayer) {
 			if (BoltNetwork.IsClient) {
 				MyTeam = 2;
-				CountDownNumbers [1].transform.rotation = Quaternion.Euler (0, 0, 180);
-				CountDownNumbers [2].transform.rotation = Quaternion.Euler (0, 0, 180);
+				if(CountDownNumbers.Length == 1)CountDownNumbers [0].transform.rotation = Quaternion.Euler (0, 0, 180);
+				if(CountDownNumbers.Length == 2)CountDownNumbers [1].transform.rotation = Quaternion.Euler (0, 0, 180);
+
 			} else {
 				MyTeam = 1;
 			}

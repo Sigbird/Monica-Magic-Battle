@@ -85,10 +85,10 @@ public class FilterScript : MonoBehaviour {
 
 	public void UpdatePlayerCardList(){
 
-		cs = new int[6];
+		cs = new int[19];
 
 		for (int i = 0; i < cs.Length; i++) {
-			cs [i] = Random.Range(1,18);
+			cs [i] = i;//Random.Range(1,18);
 			//Random da Loja;
 		}
 

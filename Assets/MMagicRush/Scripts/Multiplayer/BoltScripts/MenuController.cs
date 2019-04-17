@@ -22,6 +22,9 @@ namespace YupiPlay.MMB.Multiplayer {
 		public bool MultiPlayerOnly;
 		public bool connectingtoSomeone;
 
+		public Image versusImage;
+		public Sprite[] versusIcons;
+
         public event Action<string, int> OnOpponentInfoEvent;
 
         int limit = 0;
@@ -186,6 +189,7 @@ namespace YupiPlay.MMB.Multiplayer {
 		}
 
 		public void PlayOffline(){
+			BoltLauncher.Shutdown ();
 			Debug.Log ("STARTING OFFLINE");
 			PlayerPrefs.SetString ("Multiplayer", "False");
 			PlayerPrefs.SetInt ("round",1);
@@ -246,15 +250,17 @@ namespace YupiPlay.MMB.Multiplayer {
 
 		IEnumerator TrySearchingOpponents() {
 			Debug.Log ("STARTING SERVER");
+			versusImage.sprite = versusIcons [0];
 			StartServer ();
-			yield return new WaitForSeconds(30);
+			yield return new WaitForSeconds(25);
 			if (connectingtoSomeone == false) {
 				
 				BoltLauncher.Shutdown ();
 				yield return new WaitForSeconds (2);
 				Debug.Log ("STARTING CLIENT");
+				versusImage.sprite = versusIcons [1];
 				StartClient ();
-				yield return new WaitForSeconds (30);
+				yield return new WaitForSeconds (25);
 				if (connectingtoSomeone == false) {
 					BoltLauncher.Shutdown ();
 

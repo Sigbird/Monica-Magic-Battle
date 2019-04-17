@@ -226,7 +226,9 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 	}
 
 	void OnHealthChange (){
-		this.vida = state.Healt;
+		if (entity.isOwner) {
+			this.vida = state.Healt;
+		}
 	}
 		
 
@@ -323,8 +325,9 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 		//DESLOCAMENTO INICIAL
 		HeroCharacter = GameObject.Find("HeroSpritezone");
 		EnemyCharacter = GameObject.Find ("EnemySpritezone");
-	
-		state.Healt = this.vidaMax;
+		if (entity.isOwner) {
+			state.Healt = this.vidaMax;
+		}
 	}
 	
 	void Update() {
@@ -579,9 +582,9 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 						//seeking = true;
 					} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
 						if (targetEnemy.transform.position.x < transform.position.x) {
-							transform.eulerAngles = new Vector3 (0, 180, 0);
+							GetComponent<SpriteRenderer> ().flipX = true;
 						} else {
-							transform.eulerAngles = new Vector3 (0, 0, 0);
+							GetComponent<SpriteRenderer> ().flipX = false;
 						}
 
 						if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
@@ -653,9 +656,9 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 						//seeking = true;
 					} else if (targetEnemy != null && this.GetComponent<SpriteRenderer> ().enabled == true) { //ATACA ALVO
 						if (targetEnemy.transform.position.x < transform.position.x) {
-							transform.eulerAngles = new Vector3 (0, 180, 0);
+							GetComponent<SpriteRenderer> ().flipX = true;
 						} else {
-							transform.eulerAngles = new Vector3 (0, 0, 0);
+							GetComponent<SpriteRenderer> ().flipX = false;
 						}
 
 						if (danoCD > damageSpeed) { //TEMPO ENTRE ATAQUES
@@ -1362,7 +1365,9 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 	public void ReceiveDamage(float x){
 
 		this.vida -= x;
-		state.Healt = vida;
+		if (entity.isOwner) {
+			state.Healt = vida;
+		}
 		//UpdateLife ();
 	
 		Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
@@ -1393,7 +1398,15 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 			this.transform.Find("Animation(Clone)").gameObject.GetComponentInChildren<Animator> ().SetTrigger ("Death");
 			yield return new WaitForSeconds (0.2f);
 		} 
-		Destroy (this.gameObject);
+		if (multiplayer) {
+			if (entity.isOwner) {
+				BoltNetwork.Detach (this.gameObject);
+				BoltNetwork.Destroy (this.gameObject);
+			}
+		} else {
+			BoltNetwork.Detach (this.gameObject);
+			BoltNetwork.Destroy (this.gameObject);
+		}
 	}
 		
 

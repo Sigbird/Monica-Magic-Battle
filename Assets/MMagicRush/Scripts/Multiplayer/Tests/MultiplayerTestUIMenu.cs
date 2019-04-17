@@ -23,6 +23,9 @@ public class MultiplayerTestUIMenu : MonoBehaviour {
 
     public Sprite[] Heroes;
 
+	public Image versusImage;
+	public Sprite[] versusIcons;
+
 	// Use this for initialization
 	void Start () {
 		

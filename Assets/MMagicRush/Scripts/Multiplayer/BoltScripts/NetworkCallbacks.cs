@@ -83,6 +83,12 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
 			BoltNetwork.Shutdown ();
 		}
 
+		if (BoltNetwork.IsClient) {
+			foreach (GameObject o in GameObject.FindGameObjectsWithTag("herowaypoint")) {
+				o.transform.rotation = Quaternion.Euler (0, 0, 180);
+			}
+		}
+
 	}
 
     public override void SceneLoadRemoteDone(BoltConnection connection) {
@@ -184,13 +190,13 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
 	public void InstanciarTropa(Vector3 pos, int id){
 		if (BoltNetwork.IsClient) {
 
-			BoltNetwork.Instantiate (BoltPrefabs.TroopMultiClient, pos, Quaternion.identity).GetComponent<SoldierControler>().troopId = id;
-
+			GameObject obj = (GameObject)BoltNetwork.Instantiate (BoltPrefabs.TroopMultiClient, pos, Quaternion.identity);
+			obj.GetComponent<SoldierControler> ().troopId = id;
 
 		} else {
 
-			BoltNetwork.Instantiate (BoltPrefabs.TroopMultiServer, pos, Quaternion.identity).GetComponent<SoldierControler>().troopId = id;
-
+			GameObject obj2 = (GameObject) BoltNetwork.Instantiate (BoltPrefabs.TroopMultiServer, pos, Quaternion.identity);
+			obj2.GetComponent<SoldierControler> ().troopId = id;
 		}
 	}
 
