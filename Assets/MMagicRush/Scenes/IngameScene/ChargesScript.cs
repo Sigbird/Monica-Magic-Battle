@@ -31,10 +31,13 @@ public class ChargesScript : MonoBehaviour {
 	public GameObject SplashEffect;
 
 	private TowerEntity towerEntity;
+	public bool multiplayer;
 
 
 	void Awake() {
-		towerEntity = GetComponent<TowerEntity>();
+		if (multiplayer) {
+			towerEntity = GetComponent<TowerEntity> ();
+		}
 	}
 	// Use this for initialization
 	void Start () {
@@ -209,8 +212,9 @@ public class ChargesScript : MonoBehaviour {
 	public void ReceiveDamage(float x){
 
 		this.vida -= x;
-		towerEntity.SetVida(this.vida);
-		
+		if (multiplayer) {
+			towerEntity.SetVida (this.vida);
+		}
 		if (NewMechanic) {
 			UpdateLife ();
 		}

@@ -1012,10 +1012,12 @@ public class GameController : MonoBehaviour {
 	}
 	
 	void OnEnable() {
+		if(multiplayer)
 		networkController.OnPlayersReady += PlayersReady;
 	}
 
 	void OnDisable() {
+		if(multiplayer)
 		networkController.OnPlayersReady -= PlayersReady;
 	}
 

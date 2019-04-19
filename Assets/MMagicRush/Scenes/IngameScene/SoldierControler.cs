@@ -82,6 +82,8 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 	public GameObject troop;
 
 	public GameObject SplashEffect;
+
+	public GameObject HealtBarObject;
 	//FLAGS
 
 	public bool alive;
@@ -325,8 +327,10 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 		//DESLOCAMENTO INICIAL
 		HeroCharacter = GameObject.Find("HeroSpritezone");
 		EnemyCharacter = GameObject.Find ("EnemySpritezone");
-		if (entity.isOwner) {
-			state.Healt = this.vidaMax;
+		if (multiplayer) {
+			if (entity.isOwner) {
+				state.Healt = this.vidaMax;
+			}
 		}
 	}
 	
@@ -364,6 +368,10 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 			}
 		}
 		//
+
+		if (this.range < 0.5f) {
+			this.range = 0.5f;
+		}
 		//ORDEM DE LAYER
 		//
 		//this.GetComponent<SpriteRenderer> ().sortingOrder = -(int)(this.transform.position.y - 0.5f);
@@ -782,6 +790,7 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 			this.specialHabilityCD = 2;
 			this.explosiveDamage = false;
 			this.skillshoter = false;
+			this.transform.localScale -= new Vector3 (0.2f, 0.2f, 0);
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [0];
 			this.haveAnimation = true;
 			Instantiate (animations [1], transform);
@@ -821,18 +830,19 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 			this.summon = false;
 			this.explosiveDamage = true;
 			this.skillshoter = true;
+			this.transform.localScale -= new Vector3 (0.2f, 0.2f, 0);
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [2];
 			Instantiate (animations [3], transform);
 			this.haveAnimation = true;
 			break;
 		case(4): //JOTALHÃO
-			if(Custom == false){
-			this.vidaMax = PlayerPrefs.GetFloat ("Card141");//200; //Alto
-			this.vida = PlayerPrefs.GetFloat ("Card141");//200; //Alto
-			this.damage = PlayerPrefs.GetFloat ("Card142");//50; //Alto
-			this.damageSpeed = PlayerPrefs.GetFloat ("Card143");//1; //Baixo
-			this.range = PlayerPrefs.GetFloat ("Card144");//1; //Baixissimo
-			this.speed = PlayerPrefs.GetFloat ("Card145");//0.8f; //Baixo
+			if (Custom == false) {
+				this.vidaMax = PlayerPrefs.GetFloat ("Card141");//200; //Alto
+				this.vida = PlayerPrefs.GetFloat ("Card141");//200; //Alto
+				this.damage = PlayerPrefs.GetFloat ("Card142");//50; //Alto
+				this.damageSpeed = PlayerPrefs.GetFloat ("Card143");//1; //Baixo
+				this.range = PlayerPrefs.GetFloat ("Card144");//1; //Baixissimo
+				this.speed = PlayerPrefs.GetFloat ("Card145");//0.8f; //Baixo
 			}
 			this.reach = 1.5f;
 			this.energyMax = 1;
@@ -840,8 +850,13 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 			this.summon = false;
 			this.explosiveDamage = false;
 			this.skillshoter = false;
+			this.transform.localScale += new Vector3 (0.4f, 0.4f, 0);
+
+			this.HealtBarObject.transform.localScale += new Vector3 (-0.2f, -0.2f, 0);
+			this.HealtBarObject.transform.position += new Vector3 (0, 0.2f, 0);
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [3];
 			Instantiate (animations [4], transform);
+
 			this.haveAnimation = true;
 			break;
 		case(5): //PITECO
@@ -913,6 +928,7 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 			this.summon = false;
 			this.explosiveDamage = false;
 			this.skillshoter = false;
+			this.transform.localScale -= new Vector3 (0.2f, 0.2f, 0);
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [7];
 			Instantiate (animations [8], transform);
 			this.haveAnimation = true;
@@ -932,6 +948,7 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 			this.summon = false;
 			this.explosiveDamage = false;
 			this.skillshoter = false;
+			this.transform.localScale -= new Vector3 (0.2f, 0.2f, 0);
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [8];
 			Instantiate (animations [9], transform);
 			this.haveAnimation = true;
@@ -1365,8 +1382,10 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 	public void ReceiveDamage(float x){
 
 		this.vida -= x;
-		if (entity.isOwner) {
-			state.Healt = vida;
+		if (multiplayer) {
+			if (entity.isOwner) {
+				state.Healt = vida;
+			}
 		}
 		//UpdateLife ();
 	
@@ -1404,8 +1423,8 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 				BoltNetwork.Destroy (this.gameObject);
 			}
 		} else {
-			BoltNetwork.Detach (this.gameObject);
-			BoltNetwork.Destroy (this.gameObject);
+			
+			Destroy (this.gameObject);
 		}
 	}
 		

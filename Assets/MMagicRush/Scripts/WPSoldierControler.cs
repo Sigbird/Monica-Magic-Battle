@@ -219,7 +219,9 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 
 	void OnHealthChange (){
 		//if (entity.isOwner) {
+		if (multiplayer) {
 			this.vida = state.HealtPlayer;
+		}
 		//}
 	}
 
@@ -272,8 +274,10 @@ public class WPSoldierControler : Bolt.EntityEventListener<IHeroState> {
 
 		audioManager = GameObject.Find ("GameController").GetComponent<AudioManager> ();
 		//audioManager.PlayAudio ("spawn");
-		if (entity.isOwner) {
-			state.HealtPlayer = this.vidaMax;
+		if (multiplayer) {
+			if (entity.isOwner) {
+				state.HealtPlayer = this.vidaMax;
+			}
 		}
 	}
 

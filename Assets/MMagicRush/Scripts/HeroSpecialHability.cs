@@ -11,10 +11,13 @@ public class HeroSpecialHability : MonoBehaviour {
 	public float effectCD;
 	public GameObject[] SpecialHabilityZone;
 	public GameObject MeiaCascao;
+	public bool multiplayer;
 
 	// Use this for initialization
 	void Start () {
-
+		if(GetComponent<WPSoldierControler>() != null){
+			team = GetComponent<WPSoldierControler> ().team;
+		}
 		MeiaCascao.GetComponent<MeiaCascao> ().team = team;
 		StartCoroutine (LateStart ());
 
@@ -27,15 +30,7 @@ public class HeroSpecialHability : MonoBehaviour {
 
 	IEnumerator CebolinhaInvisibility(){
 		yield return new WaitForSeconds (5);
-		if (team == 1) { // CEBOLINHA COMEÇA INVISIVEL
-			if (GetComponent<WPIASoldierControler> ().heroID == 1) {
-				GetComponent<WPIASoldierControler> ().alive = false;
-				this.transform.FindChild ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, .5f);  
-				this.transform.FindChild ("Platform").gameObject.SetActive (false);
-				//transform.FindChild ("HealtBarSoldier").gameObject.SetActive (false);
-
-			}
-		} else {
+		if (this.tag == "enemysoldier1" || multiplayer == true) { // CEBOLINHA COMEÇA INVISIVEL
 			if (GetComponent<WPSoldierControler> ().heroID == 1) {
 				GetComponent<WPSoldierControler> ().alive = false;
 				this.transform.FindChild ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, .5f);  
@@ -43,11 +38,24 @@ public class HeroSpecialHability : MonoBehaviour {
 				//transform.FindChild ("HealtBarSoldier").gameObject.SetActive (false);
 
 			}
+		} else {
+			if (GetComponent<WPIASoldierControler> ().heroID == 1) {
+				GetComponent<WPIASoldierControler> ().alive = false;
+				this.transform.FindChild ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, .5f);  
+				this.transform.FindChild ("Platform").gameObject.SetActive (false);
+				//transform.FindChild ("HealtBarSoldier").gameObject.SetActive (false);
+
+			}
+
 		}
 	}
 
 	public void LostInvisibility(){
-		if (this.team == 1) {
+		if (this.tag == "enemysoldier1" || multiplayer == true) {
+			GetComponent<WPSoldierControler> ().alive = true;
+			this.transform.Find ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
+
+		} else {
 			GetComponent<WPIASoldierControler> ().alive = true;
 			string ter = PlayerPrefs.GetString ("TerrainType");
 			if (ter == "Forest") {
@@ -59,9 +67,6 @@ public class HeroSpecialHability : MonoBehaviour {
 			} else {
 				this.transform.Find ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
 			} 
-		} else {
-			GetComponent<WPSoldierControler> ().alive = true;
-			this.transform.Find ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
 		}
 		this.transform.FindChild ("Platform").gameObject.SetActive (true);
 		StartCoroutine (CebolinhaInvisibility ());
@@ -70,16 +75,7 @@ public class HeroSpecialHability : MonoBehaviour {
 	IEnumerator LateStart(){
 		yield return new WaitForSeconds (0.2f);
 
-		if (team == 1) { // CEBOLINHA COMEÇA INVISIVEL
-			if (GetComponent<WPIASoldierControler> ().heroID == 1) {
-				this.transform.FindChild ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, .5f);  
-				this.transform.FindChild ("Platform").gameObject.SetActive (false);
-				//transform.FindChild ("HealtBarSoldier").gameObject.SetActive (false);
-
-			}else if(GetComponent<WPIASoldierControler> ().heroID == 3){
-				SpecialHabilityZone [3].SetActive (true);
-			}
-		} else {
+		if (this.tag == "enemysoldier1" || multiplayer == true) { // CEBOLINHA COMEÇA INVISIVEL
 			if (GetComponent<WPSoldierControler> ().heroID == 1) {
 				this.transform.FindChild ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, .5f);  
 				this.transform.FindChild ("Platform").gameObject.SetActive (false);
@@ -88,10 +84,19 @@ public class HeroSpecialHability : MonoBehaviour {
 			}else if(GetComponent<WPSoldierControler> ().heroID == 3){
 				SpecialHabilityZone [3].SetActive (true);
 			}
+		} else {
+			if (GetComponent<WPIASoldierControler> ().heroID == 1) {
+				this.transform.FindChild ("CebolinhaAnimation").GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, .5f);  
+				this.transform.FindChild ("Platform").gameObject.SetActive (false);
+				//transform.FindChild ("HealtBarSoldier").gameObject.SetActive (false);
+
+			}else if(GetComponent<WPIASoldierControler> ().heroID == 3){
+				SpecialHabilityZone [3].SetActive (true);
+			}
 		}
 
 
-		if (team == 0) {
+		if (this.tag == "enemysoldier1" || multiplayer == true) {
 			effect = PlayerPrefs.GetInt ("SelectedCharacter");
 			//effect = this.gameObject.GetComponent<WPSoldierControler> ().heroID;
 		} else {
@@ -176,7 +181,7 @@ public class HeroSpecialHability : MonoBehaviour {
 					break;
 				case 2://AREA DE CURA MAGALI
 					SpecialHabilityZone [effect].SetActive (true);
-					if (team == 0) {
+					if (this.tag == "enemysoldier1" || multiplayer == true) {
 						if (this.gameObject.GetComponent<WPSoldierControler> ().vida < this.gameObject.GetComponent<WPSoldierControler> ().vidaMax) {
 							this.gameObject.GetComponent<WPSoldierControler> ().vida+=14;
 							this.gameObject.GetComponent<WPSoldierControler> ().UpdateLife ();

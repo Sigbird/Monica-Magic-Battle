@@ -9,15 +9,23 @@ public class MovementMarkerScript : MonoBehaviour {
 	public bool targetMarker;
 	public bool herobase;
 	public GameObject Hero;
+	public GameObject Enemy;
 	private float minDistance;
+	public bool enemy;
 
 
 	public bool reached;
 	// Use this for initialization
 	void Awake(){
-		Hero = GameObject.Find ("GameController").GetComponent<GameController> ().HeroGameObject;
-		reached = false;
-		minDistance = Hero.GetComponent<WPSoldierControler> ().range -2;
+		if (enemy == true) {
+			Hero = GameObject.Find ("GameController").GetComponent<GameController> ().EnemyGameObject;
+			reached = false;
+			minDistance = Hero.GetComponent<WPIASoldierControler> ().range - 2;
+		} else {
+			Hero = GameObject.Find ("GameController").GetComponent<GameController> ().HeroGameObject;
+			reached = false;
+			minDistance = Hero.GetComponent<WPSoldierControler> ().range - 2;
+		}
 	}
 
 	void Start () {

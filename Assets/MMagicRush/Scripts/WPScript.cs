@@ -37,6 +37,8 @@ public class WPScript : MonoBehaviour {
 		UIopen = false;
 		progress = 1;
 		enemyprogress = 1;
+		EnemyWaypointMarker.GetComponent<MovementMarkerScript> ().enemy = true;
+		WaypointMarker.GetComponent<MovementMarkerScript> ().enemy = false;
 	}
 	
 	// Update is called once per frame

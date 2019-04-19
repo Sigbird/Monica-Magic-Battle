@@ -33,11 +33,14 @@ public class ChargesScriptTowers : MonoBehaviour {
 	public int playerteam;
 	public GameObject SplashEffect;
 	public int heroid;
+	public bool multiplayer;
 
 	private TowerEntity towerEntity;
 
 	void Awake(){
-		towerEntity = GetComponent<TowerEntity>();
+		if (multiplayer) {
+			towerEntity = GetComponent<TowerEntity> ();
+		}
 
 	}
 
@@ -163,7 +166,9 @@ public class ChargesScriptTowers : MonoBehaviour {
 
 		this.vida -= x;
 		//UpdateLife ();
-		towerEntity.SetVida(this.vida);
+		if (multiplayer == true) {
+			towerEntity.SetVida (this.vida);
+		}
 		//Instantiate (HitAnimationObject, this.transform.position, Quaternion.identity);
 
 		if (this.vida <= 0) {

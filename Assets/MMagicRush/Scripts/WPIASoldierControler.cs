@@ -371,15 +371,17 @@ public class WPIASoldierControler : MonoBehaviour {
 //		} else 
 
 		if (GameObject.Find ("HeroBaseEnemy").GetComponent<ChargesScript> ().inCombat == true) {
-			retreatChance = 90;
-		} else if (enemycontroler.alive == true && enemycontroler.vida < enemycontroler.vida/2) {
+			retreatChance = 0;
+		} else if (enemycontroler.alive == true && enemycontroler.vida < enemycontroler.vidaMax/2) {
 			heroHarassChance = 75;
-		} else if (enemycontroler.alive == true && enemycontroler.gameObject.transform.position.y > 0) {
+		} else if (enemycontroler.alive == true && enemycontroler.gameObject.transform.position.y > 0.5f) {
 			heroHarassChance = 90;
-		} else if (this.vida >= 100) {
-			heroHarassChance = 10;
+		} else if (this.vida == vidaMax) {
+			heroHarassChance = 0;
+			retreatChance = 10;
 		} else {
 			heroHarassChance = 0;
+			retreatChance = 10;
 		}
 
 		//heroHarassChance = 100;
@@ -617,7 +619,7 @@ public class WPIASoldierControler : MonoBehaviour {
 				if (WaypointMark.GetComponent<MovementMarkerScript> ().capture == true && WaypointMark.GetComponent<MovementMarkerScript> ().enabled == true) {
 					if (captureMarkerTimer >= 0.7f) {
 						captureMarkerTimer = 0;
-						Destroy (WaypointMark.gameObject);
+						//Destroy (WaypointMark.gameObject);
 						twisting = false;
 						WaypointMark = GetNewWaypoint ();
 
@@ -625,7 +627,7 @@ public class WPIASoldierControler : MonoBehaviour {
 						captureMarkerTimer += Time.deltaTime;
 					}
 				} else {
-					Destroy (WaypointMark.gameObject);
+					//Destroy (WaypointMark.gameObject);
 					twisting = false;
 					WaypointMark = GetNewWaypoint ();
 
@@ -732,7 +734,7 @@ public class WPIASoldierControler : MonoBehaviour {
 
 	public void SetupHero(){
 		//CONFIGURAÇÃO DE TIPO DE HEROI
-		heroID = 1;
+		heroID = 0;
 
 		if (PlayerPrefs.HasKey ("SelectedCharacter") && this.team == 1 && tutorial == false) {
 			heroID =	PlayerPrefs.GetInt ("SelectedCharacter");
@@ -741,6 +743,7 @@ public class WPIASoldierControler : MonoBehaviour {
 		} else if (tutorial == true){
 			heroID = 0;
 		}
+
 
 		if(tutorial == false)
 		GameObject.Find ("EnemyPortrait").GetComponent<Image> ().sprite = heroPortraits [heroID];
@@ -792,7 +795,7 @@ public class WPIASoldierControler : MonoBehaviour {
 			this.reach = 2f;
 			this.damage = PlayerPrefs.GetFloat ("MagaliAtrib1");//14;  //Baixo
 			this.damageSpeed = PlayerPrefs.GetFloat ("MagaliAtrib2");//1; //Medio
-			this.range = 2;//PlayerPrefs.GetFloat ("MagaliAtrib3");//0.5f; //Baixissimo
+			this.range = PlayerPrefs.GetFloat ("MagaliAtrib3");//0.5f; //Baixissimo
 			this.speed = PlayerPrefs.GetFloat ("MagaliAtrib5");//1.3f; //medio
 			this.energyMax = 4;
 			this.energy = 4;

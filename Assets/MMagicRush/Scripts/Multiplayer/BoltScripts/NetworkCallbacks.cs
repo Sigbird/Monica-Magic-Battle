@@ -40,25 +40,27 @@ public class NetworkCallbacks : Bolt.GlobalEventListener {
     }
 
 	void Awake(){
-		gameController.enabled = true;
-		gameController.Duration = 240;
+		if (gameController.multiplayer == true) {
+			gameController.enabled = true;
+			gameController.Duration = 240;
 
-		if (BoltNetwork.IsClient) {
-			//gameController.enabled = true;
-			//Flip de Camera e Terreno no Cliente
-			CardSpawner.transform.position = new Vector3(3, 5.5f,0);
-			SceneCamera.transform.rotation = Quaternion.Euler (0, 0, 180);
-			SceneCamera.transform.position = new Vector3 (SceneCamera.transform.position.x, 1.05f, SceneCamera.transform.position.z);
-			TerrainVisual.transform.rotation = Quaternion.Euler (0, 0, 180);
-			TerrainVisual.transform.position = new Vector3 (TerrainVisual.transform.position.x, 1.05f, TerrainVisual.transform.position.z);    
+			if (BoltNetwork.IsClient) {
+				//gameController.enabled = true;
+				//Flip de Camera e Terreno no Cliente
+				CardSpawner.transform.position = new Vector3 (3, 5.5f, 0);
+				SceneCamera.transform.rotation = Quaternion.Euler (0, 0, 180);
+				SceneCamera.transform.position = new Vector3 (SceneCamera.transform.position.x, 1.05f, SceneCamera.transform.position.z);
+				TerrainVisual.transform.rotation = Quaternion.Euler (0, 0, 180);
+				TerrainVisual.transform.position = new Vector3 (TerrainVisual.transform.position.x, 1.05f, TerrainVisual.transform.position.z);    
 
-			foreach (GameObject g in GameObject.FindGameObjectsWithTag("enemytower1")) {
-				g.transform.rotation = Quaternion.Euler (0, 0, 180);
-				//g.transform.position = new Vector3 (g.transform.position.x, g.transform.position.y - 1f, g.transform.position.z);    
-			}
-			foreach (GameObject g in GameObject.FindGameObjectsWithTag("enemytower2")) {
-				g.transform.rotation = Quaternion.Euler (0, 0, 180);
-				//g.transform.position = new Vector3 (g.transform.position.x, g.transform.position.y - 2f, g.transform.position.z);    
+				foreach (GameObject g in GameObject.FindGameObjectsWithTag("enemytower1")) {
+					g.transform.rotation = Quaternion.Euler (0, 0, 180);
+					//g.transform.position = new Vector3 (g.transform.position.x, g.transform.position.y - 1f, g.transform.position.z);    
+				}
+				foreach (GameObject g in GameObject.FindGameObjectsWithTag("enemytower2")) {
+					g.transform.rotation = Quaternion.Euler (0, 0, 180);
+					//g.transform.position = new Vector3 (g.transform.position.x, g.transform.position.y - 2f, g.transform.position.z);    
+				}
 			}
 		}
 	}
