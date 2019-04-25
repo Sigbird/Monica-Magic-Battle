@@ -218,17 +218,25 @@ public class WPScript : MonoBehaviour {
 
 	void OnMouseUp(){
 		if (!gameController.multiplayer) {
-			__onMouseUp(Hero, Enemy, EnemyTroop, EnemyBase, EnemyBaseTower, EnemyBaseTower2);
+			if (Hero.GetComponent<WPSoldierControler> ().alive == true) {
+				__onMouseUp (Hero, Enemy, EnemyTroop, EnemyBase, EnemyBaseTower, EnemyBaseTower2);
+			}
 			return;
 		}
 
 		if (gameController.multiplayer) {
 			if (BoltNetwork.IsClient) {
-				__onMouseUp(Enemy, Hero, HeroTroop, Base, BaseTower, BaseTower2);
+				if (Enemy.GetComponent<WPSoldierControler> ().alive == true) {
+					__onMouseUp (Enemy, Hero, HeroTroop, Base, BaseTower, BaseTower2);
+				}
 				return;
 			}
 
-			if (BoltNetwork.IsServer) __onMouseUp(Hero, Enemy, EnemyTroop, EnemyBase, EnemyBaseTower, EnemyBaseTower2);
+			if (BoltNetwork.IsServer) {
+				if (Hero.GetComponent<WPSoldierControler> ().alive == true) {
+					__onMouseUp (Hero, Enemy, EnemyTroop, EnemyBase, EnemyBaseTower, EnemyBaseTower2);
+				}
+			}
 		}
 	}
 		

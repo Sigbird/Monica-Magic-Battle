@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MovementMarkerScript : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class MovementMarkerScript : MonoBehaviour {
 	public GameObject Enemy;
 	private float minDistance;
 	public bool enemy;
+	public Sprite[] markers;
 
 
 	public bool reached;
@@ -54,6 +56,13 @@ public class MovementMarkerScript : MonoBehaviour {
 				}
 			}
 		}
+
+		if (targetMarker) {
+			this.GetComponent<SpriteRenderer> ().sprite = markers [1];
+		} else {
+			this.GetComponent<SpriteRenderer> ().sprite = markers [0];
+		}
+
 	}
 
 //	public void SwitchWaypoints(){

@@ -394,17 +394,17 @@ public class CardSlotScript : MonoBehaviour {
 		 													//HABILIDADES
 
 		case 1://ESTALO MAGICO
-			cardCost = 25;
+			cardCost = 5;
 			//nameText.text = "Nevasca";
 			UIilustration.sprite = cardsImages [1];
 			break;
 		case 2://ESPLOSAO MAGICA
-			cardCost = 10;
+			cardCost = 6;
 			//nameText.text = "Estalo Magico";
 			UIilustration.sprite = cardsImages [2];
 			break;
 		case 3://NEVASCA
-			cardCost = 75;
+			cardCost = 7;
 			//nameText.text = "Canja";
 			UIilustration.sprite = cardsImages [3];
 			break;
@@ -414,32 +414,32 @@ public class CardSlotScript : MonoBehaviour {
 			UIilustration.sprite = cardsImages [4];
 			break;
 		case 5://HORA DA SONECA
-			cardCost = 50;
+			cardCost = 5;
 			//nameText.text = "Terremoto";
 			UIilustration.sprite = cardsImages [5];
 			break;
 		case 6://REMEDIO
-			cardCost = 125;
+			cardCost = 7;
 			//nameText.text = "Soneca";
 			UIilustration.sprite = cardsImages [6];
 			break;
 		case 7://CANJA
-			cardCost = 75;
+			cardCost = 5;
 			//nameText.text = "Remédio";
 			UIilustration.sprite = cardsImages [7];
 			break;
 		case 8://ESCUDO
-			cardCost = 25;
+			cardCost = 2;
 			//nameText.text = "Escudo Mágico";
 			UIilustration.sprite = cardsImages [8];
 			break;
 		case 9://GRITO DE GUERRA
-			cardCost = 100;
+			cardCost = 10;
 			//nameText.text = "Grito de Guerra";
 			UIilustration.sprite = cardsImages [9];
 			break;
 		case 10://MUNICAO
-			cardCost = 50;
+			cardCost = 5;
 			//nameText.text = "Sem Muniçao";
 			UIilustration.sprite = cardsImages [10];
 			break;
@@ -447,42 +447,42 @@ public class CardSlotScript : MonoBehaviour {
 																//TROPAS
 
 		case 11://TROPA: BIDU
-			cardCost = 24;
+			cardCost = 2;
 			//nameText.text = "Bidu";
 			UIilustration.sprite = cardsImages [11];
 			break;
 		case 12://TROPA: ASTRONAUTA
-			cardCost = 31;
+			cardCost = 3;
 			//nameText.text = "Astronauta";
 			UIilustration.sprite = cardsImages [12];
 			break;
 		case 13://TROPA: JOTALHAO
-			cardCost = 30;
+			cardCost = 4;
 			//nameText.text = "Jotalhão";
 			UIilustration.sprite = cardsImages [14];
 			break;
 		case 14://TROPA: PITECO
-			cardCost = 36;
+			cardCost = 4;
 			//nameText.text = "Piteco";
 			UIilustration.sprite = cardsImages [15];
 			break;
 		case 15://TROPA: PENADINHO
-			cardCost = 35;
+			cardCost = 3;
 			//nameText.text = "Penadinho";
 			UIilustration.sprite = cardsImages [16];
 			break;
 		case 16://TROPA: SANSAO
-			cardCost = 20;
+			cardCost = 2;
 			//nameText.text = "Sansao";
 			UIilustration.sprite = cardsImages [18];
 			break;
 		case 17://TROPA: MINGAU
-			cardCost = 35;
+			cardCost = 3;
 			//nameText.text = "Mingau";
 			UIilustration.sprite = cardsImages [19];
 			break;
 		case 18://TROPA: Cranicola
-			cardCost = 55;
+			cardCost = 2;
 			//nameText.text = "Cranicola";
 			UIilustration.sprite = cardsImages [18];
 			break;

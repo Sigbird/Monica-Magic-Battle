@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 public class SceneHelper : MonoBehaviour {
 	public bool tutorial;
@@ -16,17 +17,30 @@ public class SceneHelper : MonoBehaviour {
 	public dreamloLeaderBoard LeaderBoard;
 	public GameObject ExitConfirmation;
 	public GameObject notEnouthCoins;
-
+	public DateTime expiryTime;
 
 	public GameObject[] TutorialPanels;
 
 	public int[] zero;
 
 	public float[][] cards = new float[20][];
+	public int[] CardQuantity;
 	// Use this for initialization
 
  	// Use this for initialization
 	void Start () {
+		
+		if ( !this.ReadTimestamp ("ShopTimer") ) {
+			GenerateShopItens();
+		}
+
+		for (int i = 1; i < 19; i++) {
+			if (PlayerPrefs.HasKey ("Card" + i + "Quantity")) {
+				CardQuantity [i] = PlayerPrefs.GetInt ("Card" + i + "Quantity");
+			} else {
+				CardQuantity [i] = 0;
+			}
+		}
 
 //		cards [0] = new float[6];
 //		cards [1] = new float[6];
@@ -174,10 +188,52 @@ public class SceneHelper : MonoBehaviour {
 			ExitConfirmation.SetActive (true);
 		}
 
+		if (DateTime.Now > expiryTime) {
+			GenerateShopItens ();
+		}
+
 	}
 
 	public void OpenCoinsShop(){
 		StartCoroutine (LateCoinsShop ());
+	}
+
+	public void GenerateShopItens(){
+
+		expiryTime = DateTime.Now.AddDays (1.0);
+		PlayerPrefs.SetInt ("ShopItem1", UnityEngine.Random.Range (1, 3));
+		PlayerPrefs.SetInt ("ShopItem2", UnityEngine.Random.Range (4, 6));
+		PlayerPrefs.SetInt ("ShopItem3", UnityEngine.Random.Range (7, 9));
+		PlayerPrefs.SetInt ("ShopItem4", UnityEngine.Random.Range (10, 12));
+		PlayerPrefs.SetInt ("ShopItem5", UnityEngine.Random.Range (13, 15));
+		PlayerPrefs.SetInt ("ShopItem6", UnityEngine.Random.Range (16, 18));
+		PlayerPrefs.SetString ("ShopTimer", expiryTime.ToBinary ().ToString ());
+	}
+
+	private bool ReadTimestamp (string key) {
+		long tmp = Convert.ToInt64 (PlayerPrefs.GetString(key, "0"));
+		if ( tmp == 0 ) {
+			return false;
+		}
+		expiryTime = DateTime.FromBinary (tmp);
+		return true;
+	}
+
+	public void SaveCardsQuantity(){
+		for (int i = 1; i < 19; i++) {
+			PlayerPrefs.SetInt("Card"+i+"Quantity",CardQuantity[i]);
+		}
+
+	}
+
+
+
+	void OnDisable(){
+		SaveCardsQuantity ();
+	}
+
+	void OnDestroy(){
+		SaveCardsQuantity ();
 	}
 
 	IEnumerator LateCoinsShop(){
@@ -263,6 +319,7 @@ public class SceneHelper : MonoBehaviour {
 
 	void OnApplicationQuit(){
 		PlayerPrefs.SetInt ("Lesson", 1);
+		SaveCardsQuantity ();
 //		PlayerPrefsX.SetIntArray ("PlayerCardsIDs", empty);
 //		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
 	}
@@ -335,9 +392,9 @@ public class SceneHelper : MonoBehaviour {
 	}
 
 	IEnumerator StartingCards(){
-		PurchaseCardBidu ();
+		//PurchaseCardBidu ();
 		yield return new WaitForSeconds (0.1f);
-		PurchaseCardCanja ();
+		//PurchaseCardCanja ();
 	}
 
 	public void PurchaseCardBidu(){

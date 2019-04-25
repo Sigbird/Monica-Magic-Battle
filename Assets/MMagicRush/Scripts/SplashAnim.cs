@@ -24,7 +24,11 @@ public class SplashAnim : MonoBehaviour {
 		PlayerPrefs.SetInt ("Lesson", 1);
 		PlayerPrefs.SetString ("Tutorial", "False");
 	}
-	
+
+	void Awake(){
+		Time.timeScale = 1;
+	}
+
 	// Update is called once per frame
 	void Update () {
 		

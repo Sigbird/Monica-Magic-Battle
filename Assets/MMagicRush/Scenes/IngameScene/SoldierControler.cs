@@ -790,7 +790,7 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 			this.specialHabilityCD = 2;
 			this.explosiveDamage = false;
 			this.skillshoter = false;
-			this.transform.localScale -= new Vector3 (0.2f, 0.2f, 0);
+			this.transform.localScale -= new Vector3 (0.1f, 0.1f, 0);
 			//this.GetComponent<SpriteRenderer> ().sprite = tropasSprites [0];
 			this.haveAnimation = true;
 			Instantiate (animations [1], transform);
@@ -850,7 +850,7 @@ public class SoldierControler : Bolt.EntityEventListener<ITroopState> {
 			this.summon = false;
 			this.explosiveDamage = false;
 			this.skillshoter = false;
-			this.transform.localScale += new Vector3 (0.4f, 0.4f, 0);
+			this.transform.localScale += new Vector3 (0.35f, 0.35f, 0);
 
 			this.HealtBarObject.transform.localScale += new Vector3 (-0.2f, -0.2f, 0);
 			this.HealtBarObject.transform.position += new Vector3 (0, 0.2f, 0);

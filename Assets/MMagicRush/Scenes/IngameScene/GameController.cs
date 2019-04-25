@@ -100,6 +100,10 @@ public class GameController : MonoBehaviour {
 	public NetworkCallbacks networkController;
 
 	void Awake() {
+		if (multiplayer == false) {
+			Time.timeScale = 1;
+		}
+
 		networkController = GetComponent<NetworkCallbacks>();
 
 		if (multiplayer) {
@@ -184,11 +188,11 @@ public class GameController : MonoBehaviour {
 //			HeroGameObject.GetComponent<WPSoldierControler> ().enabled = true;
 //
 //		}
-		EnemyDiamonds = 60;
-		Diamonds = 60;
+		EnemyDiamonds = 0;
+		Diamonds = 0;
 		gempertimeprogress = 0;
 		gempertimeMaxValue = 1;
-		DiamondsMax = 100;
+		DiamondsMax = 10;
 		enemyCharges = PlayerPrefs.GetInt ("enemyCharges");
 //		Debug.Log ("Enemy " + enemyCharges);
 		playerCharges = PlayerPrefs.GetInt ("playerCharges");
@@ -236,7 +240,7 @@ public class GameController : MonoBehaviour {
 
 		ChestsQtd = PlayerPrefs.GetInt ("ChestsNumber");
 
-		gempertimeMaxValue = 3;
+		gempertimeMaxValue = 2;
 
 	}
 
@@ -366,17 +370,17 @@ public class GameController : MonoBehaviour {
 
 
 		if (Duration <= 120) {
-			gempertimeMaxValue = 6;
+			gempertimeMaxValue = 2;
 		} else {
-			gempertimeMaxValue = 3;
+			gempertimeMaxValue = 1;
 		}
 
-		if(Diamonds>100){
-			Diamonds = 100;
+		if(Diamonds>10){
+			Diamonds = 10;
 		}
 
-		if(EnemyDiamonds>100){
-			EnemyDiamonds = 100;
+		if(EnemyDiamonds>10){
+			EnemyDiamonds = 10;
 		}
 
 

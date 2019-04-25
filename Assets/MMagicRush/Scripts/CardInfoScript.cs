@@ -18,6 +18,7 @@ public class CardInfoScript : MonoBehaviour {
 	public GameObject cardPurchasedButton;
 	public Button purchaseButton;
 	public GameObject MinCardsWarning;
+	public SceneHelper Helper;
 
 
 	public Sprite[] Efects;
@@ -26,6 +27,8 @@ public class CardInfoScript : MonoBehaviour {
 
 	public GameObject enableButton;
 	public GameObject disableButton;
+	public GameObject enableButtontroops;
+	public GameObject disableButtontroops;
 	public GameObject noEnouthCoins;
 	public int[] zero;
 	public bool ClearPlayerPrefs;
@@ -38,6 +41,8 @@ public class CardInfoScript : MonoBehaviour {
 	private string description;
 	public GameObject[] OptionBars;
 	public int treeatributes;
+	public Text CardCount;
+	public Text CardCountMax;
 
 	// Use this for initialization
 	void Start () {
@@ -49,6 +54,7 @@ public class CardInfoScript : MonoBehaviour {
 	}
 
 	void OnEnable(){
+		CheckForActive ();
 		activable = false;
 		treeatributes = 0;
 	}
@@ -82,6 +88,9 @@ public class CardInfoScript : MonoBehaviour {
 		character.sprite = o.GetComponent<CardScript> ().peson;
 		//cardatributes = "Card" + o.GetComponent<CardScript> ().CardID.ToString ();
 		GetAtributes (o.GetComponent<CardScript> ().CardID);
+
+		CardCount.text = Helper.CardQuantity[cardID].ToString();
+		CardCountMax.text = "3";
 		//atributes = PlayerPrefsX.GetFloatArray (cardatributes);
 
 //		if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15 && enableButton != null) {
@@ -497,10 +506,11 @@ public class CardInfoScript : MonoBehaviour {
 		int coins = PlayerPrefs.GetInt ("PlayerCoins");
 
 
-		if (200 <= coins) {
-
+		//if (200 <= coins) {
+		if (Helper.CardQuantity[cardID] >= 3) {
 		if (treeatributes == 2) {
-			PlayerPrefs.SetInt ("PlayerCoins", coins - 200);
+			//PlayerPrefs.SetInt ("PlayerCoins", coins - 200);
+			Helper.CardQuantity[cardID] = 0;
 			treeatributes = 0;
 		} else {
 			treeatributes += 1;
@@ -518,24 +528,31 @@ public class CardInfoScript : MonoBehaviour {
 
 	public void BuyCard(){
 		int coins = PlayerPrefs.GetInt ("PlayerCoins");
+
+		List<int> iList = new List<int> ();
+
+		iList = CleanArraytoList (PlayerPrefsX.GetIntArray ("PlayerCardsIDs"));
+
+
+
 		if (int.Parse (cost.text) <= coins) {
-			int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+			//int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
 
-			List<int> iList = new List<int> ();
+			//List<int> iList = new List<int> ();
 
-			for (int i = 0; i < original.Length; i++) {
-				iList.Add (original [i]);
-			}
+//			for (int i = 0; i < original.Length; i++) {
+//				iList.Add (original [i]);
+//			}
 
 			iList.Add (lastCard.GetComponent<CardScript> ().CardID);
 
-			int[] finalArray = new int[iList.Count];
+			//int[] finalArray = new int[iList.Count];
 
-			int x = 0;
-			foreach (int i in iList) {
-				finalArray [x] = i;
-				x++;
-			}
+//			int x = 0;
+//			foreach (int i in iList) {
+//				finalArray [x] = i;
+//				x++;
+//			}
 
 
 //		int[] finalArray = new  int[original.Length + 1 ];
@@ -548,7 +565,7 @@ public class CardInfoScript : MonoBehaviour {
 
 
 			//ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
-			PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
+			PlayerPrefsX.SetIntArray ("PlayerCardsIDs", iList.ToArray());
 
 			//if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15) {
 			ActiveCard ();
@@ -563,30 +580,31 @@ public class CardInfoScript : MonoBehaviour {
 
 	public void RemoveCard(){
 
-		int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+		//int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
+		List<int> iList = new List<int> ();
+		iList = CleanArraytoList (PlayerPrefsX.GetIntArray ("PlayerCardsIDs"));
 
-		if (original.Length > 1) {
-
-			List<int> iList = new List<int> ();
+		if (iList.Count > 1) {
 
 
-			for (int i = 0; i < original.Length; i++) {
-				iList.Add (original [i]);
-			}
+
+//			for (int i = 0; i < original.Length; i++) {
+//				iList.Add (original [i]);
+//			}
 
 			iList.Remove (lastCard.GetComponent<CardScript> ().CardID);
 
-			int[] finalArray = new int[iList.Count];
+//			int[] finalArray = new int[iList.Count];
+//
+//			int x = 0;
+//			foreach (int i in iList) {
+//				finalArray [x] = i;
+//				x++;
+//			}
 
-			int x = 0;
-			foreach (int i in iList) {
-				finalArray [x] = i;
-				x++;
-			}
-
-			PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
+			PlayerPrefsX.SetIntArray ("PlayerCardsIDs", iList.ToArray());
 			DeactiveCard ();
-			Destroy (lastCard.gameObject);
+			//Destroy (lastCard.gameObject);
 			this.gameObject.SetActive (false);
 		} else {
 			MinCardsWarning.SetActive (true);
@@ -595,23 +613,21 @@ public class CardInfoScript : MonoBehaviour {
 
 	public void ActiveCard(){
 		//lastCard.GetComponent<CardScript> ().SetActiveButton ();
-		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
 
 		List<int> iList = new List<int>();
 
-		for(int i = 0; i < original.Length; i ++ ) {
-			iList.Add (original [i]);
-		}
+		iList= CleanArraytoList( PlayerPrefsX.GetIntArray ("SelectedCardsIDs"));
+
 
 		iList.Add (lastCard.GetComponent<CardScript> ().CardID);
 
-		int[] finalArray = new int[iList.Count];
+//		int[] finalArray = new int[iList.Count];
 
-		int x = 0;
-		foreach (int i in iList) {
-			finalArray [x] = i;
-			x++;
-		}
+//		int x = 0;
+//		foreach (int i in iList) {
+//			finalArray [x] = i;
+//			x++;
+//		}
 			
 			
 //		int[] finalArray = new  int[original.Length + 1 ];
@@ -619,20 +635,26 @@ public class CardInfoScript : MonoBehaviour {
 //		for(int i = 0; i < original.Length; i ++ ) {
 //			finalArray[i] = original[i];
 //		}
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", iList.ToArray());
 		lastCard.GetComponent<CardScript> ().SetActiveButton ();
+
 //		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
-		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
+//		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
 	}
 
 	public void DeactiveCard(){
 		//lastCard.GetComponent<CardScript> ().SetDesativeButton ();
-		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
-
 		List<int> iList = new List<int>();
 
-		for(int i = 0; i < original.Length; i ++ ) {
-			iList.Add (original [i]);
-		}
+		iList= CleanArraytoList( PlayerPrefsX.GetIntArray ("SelectedCardsIDs"));
+
+		//int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
+
+		//List<int> iList = new List<int>();
+
+//		for(int i = 0; i < original.Length; i ++ ) {
+//			iList.Add (original [i]);
+//		}
 
 		iList.Remove (lastCard.GetComponent<CardScript> ().CardID);
 	
@@ -673,6 +695,45 @@ public class CardInfoScript : MonoBehaviour {
 
 	}
 
+	public void CheckForActive(){
+//		List<int> iList = new List<int>();
+//
+//		iList= CleanArraytoList( PlayerPrefsX.GetIntArray ("SelectedCardsIDs"));
+//
+//		if (iList.Contains (lastCard.GetComponent<CardScript> ().CardID)) {
+//			enableButton.SetActive (true);
+//			enableButtontroops.SetActive (true);
+//			disableButton.SetActive (false);
+//			disableButtontroops.SetActive (false);
+//		} else {
+//			enableButton.SetActive (false);
+//			enableButtontroops.SetActive (false);
+//			disableButton.SetActive (true);
+//			disableButtontroops.SetActive (true);
+//		}
+		StartCoroutine(LateCheckForActive());
+	}
+
+	IEnumerator LateCheckForActive(){
+		yield return new WaitForSeconds (0.5f);
+		List<int> iList = new List<int>();
+
+		iList= CleanArraytoList( PlayerPrefsX.GetIntArray ("SelectedCardsIDs"));
+
+		if (iList.Contains (lastCard.GetComponent<CardScript> ().CardID)) {
+			enableButton.SetActive (false);
+			enableButtontroops.SetActive (false);
+			disableButton.SetActive (true);
+			disableButtontroops.SetActive (true);
+		} else {
+			
+			enableButton.SetActive (true);
+			enableButtontroops.SetActive (true);
+			disableButton.SetActive (false);
+			disableButtontroops.SetActive (false);
+		}
+	}
+
 	public void CloseInfo(){
 		Time.timeScale = 1;
 		WPScript.UIopen = false;
@@ -710,6 +771,39 @@ public class CardInfoScript : MonoBehaviour {
 			ImageAnimated.SetActive (false);
 			this.gameObject.SetActive (false);
 		}
+	}
+
+
+	public int[] CleanArray(int[] arr){
+
+
+
+
+		List<int> list2 = new List<int>();
+		foreach (int x in arr) {
+			if (!list2.Contains (x)) {
+				list2.Add (x);
+			}
+		}
+
+		return list2.ToArray ();
+
+	}
+
+	public List<int> CleanArraytoList(int[] arr){
+
+
+
+
+		List<int> list2 = new List<int>();
+		foreach (int x in arr) {
+			if (!list2.Contains (x)) {
+				list2.Add (x);
+			}
+		}
+
+		return list2;
+
 	}
 
 }

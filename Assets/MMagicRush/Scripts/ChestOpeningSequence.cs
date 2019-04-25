@@ -9,6 +9,7 @@ public class ChestOpeningSequence : MonoBehaviour {
 	public ChestManagement manager;
 	public GameObject ReturnPanel;
 	public Button chestOpener;
+	public SceneHelper Helper;
 
 	// Use this for initialization
 	void Start () {
@@ -22,9 +23,11 @@ public class ChestOpeningSequence : MonoBehaviour {
 
 	IEnumerator DeliverRewards(){
 		yield return new WaitForSeconds (1f);
+		RewardPrefab [0].GetComponent<RewardPrefabScript> ().Controller = Helper;
 		RewardPrefab[0].GetComponent<RewardPrefabScript> ().IdPos = 0;
 		RewardPrefab[3] = Instantiate (RewardPrefab[0], new Vector3(0,-2,0), Quaternion.identity);
 		yield return new WaitForSeconds (0.5f);
+		RewardPrefab [1].GetComponent<RewardPrefabScript> ().Controller = Helper;
 		RewardPrefab[1].GetComponent<RewardPrefabScript> ().IdPos = 1;
 		RewardPrefab[4] = Instantiate (RewardPrefab[1], new Vector3(0,-2,0), Quaternion.identity);
 		yield return new WaitForSeconds (0.5f);

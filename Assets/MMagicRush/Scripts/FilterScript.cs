@@ -6,6 +6,7 @@ using System.Linq;
 public class FilterScript : MonoBehaviour {
 
 	public bool CardShop;
+	public bool CardColection;
 
 
 	public List<Transform> childrens;
@@ -23,7 +24,9 @@ public class FilterScript : MonoBehaviour {
 	public List<int> ids = new List<int>();
 
 	void OnEnable() {
-		EnableCards ();
+		if (CardColection == false) {
+			EnableCards ();
+		}
 	
 	}
 
@@ -83,12 +86,17 @@ public class FilterScript : MonoBehaviour {
 
 	}
 
+	public void EnableColection(){
+	
+	}
+
 	public void UpdatePlayerCardList(){
 
-		cs = new int[19];
+		cs = new int[7];
 
-		for (int i = 0; i < cs.Length; i++) {
-			cs [i] = i;//Random.Range(1,18);
+		for (int i = 1; i < cs.Length; i++) {
+			cs [i] = PlayerPrefs.GetInt ("ShopItem" + i);
+			//cs [i] = i;//Random.Range(1,18);
 			//Random da Loja;
 		}
 
