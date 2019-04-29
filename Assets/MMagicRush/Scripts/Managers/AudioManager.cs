@@ -7,11 +7,13 @@ public class AudioManager : MonoBehaviour {
 	public AudioClip[] audios;
 	public AudioClip[] clickaudios;
 	public AudioClip[] reactions;
+	public AudioClip[] endingGameSounds;
 	public AudioSource source;
 	public float MusicVolume;
 	public float EffectVolume;
 	public string terraintype;
 	public bool boss;
+
 	// Use this for initialization
 	void Start () {
 		if (PlayerPrefs.HasKey ("GameVolume")) {
@@ -60,6 +62,14 @@ public class AudioManager : MonoBehaviour {
 
 	public void SetVolume(float x){
 		source.volume = x;
+	}
+
+
+	public void OvertimePlayAudio(){
+
+
+		source.PlayOneShot (endingGameSounds [Random.Range(0,2)], EffectVolume);
+
 	}
 
 	public void PlayAudio(string track){
@@ -181,21 +191,21 @@ public class AudioManager : MonoBehaviour {
 					if(StaticController.instance.GameController.GameOver == false){ // CENAS DE GAMEPLAY
 						if (terraintype == "Forest") {
 							if (boss) {
-								source.clip = audios [18];
-							} else {
 								source.clip = audios [21];
+							} else {
+								source.clip = audios [18];
 							}
 						} else if (terraintype == "Winter") {
 							if (boss) {
-								source.clip = audios [19];
-							} else {
 								source.clip = audios [22];
+							} else {
+								source.clip = audios [19];
 							}
 						} else if (terraintype == "Dungeon") {
 							if (boss) {
-								source.clip = audios [20];
-							} else {
 								source.clip = audios [23];
+							} else {
+								source.clip = audios [20];
 							}
 						} else {
 							source.clip = audios [21];
@@ -222,21 +232,21 @@ public class AudioManager : MonoBehaviour {
 			if(StaticController.instance.GameController.GameOver == false){ // CENAS DE GAMEPLAY
 				if (terraintype == "Forest") {
 					if (boss) {
-						source.clip = audios [18];
-					} else {
 						source.clip = audios [21];
+					} else {
+						source.clip = audios [18];
 					}
 				} else if (terraintype == "Winter") {
 					if (boss) {
-						source.clip = audios [19];
-					} else {
 						source.clip = audios [22];
+					} else {
+						source.clip = audios [19];
 					}
 				} else if (terraintype == "Dungeon") {
 					if (boss) {
-						source.clip = audios [20];
-					} else {
 						source.clip = audios [23];
+					} else {
+						source.clip = audios [20];
 					}
 				} else {
 					source.clip = audios [21];

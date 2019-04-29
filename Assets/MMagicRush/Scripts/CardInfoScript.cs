@@ -518,7 +518,7 @@ public class CardInfoScript : MonoBehaviour {
 			float a;
 			x++;
 			a = PlayerPrefs.GetFloat ("Card" + cardID + "" + x);
-			a++;
+			a+=1;
 			PlayerPrefs.SetFloat ("Card" + cardID + "" + x, a);
 			atributesOnScreen [x - 1].text = a.ToString ();
 		} else {
@@ -570,7 +570,7 @@ public class CardInfoScript : MonoBehaviour {
 			//if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15) {
 			ActiveCard ();
 			//}
-
+			Helper.CardQuantity[lastCard.GetComponent<CardScript> ().CardID] += 1;
 			PlayerPrefs.SetInt ("PlayerCoins", coins - int.Parse (cost.text));
 			this.gameObject.SetActive (false);
 		} else {

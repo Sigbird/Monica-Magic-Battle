@@ -324,24 +324,54 @@ public class SceneHelper : MonoBehaviour {
 //		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", empty);
 	}
 
+	public int[] CleanArray(int[] arr){
+
+
+
+
+		List<int> list2 = new List<int>();
+		foreach (int x in arr) {
+			if (!list2.Contains (x)) {
+				list2.Add (x);
+			}
+		}
+
+		return list2.ToArray ();
+
+	}
+
+	public List<int> CleanArraytoList(int[] arr){
+
+
+
+
+		List<int> list2 = new List<int>();
+		foreach (int x in arr) {
+			if (!list2.Contains (x)) {
+				list2.Add (x);
+			}
+		}
+
+		return list2;
+
+	}
+
 	public void EarnCard(int cardID){
-				int[] original = PlayerPrefsX.GetIntArray ("PlayerCardsIDs");
 
 				List<int> iList = new List<int> ();
 
-				for (int i = 0; i < original.Length; i++) {
-					iList.Add (original [i]);
-				}
+				iList = CleanArraytoList (PlayerPrefsX.GetIntArray ("PlayerCardsIDs"));
+
 
 				iList.Add (cardID);
 
-				int[] finalArray = new int[iList.Count];
-
-				int x = 0;
-				foreach (int i in iList) {
-					finalArray [x] = i;
-					x++;
-				}
+//				int[] finalArray = new int[iList.Count];
+//
+//				int x = 0;
+//				foreach (int i in iList) {
+//					finalArray [x] = i;
+//					x++;
+//				}
 
 
 				//		int[] finalArray = new  int[original.Length + 1 ];
@@ -354,32 +384,34 @@ public class SceneHelper : MonoBehaviour {
 
 
 				//ArrayUtility.Add<int>(ref temp,lastCard.GetComponent<CardScript>().CardID);
-				PlayerPrefsX.SetIntArray ("PlayerCardsIDs", finalArray);
+				PlayerPrefsX.SetIntArray ("PlayerCardsIDs", iList.ToArray());
 
-				if (PlayerPrefsX.GetIntArray ("SelectedCardsIDs").Length <= 15) {
+				if (iList.Count <= 6) {
 				ActiveCard (cardID);
 				}
 	}
 
 	public void ActiveCard(int cardID){
-		
-		int[] original = PlayerPrefsX.GetIntArray ("SelectedCardsIDs");
 
 		List<int> iList = new List<int>();
 
-		for(int i = 0; i < original.Length; i ++ ) {
-			iList.Add (original [i]);
-		}
+		iList = CleanArraytoList( PlayerPrefsX.GetIntArray ("SelectedCardsIDs"));
+
+//		List<int> iList = new List<int>();
+//
+//		for(int i = 0; i < original.Length; i ++ ) {
+//			iList.Add (original [i]);
+//		}
 
 		iList.Add (cardID);
 
-		int[] finalArray = new int[iList.Count];
-
-		int x = 0;
-		foreach (int i in iList) {
-			finalArray [x] = i;
-			x++;
-		}
+//		int[] finalArray = new int[iList.Count];
+//
+//		int x = 0;
+//		foreach (int i in iList) {
+//			finalArray [x] = i;
+//			x++;
+//		}
 
 		//		int[] finalArray = new  int[original.Length + 1 ];
 		//
@@ -388,7 +420,7 @@ public class SceneHelper : MonoBehaviour {
 		//		}
 
 		//		finalArray[finalArray.Length - 1] = lastCard.GetComponent<CardScript>().CardID;
-		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", finalArray);
+		PlayerPrefsX.SetIntArray ("SelectedCardsIDs", iList.ToArray());
 	}
 
 	IEnumerator StartingCards(){
@@ -503,7 +535,7 @@ public class SceneHelper : MonoBehaviour {
 
 		PlayerPrefs.DeleteKey ("CustomValues");
 
-		if (PlayerPrefs.HasKey ("CustomValues")) {
+		if (PlayerPrefs.GetInt ("CustomValues") == 1) {
 			
 		}else{
 			
@@ -569,197 +601,204 @@ public class SceneHelper : MonoBehaviour {
 		Debug.Log("card3 ");
 
 
-		PlayerPrefs.SetFloat ("Card11", 0);
-		PlayerPrefs.SetFloat ("Card21", 0);
-		PlayerPrefs.SetFloat ("Card31", 0);
-		PlayerPrefs.SetFloat ("Card41", 0);
-		PlayerPrefs.SetFloat ("Card51", 0);
-		PlayerPrefs.SetFloat ("Card61", 0);
-		PlayerPrefs.SetFloat ("Card71", 0);
-		PlayerPrefs.SetFloat ("Card81", 0);
-		PlayerPrefs.SetFloat ("Card91", 0);
-		PlayerPrefs.SetFloat ("Card101", 0);
-		PlayerPrefs.SetFloat ("Card111", 0);
-		PlayerPrefs.SetFloat ("Card121", 0);
-		PlayerPrefs.SetFloat ("Card131", 0);
-		PlayerPrefs.SetFloat ("Card141", 0);
-		PlayerPrefs.SetFloat ("Card151", 0);
-		PlayerPrefs.SetFloat ("Card161", 0);
-		PlayerPrefs.SetFloat ("Card171", 0);
-		PlayerPrefs.SetFloat ("Card181", 0);
-		PlayerPrefs.SetFloat ("Card191", 0);  
+//		PlayerPrefs.SetFloat ("Card11", 0);
+//		PlayerPrefs.SetFloat ("Card21", 0);
+//		PlayerPrefs.SetFloat ("Card31", 0);
+//		PlayerPrefs.SetFloat ("Card41", 0);
+//		PlayerPrefs.SetFloat ("Card51", 0);
+//		PlayerPrefs.SetFloat ("Card61", 0);
+//		PlayerPrefs.SetFloat ("Card71", 0);
+//		PlayerPrefs.SetFloat ("Card81", 0);
+//		PlayerPrefs.SetFloat ("Card91", 0);
+//		PlayerPrefs.SetFloat ("Card101", 0);
+//		PlayerPrefs.SetFloat ("Card111", 0);
+//		PlayerPrefs.SetFloat ("Card121", 0);
+//		PlayerPrefs.SetFloat ("Card131", 0);
+//		PlayerPrefs.SetFloat ("Card141", 0);
+//		PlayerPrefs.SetFloat ("Card151", 0);
+//		PlayerPrefs.SetFloat ("Card161", 0);
+//		PlayerPrefs.SetFloat ("Card171", 0);
+//		PlayerPrefs.SetFloat ("Card181", 0);
+//		PlayerPrefs.SetFloat ("Card191", 0);  
 
-		if (PlayerPrefs.GetFloat  ("Card11") == 0) {
-			PlayerPrefs.SetFloat ("Card11", cards [1][0]);
-			PlayerPrefs.SetFloat ("Card12", cards [1][1]);
-			PlayerPrefs.SetFloat ("Card13", cards [1][2]);
-			PlayerPrefs.SetFloat ("Card14", cards [1][3]);
-			PlayerPrefs.SetFloat ("Card15", cards [1][4]);
-			PlayerPrefs.SetFloat ("Card16", cards [1][5]);
-		}
+		if (PlayerPrefs.GetInt ("CustomValuesTroops") == 1) {
 
-		if (PlayerPrefs.GetFloat  ("Card21") == 0) {
-			PlayerPrefs.SetFloat ("Card21", cards [2][0]);
-			PlayerPrefs.SetFloat ("Card22", cards [2][1]);
-			PlayerPrefs.SetFloat ("Card23", cards [2][2]);
-			PlayerPrefs.SetFloat ("Card24", cards [2][3]);
-			PlayerPrefs.SetFloat ("Card25", cards [2][4]);
-			PlayerPrefs.SetFloat ("Card26", cards [2][5]);
-		}
+		} else {
+			PlayerPrefs.SetInt ("CustomValuesTroops",1);
 
-		if (PlayerPrefs.GetFloat  ("Card31") == 0) {
-			PlayerPrefs.SetFloat ("Card31", cards [3][0]);
-			PlayerPrefs.SetFloat ("Card32", cards [3][1]);
-			PlayerPrefs.SetFloat ("Card33", cards [3][2]);
-			PlayerPrefs.SetFloat ("Card34", cards [3][3]);
-			PlayerPrefs.SetFloat ("Card35", cards [3][4]);
-			PlayerPrefs.SetFloat ("Card36", cards [3][5]);
-		}
 
-		if (PlayerPrefs.GetFloat  ("Card41") == 0) {
-			PlayerPrefs.SetFloat ("Card41", cards [4][0]);
-			PlayerPrefs.SetFloat ("Card42", cards [4][1]);
-			PlayerPrefs.SetFloat ("Card43", cards [4][2]);
-			PlayerPrefs.SetFloat ("Card44", cards [4][3]);
-			PlayerPrefs.SetFloat ("Card45", cards [4][4]);
-			PlayerPrefs.SetFloat ("Card46", cards [4][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card11") == 0) {
+				PlayerPrefs.SetFloat ("Card11", cards [1] [0]);
+				PlayerPrefs.SetFloat ("Card12", cards [1] [1]);
+				PlayerPrefs.SetFloat ("Card13", cards [1] [2]);
+				PlayerPrefs.SetFloat ("Card14", cards [1] [3]);
+				PlayerPrefs.SetFloat ("Card15", cards [1] [4]);
+				PlayerPrefs.SetFloat ("Card16", cards [1] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card51") == 0) {
-			PlayerPrefs.SetFloat ("Card51", cards [5][0]);
-			PlayerPrefs.SetFloat ("Card52", cards [5][1]);
-			PlayerPrefs.SetFloat ("Card53", cards [5][2]);
-			PlayerPrefs.SetFloat ("Card54", cards [5][3]);
-			PlayerPrefs.SetFloat ("Card55", cards [5][4]);
-			PlayerPrefs.SetFloat ("Card56", cards [5][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card21") == 0) {
+				PlayerPrefs.SetFloat ("Card21", cards [2] [0]);
+				PlayerPrefs.SetFloat ("Card22", cards [2] [1]);
+				PlayerPrefs.SetFloat ("Card23", cards [2] [2]);
+				PlayerPrefs.SetFloat ("Card24", cards [2] [3]);
+				PlayerPrefs.SetFloat ("Card25", cards [2] [4]);
+				PlayerPrefs.SetFloat ("Card26", cards [2] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card61") == 0) {
-			PlayerPrefs.SetFloat ("Card61", cards [6][0]);
-			PlayerPrefs.SetFloat ("Card62", cards [6][1]);
-			PlayerPrefs.SetFloat ("Card63", cards [6][2]);
-			PlayerPrefs.SetFloat ("Card64", cards [6][3]);
-			PlayerPrefs.SetFloat ("Card65", cards [6][4]);
-			PlayerPrefs.SetFloat ("Card66", cards [6][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card31") == 0) {
+				PlayerPrefs.SetFloat ("Card31", cards [3] [0]);
+				PlayerPrefs.SetFloat ("Card32", cards [3] [1]);
+				PlayerPrefs.SetFloat ("Card33", cards [3] [2]);
+				PlayerPrefs.SetFloat ("Card34", cards [3] [3]);
+				PlayerPrefs.SetFloat ("Card35", cards [3] [4]);
+				PlayerPrefs.SetFloat ("Card36", cards [3] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card71") == 0) {
-			PlayerPrefs.SetFloat ("Card71", cards [7][0]);
-			PlayerPrefs.SetFloat ("Card72", cards [7][1]);
-			PlayerPrefs.SetFloat ("Card73", cards [7][2]);
-			PlayerPrefs.SetFloat ("Card74", cards [7][3]);
-			PlayerPrefs.SetFloat ("Card75", cards [7][4]);
-			PlayerPrefs.SetFloat ("Card76", cards [7][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card41") == 0) {
+				PlayerPrefs.SetFloat ("Card41", cards [4] [0]);
+				PlayerPrefs.SetFloat ("Card42", cards [4] [1]);
+				PlayerPrefs.SetFloat ("Card43", cards [4] [2]);
+				PlayerPrefs.SetFloat ("Card44", cards [4] [3]);
+				PlayerPrefs.SetFloat ("Card45", cards [4] [4]);
+				PlayerPrefs.SetFloat ("Card46", cards [4] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card81") == 0) {
-			PlayerPrefs.SetFloat ("Card81", cards [8][0]);
-			PlayerPrefs.SetFloat ("Card82", cards [8][1]);
-			PlayerPrefs.SetFloat ("Card83", cards [8][2]);
-			PlayerPrefs.SetFloat ("Card84", cards [8][3]);
-			PlayerPrefs.SetFloat ("Card85", cards [8][4]);
-			PlayerPrefs.SetFloat ("Card86", cards [8][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card51") == 0) {
+				PlayerPrefs.SetFloat ("Card51", cards [5] [0]);
+				PlayerPrefs.SetFloat ("Card52", cards [5] [1]);
+				PlayerPrefs.SetFloat ("Card53", cards [5] [2]);
+				PlayerPrefs.SetFloat ("Card54", cards [5] [3]);
+				PlayerPrefs.SetFloat ("Card55", cards [5] [4]);
+				PlayerPrefs.SetFloat ("Card56", cards [5] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card91") == 0) {
-			PlayerPrefs.SetFloat ("Card91", cards [9][0]);
-			PlayerPrefs.SetFloat ("Card92", cards [9][1]);
-			PlayerPrefs.SetFloat ("Card93", cards [9][2]);
-			PlayerPrefs.SetFloat ("Card94", cards [9][3]);
-			PlayerPrefs.SetFloat ("Card95", cards [9][4]);
-			PlayerPrefs.SetFloat ("Card96", cards [9][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card61") == 0) {
+				PlayerPrefs.SetFloat ("Card61", cards [6] [0]);
+				PlayerPrefs.SetFloat ("Card62", cards [6] [1]);
+				PlayerPrefs.SetFloat ("Card63", cards [6] [2]);
+				PlayerPrefs.SetFloat ("Card64", cards [6] [3]);
+				PlayerPrefs.SetFloat ("Card65", cards [6] [4]);
+				PlayerPrefs.SetFloat ("Card66", cards [6] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card101") == 0) {
-			PlayerPrefs.SetFloat ("Card101", cards [10][0]);
-			PlayerPrefs.SetFloat ("Card102", cards [10][1]);
-			PlayerPrefs.SetFloat ("Card103", cards [10][2]);
-			PlayerPrefs.SetFloat ("Card104", cards [10][3]);
-			PlayerPrefs.SetFloat ("Card105", cards [10][4]);
-			PlayerPrefs.SetFloat ("Card106", cards [10][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card71") == 0) {
+				PlayerPrefs.SetFloat ("Card71", cards [7] [0]);
+				PlayerPrefs.SetFloat ("Card72", cards [7] [1]);
+				PlayerPrefs.SetFloat ("Card73", cards [7] [2]);
+				PlayerPrefs.SetFloat ("Card74", cards [7] [3]);
+				PlayerPrefs.SetFloat ("Card75", cards [7] [4]);
+				PlayerPrefs.SetFloat ("Card76", cards [7] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card111") == 0) {
-			PlayerPrefs.SetFloat ("Card111", cards [11][0]);
-			PlayerPrefs.SetFloat ("Card112", cards [11][1]);
-			PlayerPrefs.SetFloat ("Card113", cards [11][2]);
-			PlayerPrefs.SetFloat ("Card114", cards [11][3]);
-			PlayerPrefs.SetFloat ("Card115", cards [11][4]);
-			PlayerPrefs.SetFloat ("Card116", cards [11][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card81") == 0) {
+				PlayerPrefs.SetFloat ("Card81", cards [8] [0]);
+				PlayerPrefs.SetFloat ("Card82", cards [8] [1]);
+				PlayerPrefs.SetFloat ("Card83", cards [8] [2]);
+				PlayerPrefs.SetFloat ("Card84", cards [8] [3]);
+				PlayerPrefs.SetFloat ("Card85", cards [8] [4]);
+				PlayerPrefs.SetFloat ("Card86", cards [8] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card121") == 0) {
-			PlayerPrefs.SetFloat ("Card121", cards [12][0]);
-			PlayerPrefs.SetFloat ("Card122", cards [12][1]);
-			PlayerPrefs.SetFloat ("Card123", cards [12][2]);
-			PlayerPrefs.SetFloat ("Card124", cards [12][3]);
-			PlayerPrefs.SetFloat ("Card125", cards [12][4]);
-			PlayerPrefs.SetFloat ("Card126", cards [12][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card91") == 0) {
+				PlayerPrefs.SetFloat ("Card91", cards [9] [0]);
+				PlayerPrefs.SetFloat ("Card92", cards [9] [1]);
+				PlayerPrefs.SetFloat ("Card93", cards [9] [2]);
+				PlayerPrefs.SetFloat ("Card94", cards [9] [3]);
+				PlayerPrefs.SetFloat ("Card95", cards [9] [4]);
+				PlayerPrefs.SetFloat ("Card96", cards [9] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card131") == 0) {
-			PlayerPrefs.SetFloat ("Card131", cards [13][0]);
-			PlayerPrefs.SetFloat ("Card132", cards [13][1]);
-			PlayerPrefs.SetFloat ("Card133", cards [13][2]);
-			PlayerPrefs.SetFloat ("Card134", cards [13][3]);
-			PlayerPrefs.SetFloat ("Card135", cards [13][4]);
-			PlayerPrefs.SetFloat ("Card136", cards [13][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card101") == 0) {
+				PlayerPrefs.SetFloat ("Card101", cards [10] [0]);
+				PlayerPrefs.SetFloat ("Card102", cards [10] [1]);
+				PlayerPrefs.SetFloat ("Card103", cards [10] [2]);
+				PlayerPrefs.SetFloat ("Card104", cards [10] [3]);
+				PlayerPrefs.SetFloat ("Card105", cards [10] [4]);
+				PlayerPrefs.SetFloat ("Card106", cards [10] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card141") == 0) {
-			PlayerPrefs.SetFloat ("Card141", cards [14][0]);
-			PlayerPrefs.SetFloat ("Card142", cards [14][1]);
-			PlayerPrefs.SetFloat ("Card143", cards [14][2]);
-			PlayerPrefs.SetFloat ("Card144", cards [14][3]);
-			PlayerPrefs.SetFloat ("Card145", cards [14][4]);
-			PlayerPrefs.SetFloat ("Card146", cards [14][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card111") == 0) {
+				PlayerPrefs.SetFloat ("Card111", cards [11] [0]);
+				PlayerPrefs.SetFloat ("Card112", cards [11] [1]);
+				PlayerPrefs.SetFloat ("Card113", cards [11] [2]);
+				PlayerPrefs.SetFloat ("Card114", cards [11] [3]);
+				PlayerPrefs.SetFloat ("Card115", cards [11] [4]);
+				PlayerPrefs.SetFloat ("Card116", cards [11] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card151") == 0) {
-			PlayerPrefs.SetFloat ("Card151", cards [15][0]);
-			PlayerPrefs.SetFloat ("Card152", cards [15][1]);
-			PlayerPrefs.SetFloat ("Card153", cards [15][2]);
-			PlayerPrefs.SetFloat ("Card154", cards [15][3]);
-			PlayerPrefs.SetFloat ("Card155", cards [15][4]);
-			PlayerPrefs.SetFloat ("Card156", cards [15][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card121") == 0) {
+				PlayerPrefs.SetFloat ("Card121", cards [12] [0]);
+				PlayerPrefs.SetFloat ("Card122", cards [12] [1]);
+				PlayerPrefs.SetFloat ("Card123", cards [12] [2]);
+				PlayerPrefs.SetFloat ("Card124", cards [12] [3]);
+				PlayerPrefs.SetFloat ("Card125", cards [12] [4]);
+				PlayerPrefs.SetFloat ("Card126", cards [12] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card161") == 0) {
-			PlayerPrefs.SetFloat ("Card161", cards [16][0]);
-			PlayerPrefs.SetFloat ("Card162", cards [16][1]);
-			PlayerPrefs.SetFloat ("Card163", cards [16][2]);
-			PlayerPrefs.SetFloat ("Card164", cards [16][3]);
-			PlayerPrefs.SetFloat ("Card165", cards [16][4]);
-			PlayerPrefs.SetFloat ("Card166", cards [16][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card131") == 0) {
+				PlayerPrefs.SetFloat ("Card131", cards [13] [0]);
+				PlayerPrefs.SetFloat ("Card132", cards [13] [1]);
+				PlayerPrefs.SetFloat ("Card133", cards [13] [2]);
+				PlayerPrefs.SetFloat ("Card134", cards [13] [3]);
+				PlayerPrefs.SetFloat ("Card135", cards [13] [4]);
+				PlayerPrefs.SetFloat ("Card136", cards [13] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card171")  == 0) {
-			PlayerPrefs.SetFloat ("Card171", cards [17][0]);
-			PlayerPrefs.SetFloat ("Card172", cards [17][1]);
-			PlayerPrefs.SetFloat ("Card173", cards [17][2]);
-			PlayerPrefs.SetFloat ("Card174", cards [17][3]);
-			PlayerPrefs.SetFloat ("Card175", cards [17][4]);
-			PlayerPrefs.SetFloat ("Card176", cards [17][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card141") == 0) {
+				PlayerPrefs.SetFloat ("Card141", cards [14] [0]);
+				PlayerPrefs.SetFloat ("Card142", cards [14] [1]);
+				PlayerPrefs.SetFloat ("Card143", cards [14] [2]);
+				PlayerPrefs.SetFloat ("Card144", cards [14] [3]);
+				PlayerPrefs.SetFloat ("Card145", cards [14] [4]);
+				PlayerPrefs.SetFloat ("Card146", cards [14] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card181")  == 0) {
-			PlayerPrefs.SetFloat ("Card181", cards [18][0]);
-			PlayerPrefs.SetFloat ("Card182", cards [18][1]);
-			PlayerPrefs.SetFloat ("Card183", cards [18][2]);
-			PlayerPrefs.SetFloat ("Card184", cards [18][3]);
-			PlayerPrefs.SetFloat ("Card185", cards [18][4]);
-			PlayerPrefs.SetFloat ("Card186", cards [18][5]);
-		}
+//			if (PlayerPrefs.GetFloat ("Card151") == 0) {
+				PlayerPrefs.SetFloat ("Card151", cards [15] [0]);
+				PlayerPrefs.SetFloat ("Card152", cards [15] [1]);
+				PlayerPrefs.SetFloat ("Card153", cards [15] [2]);
+				PlayerPrefs.SetFloat ("Card154", cards [15] [3]);
+				PlayerPrefs.SetFloat ("Card155", cards [15] [4]);
+				PlayerPrefs.SetFloat ("Card156", cards [15] [5]);
+//			}
 
-		if (PlayerPrefs.GetFloat  ("Card191")  == 0) {
-			PlayerPrefs.SetFloat ("Card191", cards [19][0]);
-			PlayerPrefs.SetFloat ("Card192", cards [19][1]);
-			PlayerPrefs.SetFloat ("Card193", cards [19][2]);
-			PlayerPrefs.SetFloat ("Card194", cards [19][3]);
-			PlayerPrefs.SetFloat ("Card195", cards [19][4]);
-			PlayerPrefs.SetFloat ("Card196", cards [19][5]);
+//			if (PlayerPrefs.GetFloat ("Card161") == 0) {
+				PlayerPrefs.SetFloat ("Card161", cards [16] [0]);
+				PlayerPrefs.SetFloat ("Card162", cards [16] [1]);
+				PlayerPrefs.SetFloat ("Card163", cards [16] [2]);
+				PlayerPrefs.SetFloat ("Card164", cards [16] [3]);
+				PlayerPrefs.SetFloat ("Card165", cards [16] [4]);
+				PlayerPrefs.SetFloat ("Card166", cards [16] [5]);
+//			}
+
+//			if (PlayerPrefs.GetFloat ("Card171") == 0) {
+				PlayerPrefs.SetFloat ("Card171", cards [17] [0]);
+				PlayerPrefs.SetFloat ("Card172", cards [17] [1]);
+				PlayerPrefs.SetFloat ("Card173", cards [17] [2]);
+				PlayerPrefs.SetFloat ("Card174", cards [17] [3]);
+				PlayerPrefs.SetFloat ("Card175", cards [17] [4]);
+				PlayerPrefs.SetFloat ("Card176", cards [17] [5]);
+//			}
+
+//			if (PlayerPrefs.GetFloat ("Card181") == 0) {
+				PlayerPrefs.SetFloat ("Card181", cards [18] [0]);
+				PlayerPrefs.SetFloat ("Card182", cards [18] [1]);
+				PlayerPrefs.SetFloat ("Card183", cards [18] [2]);
+				PlayerPrefs.SetFloat ("Card184", cards [18] [3]);
+				PlayerPrefs.SetFloat ("Card185", cards [18] [4]);
+				PlayerPrefs.SetFloat ("Card186", cards [18] [5]);
+//			}
+
+//			if (PlayerPrefs.GetFloat ("Card191") == 0) {
+				PlayerPrefs.SetFloat ("Card191", cards [19] [0]);
+				PlayerPrefs.SetFloat ("Card192", cards [19] [1]);
+				PlayerPrefs.SetFloat ("Card193", cards [19] [2]);
+				PlayerPrefs.SetFloat ("Card194", cards [19] [3]);
+				PlayerPrefs.SetFloat ("Card195", cards [19] [4]);
+				PlayerPrefs.SetFloat ("Card196", cards [19] [5]);
+//			}
+
 		}
-			
 	}
-
 }
+

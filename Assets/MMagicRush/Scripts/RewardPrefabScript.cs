@@ -35,33 +35,43 @@ public class RewardPrefabScript : MonoBehaviour {
 			break;
 		case 6:
 			Controller.CardQuantity [11] += 1; //Bidu
+			Controller.EarnCard(11);
 			break;
 		case 7:
 			Controller.CardQuantity [3] += 1; //Canja
+			Controller.EarnCard(3);
 			break;
 		case 8:
 			Controller.CardQuantity [18] += 1; //Cranicola
+			Controller.EarnCard(18);
 			break;
 		case 9:
 			Controller.CardQuantity [5] += 1; //Terremoto
+			Controller.EarnCard(5);
 			break;
 		case 10:
 			Controller.CardQuantity [2] += 1; //Estalo
+			Controller.EarnCard(2);
 			break;
 		case 11:
 			Controller.CardQuantity [4] += 1; //Boom
+			Controller.EarnCard(4);
 			break;
 		case 12:
 			Controller.CardQuantity [15] += 1; //Penadinho
+			Controller.EarnCard(15);
 			break;
 		case 13:
 			Controller.CardQuantity [17] += 1; //Mingau
+			Controller.EarnCard(17);
 			break;
 		case 14:
 			Controller.CardQuantity [14] += 1; //piteco
+			Controller.EarnCard(14);
 			break;
 		case 15:
 			Controller.CardQuantity [16] += 1; // sansão
+			Controller.EarnCard(16);
 			break;
 		}
 	}

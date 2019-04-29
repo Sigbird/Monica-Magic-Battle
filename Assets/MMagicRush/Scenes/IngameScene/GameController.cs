@@ -90,6 +90,7 @@ public class GameController : MonoBehaviour {
 	private bool TimeWatchBlinking;
 	public int ChestsQtd;
 
+	private bool soundedAlert;
 	private int[] zero;
 	private int heroid;
 	public int MyTeam;
@@ -121,6 +122,7 @@ public class GameController : MonoBehaviour {
 		sd = false;
 		overtime = false;
 		GameOver = false;
+		soundedAlert = false;
 		
 		if (PlayerPrefs.HasKey ("Enemy")) {
 			heroid = PlayerPrefs.GetInt ("Enemy");
@@ -296,6 +298,7 @@ public class GameController : MonoBehaviour {
 			mins = Mathf.FloorToInt (tempduration / 60f);
 			secs = Mathf.FloorToInt (tempduration - mins * 60f);
 			string niceTime = string.Format ("{0:0}:{1:00}", mins, secs);
+
 			if (tempduration > 0) {
 				timetext.text = niceTime;
 
@@ -306,6 +309,10 @@ public class GameController : MonoBehaviour {
 				}
 				timetext.text = "Overtime";
 				timetext.color = Color.red;
+				if (soundedAlert == false) {
+					soundedAlert = true;
+					GetComponent<AudioManager> ().OvertimePlayAudio ();
+				}
 			}
 
 
@@ -357,7 +364,7 @@ public class GameController : MonoBehaviour {
 			tutorialending = true;
 		}
 		if (tutorial == false) {
-			if (gempertime >= 1 && GameOver == false) {
+			if (gempertime >= 3 && GameOver == false) {
 				gempertime = 0;
 				Diamonds += gempertimeMaxValue;
 				EnemyDiamonds += gempertimeMaxValue;
@@ -542,6 +549,7 @@ public class GameController : MonoBehaviour {
 					this.GetComponent<AudioManager> ().StopAudio ();
 					this.GetComponent<AudioManager> ().SetVolume (1);
 					this.GetComponent<AudioManager> ().PlayAudio ("victory");
+					GiveChests ();
 					victory = true;
 					endGamePanel [0].SetActive (true);
 					if (tutorial == true) {
@@ -564,6 +572,7 @@ public class GameController : MonoBehaviour {
 					this.GetComponent<AudioManager> ().StopAudio ();
 					this.GetComponent<AudioManager> ().SetVolume (1);
 					this.GetComponent<AudioManager> ().PlayAudio ("victory");
+					GiveChests ();
 					victory = true;
 					endGamePanel [0].SetActive (true);
 					if (tutorial == true) {
@@ -596,13 +605,14 @@ public class GameController : MonoBehaviour {
 	}
 
 	IEnumerator endGameMulti(){
-
+		
 		CardInfoWindow.SetActive (false);
 		yield return new WaitForSeconds (1);
 		if (GameOver != true) {
 			if (newMechanicTest) {
 				if (Player1Score > Player2Score) {
 					if (MyTeam == 1) {
+						GiveChests ();
 						this.GetComponent<AudioManager> ().StopAudio ();
 						this.GetComponent<AudioManager> ().SetVolume (1);
 						this.GetComponent<AudioManager> ().PlayAudio ("victory");
@@ -617,6 +627,7 @@ public class GameController : MonoBehaviour {
 					}
 				} else if(Player2Score > Player1Score) {
 					if (MyTeam == 2) {
+						GiveChests ();
 						this.GetComponent<AudioManager> ().StopAudio ();
 						this.GetComponent<AudioManager> ().SetVolume (1);
 						this.GetComponent<AudioManager> ().PlayAudio ("victory");
@@ -631,6 +642,7 @@ public class GameController : MonoBehaviour {
 					}
 				} else {
 					//EMPATE
+					GiveChests ();
 						this.GetComponent<AudioManager> ().StopAudio ();
 						this.GetComponent<AudioManager> ().SetVolume (1);
 						this.GetComponent<AudioManager> ().PlayAudio ("victory");
@@ -680,12 +692,14 @@ public class GameController : MonoBehaviour {
 
 	IEnumerator endGameMultipl(int x){
 		CardInfoWindow.SetActive (false);
+
 		yield return new WaitForSeconds (1);
 
 		if (x==0) {//3 2
 			this.GetComponent<AudioManager> ().StopAudio ();
 			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
+			GiveChests ();
 			endGamePanel [0].SetActive (true);
 			if (tutorial == true) {
 				GetComponent<TutorialController> ().tutorialPanels [0].SetActive (false);
@@ -704,6 +718,7 @@ public class GameController : MonoBehaviour {
 			this.GetComponent<AudioManager> ().StopAudio ();
 			this.GetComponent<AudioManager> ().SetVolume (1);
 			this.GetComponent<AudioManager> ().PlayAudio ("victory");
+			GiveChests ();
 			endGamePanel [0].SetActive (true);
 		}
 		GameOver = true;
@@ -998,9 +1013,10 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void GiveChests(){
-	
+		ChestsQtd += 1;
 		if (ChestsQtd < 4) {
-			PlayerPrefs.SetInt ("ChestsNumber", ChestsQtd++);
+			
+			PlayerPrefs.SetInt ("ChestsNumber", ChestsQtd);
 		} 
 
 	}
